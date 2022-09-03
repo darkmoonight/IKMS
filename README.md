@@ -1,2 +1,2 @@
 # ProjectCDIS
-aboba
+Расписание для ДГТУ
