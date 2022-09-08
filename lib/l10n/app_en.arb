@@ -1,5 +1,8 @@
 {
     "schedule": "Schedule",
     "theme": "Theme",
-    "settings": "Settings"
+    "settings": "Settings",
+    "language": "Language",
+    "group": "Group",
+    "university": "University"
 }

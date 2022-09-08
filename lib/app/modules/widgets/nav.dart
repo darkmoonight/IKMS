@@ -37,15 +37,15 @@ class _BottomNavigationState extends State<BottomNavigation> {
         items: [
           BottomNavigationBarItem(
             label: AppLocalizations.of(context)!.schedule,
-            icon: Icon(Icons.apps_sharp),
+            icon: const Icon(Icons.apps_sharp),
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             label: "",
             icon: Icon(Icons.person),
           ),
           BottomNavigationBarItem(
             label: AppLocalizations.of(context)!.settings,
-            icon: Icon(Icons.settings),
+            icon: const Icon(Icons.settings),
           ),
         ],
         currentIndex: _selectedIndex,

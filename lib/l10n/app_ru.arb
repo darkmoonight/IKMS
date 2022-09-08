@@ -1,5 +1,8 @@
 {
     "schedule": "Расписание",
     "theme": "Тема",
-    "settings": "Настройки"
+    "settings": "Настройки",
+    "language": "Язык",
+    "group": "Группа",
+    "university": "Университет"
 }

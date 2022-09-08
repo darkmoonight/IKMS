@@ -17,7 +17,6 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    Locale myLocale = Localizations.localeOf(context);
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
@@ -40,13 +39,13 @@ class _SettingsPageState extends State<SettingsPage> {
               endIndent: 10.w,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
+              padding: EdgeInsets.only(right: 10.w, left: 10.w, top: 5.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     AppLocalizations.of(context)!.theme,
-                    style: theme.textTheme.headline3,
+                    style: theme.textTheme.headline6,
                   ),
                   IconButton(
                     onPressed: () {
@@ -68,19 +67,50 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(
-                  left: 10.w, top: 5.w, bottom: 5.w, right: 15.w),
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Язык',
-                    style: theme.textTheme.headline3,
+                    AppLocalizations.of(context)!.language,
+                    style: theme.textTheme.headline6,
                   ),
                   Text(
-                    "$myLocale",
-                    style: theme.textTheme.headline3,
-                  )
+                    getLocal(),
+                    style: theme.primaryTextTheme.subtitle2,
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.group,
+                    style: theme.textTheme.headline6,
+                  ),
+                  Text(
+                    "ВПИ42",
+                    style: theme.primaryTextTheme.subtitle2,
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.university,
+                    style: theme.textTheme.headline6,
+                  ),
+                  Text(
+                    "ДГТУ",
+                    style: theme.primaryTextTheme.subtitle2,
+                  ),
                 ],
               ),
             ),
@@ -88,5 +118,16 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
     );
+  }
+
+  String getLocal() {
+    Locale locale = Localizations.localeOf(context);
+    final String myLocal;
+    if (locale.toString() == "ru") {
+      myLocal = "Русский";
+    } else {
+      myLocal = "English";
+    }
+    return myLocal;
   }
 }
