@@ -1,6 +1,7 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,6 +14,7 @@ class _HomePageState extends State<HomePage> {
   var selectedDay = DateTime.now();
   @override
   Widget build(BuildContext context) {
+    var tag = Localizations.maybeLocaleOf(context)?.toLanguageTag();
     var theme = Theme.of(context);
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -20,9 +22,9 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 15.w, bottom: 5.w),
+              padding: EdgeInsets.only(top: 15.w, bottom: 8.w),
               child: Text(
-                'Расписание',
+                AppLocalizations.of(context)!.schedule,
                 style: theme.textTheme.headline2,
                 textAlign: TextAlign.center,
               ),
@@ -31,7 +33,7 @@ class _HomePageState extends State<HomePage> {
               margin: EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
               decoration: BoxDecoration(
                 color: theme.primaryColor,
-                borderRadius: BorderRadius.all(Radius.circular(15.w)),
+                borderRadius: const BorderRadius.all(Radius.circular(15)),
               ),
               child: DatePicker(
                 selectedDay,
@@ -46,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                 monthTextStyle: TextStyle(
                     color: theme.textTheme.headline4?.color, fontSize: 12),
                 initialSelectedDate: DateTime.now(),
-                locale: "ru_RU",
+                locale: "$tag",
                 onDateChange: (date) {
                   setState(
                     () {},

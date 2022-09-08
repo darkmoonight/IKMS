@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../utils/theme_controller.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -17,6 +17,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    Locale myLocale = Localizations.localeOf(context);
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
@@ -26,7 +27,7 @@ class _SettingsPageState extends State<SettingsPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w),
               child: Text(
-                'Настройки',
+                AppLocalizations.of(context)!.settings,
                 style: theme.textTheme.headline2,
                 textAlign: TextAlign.center,
               ),
@@ -44,7 +45,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Тема',
+                    AppLocalizations.of(context)!.theme,
                     style: theme.textTheme.headline3,
                   ),
                   IconButton(
@@ -63,6 +64,23 @@ class _SettingsPageState extends State<SettingsPage> {
                       color: theme.iconTheme.color,
                     ),
                   ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  left: 10.w, top: 5.w, bottom: 5.w, right: 15.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Язык',
+                    style: theme.textTheme.headline3,
+                  ),
+                  Text(
+                    "$myLocale",
+                    style: theme.textTheme.headline3,
+                  )
                 ],
               ),
             ),

@@ -11,6 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   cupertino_icons: ^1.0.2
   get: ^4.6.5
   get_storage: ^2.0.3
@@ -25,4 +27,5 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
+  generate: true
   uses-material-design: true

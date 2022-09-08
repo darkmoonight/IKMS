@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_cdis/app/modules/home/view.dart';
 import 'package:project_cdis/app/modules/settings/view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});
@@ -33,17 +34,17 @@ class _BottomNavigationState extends State<BottomNavigation> {
         showUnselectedLabels: false,
         selectedItemColor: Colors.blue,
         enableFeedback: true,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            label: "Расписание",
+            label: AppLocalizations.of(context)!.schedule,
             icon: Icon(Icons.apps_sharp),
           ),
           BottomNavigationBarItem(
-            label: "Преподаватели",
+            label: "",
             icon: Icon(Icons.person),
           ),
           BottomNavigationBarItem(
-            label: "Настройки",
+            label: AppLocalizations.of(context)!.settings,
             icon: Icon(Icons.settings),
           ),
         ],
