@@ -16,6 +16,7 @@ dependencies:
   get_storage: ^2.0.3
   intl: ^0.17.0
   flutter_screenutil: ^5.5.3+2
+  date_picker_timeline: ^1.2.3
 
 dev_dependencies:
   flutter_test:

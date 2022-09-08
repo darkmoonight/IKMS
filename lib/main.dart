@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:project_cdis/app/modules/home/view.dart';
 import 'package:project_cdis/utils/theme.dart';
 
+import 'app/modules/widgets/nav.dart';
 import 'utils/theme_controller.dart';
 
 void main() {
@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
           themeMode: ThemeMode.system,
-          theme: ThemeApp.lightTheme,
+          theme: ThemeApp.darkTheme,
           darkTheme: ThemeApp.darkTheme,
-          home: const HomePage(),
+          home: const BottomNavigation(),
         );
       },
     );
