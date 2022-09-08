@@ -31,6 +31,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: theme.primaryColor,
         showUnselectedLabels: false,
+        selectedItemColor: Colors.blue,
+        enableFeedback: true,
         items: const [
           BottomNavigationBarItem(
             label: "Расписание",
