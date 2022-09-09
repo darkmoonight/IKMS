@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:project_cdis/app/modules/audiences/view.dart';
 import 'package:project_cdis/app/modules/home/view.dart';
+import 'package:project_cdis/app/modules/professors/view.dart';
 import 'package:project_cdis/app/modules/settings/view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -14,7 +16,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
     const HomePage(),
-    const Text('Screen'),
+    const ProfessorsPage(),
+    const AudiencesPage(),
     const SettingsPage(),
   ];
 
@@ -33,15 +36,20 @@ class _BottomNavigationState extends State<BottomNavigation> {
         backgroundColor: theme.primaryColor,
         showUnselectedLabels: false,
         selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey[500],
         enableFeedback: true,
         items: [
           BottomNavigationBarItem(
             label: AppLocalizations.of(context)!.schedule,
             icon: const Icon(Icons.apps_sharp),
           ),
-          const BottomNavigationBarItem(
-            label: "",
-            icon: Icon(Icons.person),
+          BottomNavigationBarItem(
+            label: AppLocalizations.of(context)!.professors,
+            icon: const Icon(Icons.person),
+          ),
+          BottomNavigationBarItem(
+            label: AppLocalizations.of(context)!.audiences,
+            icon: const Icon(Icons.door_back_door),
           ),
           BottomNavigationBarItem(
             label: AppLocalizations.of(context)!.settings,
