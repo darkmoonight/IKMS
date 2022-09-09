@@ -58,7 +58,7 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
                     fontSize: 15.sp,
                   ),
                 ),
-                autofocus: true,
+                autofocus: false,
               ),
             ),
             Divider(

@@ -58,7 +58,7 @@ class _AudiencesPageState extends State<AudiencesPage> {
                     fontSize: 15.sp,
                   ),
                 ),
-                autofocus: true,
+                autofocus: false,
               ),
             ),
             Divider(
