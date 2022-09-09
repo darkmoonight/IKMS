@@ -38,19 +38,23 @@ class _SettingsPageState extends State<SettingsPage> {
               indent: 10.w,
               endIndent: 10.w,
             ),
+            const SizedBox(height: 5),
             Padding(
-              padding: EdgeInsets.only(right: 5.w, left: 10.w, top: 5.w),
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     AppLocalizations.of(context)!.theme,
-                    style: theme.textTheme.headline6,
+                    style: theme.primaryTextTheme.headline5,
                   ),
                   ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(theme.primaryColor)),
+                      backgroundColor:
+                          MaterialStateProperty.all(theme.primaryColor),
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(110, 40)),
+                    ),
                     onPressed: () {
                       if (Get.isDarkMode) {
                         themeController.changeThemeMode(ThemeMode.light);
@@ -68,20 +72,23 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
             ),
+            SizedBox(height: 2.w),
             Padding(
-              padding: EdgeInsets.only(
-                  right: 5.w, left: 10.w, top: 5.w, bottom: 5.w),
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     AppLocalizations.of(context)!.language,
-                    style: theme.textTheme.headline6,
+                    style: theme.primaryTextTheme.headline5,
                   ),
                   ElevatedButton(
                     style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(theme.primaryColor)),
+                      backgroundColor:
+                          MaterialStateProperty.all(theme.primaryColor),
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(110, 40)),
+                    ),
                     onPressed: () {
                       if (locale.toString() == 'ru') {
                         Locale locale = const Locale('en');
@@ -99,34 +106,54 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
             ),
+            SizedBox(height: 2.w),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     AppLocalizations.of(context)!.group,
-                    style: theme.textTheme.headline6,
+                    style: theme.primaryTextTheme.headline5,
                   ),
-                  Text(
-                    "ВПИ42",
-                    style: theme.primaryTextTheme.subtitle2,
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(theme.primaryColor),
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(110, 40)),
+                    ),
+                    onPressed: () {},
+                    child: Text(
+                      "ВПИ42",
+                      style: theme.primaryTextTheme.subtitle2,
+                    ),
                   ),
                 ],
               ),
             ),
+            SizedBox(height: 2.w),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     AppLocalizations.of(context)!.university,
-                    style: theme.textTheme.headline6,
+                    style: theme.primaryTextTheme.headline5,
                   ),
-                  Text(
-                    "ДГТУ",
-                    style: theme.primaryTextTheme.subtitle2,
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(theme.primaryColor),
+                      minimumSize:
+                          MaterialStateProperty.all(const Size(110, 40)),
+                    ),
+                    onPressed: () {},
+                    child: Text(
+                      "ДГТУ",
+                      style: theme.primaryTextTheme.subtitle2,
+                    ),
                   ),
                 ],
               ),
@@ -141,9 +168,9 @@ class _SettingsPageState extends State<SettingsPage> {
     Locale locale = Localizations.localeOf(context);
     final String myLocal;
     if (locale.toString() == "ru") {
-      myLocal = "Русский";
-    } else {
       myLocal = "English";
+    } else {
+      myLocal = "Русский";
     }
     return myLocal;
   }
@@ -151,9 +178,9 @@ class _SettingsPageState extends State<SettingsPage> {
   String getTheme() {
     final String myTheme;
     if (Get.isDarkMode) {
-      myTheme = AppLocalizations.of(context)!.dark;
-    } else {
       myTheme = AppLocalizations.of(context)!.light;
+    } else {
+      myTheme = AppLocalizations.of(context)!.dark;
     }
     return myTheme;
   }

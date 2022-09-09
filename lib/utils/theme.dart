@@ -64,6 +64,10 @@ class ThemeApp {
           fontSize: 14.sp,
           fontWeight: FontWeight.bold,
         ),
+        headline5: TextStyle(
+          color: Colors.black,
+          fontSize: 17.sp,
+        ),
         headline6: TextStyle(
           decoration: TextDecoration.lineThrough,
           color: Colors.black,
@@ -132,6 +136,10 @@ class ThemeApp {
           color: Colors.grey,
           fontSize: 14.sp,
           fontWeight: FontWeight.bold,
+        ),
+        headline5: TextStyle(
+          color: Colors.white,
+          fontSize: 17.sp,
         ),
         headline6: TextStyle(
           decoration: TextDecoration.lineThrough,
