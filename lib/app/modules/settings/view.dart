@@ -17,14 +17,14 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    Locale locale = Localizations.localeOf(context);
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: ListView(
           children: [
-            SizedBox(height: 15.w),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              padding: EdgeInsets.only(top: 15.w),
               child: Text(
                 AppLocalizations.of(context)!.settings,
                 style: theme.textTheme.headline2,
@@ -39,7 +39,7 @@ class _SettingsPageState extends State<SettingsPage> {
               endIndent: 10.w,
             ),
             Padding(
-              padding: EdgeInsets.only(right: 10.w, left: 10.w, top: 5.w),
+              padding: EdgeInsets.only(right: 5.w, left: 10.w, top: 5.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -47,7 +47,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     AppLocalizations.of(context)!.theme,
                     style: theme.textTheme.headline6,
                   ),
-                  IconButton(
+                  ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(theme.primaryColor)),
                     onPressed: () {
                       if (Get.isDarkMode) {
                         themeController.changeThemeMode(ThemeMode.light);
@@ -57,17 +60,17 @@ class _SettingsPageState extends State<SettingsPage> {
                         themeController.saveTheme(true);
                       }
                     },
-                    icon: Icon(
-                      Icons.brightness_4_outlined,
-                      size: theme.iconTheme.size,
-                      color: theme.iconTheme.color,
+                    child: Text(
+                      getTheme(),
+                      style: theme.primaryTextTheme.subtitle2,
                     ),
                   ),
                 ],
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
+              padding: EdgeInsets.only(
+                  right: 5.w, left: 10.w, top: 5.w, bottom: 5.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -75,9 +78,23 @@ class _SettingsPageState extends State<SettingsPage> {
                     AppLocalizations.of(context)!.language,
                     style: theme.textTheme.headline6,
                   ),
-                  Text(
-                    getLocal(),
-                    style: theme.primaryTextTheme.subtitle2,
+                  ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(theme.primaryColor)),
+                    onPressed: () {
+                      if (locale.toString() == 'ru') {
+                        Locale locale = const Locale('en');
+                        Get.updateLocale(locale);
+                      } else {
+                        Locale locale = const Locale('ru');
+                        Get.updateLocale(locale);
+                      }
+                    },
+                    child: Text(
+                      getLocal(),
+                      style: theme.primaryTextTheme.subtitle2,
+                    ),
                   ),
                 ],
               ),
@@ -129,5 +146,15 @@ class _SettingsPageState extends State<SettingsPage> {
       myLocal = "English";
     }
     return myLocal;
+  }
+
+  String getTheme() {
+    final String myTheme;
+    if (Get.isDarkMode) {
+      myTheme = AppLocalizations.of(context)!.dark;
+    } else {
+      myTheme = AppLocalizations.of(context)!.light;
+    }
+    return myTheme;
   }
 }
