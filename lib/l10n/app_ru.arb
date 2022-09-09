@@ -4,5 +4,9 @@
     "settings": "Настройки",
     "language": "Язык",
     "group": "Группа",
-    "university": "Университет"
+    "university": "Университет",
+    "dark": "Тёмная",
+    "light": "Светлая",
+    "audiences": "Аудитории",
+    "professors": "Преподаватели"
 }

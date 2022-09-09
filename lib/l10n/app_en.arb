@@ -4,5 +4,9 @@
     "settings": "Settings",
     "language": "Language",
     "group": "Group",
-    "university": "University"
+    "university": "University",
+    "dark": "Dark",
+    "light": "Light",
+    "audiences": "Audiences",
+    "professors": "Professors"
 }
