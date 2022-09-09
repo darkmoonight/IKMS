@@ -26,6 +26,41 @@ class _AudiencesPageState extends State<AudiencesPage> {
                 textAlign: TextAlign.center,
               ),
             ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
+              child: TextField(
+                style: theme.textTheme.headline6,
+                decoration: InputDecoration(
+                  fillColor: theme.primaryColor,
+                  filled: true,
+                  prefixIcon: InkWell(
+                    onTap: () async {},
+                    child: const Icon(
+                      Icons.search_outlined,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                    borderSide: BorderSide(
+                      color: theme.primaryColor,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                    borderSide: BorderSide(
+                      color: theme.primaryColor,
+                    ),
+                  ),
+                  hintText: AppLocalizations.of(context)!.number,
+                  hintStyle: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 15.sp,
+                  ),
+                ),
+                autofocus: true,
+              ),
+            ),
             Divider(
               color: theme.dividerColor,
               height: 20.w,
