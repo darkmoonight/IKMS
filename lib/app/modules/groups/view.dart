@@ -20,29 +20,24 @@ class _GroupsPageState extends State<GroupsPage> {
         child: ListView(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 15.w, left: 5.w),
+              padding: EdgeInsets.only(top: 15.w, left: 10.w),
               child: Row(
                 children: [
-                  Expanded(
-                    child: IconButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      icon: const Icon(Icons.arrow_back),
-                      iconSize: theme.iconTheme.size,
-                      color: theme.iconTheme.color,
-                    ),
+                  IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(Icons.arrow_back),
+                    iconSize: theme.iconTheme.size,
+                    color: theme.iconTheme.color,
                   ),
-                  const Spacer(
-                    flex: 2,
+                  SizedBox(
+                    width: 5.w,
                   ),
                   Text(
                     AppLocalizations.of(context)!.groups,
                     style: theme.textTheme.headline2,
                     textAlign: TextAlign.center,
-                  ),
-                  const Spacer(
-                    flex: 3,
                   ),
                 ],
               ),
