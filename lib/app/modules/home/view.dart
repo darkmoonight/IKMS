@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var selectedDay = DateTime(2022, 9, 1);
+  var selectedDay = DateTime.now();
   @override
   Widget build(BuildContext context) {
     var tag = Localizations.maybeLocaleOf(context)?.toLanguageTag();
