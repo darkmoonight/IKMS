@@ -10,5 +10,9 @@
     "audiences": "Audiences",
     "professors": "Professors",
     "number": "Audience number",
-    "fio": "Full name of the professor"
+    "fio": "Full name of the professor",
+    "universities": "Universities",    
+    "groups": "Groups",
+    "universitiesName": "Name of the university",
+    "groupsName": "Group name"
 }

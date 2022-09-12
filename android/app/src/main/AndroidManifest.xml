@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.project_cdis">
    <application
-        android:label="project_cdis"
+        android:label="Расписание для студентов - IKMS"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:project_cdis/app/modules/groups/view.dart';
+import 'package:project_cdis/app/modules/university/view.dart';
 import '../../../utils/theme_controller.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -54,6 +56,11 @@ class _SettingsPageState extends State<SettingsPage> {
                           MaterialStateProperty.all(theme.primaryColor),
                       minimumSize:
                           MaterialStateProperty.all(const Size(110, 40)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
                     ),
                     onPressed: () {
                       if (Get.isDarkMode) {
@@ -88,6 +95,11 @@ class _SettingsPageState extends State<SettingsPage> {
                           MaterialStateProperty.all(theme.primaryColor),
                       minimumSize:
                           MaterialStateProperty.all(const Size(110, 40)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
                     ),
                     onPressed: () {
                       if (locale.toString() == 'ru') {
@@ -122,8 +134,16 @@ class _SettingsPageState extends State<SettingsPage> {
                           MaterialStateProperty.all(theme.primaryColor),
                       minimumSize:
                           MaterialStateProperty.all(const Size(110, 40)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(() => const GroupsPage(),
+                          transition: Transition.downToUp);
+                    },
                     child: Text(
                       "ВПИ42",
                       style: theme.primaryTextTheme.subtitle2,
@@ -148,8 +168,16 @@ class _SettingsPageState extends State<SettingsPage> {
                           MaterialStateProperty.all(theme.primaryColor),
                       minimumSize:
                           MaterialStateProperty.all(const Size(110, 40)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.to(() => const UniversityPage(),
+                          transition: Transition.downToUp);
+                    },
                     child: Text(
                       "ДГТУ",
                       style: theme.primaryTextTheme.subtitle2,
