@@ -1,4 +1,4 @@
-# ProjectCDIS - Расписание занятий.
+# IKMS - Расписание занятий для студентов.
 
 ### Авторы проекта:
 
@@ -7,5 +7,5 @@
 - [Бондаренко Илья](https://github.com/MolunSIB) - Менеджер продукта, cистемный аналитик, программист/тестировщик, менеджер проекта
 
 ### Техническое задание (SRS):
-[ProjectCDIS - SRS](https://docs.google.com/document/d/10sqhghdV3PXTvH0ubZMiPuQtnyDth4-Inlv4X9XUygI/edit?usp=sharing) 
+[IKMS - SRS](https://docs.google.com/document/d/10sqhghdV3PXTvH0ubZMiPuQtnyDth4-Inlv4X9XUygI/edit?usp=sharing) 
 
