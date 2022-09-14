@@ -1,4 +1,7 @@
-# IKMS - Расписание занятий для студентов.
+<div align="center">
+<img src="/assets/images/schedule.png" width="150"/>
+<h2>IKMS - Расписание занятий для студентов</h2>
+</div>
 
 ### Авторы проекта:
 
