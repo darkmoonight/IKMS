@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:project_cdis/app/data/professors.dart';
+
+import '../../services/remote_services.dart';
 
 class ProfessorsPage extends StatefulWidget {
   const ProfessorsPage({super.key});
@@ -10,13 +13,32 @@ class ProfessorsPage extends StatefulWidget {
 }
 
 class _ProfessorsPageState extends State<ProfessorsPage> {
+  List<Professors>? professors;
+  var isLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getData();
+  }
+
+  getData() async {
+    professors = await RomoteServise().getProfessorsData();
+    if (professors != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
-        child: ListView(
+        child: Column(
           children: [
             Padding(
               padding: EdgeInsets.only(top: 15.w),
@@ -67,6 +89,23 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
               thickness: 2,
               indent: 10.w,
               endIndent: 10.w,
+            ),
+            Expanded(
+              child: Visibility(
+                visible: isLoaded,
+                replacement: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                child: ListView.builder(
+                  itemCount: professors?.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final audiencesPage = professors![index];
+                    return ListTile(
+                      title: Text(audiencesPage.name),
+                    );
+                  },
+                ),
+              ),
             ),
           ],
         ),

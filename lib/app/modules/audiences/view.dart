@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project_cdis/app/data/audiences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../services/remote_services.dart';
 
 class AudiencesPage extends StatefulWidget {
   const AudiencesPage({super.key});
@@ -10,13 +12,32 @@ class AudiencesPage extends StatefulWidget {
 }
 
 class _AudiencesPageState extends State<AudiencesPage> {
+  List<Audiences>? audiences;
+  var isLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getData();
+  }
+
+  getData() async {
+    audiences = await RomoteServise().getAudiencesData();
+    if (audiences != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
-        child: ListView(
+        child: Column(
           children: [
             Padding(
               padding: EdgeInsets.only(top: 15.w),
@@ -67,6 +88,23 @@ class _AudiencesPageState extends State<AudiencesPage> {
               thickness: 2,
               indent: 10.w,
               endIndent: 10.w,
+            ),
+            Expanded(
+              child: Visibility(
+                visible: isLoaded,
+                replacement: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                child: ListView.builder(
+                  itemCount: audiences?.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final audiencesPage = audiences![index];
+                    return ListTile(
+                      title: Text(audiencesPage.name),
+                    );
+                  },
+                ),
+              ),
             ),
           ],
         ),
