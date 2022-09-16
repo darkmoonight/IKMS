@@ -99,9 +99,22 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
                 child: ListView.builder(
                   itemCount: professors?.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final audiencesPage = professors![index];
-                    return ListTile(
-                      title: Text(audiencesPage.name),
+                    final professorsPage = professors![index];
+                    return Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
+                      child: Container(
+                        height: 40.w,
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(15)),
+                            color: theme.primaryColor),
+                        child: Center(
+                            child: Text(
+                          professorsPage.name,
+                          style: theme.textTheme.headline6,
+                        )),
+                      ),
                     );
                   },
                 ),

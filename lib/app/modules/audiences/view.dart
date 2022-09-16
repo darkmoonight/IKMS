@@ -99,8 +99,21 @@ class _AudiencesPageState extends State<AudiencesPage> {
                   itemCount: audiences?.length,
                   itemBuilder: (BuildContext context, int index) {
                     final audiencesPage = audiences![index];
-                    return ListTile(
-                      title: Text(audiencesPage.name),
+                    return Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
+                      child: Container(
+                        height: 40.w,
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(15)),
+                            color: theme.primaryColor),
+                        child: Center(
+                            child: Text(
+                          audiencesPage.name,
+                          style: theme.textTheme.headline6,
+                        )),
+                      ),
                     );
                   },
                 ),
