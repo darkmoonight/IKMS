@@ -108,11 +108,14 @@ class _AudiencesPageState extends State<AudiencesPage> {
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(15)),
                             color: theme.primaryColor),
-                        child: Center(
-                            child: Text(
-                          audiencesPage.name,
-                          style: theme.textTheme.headline6,
-                        )),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Center(
+                              child: Text(
+                            audiencesPage.name,
+                            style: theme.textTheme.headline6,
+                          )),
+                        ),
                       ),
                     );
                   },

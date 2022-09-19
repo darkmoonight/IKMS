@@ -109,11 +109,14 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(15)),
                             color: theme.primaryColor),
-                        child: Center(
-                            child: Text(
-                          professorsPage.name,
-                          style: theme.textTheme.headline6,
-                        )),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Center(
+                              child: Text(
+                            professorsPage.name,
+                            style: theme.textTheme.headline6,
+                          )),
+                        ),
                       ),
                     );
                   },

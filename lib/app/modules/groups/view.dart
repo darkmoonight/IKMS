@@ -125,11 +125,16 @@ class _GroupsPageState extends State<GroupsPage> {
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(15)),
                             color: theme.primaryColor),
-                        child: Center(
-                            child: Text(
-                          groupsPage.name,
-                          style: theme.textTheme.headline6,
-                        )),
+                        child: TextButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          child: Center(
+                              child: Text(
+                            groupsPage.name,
+                            style: theme.textTheme.headline6,
+                          )),
+                        ),
                       ),
                     );
                   },
