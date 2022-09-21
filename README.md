@@ -11,4 +11,3 @@
 
 ### Техническое задание (SRS):
 [IKMS - SRS](https://docs.google.com/document/d/10sqhghdV3PXTvH0ubZMiPuQtnyDth4-Inlv4X9XUygI/edit?usp=sharing) 
-
