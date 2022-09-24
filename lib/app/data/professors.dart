@@ -44,10 +44,10 @@ class Professors {
   final bool idFromRasp;
 
   factory Professors.fromJson(Map<String, dynamic> json) => Professors(
-        name: json["name"],
-        kaf: json["kaf"],
-        id: json["id"],
-        idFromRasp: json["idFromRasp"],
+        name: json["name"] ?? '',
+        kaf: json["kaf"] ?? '',
+        id: json["id"] ?? '',
+        idFromRasp: json["idFromRasp"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {

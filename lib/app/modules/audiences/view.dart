@@ -12,25 +12,6 @@ class AudiencesPage extends StatefulWidget {
 }
 
 class _AudiencesPageState extends State<AudiencesPage> {
-  List<Audiences>? audiences;
-  var isLoaded = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    getData();
-  }
-
-  getData() async {
-    audiences = await RomoteServise().getAudiencesData();
-    if (audiences != null) {
-      setState(() {
-        isLoaded = true;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -90,36 +71,38 @@ class _AudiencesPageState extends State<AudiencesPage> {
               endIndent: 10.w,
             ),
             Expanded(
-              child: Visibility(
-                visible: isLoaded,
-                replacement: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                child: ListView.builder(
-                  itemCount: audiences?.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final audiencesPage = audiences![index];
-                    return Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
-                      child: Container(
-                        height: 40.w,
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(15)),
-                            color: theme.primaryColor),
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Center(
-                              child: Text(
-                            audiencesPage.name,
-                            style: theme.textTheme.headline6,
-                          )),
-                        ),
-                      ),
+              child: FutureBuilder<List<Audiences>>(
+                future: RomoteServise().getAudiencesData(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else {
+                    return ListView.builder(
+                      itemCount: snapshot.data?.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10.w, vertical: 5.w),
+                          child: Container(
+                            height: 40.w,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(15)),
+                                color: theme.primaryColor),
+                            child: TextButton(
+                              onPressed: () {},
+                              child: Center(
+                                  child: Text(
+                                snapshot.data![index].name,
+                                style: theme.textTheme.headline6,
+                              )),
+                            ),
+                          ),
+                        );
+                      },
                     );
-                  },
-                ),
+                  }
+                },
               ),
             ),
           ],

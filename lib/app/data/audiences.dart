@@ -40,8 +40,8 @@ class Audiences {
   final int id;
 
   factory Audiences.fromJson(Map<String, dynamic> json) => Audiences(
-        name: json["name"],
-        id: json["id"],
+        name: json["name"] ?? '',
+        id: json["id"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {

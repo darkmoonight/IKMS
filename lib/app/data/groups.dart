@@ -46,12 +46,12 @@ class Groups {
   final int facultyId;
 
   factory Groups.fromJson(Map<String, dynamic> json) => Groups(
-        name: json["name"],
-        id: json["id"],
-        kurs: json["kurs"],
-        facul: json["facul"],
-        yearName: json["yearName"],
-        facultyId: json["facultyID"],
+        name: json["name"] ?? '',
+        id: json["id"] ?? '',
+        kurs: json["kurs"] ?? '',
+        facul: json["facul"] ?? '',
+        yearName: json["yearName"] ?? '',
+        facultyId: json["facultyID"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
