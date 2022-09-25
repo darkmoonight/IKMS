@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:project_cdis/app/data/audiences.dart';
 import 'package:project_cdis/app/data/groups.dart';
 import 'package:project_cdis/app/data/professors.dart';
+import 'package:project_cdis/app/data/shedule.dart';
 
 class RomoteServise {
   final Dio dio = Dio();
@@ -42,6 +43,20 @@ class RomoteServise {
       Response response = await dio.get(baseUrl + url);
       GroupsData groupsData = GroupsData.fromJson(response.data);
       return groupsData.data;
+    } on DioError catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      rethrow;
+    }
+  }
+
+  Future<List<RaspElement>> getRaspElementData() async {
+    var url = 'Rasp?idGroup=44424';
+    try {
+      Response response = await dio.get(baseUrl + url);
+      Data raspData = Data.fromJson(response.data);
+      return raspData.rasp;
     } on DioError catch (e) {
       if (kDebugMode) {
         print(e);
