@@ -1,7 +1,8 @@
-import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:horizontal_center_date_picker/datepicker_controller.dart';
+import 'package:horizontal_center_date_picker/horizontal_date_picker.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,6 +13,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var selectedDay = DateTime.now();
+  DatePickerController datePickerController = DatePickerController();
+
   @override
   Widget build(BuildContext context) {
     var tag = Localizations.maybeLocaleOf(context)?.toLanguageTag();
@@ -19,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
-        child: ListView(
+        child: Column(
           children: [
             Padding(
               padding: EdgeInsets.only(top: 15.w, bottom: 8.w),
@@ -35,25 +38,21 @@ class _HomePageState extends State<HomePage> {
                 color: theme.primaryColor,
                 borderRadius: const BorderRadius.all(Radius.circular(15)),
               ),
-              child: DatePicker(
-                selectedDay,
-                width: 60,
-                height: 85,
-                selectionColor: Colors.blue,
-                selectedTextColor: Colors.white,
-                dayTextStyle: TextStyle(
-                    color: theme.textTheme.headline4?.color, fontSize: 12),
-                dateTextStyle: TextStyle(
-                    color: theme.textTheme.headline4?.color, fontSize: 16),
-                monthTextStyle: TextStyle(
-                    color: theme.textTheme.headline4?.color, fontSize: 12),
-                initialSelectedDate: DateTime.now(),
-                locale: "$tag",
-                onDateChange: (date) {
-                  setState(
-                    () {},
-                  );
-                },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                child: HorizontalDatePickerWidget(
+                  locale: '$tag',
+                  selectedColor: Colors.blue,
+                  normalColor: theme.primaryColor,
+                  disabledColor: theme.primaryColor,
+                  normalTextColor: theme.dividerColor,
+                  startDate: DateTime(2022, 09, 01),
+                  endDate: DateTime(2100, 09, 01),
+                  selectedDate: selectedDay,
+                  widgetWidth: MediaQuery.of(context).size.width,
+                  datePickerController: datePickerController,
+                  onValueSelected: (date) {},
+                ),
               ),
             ),
             Divider(

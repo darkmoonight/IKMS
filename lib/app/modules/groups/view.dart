@@ -14,6 +14,27 @@ class GroupsPage extends StatefulWidget {
 }
 
 class _GroupsPageState extends State<GroupsPage> {
+  List<Groups>? groups;
+  List<Groups>? group;
+  var isLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    group = groups;
+    getData();
+  }
+
+  getData() async {
+    group = await RomoteServise().getGroupsData();
+    groups = await RomoteServise().getGroupsData();
+    if (group != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -48,16 +69,22 @@ class _GroupsPageState extends State<GroupsPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
               child: TextField(
+                onChanged: (value) {
+                  value = value.toLowerCase();
+                  setState(() {
+                    group = groups?.where((element) {
+                      var groupsTitle = element.name.toLowerCase();
+                      return groupsTitle.contains(value);
+                    }).toList();
+                  });
+                },
                 style: theme.textTheme.headline6,
                 decoration: InputDecoration(
                   fillColor: theme.primaryColor,
                   filled: true,
-                  prefixIcon: InkWell(
-                    onTap: () async {},
-                    child: const Icon(
-                      Icons.search_outlined,
-                      color: Colors.grey,
-                    ),
+                  prefixIcon: const Icon(
+                    Icons.search_outlined,
+                    color: Colors.grey,
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15.0),
@@ -88,40 +115,38 @@ class _GroupsPageState extends State<GroupsPage> {
               endIndent: 10.w,
             ),
             Expanded(
-              child: FutureBuilder<List<Groups>>(
-                future: RomoteServise().getGroupsData(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else {
-                    return ListView.builder(
-                      itemCount: snapshot.data?.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 5.w),
-                          child: Container(
-                            height: 40.w,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(15)),
-                                color: theme.primaryColor),
-                            child: TextButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              child: Center(
-                                  child: Text(
-                                snapshot.data![index].name,
-                                style: theme.textTheme.headline6,
-                              )),
-                            ),
-                          ),
-                        );
-                      },
+              child: Visibility(
+                visible: isLoaded,
+                replacement: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                child: ListView.builder(
+                  itemCount: group?.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final groupPage = group![index];
+                    return Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
+                      child: Container(
+                        height: 40.w,
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(15)),
+                            color: theme.primaryColor),
+                        child: TextButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          child: Center(
+                              child: Text(
+                            groupPage.name,
+                            style: theme.textTheme.headline6,
+                          )),
+                        ),
+                      ),
                     );
-                  }
-                },
+                  },
+                ),
               ),
             ),
           ],

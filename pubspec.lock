@@ -85,13 +85,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
-  date_picker_timeline:
-    dependency: "direct main"
-    description:
-      name: date_picker_timeline
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.3"
   dio:
     dependency: "direct main"
     description:
@@ -182,6 +175,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
+  horizontal_center_date_picker:
+    dependency: "direct main"
+    description:
+      name: horizontal_center_date_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.1"
   html:
     dependency: transitive
     description:

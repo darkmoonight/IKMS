@@ -13,6 +13,27 @@ class ProfessorsPage extends StatefulWidget {
 }
 
 class _ProfessorsPageState extends State<ProfessorsPage> {
+  List<Professors>? professors;
+  List<Professors>? professor;
+  var isLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    professor = professors;
+    getData();
+  }
+
+  getData() async {
+    professor = await RomoteServise().getProfessorsData();
+    professors = await RomoteServise().getProfessorsData();
+    if (professor != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -32,16 +53,22 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
               child: TextField(
+                onChanged: (value) {
+                  value = value.toLowerCase();
+                  setState(() {
+                    professor = professors?.where((element) {
+                      var professorsTitle = element.name.toLowerCase();
+                      return professorsTitle.contains(value);
+                    }).toList();
+                  });
+                },
                 style: theme.textTheme.headline6,
                 decoration: InputDecoration(
                   fillColor: theme.primaryColor,
                   filled: true,
-                  prefixIcon: InkWell(
-                    onTap: () async {},
-                    child: const Icon(
-                      Icons.search_outlined,
-                      color: Colors.grey,
-                    ),
+                  prefixIcon: const Icon(
+                    Icons.search_outlined,
+                    color: Colors.grey,
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15.0),
@@ -72,38 +99,36 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
               endIndent: 10.w,
             ),
             Expanded(
-              child: FutureBuilder<List<Professors>>(
-                future: RomoteServise().getProfessorsData(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else {
-                    return ListView.builder(
-                      itemCount: snapshot.data?.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 5.w),
-                          child: Container(
-                            height: 40.w,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(15)),
-                                color: theme.primaryColor),
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Center(
-                                  child: Text(
-                                snapshot.data![index].name,
-                                style: theme.textTheme.headline6,
-                              )),
-                            ),
-                          ),
-                        );
-                      },
+              child: Visibility(
+                visible: isLoaded,
+                replacement: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                child: ListView.builder(
+                  itemCount: professor?.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final professorPage = professor![index];
+                    return Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
+                      child: Container(
+                        height: 40.w,
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(15)),
+                            color: theme.primaryColor),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Center(
+                              child: Text(
+                            professorPage.name,
+                            style: theme.textTheme.headline6,
+                          )),
+                        ),
+                      ),
                     );
-                  }
-                },
+                  },
+                ),
               ),
             ),
           ],

@@ -17,7 +17,7 @@ class _UniversityPageState extends State<UniversityPage> {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
-        child: ListView(
+        child: Column(
           children: [
             Padding(
               padding: EdgeInsets.only(top: 15.w, left: 10.w),
@@ -49,12 +49,9 @@ class _UniversityPageState extends State<UniversityPage> {
                 decoration: InputDecoration(
                   fillColor: theme.primaryColor,
                   filled: true,
-                  prefixIcon: InkWell(
-                    onTap: () async {},
-                    child: const Icon(
-                      Icons.search_outlined,
-                      color: Colors.grey,
-                    ),
+                  prefixIcon: const Icon(
+                    Icons.search_outlined,
+                    color: Colors.grey,
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15.0),
@@ -84,6 +81,34 @@ class _UniversityPageState extends State<UniversityPage> {
               indent: 10.w,
               endIndent: 10.w,
             ),
+            Expanded(
+              child: ListView(
+                children: [
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
+                    child: Container(
+                      height: 40.w,
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15)),
+                          color: theme.primaryColor),
+                      child: TextButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: Center(
+                          child: Text(
+                            'ДГТУ',
+                            style: theme.textTheme.headline6,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),

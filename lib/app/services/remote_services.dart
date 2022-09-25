@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:project_cdis/app/data/audiences.dart';
 import 'package:project_cdis/app/data/groups.dart';
 import 'package:project_cdis/app/data/professors.dart';
@@ -14,7 +15,9 @@ class RomoteServise {
       AudiencesData audiencesData = AudiencesData.fromJson(response.data);
       return audiencesData.data;
     } on DioError catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
       rethrow;
     }
   }
@@ -26,7 +29,9 @@ class RomoteServise {
       ProfessorsData professorsData = ProfessorsData.fromJson(response.data);
       return professorsData.data;
     } on DioError catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
       rethrow;
     }
   }
@@ -38,7 +43,9 @@ class RomoteServise {
       GroupsData groupsData = GroupsData.fromJson(response.data);
       return groupsData.data;
     } on DioError catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
       rethrow;
     }
   }

@@ -12,6 +12,27 @@ class AudiencesPage extends StatefulWidget {
 }
 
 class _AudiencesPageState extends State<AudiencesPage> {
+  List<Audiences>? audiences;
+  List<Audiences>? audience;
+  var isLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    audience = audiences;
+    getData();
+  }
+
+  getData() async {
+    audience = await RomoteServise().getAudiencesData();
+    audiences = await RomoteServise().getAudiencesData();
+    if (audience != null) {
+      setState(() {
+        isLoaded = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -31,16 +52,22 @@ class _AudiencesPageState extends State<AudiencesPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
               child: TextField(
+                onChanged: (value) {
+                  value = value.toLowerCase();
+                  setState(() {
+                    audience = audiences?.where((element) {
+                      var audiensesTitle = element.name.toLowerCase();
+                      return audiensesTitle.contains(value);
+                    }).toList();
+                  });
+                },
                 style: theme.textTheme.headline6,
                 decoration: InputDecoration(
                   fillColor: theme.primaryColor,
                   filled: true,
-                  prefixIcon: InkWell(
-                    onTap: () async {},
-                    child: const Icon(
-                      Icons.search_outlined,
-                      color: Colors.grey,
-                    ),
+                  prefixIcon: const Icon(
+                    Icons.search_outlined,
+                    color: Colors.grey,
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15.0),
@@ -71,38 +98,36 @@ class _AudiencesPageState extends State<AudiencesPage> {
               endIndent: 10.w,
             ),
             Expanded(
-              child: FutureBuilder<List<Audiences>>(
-                future: RomoteServise().getAudiencesData(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else {
-                    return ListView.builder(
-                      itemCount: snapshot.data?.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 5.w),
-                          child: Container(
-                            height: 40.w,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(15)),
-                                color: theme.primaryColor),
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Center(
-                                  child: Text(
-                                snapshot.data![index].name,
-                                style: theme.textTheme.headline6,
-                              )),
-                            ),
-                          ),
-                        );
-                      },
+              child: Visibility(
+                visible: isLoaded,
+                replacement: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                child: ListView.builder(
+                  itemCount: audience?.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final audiencePage = audience![index];
+                    return Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
+                      child: Container(
+                        height: 40.w,
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(15)),
+                            color: theme.primaryColor),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Center(
+                              child: Text(
+                            audiencePage.name,
+                            style: theme.textTheme.headline6,
+                          )),
+                        ),
+                      ),
                     );
-                  }
-                },
+                  },
+                ),
               ),
             ),
           ],
