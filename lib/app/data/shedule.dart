@@ -34,7 +34,6 @@ class Data {
     required this.rasp,
     required this.info,
   });
-
   final bool isCyclicalSchedule;
   final List<RaspElement> rasp;
   final Info info;
@@ -80,9 +79,9 @@ class Info {
   final int curSem;
   final List<TypesWeek> typesWeek;
   final bool fixedInCache;
-  final DateTime date;
-  final DateTime lastDate;
-  final DateTime dateUploadingRasp;
+  final String date;
+  final String lastDate;
+  final String dateUploadingRasp;
 
   factory Info.fromJson(Map<String, dynamic> json) => Info(
         group: Group.fromJson(json["group"]),
@@ -96,9 +95,9 @@ class Info {
         typesWeek: List<TypesWeek>.from(
             json["typesWeek"].map((x) => TypesWeek.fromJson(x))),
         fixedInCache: json["fixedInCache"],
-        date: DateTime.parse(json["date"]),
-        lastDate: DateTime.parse(json["lastDate"]),
-        dateUploadingRasp: DateTime.parse(json["dateUploadingRasp"]),
+        date: json["date"],
+        lastDate: json["lastDate"],
+        dateUploadingRasp: json["dateUploadingRasp"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -112,9 +111,9 @@ class Info {
         "curSem": curSem,
         "typesWeek": List<dynamic>.from(typesWeek.map((x) => x.toJson())),
         "fixedInCache": fixedInCache,
-        "date": date.toIso8601String(),
-        "lastDate": lastDate.toIso8601String(),
-        "dateUploadingRasp": dateUploadingRasp.toIso8601String(),
+        "date": date,
+        "lastDate": lastDate,
+        "dateUploadingRasp": dateUploadingRasp,
       };
 }
 
@@ -180,156 +179,156 @@ class TypesWeek {
 
 class RaspElement {
   RaspElement({
-    required this.frisky,
-    required this.fluffy,
-    required this.the6,
-    required this.tentacled,
-    required this.sticky,
-    required this.the5,
-    required this.hilarious,
-    required this.indecent,
-    required this.the11,
-    required this.indigo,
-    required this.mischievous,
-    required this.the16,
-    required this.the10,
-    required this.ambitious,
-    required this.the12,
-    required this.cunning,
-    required this.empty,
-    required this.the17,
-    required this.purple,
+    required this.code,
+    required this.date,
+    required this.beginning,
+    required this.datanachala,
+    required this.endDate,
+    required this.end,
+    required this.weekday,
+    required this.weekDay,
+    required this.mail,
+    required this.day,
+    required this.codeSemester,
+    required this.typeWeeks,
+    required this.numberGroups,
+    required this.discipline,
+    required this.teacher,
+    required this.position,
+    required this.audience,
+    required this.academicYear,
+    required this.group,
     required this.custom1,
-    required this.the19,
-    required this.the7,
-    required this.the8,
-    required this.magenta,
-    required this.the3,
-    required this.the1,
-    required this.the18,
-    required this.the2,
-    required this.the20,
-    required this.the15,
-    required this.the9,
-    required this.the14,
-    required this.the13,
-    required this.braggadocious,
-    required this.rasp,
-    required this.the4,
+    required this.clock,
+    required this.nedelyanachala,
+    required this.nedelyaokonchaniya,
+    required this.replacement,
+    required this.codePreducer,
+    required this.codeGroup,
+    required this.fiopreducer,
+    required this.userCode,
+    required this.writingElement,
+    required this.topic,
+    required this.numberOfJobs,
+    required this.link,
+    required this.creatingWebinar,
+    required this.codVebinara,
+    required this.webIsRestarted,
+    required this.codeStroke,
   });
 
-  final int frisky;
-  final DateTime fluffy;
-  final String the6;
-  final DateTime tentacled;
-  final DateTime sticky;
-  final String the5;
-  final int hilarious;
-  final String indecent;
-  final String the11;
-  final String indigo;
-  final int mischievous;
-  final int the16;
-  final int the10;
-  final String ambitious;
-  final String the12;
-  final String cunning;
-  final String empty;
-  final String the17;
-  final String purple;
+  final int code;
+  final String date;
+  final String beginning;
+  final String datanachala;
+  final String endDate;
+  final String end;
+  final int weekday;
+  final String weekDay;
+  final String mail;
+  final String day;
+  final int codeSemester;
+  final int typeWeeks;
+  final int numberGroups;
+  final String discipline;
+  final String teacher;
+  final String position;
+  final String audience;
+  final String academicYear;
+  final String group;
   final String custom1;
-  final String the19;
-  final int the7;
-  final int the8;
-  final dynamic magenta;
-  final int the3;
-  final int the1;
-  final dynamic the18;
-  final dynamic the2;
-  final bool the20;
-  final String the15;
-  final int the9;
-  final dynamic the14;
-  final bool the13;
-  final dynamic braggadocious;
-  final bool rasp;
-  final List<int> the4;
+  final String clock;
+  final int nedelyanachala;
+  final int nedelyaokonchaniya;
+  final bool replacement;
+  final int codePreducer;
+  final int codeGroup;
+  final String fiopreducer;
+  final int userCode;
+  final bool writingElement;
+  final String topic;
+  final int numberOfJobs;
+  final dynamic link;
+  final bool creatingWebinar;
+  final dynamic codVebinara;
+  final bool webIsRestarted;
+  final List<int> codeStroke;
 
   factory RaspElement.fromJson(Map<String, dynamic> json) => RaspElement(
-        frisky: json["код"],
-        fluffy: DateTime.parse(json["дата"]),
-        the6: json["начало"],
-        tentacled: DateTime.parse(json["датаНачала"]),
-        sticky: DateTime.parse(json["датаОкончания"]),
-        the5: json["конец"],
-        hilarious: json["деньНедели"],
-        indecent: json["день_недели"],
-        the11: json["почта"],
-        indigo: json["день"],
-        mischievous: json["код_Семестра"],
-        the16: json["типНедели"],
-        the10: json["номерПодгруппы"],
-        ambitious: json["дисциплина"],
-        the12: json["преподаватель"],
-        cunning: json["должность"],
-        empty: json["аудитория"],
-        the17: json["учебныйГод"],
-        purple: json["группа"],
+        code: json["код"],
+        date: json["дата"],
+        beginning: json["начало"],
+        datanachala: json["датаНачала"],
+        endDate: json["датаОкончания"],
+        end: json["конец"],
+        weekday: json["деньНедели"],
+        weekDay: json["день_недели"],
+        mail: json["почта"],
+        day: json["день"],
+        codeSemester: json["код_Семестра"],
+        typeWeeks: json["типНедели"],
+        numberGroups: json["номерПодгруппы"],
+        discipline: json["дисциплина"],
+        teacher: json["преподаватель"],
+        position: json["должность"],
+        audience: json["аудитория"],
+        academicYear: json["учебныйГод"],
+        group: json["группа"],
         custom1: json["custom1"],
-        the19: json["часы"],
-        the7: json["неделяНачала"],
-        the8: json["неделяОкончания"],
-        magenta: json["замена"],
-        the3: json["кодПреподавателя"],
-        the1: json["кодГруппы"],
-        the18: json["фиоПреподавателя"],
-        the2: json["кодПользователя"],
-        the20: json["элементЦиклРасписания"],
-        the15: json["тема"],
-        the9: json["номерЗанятия"],
-        the14: json["ссылка"],
-        the13: json["созданиеВебинара"],
-        braggadocious: json["кодВебинара"],
-        rasp: json["вебинарЗапущен"],
-        the4: List<int>.from(json["кодыСтрок"].map((x) => x)),
+        clock: json["часы"],
+        nedelyanachala: json["неделяНачала"],
+        nedelyaokonchaniya: json["неделяОкончания"],
+        replacement: json["замена"],
+        codePreducer: json["кодПреподавателя"],
+        codeGroup: json["кодГруппы"],
+        fiopreducer: json["фиоПреподавателя"],
+        userCode: json["кодПользователя"],
+        writingElement: json["элементЦиклРасписания"],
+        topic: json["тема"],
+        numberOfJobs: json["номерЗанятия"],
+        link: json["ссылка"],
+        creatingWebinar: json["созданиеВебинара"],
+        codVebinara: json["кодВебинара"],
+        webIsRestarted: json["вебинарЗапущен"],
+        codeStroke: List<int>.from(json["кодыСтрок"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
-        "код": frisky,
-        "дата": fluffy.toIso8601String(),
-        "начало": the6,
-        "датаНачала": tentacled.toIso8601String(),
-        "датаОкончания": sticky.toIso8601String(),
-        "конец": the5,
-        "деньНедели": hilarious,
-        "день_недели": indecent,
-        "почта": the11,
-        "день": indigo,
-        "код_Семестра": mischievous,
-        "типНедели": the16,
-        "номерПодгруппы": the10,
-        "дисциплина": ambitious,
-        "преподаватель": the12,
-        "должность": cunning,
-        "аудитория": empty,
-        "учебныйГод": the17,
-        "группа": purple,
+        "код": code,
+        "дата": date,
+        "начало": beginning,
+        "датаНачала": datanachala,
+        "датаОкончания": endDate,
+        "конец": end,
+        "деньНедели": weekday,
+        "день_недели": weekDay,
+        "почта": mail,
+        "день": day,
+        "код_Семестра": codeSemester,
+        "типНедели": typeWeeks,
+        "номерПодгруппы": numberGroups,
+        "дисциплина": discipline,
+        "преподаватель": teacher,
+        "должность": position,
+        "аудитория": audience,
+        "учебныйГод": academicYear,
+        "группа": group,
         "custom1": custom1,
-        "часы": the19,
-        "неделяНачала": the7,
-        "неделяОкончания": the8,
-        "замена": magenta,
-        "кодПреподавателя": the3,
-        "кодГруппы": the1,
-        "фиоПреподавателя": the18,
-        "кодПользователя": the2,
-        "элементЦиклРасписания": the20,
-        "тема": the15,
-        "номерЗанятия": the9,
-        "ссылка": the14,
-        "созданиеВебинара": the13,
-        "кодВебинара": braggadocious,
-        "вебинарЗапущен": rasp,
-        "кодыСтрок": List<dynamic>.from(the4.map((x) => x)),
+        "часы": clock,
+        "неделяНачала": nedelyanachala,
+        "неделяОкончания": nedelyaokonchaniya,
+        "замена": replacement,
+        "кодПреподавателя": codePreducer,
+        "кодГруппы": codeGroup,
+        "фиоПреподавателя": fiopreducer,
+        "кодПользователя": userCode,
+        "элементЦиклРасписания": writingElement,
+        "тема": topic,
+        "номерЗанятия": numberOfJobs,
+        "ссылка": link,
+        "созданиеВебинара": creatingWebinar,
+        "кодВебинара": codVebinara,
+        "вебинарЗапущен": webIsRestarted,
+        "кодыСтрок": List<dynamic>.from(codeStroke.map((x) => x)),
       };
 }

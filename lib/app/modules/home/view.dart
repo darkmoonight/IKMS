@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                           onPressed: () {},
                           child: Center(
                               child: Text(
-                            raspElementPage.ambitious,
+                            raspElementPage.code.toString(),
                             style: theme.textTheme.headline6,
                           )),
                         ),
