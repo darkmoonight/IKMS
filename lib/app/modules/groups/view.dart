@@ -15,18 +15,20 @@ class GroupsPage extends StatefulWidget {
 
 class _GroupsPageState extends State<GroupsPage> {
   List<Groups>? groups;
+  List<Groups>? group;
   var isLoaded = false;
 
   @override
   void initState() {
     super.initState();
-
+    group = groups;
     getData();
   }
 
   getData() async {
+    group = await RomoteServise().getGroupsData();
     groups = await RomoteServise().getGroupsData();
-    if (groups != null) {
+    if (group != null) {
       setState(() {
         isLoaded = true;
       });
@@ -67,16 +69,22 @@ class _GroupsPageState extends State<GroupsPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
               child: TextField(
+                onChanged: (value) {
+                  value = value.toLowerCase();
+                  setState(() {
+                    group = groups?.where((element) {
+                      var groupsTitle = element.name.toLowerCase();
+                      return groupsTitle.contains(value);
+                    }).toList();
+                  });
+                },
                 style: theme.textTheme.headline6,
                 decoration: InputDecoration(
                   fillColor: theme.primaryColor,
                   filled: true,
-                  prefixIcon: InkWell(
-                    onTap: () async {},
-                    child: const Icon(
-                      Icons.search_outlined,
-                      color: Colors.grey,
-                    ),
+                  prefixIcon: const Icon(
+                    Icons.search_outlined,
+                    color: Colors.grey,
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15.0),
@@ -113,9 +121,9 @@ class _GroupsPageState extends State<GroupsPage> {
                   child: CircularProgressIndicator(),
                 ),
                 child: ListView.builder(
-                  itemCount: groups?.length,
+                  itemCount: group?.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final groupsPage = groups![index];
+                    final groupPage = group![index];
                     return Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
@@ -131,7 +139,7 @@ class _GroupsPageState extends State<GroupsPage> {
                           },
                           child: Center(
                               child: Text(
-                            groupsPage.name,
+                            groupPage.name,
                             style: theme.textTheme.headline6,
                           )),
                         ),
@@ -140,7 +148,7 @@ class _GroupsPageState extends State<GroupsPage> {
                   },
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

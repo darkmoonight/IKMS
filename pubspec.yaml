@@ -18,8 +18,8 @@ dependencies:
   get_storage: ^2.0.3
   intl: ^0.17.0
   flutter_screenutil: ^5.5.3+2
-  date_picker_timeline: ^1.2.3
-  http: ^0.13.5
+  dio: ^4.0.6
+  horizontal_center_date_picker: ^2.1.1
 
 dev_dependencies:
   flutter_test:
@@ -44,3 +44,4 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/

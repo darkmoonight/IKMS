@@ -14,18 +14,20 @@ class ProfessorsPage extends StatefulWidget {
 
 class _ProfessorsPageState extends State<ProfessorsPage> {
   List<Professors>? professors;
+  List<Professors>? professor;
   var isLoaded = false;
 
   @override
   void initState() {
     super.initState();
-
+    professor = professors;
     getData();
   }
 
   getData() async {
+    professor = await RomoteServise().getProfessorsData();
     professors = await RomoteServise().getProfessorsData();
-    if (professors != null) {
+    if (professor != null) {
       setState(() {
         isLoaded = true;
       });
@@ -51,16 +53,22 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
               child: TextField(
+                onChanged: (value) {
+                  value = value.toLowerCase();
+                  setState(() {
+                    professor = professors?.where((element) {
+                      var professorsTitle = element.name.toLowerCase();
+                      return professorsTitle.contains(value);
+                    }).toList();
+                  });
+                },
                 style: theme.textTheme.headline6,
                 decoration: InputDecoration(
                   fillColor: theme.primaryColor,
                   filled: true,
-                  prefixIcon: InkWell(
-                    onTap: () async {},
-                    child: const Icon(
-                      Icons.search_outlined,
-                      color: Colors.grey,
-                    ),
+                  prefixIcon: const Icon(
+                    Icons.search_outlined,
+                    color: Colors.grey,
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15.0),
@@ -97,9 +105,9 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
                   child: CircularProgressIndicator(),
                 ),
                 child: ListView.builder(
-                  itemCount: professors?.length,
+                  itemCount: professor?.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final professorsPage = professors![index];
+                    final professorPage = professor![index];
                     return Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
@@ -113,7 +121,7 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
                           onPressed: () {},
                           child: Center(
                               child: Text(
-                            professorsPage.name,
+                            professorPage.name,
                             style: theme.textTheme.headline6,
                           )),
                         ),

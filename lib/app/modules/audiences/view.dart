@@ -13,18 +13,20 @@ class AudiencesPage extends StatefulWidget {
 
 class _AudiencesPageState extends State<AudiencesPage> {
   List<Audiences>? audiences;
+  List<Audiences>? audience;
   var isLoaded = false;
 
   @override
   void initState() {
     super.initState();
-
+    audience = audiences;
     getData();
   }
 
   getData() async {
+    audience = await RomoteServise().getAudiencesData();
     audiences = await RomoteServise().getAudiencesData();
-    if (audiences != null) {
+    if (audience != null) {
       setState(() {
         isLoaded = true;
       });
@@ -50,16 +52,22 @@ class _AudiencesPageState extends State<AudiencesPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
               child: TextField(
+                onChanged: (value) {
+                  value = value.toLowerCase();
+                  setState(() {
+                    audience = audiences?.where((element) {
+                      var audiensesTitle = element.name.toLowerCase();
+                      return audiensesTitle.contains(value);
+                    }).toList();
+                  });
+                },
                 style: theme.textTheme.headline6,
                 decoration: InputDecoration(
                   fillColor: theme.primaryColor,
                   filled: true,
-                  prefixIcon: InkWell(
-                    onTap: () async {},
-                    child: const Icon(
-                      Icons.search_outlined,
-                      color: Colors.grey,
-                    ),
+                  prefixIcon: const Icon(
+                    Icons.search_outlined,
+                    color: Colors.grey,
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15.0),
@@ -96,9 +104,9 @@ class _AudiencesPageState extends State<AudiencesPage> {
                   child: CircularProgressIndicator(),
                 ),
                 child: ListView.builder(
-                  itemCount: audiences?.length,
+                  itemCount: audience?.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final audiencesPage = audiences![index];
+                    final audiencePage = audience![index];
                     return Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
@@ -112,7 +120,7 @@ class _AudiencesPageState extends State<AudiencesPage> {
                           onPressed: () {},
                           child: Center(
                               child: Text(
-                            audiencesPage.name,
+                            audiencePage.name,
                             style: theme.textTheme.headline6,
                           )),
                         ),
