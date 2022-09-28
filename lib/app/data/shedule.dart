@@ -1,7 +1,3 @@
-// To parse required this JSON data, do
-//
-//     final rasp = raspFromJson(jsonString);
-
 import 'dart:convert';
 
 Rasp raspFromJson(String str) => Rasp.fromJson(json.decode(str));
