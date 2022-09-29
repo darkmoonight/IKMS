@@ -11,9 +11,9 @@ class GroupsData {
     required this.msg,
   });
 
-  final List<Groups> data;
-  final int state;
-  final String msg;
+  List<Groups> data;
+  int state;
+  String msg;
 
   factory GroupsData.fromJson(Map<String, dynamic> json) => GroupsData(
         data: List<Groups>.from(json["data"].map((x) => Groups.fromJson(x))),
@@ -38,20 +38,20 @@ class Groups {
     required this.facultyId,
   });
 
-  final String name;
-  final int id;
-  final int kurs;
-  final String facul;
-  final String yearName;
-  final int facultyId;
+  String name;
+  int? id;
+  int? kurs;
+  String facul;
+  String yearName;
+  int? facultyId;
 
   factory Groups.fromJson(Map<String, dynamic> json) => Groups(
         name: json["name"] ?? '',
-        id: json["id"] ?? '',
-        kurs: json["kurs"] ?? '',
+        id: json["id"],
+        kurs: json["kurs"],
         facul: json["facul"] ?? '',
         yearName: json["yearName"] ?? '',
-        facultyId: json["facultyID"] ?? '',
+        facultyId: json["facultyID"],
       );
 
   Map<String, dynamic> toJson() => {

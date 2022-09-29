@@ -64,4 +64,18 @@ class RomoteServise {
       rethrow;
     }
   }
+
+  Future<List<RaspElement>> getRaspsElementData() async {
+    var url = 'Rasp?idGroup=${44424}';
+    try {
+      Response response = await dio.get(baseUrl + url);
+      Data raspData = Data.fromJson(response.data);
+      return raspData.rasp;
+    } on DioError catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      rethrow;
+    }
+  }
 }

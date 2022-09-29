@@ -12,9 +12,9 @@ class ProfessorsData {
     required this.msg,
   });
 
-  final List<Professors> data;
-  final int state;
-  final String msg;
+  List<Professors> data;
+  int state;
+  String msg;
 
   factory ProfessorsData.fromJson(Map<String, dynamic> json) => ProfessorsData(
         data: List<Professors>.from(
@@ -38,16 +38,16 @@ class Professors {
     required this.idFromRasp,
   });
 
-  final String name;
-  final String kaf;
-  final int id;
-  final bool idFromRasp;
+  String name;
+  String kaf;
+  int? id;
+  bool? idFromRasp;
 
   factory Professors.fromJson(Map<String, dynamic> json) => Professors(
         name: json["name"] ?? '',
         kaf: json["kaf"] ?? '',
-        id: json["id"] ?? '',
-        idFromRasp: json["idFromRasp"] ?? '',
+        id: json["id"],
+        idFromRasp: json["idFromRasp"],
       );
 
   Map<String, dynamic> toJson() => {

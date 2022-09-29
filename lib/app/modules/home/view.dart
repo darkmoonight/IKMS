@@ -18,11 +18,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   DateTime now = DateTime.now();
   DatePickerController datePickerController = DatePickerController();
-  // ignore: prefer_typing_uninitialized_variables
   DateTime? selectedDay;
-  Rasp? raspElement;
   var isLoaded = false;
   String? dateNow;
+
+  Rasp? raspElement;
+  List<RaspElement>? raspElements;
 
   @override
   void initState() {
@@ -33,6 +34,7 @@ class _HomePageState extends State<HomePage> {
 
   getData() async {
     raspElement = await RomoteServise().getRaspElementData();
+    raspElements = await RomoteServise().getRaspsElementData();
     if (raspElement != null) {
       setState(() {
         isLoaded = true;
@@ -80,6 +82,13 @@ class _HomePageState extends State<HomePage> {
                   datePickerController: datePickerController,
                   onValueSelected: (date) {
                     selectedDay = date;
+                    var value = selectedDay!.toIso8601String().substring(0, 19);
+                    setState(() {
+                      raspElements = raspElement?.data.rasp.where((element) {
+                        var raspTitle = element.date;
+                        return raspTitle.contains(value);
+                      }).toList();
+                    });
                   },
                 ),
               ),
@@ -98,43 +107,46 @@ class _HomePageState extends State<HomePage> {
                   child: CircularProgressIndicator(),
                 ),
                 child: ListView.builder(
-                  itemCount: raspElement?.data.rasp.length,
+                  itemCount: raspElements?.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final raspElementPage = raspElement?.data.rasp[index];
+                    final raspElementPage = raspElements?[index];
+                    print(raspElements?.length);
                     return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                            '${raspElementPage!.beginning}-${raspElementPage.end}'),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 15.w, vertical: 10.w),
+                          child: Text(
+                              '${raspElementPage!.beginning}-${raspElementPage.end}',
+                              style: theme.textTheme.headline6),
+                        ),
                         Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: 10.w, vertical: 5.w),
                           child: Container(
-                            height: 100.w,
+                            height: 120.w,
                             width: squareWidth,
                             decoration: BoxDecoration(
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(15)),
                                 color: theme.primaryColor),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2.w),
-                                  child: Text(raspElementPage.discipline,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(raspElementPage.discipline,
                                       style: theme.textTheme.headline6),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2.w),
-                                  child: Text(raspElementPage.teacher,
-                                      style: theme.textTheme.subtitle1),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 2.w),
-                                  child: Text(raspElementPage.audience,
-                                      style: theme.textTheme.subtitle1),
-                                ),
-                              ],
+                                  Flexible(child: SizedBox(height: 10.w)),
+                                  Text(raspElementPage.teacher,
+                                      style: theme.primaryTextTheme.subtitle1),
+                                  Flexible(child: SizedBox(height: 10.w)),
+                                  Text(raspElementPage.audience,
+                                      style: theme.primaryTextTheme.subtitle1),
+                                ],
+                              ),
                             ),
                           ),
                         ),

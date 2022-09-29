@@ -12,9 +12,9 @@ class AudiencesData {
     required this.msg,
   });
 
-  final List<Audiences> data;
-  final int state;
-  final String msg;
+  List<Audiences> data;
+  int state;
+  String msg;
 
   factory AudiencesData.fromJson(Map<String, dynamic> json) => AudiencesData(
         data: List<Audiences>.from(
@@ -36,12 +36,12 @@ class Audiences {
     required this.id,
   });
 
-  final String name;
-  final int id;
+  String name;
+  int? id;
 
   factory Audiences.fromJson(Map<String, dynamic> json) => Audiences(
         name: json["name"] ?? '',
-        id: json["id"] ?? '',
+        id: json["id"],
       );
 
   Map<String, dynamic> toJson() => {

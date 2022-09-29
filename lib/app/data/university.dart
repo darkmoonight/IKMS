@@ -5,7 +5,7 @@ class Univesity {
     required this.url,
   });
 
-  final int id;
-  final String name;
-  final String url;
+  int? id;
+  String name;
+  String url;
 }
