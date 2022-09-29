@@ -17,6 +17,7 @@ class ThemeApp {
       primaryColor: const Color.fromARGB(255, 210, 210, 210),
       unselectedWidgetColor: Colors.grey[600],
       scaffoldBackgroundColor: const Color.fromARGB(255, 230, 230, 230),
+      disabledColor: Colors.grey[700],
       textTheme: baseLigth.textTheme.copyWith(
         headline1: TextStyle(
           color: Colors.black,
@@ -89,6 +90,7 @@ class ThemeApp {
       primaryColor: const Color.fromARGB(255, 40, 40, 40),
       backgroundColor: const Color.fromARGB(255, 30, 30, 30),
       unselectedWidgetColor: Colors.grey[200],
+      disabledColor: Colors.grey[400],
       scaffoldBackgroundColor: const Color.fromARGB(255, 30, 30, 30),
       textTheme: baseDark.textTheme.copyWith(
         headline1: TextStyle(

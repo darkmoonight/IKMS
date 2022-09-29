@@ -67,7 +67,8 @@ class _HomePageState extends State<HomePage> {
                   selectedColor: Colors.blue,
                   normalColor: theme.primaryColor,
                   disabledColor: theme.primaryColor,
-                  normalTextColor: theme.dividerColor,
+                  selectedTextColor: theme.dividerColor,
+                  normalTextColor: theme.disabledColor,
                   startDate: DateTime(2022, 09, 01),
                   endDate: DateTime(2100, 09, 01),
                   selectedDate: selectedDay,
@@ -107,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                           onPressed: () {},
                           child: Center(
                               child: Text(
-                            raspElementPage.code.toString(),
+                            raspElementPage.discipline,
                             style: theme.textTheme.headline6,
                           )),
                         ),

@@ -34,15 +34,15 @@ class Data {
     required this.rasp,
     required this.info,
   });
-  final bool isCyclicalSchedule;
+  final bool? isCyclicalSchedule;
   final List<RaspElement> rasp;
   final Info info;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         isCyclicalSchedule: json["isCyclicalSchedule"],
         rasp: List<RaspElement>.from(
-            json["rasp"].map((x) => RaspElement.fromJson(x))),
-        info: Info.fromJson(json["info"]),
+            json["rasp"]?.map((x) => RaspElement.fromJson(x)) ?? []),
+        info: Info.fromJson(json["info"] ?? {}),
       );
 
   Map<String, dynamic> toJson() => {
@@ -73,31 +73,31 @@ class Info {
   final Aud prepod;
   final Aud aud;
   final String year;
-  final int curWeekNumber;
-  final int curNumNed;
-  final int selectedNumNed;
-  final int curSem;
+  final int? curWeekNumber;
+  final int? curNumNed;
+  final int? selectedNumNed;
+  final int? curSem;
   final List<TypesWeek> typesWeek;
-  final bool fixedInCache;
+  final bool? fixedInCache;
   final String date;
   final String lastDate;
   final String dateUploadingRasp;
 
   factory Info.fromJson(Map<String, dynamic> json) => Info(
-        group: Group.fromJson(json["group"]),
-        prepod: Aud.fromJson(json["prepod"]),
-        aud: Aud.fromJson(json["aud"]),
-        year: json["year"],
+        group: Group.fromJson(json["group"] ?? {}),
+        prepod: Aud.fromJson(json["prepod"] ?? {}),
+        aud: Aud.fromJson(json["aud"] ?? {}),
+        year: json["year"] ?? '',
         curWeekNumber: json["curWeekNumber"],
         curNumNed: json["curNumNed"],
         selectedNumNed: json["selectedNumNed"],
         curSem: json["curSem"],
         typesWeek: List<TypesWeek>.from(
-            json["typesWeek"].map((x) => TypesWeek.fromJson(x))),
+            json["typesWeek"]?.map((x) => TypesWeek.fromJson(x)) ?? []),
         fixedInCache: json["fixedInCache"],
-        date: json["date"],
-        lastDate: json["lastDate"],
-        dateUploadingRasp: json["dateUploadingRasp"],
+        date: json["date"] ?? '',
+        lastDate: json["lastDate"] ?? '',
+        dateUploadingRasp: json["dateUploadingRasp"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -125,7 +125,7 @@ class Aud {
   final String name;
 
   factory Aud.fromJson(Map<String, dynamic> json) => Aud(
-        name: json["name"],
+        name: json["name"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -140,10 +140,10 @@ class Group {
   });
 
   final String name;
-  final int groupId;
+  final int? groupId;
 
   factory Group.fromJson(Map<String, dynamic> json) => Group(
-        name: json["name"],
+        name: json["name"] ?? '',
         groupId: json["groupID"],
       );
 
@@ -160,14 +160,14 @@ class TypesWeek {
     required this.shortName,
   });
 
-  final int typeWeekId;
+  final int? typeWeekId;
   final String name;
   final String shortName;
 
   factory TypesWeek.fromJson(Map<String, dynamic> json) => TypesWeek(
         typeWeekId: json["typeWeekID"],
-        name: json["name"],
-        shortName: json["shortName"],
+        name: json["name"] ?? '',
+        shortName: json["shortName"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -217,19 +217,19 @@ class RaspElement {
     required this.codeStroke,
   });
 
-  final int code;
+  final int? code;
   final String date;
   final String beginning;
   final String datanachala;
   final String endDate;
   final String end;
-  final int weekday;
+  final int? weekday;
   final String weekDay;
   final String mail;
   final String day;
-  final int codeSemester;
-  final int typeWeeks;
-  final int numberGroups;
+  final int? codeSemester;
+  final int? typeWeeks;
+  final int? numberGroups;
   final String discipline;
   final String teacher;
   final String position;
@@ -238,53 +238,53 @@ class RaspElement {
   final String group;
   final String custom1;
   final String clock;
-  final int nedelyanachala;
-  final int nedelyaokonchaniya;
-  final bool replacement;
-  final int codePreducer;
-  final int codeGroup;
+  final int? nedelyanachala;
+  final int? nedelyaokonchaniya;
+  final bool? replacement;
+  final int? codePreducer;
+  final int? codeGroup;
   final String fiopreducer;
-  final int userCode;
-  final bool writingElement;
+  final int? userCode;
+  final bool? writingElement;
   final String topic;
-  final int numberOfJobs;
+  final int? numberOfJobs;
   final dynamic link;
-  final bool creatingWebinar;
+  final bool? creatingWebinar;
   final dynamic codVebinara;
-  final bool webIsRestarted;
+  final bool? webIsRestarted;
   final List<int> codeStroke;
 
   factory RaspElement.fromJson(Map<String, dynamic> json) => RaspElement(
         code: json["код"],
-        date: json["дата"],
-        beginning: json["начало"],
-        datanachala: json["датаНачала"],
-        endDate: json["датаОкончания"],
-        end: json["конец"],
+        date: json["дата"] ?? '',
+        beginning: json["начало"] ?? '',
+        datanachala: json["датаНачала"] ?? '',
+        endDate: json["датаОкончания"] ?? '',
+        end: json["конец"] ?? '',
         weekday: json["деньНедели"],
-        weekDay: json["день_недели"],
-        mail: json["почта"],
-        day: json["день"],
+        weekDay: json["день_недели"] ?? '',
+        mail: json["почта"] ?? '',
+        day: json["день"] ?? '',
         codeSemester: json["код_Семестра"],
         typeWeeks: json["типНедели"],
         numberGroups: json["номерПодгруппы"],
-        discipline: json["дисциплина"],
-        teacher: json["преподаватель"],
-        position: json["должность"],
-        audience: json["аудитория"],
-        academicYear: json["учебныйГод"],
-        group: json["группа"],
-        custom1: json["custom1"],
-        clock: json["часы"],
+        discipline: json["дисциплина"] ?? '',
+        teacher: json["преподаватель"] ?? '',
+        position: json["должность"] ?? '',
+        audience: json["аудитория"] ?? '',
+        academicYear: json["учебныйГод"] ?? '',
+        group: json["группа"] ?? '',
+        custom1: json["custom1"] ?? '',
+        clock: json["часы"] ?? '',
         nedelyanachala: json["неделяНачала"],
         nedelyaokonchaniya: json["неделяОкончания"],
         replacement: json["замена"],
         codePreducer: json["кодПреподавателя"],
         codeGroup: json["кодГруппы"],
-        fiopreducer: json["фиоПреподавателя"],
+        fiopreducer: json["фиоПреподавателя"] ?? '',
         userCode: json["кодПользователя"],
         writingElement: json["элементЦиклРасписания"],
-        topic: json["тема"],
+        topic: json["тема"] ?? '',
         numberOfJobs: json["номерЗанятия"],
         link: json["ссылка"],
         creatingWebinar: json["созданиеВебинара"],
