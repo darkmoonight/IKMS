@@ -11,9 +11,9 @@ class Rasp {
     required this.msg,
   });
 
-  final Data data;
-  final int state;
-  final String msg;
+  Data data;
+  int state;
+  String msg;
 
   factory Rasp.fromJson(Map<String, dynamic> json) => Rasp(
         data: Data.fromJson(json["data"]),
@@ -34,9 +34,9 @@ class Data {
     required this.rasp,
     required this.info,
   });
-  final bool? isCyclicalSchedule;
-  final List<RaspElement> rasp;
-  final Info info;
+  bool? isCyclicalSchedule;
+  List<RaspElement> rasp;
+  Info info;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         isCyclicalSchedule: json["isCyclicalSchedule"],
@@ -69,19 +69,19 @@ class Info {
     required this.dateUploadingRasp,
   });
 
-  final Group group;
-  final Aud prepod;
-  final Aud aud;
-  final String year;
-  final int? curWeekNumber;
-  final int? curNumNed;
-  final int? selectedNumNed;
-  final int? curSem;
-  final List<TypesWeek> typesWeek;
-  final bool? fixedInCache;
-  final String date;
-  final String lastDate;
-  final String dateUploadingRasp;
+  Group group;
+  Aud prepod;
+  Aud aud;
+  String year;
+  int? curWeekNumber;
+  int? curNumNed;
+  int? selectedNumNed;
+  int? curSem;
+  List<TypesWeek> typesWeek;
+  bool? fixedInCache;
+  String date;
+  String lastDate;
+  String dateUploadingRasp;
 
   factory Info.fromJson(Map<String, dynamic> json) => Info(
         group: Group.fromJson(json["group"] ?? {}),
@@ -122,7 +122,7 @@ class Aud {
     required this.name,
   });
 
-  final String name;
+  String name;
 
   factory Aud.fromJson(Map<String, dynamic> json) => Aud(
         name: json["name"] ?? '',
@@ -139,11 +139,11 @@ class Group {
     required this.groupId,
   });
 
-  final String name;
-  final int? groupId;
+  String name;
+  int? groupId;
 
   factory Group.fromJson(Map<String, dynamic> json) => Group(
-        name: json["name"] ?? '',
+        name: json["name"] ?? 'Hi',
         groupId: json["groupID"],
       );
 
@@ -160,9 +160,9 @@ class TypesWeek {
     required this.shortName,
   });
 
-  final int? typeWeekId;
-  final String name;
-  final String shortName;
+  int? typeWeekId;
+  String name;
+  String shortName;
 
   factory TypesWeek.fromJson(Map<String, dynamic> json) => TypesWeek(
         typeWeekId: json["typeWeekID"],
@@ -217,42 +217,42 @@ class RaspElement {
     required this.codeStroke,
   });
 
-  final int? code;
-  final String date;
-  final String beginning;
-  final String datanachala;
-  final String endDate;
-  final String end;
-  final int? weekday;
-  final String weekDay;
-  final String mail;
-  final String day;
-  final int? codeSemester;
-  final int? typeWeeks;
-  final int? numberGroups;
-  final String discipline;
-  final String teacher;
-  final String position;
-  final String audience;
-  final String academicYear;
-  final String group;
-  final String custom1;
-  final String clock;
-  final int? nedelyanachala;
-  final int? nedelyaokonchaniya;
-  final bool? replacement;
-  final int? codePreducer;
-  final int? codeGroup;
-  final String fiopreducer;
-  final int? userCode;
-  final bool? writingElement;
-  final String topic;
-  final int? numberOfJobs;
-  final dynamic link;
-  final bool? creatingWebinar;
-  final dynamic codVebinara;
-  final bool? webIsRestarted;
-  final List<int> codeStroke;
+  int? code;
+  String date;
+  String beginning;
+  String datanachala;
+  String endDate;
+  String end;
+  int? weekday;
+  String weekDay;
+  String mail;
+  String day;
+  int? codeSemester;
+  int? typeWeeks;
+  int? numberGroups;
+  String discipline;
+  String teacher;
+  String position;
+  String audience;
+  String academicYear;
+  String group;
+  String custom1;
+  String clock;
+  int? nedelyanachala;
+  int? nedelyaokonchaniya;
+  bool? replacement;
+  int? codePreducer;
+  int? codeGroup;
+  String fiopreducer;
+  int? userCode;
+  bool? writingElement;
+  String topic;
+  int? numberOfJobs;
+  dynamic link;
+  bool? creatingWebinar;
+  dynamic codVebinara;
+  bool? webIsRestarted;
+  List<int> codeStroke;
 
   factory RaspElement.fromJson(Map<String, dynamic> json) => RaspElement(
         code: json["код"],

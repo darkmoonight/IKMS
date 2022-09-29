@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import 'package:horizontal_center_date_picker/datepicker_controller.dart';
 import 'package:horizontal_center_date_picker/horizontal_date_picker.dart';
 import 'package:project_cdis/app/data/shedule.dart';
@@ -15,16 +16,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var selectedDay = DateTime.now();
+  DateTime now = DateTime.now();
   DatePickerController datePickerController = DatePickerController();
-
-  List<RaspElement>? raspElement;
+  // ignore: prefer_typing_uninitialized_variables
+  DateTime? selectedDay;
+  Rasp? raspElement;
   var isLoaded = false;
+  String? dateNow;
 
   @override
   void initState() {
     super.initState();
-
+    selectedDay = DateTime(now.year, now.month, now.day);
     getData();
   }
 
@@ -41,6 +44,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var tag = Localizations.maybeLocaleOf(context)?.toLanguageTag();
     var theme = Theme.of(context);
+    final squareWidth = Get.width;
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
@@ -71,10 +75,12 @@ class _HomePageState extends State<HomePage> {
                   normalTextColor: theme.disabledColor,
                   startDate: DateTime(2022, 09, 01),
                   endDate: DateTime(2100, 09, 01),
-                  selectedDate: selectedDay,
+                  selectedDate: selectedDay!,
                   widgetWidth: MediaQuery.of(context).size.width,
                   datePickerController: datePickerController,
-                  onValueSelected: (date) {},
+                  onValueSelected: (date) {
+                    selectedDay = date;
+                  },
                 ),
               ),
             ),
@@ -92,27 +98,47 @@ class _HomePageState extends State<HomePage> {
                   child: CircularProgressIndicator(),
                 ),
                 child: ListView.builder(
-                  itemCount: raspElement?.length,
+                  itemCount: raspElement?.data.rasp.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final raspElementPage = raspElement![index];
-                    return Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
-                      child: Container(
-                        height: 40.w,
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(15)),
-                            color: theme.primaryColor),
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Center(
-                              child: Text(
-                            raspElementPage.discipline,
-                            style: theme.textTheme.headline6,
-                          )),
+                    final raspElementPage = raspElement?.data.rasp[index];
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                            '${raspElementPage!.beginning}-${raspElementPage.end}'),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10.w, vertical: 5.w),
+                          child: Container(
+                            height: 100.w,
+                            width: squareWidth,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(15)),
+                                color: theme.primaryColor),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 2.w),
+                                  child: Text(raspElementPage.discipline,
+                                      style: theme.textTheme.headline6),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 2.w),
+                                  child: Text(raspElementPage.teacher,
+                                      style: theme.textTheme.subtitle1),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 2.w),
+                                  child: Text(raspElementPage.audience,
+                                      style: theme.textTheme.subtitle1),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     );
                   },
                 ),
