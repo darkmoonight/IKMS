@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:project_cdis/app/data/audiences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:project_cdis/app/modules/raspAudiences/view.dart';
 import '../../services/remote_services.dart';
 
 class AudiencesPage extends StatefulWidget {
@@ -14,6 +17,7 @@ class AudiencesPage extends StatefulWidget {
 class _AudiencesPageState extends State<AudiencesPage> {
   List<Audiences>? audiences;
   List<Audiences>? audience;
+  final box = GetStorage();
   var isLoaded = false;
 
   @override
@@ -117,7 +121,11 @@ class _AudiencesPageState extends State<AudiencesPage> {
                                 const BorderRadius.all(Radius.circular(15)),
                             color: theme.primaryColor),
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            box.write('isAud', audiencePage.id.toString());
+                            Get.to(() => const RaspAudiencesPage(),
+                                transition: Transition.downToUp);
+                          },
                           child: Center(
                               child: Text(
                             audiencePage.name,

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:project_cdis/app/data/professors.dart';
+import 'package:project_cdis/app/modules/raspProfessors/view.dart';
 
 import '../../services/remote_services.dart';
 
@@ -15,6 +18,7 @@ class ProfessorsPage extends StatefulWidget {
 class _ProfessorsPageState extends State<ProfessorsPage> {
   List<Professors>? professors;
   List<Professors>? professor;
+  final box = GetStorage();
   var isLoaded = false;
 
   @override
@@ -118,7 +122,12 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
                                 const BorderRadius.all(Radius.circular(15)),
                             color: theme.primaryColor),
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            box.write(
+                                'isProfessor', professorPage.id.toString());
+                            Get.to(() => const RaspProfessorsPage(),
+                                transition: Transition.downToUp);
+                          },
                           child: Center(
                               child: Text(
                             professorPage.name,

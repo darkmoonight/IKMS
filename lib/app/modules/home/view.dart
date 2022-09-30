@@ -192,31 +192,37 @@ class _HomePageState extends State<HomePage> {
             )),
       ),
       bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
-          onTap: (int index) => changeTabIndex(index),
-          currentIndex: tabIndex.value,
-          backgroundColor: theme.primaryColor,
-          showUnselectedLabels: false,
-          selectedItemColor: Colors.blue,
-          unselectedItemColor: Colors.grey[500],
-          items: [
-            BottomNavigationBarItem(
-              label: AppLocalizations.of(context)!.schedule,
-              icon: const Icon(Icons.event_outlined),
-            ),
-            BottomNavigationBarItem(
-              label: AppLocalizations.of(context)!.professors,
-              icon: const Icon(Icons.person_outline),
-            ),
-            BottomNavigationBarItem(
-              label: AppLocalizations.of(context)!.audiences,
-              icon: const Icon(Icons.door_back_door_outlined),
-            ),
-            BottomNavigationBarItem(
-              label: AppLocalizations.of(context)!.settings,
-              icon: const Icon(Icons.settings_outlined),
-            ),
-          ],
+        () => Theme(
+          data: Theme.of(context).copyWith(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+          ),
+          child: BottomNavigationBar(
+            onTap: (int index) => changeTabIndex(index),
+            currentIndex: tabIndex.value,
+            backgroundColor: theme.primaryColor,
+            showUnselectedLabels: false,
+            selectedItemColor: Colors.blue,
+            unselectedItemColor: Colors.grey[500],
+            items: [
+              BottomNavigationBarItem(
+                label: AppLocalizations.of(context)!.schedule,
+                icon: const Icon(Icons.event_outlined),
+              ),
+              BottomNavigationBarItem(
+                label: AppLocalizations.of(context)!.professors,
+                icon: const Icon(Icons.person_outline),
+              ),
+              BottomNavigationBarItem(
+                label: AppLocalizations.of(context)!.audiences,
+                icon: const Icon(Icons.door_back_door_outlined),
+              ),
+              BottomNavigationBarItem(
+                label: AppLocalizations.of(context)!.settings,
+                icon: const Icon(Icons.settings_outlined),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -82,4 +82,64 @@ class RomoteServise {
       rethrow;
     }
   }
+
+  Future<Rasp> getRaspAudElementData() async {
+    final aud = box.read('isAud');
+    var url = 'Rasp?idAudLine=$aud';
+    try {
+      Response response = await dio.get(baseUrl + url);
+      Rasp raspData = Rasp.fromJson(response.data);
+      return raspData;
+    } on DioError catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      rethrow;
+    }
+  }
+
+  Future<List<RaspElement>> getRaspsAudElementData() async {
+    final aud = box.read('isAud');
+    var url = 'Rasp?idAudLine=$aud';
+    try {
+      Response response = await dio.get(baseUrl + url);
+      DataRasp raspData = DataRasp.fromJson(response.data);
+      return raspData.rasp;
+    } on DioError catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      rethrow;
+    }
+  }
+
+  Future<Rasp> getRaspProfElementData() async {
+    final prof = box.read('isProfessor');
+    var url = 'Rasp?idTeacher=$prof';
+    try {
+      Response response = await dio.get(baseUrl + url);
+      Rasp raspData = Rasp.fromJson(response.data);
+      return raspData;
+    } on DioError catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      rethrow;
+    }
+  }
+
+  Future<List<RaspElement>> getRaspsProfElementData() async {
+    final prof = box.read('isProfessor');
+    var url = 'Rasp?idTeacher=$prof';
+    try {
+      Response response = await dio.get(baseUrl + url);
+      DataRasp raspData = DataRasp.fromJson(response.data);
+      return raspData.rasp;
+    } on DioError catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      rethrow;
+    }
+  }
 }
