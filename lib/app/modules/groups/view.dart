@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:project_cdis/app/data/groups.dart';
+import 'package:project_cdis/app/modules/home/view.dart';
 
 import '../../services/remote_services.dart';
 
@@ -139,7 +140,8 @@ class _GroupsPageState extends State<GroupsPage> {
                           onPressed: () {
                             box.write('isGroups', groupPage.id.toString());
                             box.write('isGroupsName', groupPage.name);
-                            Get.back();
+                            Get.to(() => const HomePage(),
+                                transition: Transition.upToDown);
                           },
                           child: Center(
                               child: Text(
