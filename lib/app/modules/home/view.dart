@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     selectedDay = DateTime(now.year, now.month, now.day);
+
     getData();
   }
 
@@ -38,8 +39,19 @@ class _HomePageState extends State<HomePage> {
     if (raspElement != null) {
       setState(() {
         isLoaded = true;
+        getRasp();
       });
     }
+  }
+
+  void getRasp() {
+    var value = selectedDay!.toIso8601String().substring(0, 19);
+    setState(() {
+      raspElements = raspElement?.data.rasp.where((element) {
+        var raspTitle = element.date;
+        return raspTitle.contains(value);
+      }).toList();
+    });
   }
 
   @override
@@ -82,13 +94,7 @@ class _HomePageState extends State<HomePage> {
                   datePickerController: datePickerController,
                   onValueSelected: (date) {
                     selectedDay = date;
-                    var value = selectedDay!.toIso8601String().substring(0, 19);
-                    setState(() {
-                      raspElements = raspElement?.data.rasp.where((element) {
-                        var raspTitle = element.date;
-                        return raspTitle.contains(value);
-                      }).toList();
-                    });
+                    getRasp();
                   },
                 ),
               ),
@@ -110,7 +116,6 @@ class _HomePageState extends State<HomePage> {
                   itemCount: raspElements?.length,
                   itemBuilder: (BuildContext context, int index) {
                     final raspElementPage = raspElements?[index];
-                    print(raspElements?.length);
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:project_cdis/app/data/audiences.dart';
 import 'package:project_cdis/app/data/groups.dart';
 import 'package:project_cdis/app/data/professors.dart';
@@ -8,6 +9,7 @@ import 'package:project_cdis/app/data/shedule.dart';
 class RomoteServise {
   final Dio dio = Dio();
   final baseUrl = 'https://edu.donstu.ru/api/';
+  final box = GetStorage();
 
   Future<List<Audiences>> getAudiencesData() async {
     var url = 'raspAudlist';
@@ -52,7 +54,8 @@ class RomoteServise {
   }
 
   Future<Rasp> getRaspElementData() async {
-    var url = 'Rasp?idGroup=${44424}';
+    final group = box.read('isGroups');
+    var url = 'Rasp?idGroup=$group';
     try {
       Response response = await dio.get(baseUrl + url);
       Rasp raspData = Rasp.fromJson(response.data);
@@ -66,10 +69,11 @@ class RomoteServise {
   }
 
   Future<List<RaspElement>> getRaspsElementData() async {
-    var url = 'Rasp?idGroup=${44424}';
+    final group = box.read('isGroups');
+    var url = 'Rasp?idGroup=$group';
     try {
       Response response = await dio.get(baseUrl + url);
-      Data raspData = Data.fromJson(response.data);
+      DataRasp raspData = DataRasp.fromJson(response.data);
       return raspData.rasp;
     } on DioError catch (e) {
       if (kDebugMode) {

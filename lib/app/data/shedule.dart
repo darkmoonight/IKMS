@@ -11,12 +11,12 @@ class Rasp {
     required this.msg,
   });
 
-  Data data;
+  DataRasp data;
   int state;
   String msg;
 
   factory Rasp.fromJson(Map<String, dynamic> json) => Rasp(
-        data: Data.fromJson(json["data"]),
+        data: DataRasp.fromJson(json["data"]),
         state: json["state"],
         msg: json["msg"],
       );
@@ -28,8 +28,8 @@ class Rasp {
       };
 }
 
-class Data {
-  Data({
+class DataRasp {
+  DataRasp({
     required this.isCyclicalSchedule,
     required this.rasp,
     required this.info,
@@ -38,7 +38,7 @@ class Data {
   List<RaspElement> rasp;
   Info info;
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory DataRasp.fromJson(Map<String, dynamic> json) => DataRasp(
         isCyclicalSchedule: json["isCyclicalSchedule"],
         rasp: List<RaspElement>.from(
             json["rasp"]?.map((x) => RaspElement.fromJson(x)) ?? []),

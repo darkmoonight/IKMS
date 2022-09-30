@@ -39,7 +39,7 @@ class Groups {
   });
 
   String name;
-  int? id;
+  int id;
   int? kurs;
   String facul;
   String yearName;
