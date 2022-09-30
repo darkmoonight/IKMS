@@ -148,7 +148,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           transition: Transition.downToUp);
                     },
                     child: Text(
-                      'groupsName',
+                      groupsName ?? 'Группа не выбрана',
                       style: theme.primaryTextTheme.subtitle2,
                     ),
                   ),

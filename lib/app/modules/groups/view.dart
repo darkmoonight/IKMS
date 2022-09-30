@@ -137,9 +137,9 @@ class _GroupsPageState extends State<GroupsPage> {
                             color: theme.primaryColor),
                         child: TextButton(
                           onPressed: () {
-                            Get.back();
                             box.write('isGroups', groupPage.id.toString());
                             box.write('isGroupsName', groupPage.name);
+                            Get.back();
                           },
                           child: Center(
                               child: Text(

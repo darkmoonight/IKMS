@@ -5,9 +5,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:project_cdis/app/modules/home/view.dart';
 import 'package:project_cdis/utils/theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'app/modules/widgets/nav.dart';
 import 'utils/theme_controller.dart';
 
 void main() async {
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
           themeMode: themeController.theme,
           theme: ThemeApp.lightTheme,
           darkTheme: ThemeApp.darkTheme,
-          home: const BottomNavigation(),
+          home: const HomePage(),
         );
       },
     );
