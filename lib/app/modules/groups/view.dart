@@ -57,14 +57,18 @@ class _GroupsPageState extends State<GroupsPage> {
                     icon: const Icon(Icons.arrow_back),
                     iconSize: theme.iconTheme.size,
                     color: theme.iconTheme.color,
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
                   ),
                   SizedBox(
                     width: 5.w,
                   ),
-                  Text(
-                    AppLocalizations.of(context)!.groups,
-                    style: theme.textTheme.headline2,
-                    textAlign: TextAlign.center,
+                  Expanded(
+                    child: Text(
+                      AppLocalizations.of(context)!.groups,
+                      style: theme.textTheme.headline2,
+                      overflow: TextOverflow.fade,
+                    ),
                   ),
                 ],
               ),

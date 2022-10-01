@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:horizontal_center_date_picker/datepicker_controller.dart';
 import 'package:horizontal_center_date_picker/horizontal_date_picker.dart';
 import 'package:project_cdis/app/data/shedule.dart';
@@ -20,6 +21,7 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
   DateTime? selectedDay;
   var isLoaded = false;
   String? dateNow;
+  final box = GetStorage();
 
   Rasp? raspElement;
   List<RaspElement>? raspElements;
@@ -58,6 +60,7 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
     var tag = Localizations.maybeLocaleOf(context)?.toLanguageTag();
     var theme = Theme.of(context);
     final squareWidth = Get.width;
+    final profName = box.read('isProfessorName');
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -73,14 +76,18 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
                     icon: const Icon(Icons.arrow_back),
                     iconSize: theme.iconTheme.size,
                     color: theme.iconTheme.color,
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
                   ),
                   SizedBox(
                     width: 5.w,
                   ),
-                  Text(
-                    AppLocalizations.of(context)!.schedule,
-                    style: theme.textTheme.headline2,
-                    textAlign: TextAlign.center,
+                  Expanded(
+                    child: Text(
+                      '${AppLocalizations.of(context)!.schedule} - $profName',
+                      style: theme.textTheme.headline2,
+                      overflow: TextOverflow.fade,
+                    ),
                   ),
                 ],
               ),

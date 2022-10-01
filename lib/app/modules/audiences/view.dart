@@ -123,6 +123,7 @@ class _AudiencesPageState extends State<AudiencesPage> {
                         child: TextButton(
                           onPressed: () {
                             box.write('isAud', audiencePage.id.toString());
+                            box.write('isAudName', audiencePage.name);
                             Get.to(() => const RaspAudiencesPage(),
                                 transition: Transition.downToUp);
                           },

@@ -125,6 +125,7 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
                           onPressed: () {
                             box.write(
                                 'isProfessor', professorPage.id.toString());
+                            box.write('isProfessorName', professorPage.name);
                             Get.to(() => const RaspProfessorsPage(),
                                 transition: Transition.downToUp);
                           },
