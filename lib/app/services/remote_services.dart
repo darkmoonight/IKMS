@@ -1,13 +1,24 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
+import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
 import 'package:project_cdis/app/data/audiences.dart';
 import 'package:project_cdis/app/data/groups.dart';
 import 'package:project_cdis/app/data/professors.dart';
 import 'package:project_cdis/app/data/shedule.dart';
 
 class RomoteServise {
-  final Dio dio = Dio();
+  final Dio dio = Dio()
+    ..interceptors.add(DioCacheInterceptor(
+      options: CacheOptions(
+          store: HiveCacheStore(Directory.systemTemp.path),
+          maxStale: const Duration(days: 14),
+          policy: CachePolicy.forceCache,
+          priority: CachePriority.low,
+      ),
+    ));
   final baseUrl = 'https://edu.donstu.ru/api/';
   final box = GetStorage();
 
