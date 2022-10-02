@@ -113,6 +113,7 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
               },
               availableCalendarFormats: {
                 CalendarFormat.month: AppLocalizations.of(context)!.month,
+                CalendarFormat.twoWeeks: AppLocalizations.of(context)!.two_week,
                 CalendarFormat.week: AppLocalizations.of(context)!.week
               },
               calendarFormat: calendarFormat,
@@ -129,60 +130,91 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
               indent: 10.w,
               endIndent: 10.w,
             ),
-            Expanded(
-              child: Visibility(
-                visible: isLoaded,
-                replacement: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                child: ListView.builder(
-                  itemCount: raspElements?.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final raspElementPage = raspElements?[index];
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 15.w, vertical: 10.w),
-                          child: Text(
-                              '${raspElementPage!.beginning}-${raspElementPage.end}',
-                              style: theme.textTheme.headline6),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 5.w),
-                          child: Container(
-                            height: 120.w,
-                            width: squareWidth,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(15)),
-                                color: theme.primaryColor),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 15.w),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(raspElementPage.discipline,
-                                      style: theme.textTheme.headline6),
-                                  Flexible(child: SizedBox(height: 10.w)),
-                                  Text(raspElementPage.teacher,
-                                      style: theme.primaryTextTheme.subtitle1),
-                                  Flexible(child: SizedBox(height: 10.w)),
-                                  Text(raspElementPage.audience,
-                                      style: theme.primaryTextTheme.subtitle1),
-                                ],
+            Builder(
+              builder: (context) {
+                // ignore: prefer_is_empty
+                return raspElements?.length == 0
+                    ? Expanded(
+                        child: Center(
+                          child: ListView(
+                            children: [
+                              Image.asset(
+                                'assets/images/no.png',
+                                scale: 1,
                               ),
-                            ),
+                              Text(
+                                'Пес, иди учи уроки.',
+                                style: theme.textTheme.headline3,
+                                textAlign: TextAlign.center,
+                              )
+                            ],
                           ),
                         ),
-                      ],
-                    );
-                  },
-                ),
-              ),
+                      )
+                    : Expanded(
+                        child: Visibility(
+                          visible: isLoaded,
+                          replacement: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                          child: ListView.builder(
+                            itemCount: raspElements?.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final raspElementPage = raspElements?[index];
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 15.w, vertical: 10.w),
+                                    child: Text(
+                                        '${raspElementPage!.beginning}-${raspElementPage.end}',
+                                        style: theme.textTheme.headline6),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10.w, vertical: 5.w),
+                                    child: Container(
+                                      height: 120.w,
+                                      width: squareWidth,
+                                      decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(15)),
+                                          color: theme.primaryColor),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 15.w),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(raspElementPage.discipline,
+                                                style:
+                                                    theme.textTheme.headline6),
+                                            Flexible(
+                                                child: SizedBox(height: 10.w)),
+                                            Text(raspElementPage.teacher,
+                                                style: theme.primaryTextTheme
+                                                    .subtitle1),
+                                            Flexible(
+                                                child: SizedBox(height: 10.w)),
+                                            Text(raspElementPage.audience,
+                                                style: theme.primaryTextTheme
+                                                    .subtitle1),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      );
+              },
             ),
           ],
         ),

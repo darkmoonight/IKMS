@@ -13,10 +13,10 @@ class RomoteServise {
   final Dio dio = Dio()
     ..interceptors.add(DioCacheInterceptor(
       options: CacheOptions(
-          store: HiveCacheStore(Directory.systemTemp.path),
-          maxStale: const Duration(days: 14),
-          policy: CachePolicy.forceCache,
-          priority: CachePriority.low,
+        store: HiveCacheStore(Directory.systemTemp.path),
+        maxStale: const Duration(days: 14),
+        policy: CachePolicy.forceCache,
+        priority: CachePriority.low,
       ),
     ));
   final baseUrl = 'https://edu.donstu.ru/api/';
