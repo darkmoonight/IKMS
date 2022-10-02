@@ -14,5 +14,7 @@
     "universities": "Университеты",
     "groups": "Группы",
     "universitiesName": "Название университета",
-    "groupsName": "Название группы"
+    "groupsName": "Название группы",
+    "week": "Неделя",
+    "month": "Месяц"
 }

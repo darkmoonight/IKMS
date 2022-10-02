@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:horizontal_center_date_picker/datepicker_controller.dart';
-import 'package:horizontal_center_date_picker/horizontal_date_picker.dart';
 import 'package:project_cdis/app/data/shedule.dart';
 import 'package:project_cdis/app/modules/audiences/view.dart';
 import 'package:project_cdis/app/modules/professors/view.dart';
 import 'package:project_cdis/app/modules/settings/view.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../../services/remote_services.dart';
 
@@ -20,11 +19,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   DateTime now = DateTime.now();
-  DatePickerController datePickerController = DatePickerController();
   DateTime? selectedDay;
+  DateTime focusedDay = DateTime.now();
   var isLoaded = false;
   String? dateNow;
   final tabIndex = 0.obs;
+  CalendarFormat calendarFormat = CalendarFormat.week;
 
   Rasp? raspElement;
   List<RaspElement>? raspElements;
@@ -83,34 +83,37 @@ class _HomePageState extends State<HomePage> {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                            vertical: 5.w, horizontal: 10.w),
-                        decoration: BoxDecoration(
-                          color: theme.primaryColor,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(15)),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15.w),
-                          child: HorizontalDatePickerWidget(
-                            locale: '$tag',
-                            selectedColor: Colors.blue,
-                            normalColor: theme.primaryColor,
-                            disabledColor: theme.primaryColor,
-                            selectedTextColor: theme.dividerColor,
-                            normalTextColor: theme.disabledColor,
-                            startDate: DateTime(2022, 09, 01),
-                            endDate: DateTime(2100, 09, 01),
-                            selectedDate: selectedDay!,
-                            widgetWidth: MediaQuery.of(context).size.width,
-                            datePickerController: datePickerController,
-                            onValueSelected: (date) {
-                              selectedDay = date;
-                              getRasp();
-                            },
-                          ),
-                        ),
+                      TableCalendar(
+                        startingDayOfWeek: StartingDayOfWeek.monday,
+                        firstDay: DateTime(2022, 09, 01),
+                        lastDay: DateTime(2100, 09, 01),
+                        focusedDay: selectedDay!,
+                        locale: '$tag',
+                        selectedDayPredicate: (day) {
+                          return isSameDay(selectedDay, day);
+                        },
+                        onDaySelected: (selected, focused) {
+                          setState(() {
+                            selectedDay = selected;
+                            focusedDay = focused;
+                            getRasp();
+                          });
+                        },
+                        onPageChanged: (focused) {
+                          focusedDay = focused;
+                        },
+                        availableCalendarFormats: {
+                          CalendarFormat.month:
+                              AppLocalizations.of(context)!.month,
+                          CalendarFormat.week:
+                              AppLocalizations.of(context)!.week
+                        },
+                        calendarFormat: calendarFormat,
+                        onFormatChanged: (format) {
+                          setState(() {
+                            calendarFormat = format;
+                          });
+                        },
                       ),
                       Divider(
                         color: theme.dividerColor,

@@ -14,5 +14,7 @@
     "universities": "Universities",    
     "groups": "Groups",
     "universitiesName": "Name of the university",
-    "groupsName": "Group name"
+    "groupsName": "Group name",
+    "week": "Week",
+    "month": "Month"
 }

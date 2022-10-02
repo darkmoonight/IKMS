@@ -3,10 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:horizontal_center_date_picker/datepicker_controller.dart';
-import 'package:horizontal_center_date_picker/horizontal_date_picker.dart';
 import 'package:project_cdis/app/data/shedule.dart';
 import 'package:project_cdis/app/services/remote_services.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class RaspAudiencesPage extends StatefulWidget {
   const RaspAudiencesPage({super.key});
@@ -17,11 +16,12 @@ class RaspAudiencesPage extends StatefulWidget {
 
 class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
   DateTime now = DateTime.now();
-  DatePickerController datePickerController = DatePickerController();
   DateTime? selectedDay;
+  DateTime focusedDay = DateTime.now();
   var isLoaded = false;
   String? dateNow;
   final box = GetStorage();
+  CalendarFormat calendarFormat = CalendarFormat.week;
 
   Rasp? raspElement;
   List<RaspElement>? raspElements;
@@ -85,39 +85,42 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
                   Expanded(
                     child: Text(
                       '${AppLocalizations.of(context)!.schedule} - $audName',
-                      style: theme.textTheme.headline2,
+                      style: theme.textTheme.headline4,
                       overflow: TextOverflow.fade,
                     ),
                   ),
                 ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 5.w, horizontal: 10.w),
-              decoration: BoxDecoration(
-                color: theme.primaryColor,
-                borderRadius: const BorderRadius.all(Radius.circular(15)),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.w),
-                child: HorizontalDatePickerWidget(
-                  locale: '$tag',
-                  selectedColor: Colors.blue,
-                  normalColor: theme.primaryColor,
-                  disabledColor: theme.primaryColor,
-                  selectedTextColor: theme.dividerColor,
-                  normalTextColor: theme.disabledColor,
-                  startDate: DateTime(2022, 09, 01),
-                  endDate: DateTime(2100, 09, 01),
-                  selectedDate: selectedDay!,
-                  widgetWidth: MediaQuery.of(context).size.width,
-                  datePickerController: datePickerController,
-                  onValueSelected: (date) {
-                    selectedDay = date;
-                    getRasp();
-                  },
-                ),
-              ),
+            TableCalendar(
+              startingDayOfWeek: StartingDayOfWeek.monday,
+              firstDay: DateTime(2022, 09, 01),
+              lastDay: DateTime(2100, 09, 01),
+              focusedDay: selectedDay!,
+              locale: '$tag',
+              selectedDayPredicate: (day) {
+                return isSameDay(selectedDay, day);
+              },
+              onDaySelected: (selected, focused) {
+                setState(() {
+                  selectedDay = selected;
+                  focusedDay = focused;
+                  getRasp();
+                });
+              },
+              onPageChanged: (focused) {
+                focusedDay = focused;
+              },
+              availableCalendarFormats: {
+                CalendarFormat.month: AppLocalizations.of(context)!.month,
+                CalendarFormat.week: AppLocalizations.of(context)!.week
+              },
+              calendarFormat: calendarFormat,
+              onFormatChanged: (format) {
+                setState(() {
+                  calendarFormat = format;
+                });
+              },
             ),
             Divider(
               color: theme.dividerColor,
