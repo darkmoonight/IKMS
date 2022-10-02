@@ -35,8 +35,10 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
   }
 
   getData() async {
+    // TODO: deduplicate
     raspElement = await RomoteServise().getRaspAudElementData();
-    raspElements = await RomoteServise().getRaspsAudElementData();
+    // raspElements = await RomoteServise().getRaspsAudElementData();
+    raspElements = raspElement?.data.rasp;
     if (raspElement != null) {
       setState(
         () {

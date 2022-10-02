@@ -21,6 +21,7 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
   final box = GetStorage();
   var isLoaded = false;
   TextEditingController textEditingController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -29,8 +30,10 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
   }
 
   getData() async {
-    professor = await RomoteServise().getProfessorsData();
+    // TODO: deduplicate
+    // professor = await RomoteServise().getProfessorsData();
     professors = await RomoteServise().getProfessorsData();
+    professor = professors;
     if (professor != null) {
       setState(
         () {

@@ -28,8 +28,10 @@ class _AudiencesPageState extends State<AudiencesPage> {
   }
 
   getData() async {
-    audience = await RomoteServise().getAudiencesData();
+    // TODO: deduplicate
+    // audience = await RomoteServise().getAudiencesData();
     audiences = await RomoteServise().getAudiencesData();
+    audience = audiences;
     if (audience != null) {
       setState(
         () {

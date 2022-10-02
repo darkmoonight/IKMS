@@ -38,8 +38,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   getData() async {
+    // TODO: deduplicate
     raspElement = await RomoteServise().getRaspElementData();
-    raspElements = await RomoteServise().getRaspsElementData();
+    // raspElements = await RomoteServise().getRaspsElementData();
+    raspElements = raspElement?.data.rasp;
     if (raspElement != null) {
       setState(() {
         isLoaded = true;

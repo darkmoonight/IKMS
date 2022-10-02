@@ -35,8 +35,10 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
   }
 
   getData() async {
+    // TODO: deduplicate
     raspElement = await RomoteServise().getRaspProfElementData();
-    raspElements = await RomoteServise().getRaspsProfElementData();
+    // raspElements = await RomoteServise().getRaspsProfElementData();
+    raspElements = raspElement?.data.rasp;
     if (raspElement != null) {
       setState(
         () {

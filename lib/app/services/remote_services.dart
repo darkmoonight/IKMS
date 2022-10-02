@@ -79,6 +79,7 @@ class RomoteServise {
     }
   }
 
+  // TODO: deduplicate
   Future<List<RaspElement>> getRaspsElementData() async {
     final group = box.read('isGroups');
     var url = 'Rasp?idGroup=$group';
@@ -109,6 +110,7 @@ class RomoteServise {
     }
   }
 
+  // TODO: deduplicate
   Future<List<RaspElement>> getRaspsAudElementData() async {
     final aud = box.read('isAud');
     var url = 'Rasp?idAudLine=$aud';
@@ -139,6 +141,7 @@ class RomoteServise {
     }
   }
 
+  // TODO: deduplicate
   Future<List<RaspElement>> getRaspsProfElementData() async {
     final prof = box.read('isProfessor');
     var url = 'Rasp?idTeacher=$prof';

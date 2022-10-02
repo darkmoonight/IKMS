@@ -34,6 +34,7 @@ class DataRasp {
     required this.rasp,
     required this.info,
   });
+
   bool? isCyclicalSchedule;
   List<RaspElement> rasp;
   Info info;

@@ -29,8 +29,10 @@ class _GroupsPageState extends State<GroupsPage> {
   }
 
   getData() async {
-    group = await RomoteServise().getGroupsData();
+    // TODO: deduplicate
+    // group = await RomoteServise().getGroupsData();
     groups = await RomoteServise().getGroupsData();
+    group = groups;
     if (group != null) {
       setState(
         () {
