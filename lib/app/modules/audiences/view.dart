@@ -31,9 +31,11 @@ class _AudiencesPageState extends State<AudiencesPage> {
     audience = await RomoteServise().getAudiencesData();
     audiences = await RomoteServise().getAudiencesData();
     if (audience != null) {
-      setState(() {
-        isLoaded = true;
-      });
+      setState(
+        () {
+          isLoaded = true;
+        },
+      );
     }
   }
 
@@ -58,12 +60,16 @@ class _AudiencesPageState extends State<AudiencesPage> {
               child: TextField(
                 onChanged: (value) {
                   value = value.toLowerCase();
-                  setState(() {
-                    audience = audiences?.where((element) {
-                      var audiensesTitle = element.name.toLowerCase();
-                      return audiensesTitle.contains(value);
-                    }).toList();
-                  });
+                  setState(
+                    () {
+                      audience = audiences?.where(
+                        (element) {
+                          var audiensesTitle = element.name.toLowerCase();
+                          return audiensesTitle.contains(value);
+                        },
+                      ).toList();
+                    },
+                  );
                 },
                 style: theme.textTheme.headline6,
                 decoration: InputDecoration(
@@ -128,10 +134,12 @@ class _AudiencesPageState extends State<AudiencesPage> {
                                 transition: Transition.downToUp);
                           },
                           child: Center(
-                              child: Text(
-                            audiencePage.name,
-                            style: theme.textTheme.headline6,
-                          )),
+                            child: Text(
+                              audiencePage.name,
+                              style: theme.textTheme.headline6,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         ),
                       ),
                     );

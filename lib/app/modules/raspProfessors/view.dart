@@ -38,21 +38,27 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
     raspElement = await RomoteServise().getRaspProfElementData();
     raspElements = await RomoteServise().getRaspsProfElementData();
     if (raspElement != null) {
-      setState(() {
-        isLoaded = true;
-        getRasp();
-      });
+      setState(
+        () {
+          isLoaded = true;
+          getRasp();
+        },
+      );
     }
   }
 
   void getRasp() {
     var value = selectedDay!.toIso8601String().substring(0, 19);
-    setState(() {
-      raspElements = raspElement?.data.rasp.where((element) {
-        var raspTitle = element.date;
-        return raspTitle.contains(value);
-      }).toList();
-    });
+    setState(
+      () {
+        raspElements = raspElement?.data.rasp.where(
+          (element) {
+            var raspTitle = element.date;
+            return raspTitle.contains(value);
+          },
+        ).toList();
+      },
+    );
   }
 
   @override
@@ -102,11 +108,13 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
                 return isSameDay(selectedDay, day);
               },
               onDaySelected: (selected, focused) {
-                setState(() {
-                  selectedDay = selected;
-                  focusedDay = focused;
-                  getRasp();
-                });
+                setState(
+                  () {
+                    selectedDay = selected;
+                    focusedDay = focused;
+                    getRasp();
+                  },
+                );
               },
               onPageChanged: (focused) {
                 focusedDay = focused;
@@ -118,9 +126,11 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
               },
               calendarFormat: calendarFormat,
               onFormatChanged: (format) {
-                setState(() {
-                  calendarFormat = format;
-                });
+                setState(
+                  () {
+                    calendarFormat = format;
+                  },
+                );
               },
             ),
             Divider(
@@ -143,10 +153,10 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
                                 scale: 1,
                               ),
                               Text(
-                                'Пес, иди учи уроки.',
+                                AppLocalizations.of(context)!.no_par,
                                 style: theme.textTheme.headline3,
                                 textAlign: TextAlign.center,
-                              )
+                              ),
                             ],
                           ),
                         ),

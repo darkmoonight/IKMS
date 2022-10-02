@@ -32,9 +32,11 @@ class _GroupsPageState extends State<GroupsPage> {
     group = await RomoteServise().getGroupsData();
     groups = await RomoteServise().getGroupsData();
     if (group != null) {
-      setState(() {
-        isLoaded = true;
-      });
+      setState(
+        () {
+          isLoaded = true;
+        },
+      );
     }
   }
 
@@ -78,12 +80,14 @@ class _GroupsPageState extends State<GroupsPage> {
               child: TextField(
                 onChanged: (value) {
                   value = value.toLowerCase();
-                  setState(() {
-                    group = groups?.where((element) {
-                      var groupsTitle = element.name.toLowerCase();
-                      return groupsTitle.contains(value);
-                    }).toList();
-                  });
+                  setState(
+                    () {
+                      group = groups?.where((element) {
+                        var groupsTitle = element.name.toLowerCase();
+                        return groupsTitle.contains(value);
+                      }).toList();
+                    },
+                  );
                 },
                 style: theme.textTheme.headline6,
                 decoration: InputDecoration(
@@ -137,9 +141,10 @@ class _GroupsPageState extends State<GroupsPage> {
                       child: Container(
                         height: 40.w,
                         decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(15)),
-                            color: theme.primaryColor),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15)),
+                          color: theme.primaryColor,
+                        ),
                         child: TextButton(
                           onPressed: () {
                             box.write('isGroups', groupPage.id.toString());
@@ -148,10 +153,11 @@ class _GroupsPageState extends State<GroupsPage> {
                                 transition: Transition.upToDown);
                           },
                           child: Center(
-                              child: Text(
-                            groupPage.name,
-                            style: theme.textTheme.headline6,
-                          )),
+                            child: Text(
+                              groupPage.name,
+                              style: theme.textTheme.headline6,
+                            ),
+                          ),
                         ),
                       ),
                     );

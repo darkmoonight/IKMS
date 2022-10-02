@@ -32,10 +32,22 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
     professor = await RomoteServise().getProfessorsData();
     professors = await RomoteServise().getProfessorsData();
     if (professor != null) {
-      setState(() {
-        isLoaded = true;
-      });
+      setState(
+        () {
+          isLoaded = true;
+          getProfessors();
+        },
+      );
     }
+  }
+
+  getProfessors() {
+    setState(
+      () {
+        professor =
+            professor?.where((element) => element.name.isNotEmpty).toList();
+      },
+    );
   }
 
   @override
@@ -59,12 +71,16 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
               child: TextField(
                 onChanged: (value) {
                   value = value.toLowerCase();
-                  setState(() {
-                    professor = professors?.where((element) {
-                      var professorsTitle = element.name.toLowerCase();
-                      return professorsTitle.contains(value);
-                    }).toList();
-                  });
+                  setState(
+                    () {
+                      professor = professors?.where(
+                        (element) {
+                          var professorsTitle = element.name.toLowerCase();
+                          return professorsTitle.contains(value);
+                        },
+                      ).toList();
+                    },
+                  );
                 },
                 style: theme.textTheme.headline6,
                 decoration: InputDecoration(
@@ -130,10 +146,12 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
                                 transition: Transition.downToUp);
                           },
                           child: Center(
-                              child: Text(
-                            professorPage.name,
-                            style: theme.textTheme.headline6,
-                          )),
+                            child: Text(
+                              professorPage.name,
+                              style: theme.textTheme.headline6,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         ),
                       ),
                     );

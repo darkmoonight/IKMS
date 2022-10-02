@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 15.w, bottom: 8.w),
+                        padding: EdgeInsets.only(top: 15.w),
                         child: Text(
                           AppLocalizations.of(context)!.schedule,
                           style: theme.textTheme.headline2,
@@ -94,11 +94,13 @@ class _HomePageState extends State<HomePage> {
                           return isSameDay(selectedDay, day);
                         },
                         onDaySelected: (selected, focused) {
-                          setState(() {
-                            selectedDay = selected;
-                            focusedDay = focused;
-                            getRasp();
-                          });
+                          setState(
+                            () {
+                              selectedDay = selected;
+                              focusedDay = focused;
+                              getRasp();
+                            },
+                          );
                         },
                         onPageChanged: (focused) {
                           focusedDay = focused;
@@ -113,9 +115,11 @@ class _HomePageState extends State<HomePage> {
                         },
                         calendarFormat: calendarFormat,
                         onFormatChanged: (format) {
-                          setState(() {
-                            calendarFormat = format;
-                          });
+                          setState(
+                            () {
+                              calendarFormat = format;
+                            },
+                          );
                         },
                       ),
                       Divider(
@@ -138,10 +142,10 @@ class _HomePageState extends State<HomePage> {
                                           scale: 1,
                                         ),
                                         Text(
-                                          'Пес, иди учи уроки.',
+                                          AppLocalizations.of(context)!.no_par,
                                           style: theme.textTheme.headline3,
                                           textAlign: TextAlign.center,
-                                        )
+                                        ),
                                       ],
                                     ),
                                   ),
