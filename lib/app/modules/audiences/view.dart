@@ -136,7 +136,7 @@ class _AudiencesPageState extends State<AudiencesPage> {
                           child: Center(
                             child: Text(
                               audiencePage.name,
-                              style: theme.textTheme.headline6,
+                              style: theme.primaryTextTheme.headline4,
                               textAlign: TextAlign.center,
                             ),
                           ),

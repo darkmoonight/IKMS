@@ -20,7 +20,7 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
   List<Professors>? professor;
   final box = GetStorage();
   var isLoaded = false;
-
+  TextEditingController textEditingController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -45,7 +45,7 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
     setState(
       () {
         professor =
-            professor?.where((element) => element.name.isNotEmpty).toList();
+            professors?.where((element) => element.name.isNotEmpty).toList();
       },
     );
   }
@@ -69,6 +69,7 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
               child: TextField(
+                controller: textEditingController,
                 onChanged: (value) {
                   value = value.toLowerCase();
                   setState(
@@ -79,6 +80,9 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
                           return professorsTitle.contains(value);
                         },
                       ).toList();
+                      if (textEditingController.text.isEmpty) {
+                        getProfessors();
+                      }
                     },
                   );
                 },
@@ -148,7 +152,7 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
                           child: Center(
                             child: Text(
                               professorPage.name,
-                              style: theme.textTheme.headline6,
+                              style: theme.primaryTextTheme.headline4,
                               textAlign: TextAlign.center,
                             ),
                           ),

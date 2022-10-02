@@ -65,6 +65,10 @@ class ThemeApp {
           fontSize: 14.sp,
           fontWeight: FontWeight.bold,
         ),
+        headline4: TextStyle(
+          color: Colors.black,
+          fontSize: 15.sp,
+        ),
         headline5: TextStyle(
           color: Colors.black,
           fontSize: 17.sp,
@@ -138,6 +142,10 @@ class ThemeApp {
           color: Colors.grey,
           fontSize: 14.sp,
           fontWeight: FontWeight.bold,
+        ),
+        headline4: TextStyle(
+          color: Colors.white,
+          fontSize: 15.sp,
         ),
         headline5: TextStyle(
           color: Colors.white,
