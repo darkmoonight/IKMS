@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:project_cdis/app/data/audiences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:project_cdis/app/modules/raspAudiences/view.dart';
@@ -17,7 +16,6 @@ class AudiencesPage extends StatefulWidget {
 class _AudiencesPageState extends State<AudiencesPage> {
   List<Audiences>? audiences;
   List<Audiences>? audiencesFiltered;
-  final box = GetStorage();
   var isLoaded = false;
 
   @override
@@ -127,10 +125,10 @@ class _AudiencesPageState extends State<AudiencesPage> {
                             color: theme.primaryColor),
                         child: TextButton(
                           onPressed: () {
-                            box.write('isAud', audiencePage.id.toString());
                             Get.to(
-                                () =>
-                                    RaspAudiencesPage(name: audiencePage.name),
+                                () => RaspAudiencesPage(
+                                    id: audiencePage.id,
+                                    name: audiencePage.name),
                                 transition: Transition.downToUp);
                           },
                           child: Center(

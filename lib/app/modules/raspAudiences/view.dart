@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:project_cdis/app/data/shedule.dart';
 import 'package:project_cdis/app/services/remote_services.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class RaspAudiencesPage extends StatefulWidget {
-  final name;
-  const RaspAudiencesPage({super.key, this.name});
+  // ignore: prefer_typing_uninitialized_variables
+  final id, name;
+  const RaspAudiencesPage({super.key, this.id, this.name});
 
   @override
   State<RaspAudiencesPage> createState() => _RaspAudiencesPageState();
@@ -35,7 +35,7 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
   }
 
   getData() async {
-    raspElements = await RomoteServise().getRaspsAudElementData();
+    raspElements = await RomoteServise().getRaspsAudElementData(widget.id);
     raspElementsFiltered = raspElements;
     if (raspElements != null) {
       setState(

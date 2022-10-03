@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:project_cdis/app/data/shedule.dart';
 import 'package:project_cdis/app/services/remote_services.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class RaspProfessorsPage extends StatefulWidget {
-  final name;
-  const RaspProfessorsPage({super.key, this.name});
+  // ignore: prefer_typing_uninitialized_variables
+  final id, name;
+  const RaspProfessorsPage({super.key, this.id, this.name});
 
   @override
   State<RaspProfessorsPage> createState() => _RaspProfessorsPageState();
@@ -35,7 +35,7 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
   }
 
   getData() async {
-    raspElements = await RomoteServise().getRaspsProfElementData();
+    raspElements = await RomoteServise().getRaspsProfElementData(widget.id);
     raspElementsFiltered = raspElements;
     if (raspElements != null) {
       setState(

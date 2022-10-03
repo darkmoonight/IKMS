@@ -81,9 +81,8 @@ class RomoteServise {
     }
   }
 
-  Future<List<RaspElement>> getRaspsAudElementData() async {
-    final aud = box.read('isAud');
-    var url = 'Rasp?idAudLine=$aud';
+  Future<List<RaspElement>> getRaspsAudElementData(int id) async {
+    var url = 'Rasp?idAudLine=$id';
     try {
       Response response = await dio.get(baseUrl + url);
       Rasp rasp = Rasp.fromJson(response.data);
@@ -96,9 +95,8 @@ class RomoteServise {
     }
   }
 
-  Future<List<RaspElement>> getRaspsProfElementData() async {
-    final prof = box.read('isProfessor');
-    var url = 'Rasp?idTeacher=$prof';
+  Future<List<RaspElement>> getRaspsProfElementData(int id) async {
+    var url = 'Rasp?idTeacher=$id';
     try {
       Response response = await dio.get(baseUrl + url);
       Rasp rasp = Rasp.fromJson(response.data);
