@@ -32,37 +32,32 @@ jobs:
         with:
           msg: ${{ steps.sign_app.outputs.signedFiles }}
           separator: ':'
-      - name: Example Release
-        uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: true
-          title: "Test release"
-          files: |
-            ${{ steps.signed_files.outputs._0 }}
-            ${{ steps.signed_files.outputs._1 }}
-            ${{ steps.signed_files.outputs._2 }}
+#      - name: Example Release
+#        uses: "marvinpinto/action-automatic-releases@latest"
+#        with:
+#          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+#          automatic_release_tag: "latest"
+#          prerelease: true
+#          title: "Test release"
+#          files: |
+#
+#            ${{ steps.signed_files.outputs._0 }}
+#            ${{ steps.signed_files.outputs._1 }}
+#            ${{ steps.signed_files.outputs._2 }}
+#            ${{ steps.signed_files.outputs._3 }}
       - uses: actions/upload-artifact@v3
         with:
           name: apk-build
-          path: |
+          path: | 
             ${{ steps.signed_files.outputs._0 }}
             ${{ steps.signed_files.outputs._1 }}
             ${{ steps.signed_files.outputs._2 }}
+            ${{ steps.signed_files.outputs._3 }}
       - name: publish new release
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            ${{ github.actor }} created commit:
-            Commit message: ${{ github.event.commits[0].message }}
-            
-            Repository: ${{ github.repository }}
-            
-            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
-          document: |
-            ${{ steps.signed_files.outputs._0 }}
-            ${{ steps.signed_files.outputs._1 }}
-            ${{ steps.signed_files.outputs._2 }}
+          message: 'Repository: ${{ github.repository }}'
+          document: ${{ steps.signed_files.outputs._3 }}
+
