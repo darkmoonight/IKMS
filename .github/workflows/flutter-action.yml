@@ -18,19 +18,20 @@ jobs:
           architecture: x64 # optional, x64 or arm64
       - run: flutter pub get
       - run: flutter build apk --split-per-abi
-      - uses: r0adkll/sign-android-release@v1
+      - uses: ilharp/sign-android-release@v1
         id: sign_app
         with:
           releaseDirectory: build/app/outputs/flutter-apk
-          signingKeyBase64: ${{ secrets.KEYSTORE_BASE64 }}
-          alias: ${{ secrets.KEYSTORE_PASSWORD_ALIAS }}
+          signingKey: ${{ secrets.KEYSTORE_BASE64 }}
+          keyAlias: ${{ secrets.KEYSTORE_PASSWORD_ALIAS }}
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
           keyPassword: ${{ secrets.KEYSTORE_PASSWORD }}
+          buildToolsVersion: 33.0.0
       - uses: jungwinter/split@v2
         id: signed_files
         with:
+          msg: ${{ steps.sign_app.outputs.signedFiles }}
           separator: ':'
-          msg: ${{ steps.sign_app.outputs.signedReleaseFiles }}
       - name: Example Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -61,4 +62,7 @@ jobs:
             Repository: ${{ github.repository }}
             
             See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
-          document: ${{ steps.signed_files._0 }}
+          document: |
+            ${{ steps.signed_files.outputs._0 }}
+            ${{ steps.signed_files.outputs._1 }}
+            ${{ steps.signed_files.outputs._2 }}
