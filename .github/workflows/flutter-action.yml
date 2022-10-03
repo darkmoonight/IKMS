@@ -21,7 +21,7 @@ jobs:
       - uses: ilharp/sign-android-release@v1
         id: sign_app
         with:
-          releaseDirectory: build/app/outputs/flutter-apk
+          releaseDir: build/app/outputs/flutter-apk
           signingKey: ${{ secrets.KEYSTORE_BASE64 }}
           keyAlias: ${{ secrets.KEYSTORE_PASSWORD_ALIAS }}
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
