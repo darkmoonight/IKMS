@@ -29,8 +29,8 @@ jobs:
       - uses: jungwinter/split@v2
         id: signed_files
         with:
-          msg: ${{ steps.sign_app.signedReleaseFiles }}
           separator: ':'
+          msg: ${{ steps.sign_app.outputs.signedReleaseFiles }}
       - name: Example Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
