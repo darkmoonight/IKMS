@@ -45,10 +45,12 @@ jobs:
 #            ${{ steps.signed_files.outputs._1 }}
 #            ${{ steps.signed_files.outputs._2 }}
 #            ${{ steps.signed_files.outputs._3 }}
+      - run: echo ${{ env.GITHUB_ACTION }} > run.txt
       - uses: actions/upload-artifact@v3
         with:
           name: apk-build
           path: | 
+            run.txt
             ${{ steps.signed_files.outputs._0 }}
             ${{ steps.signed_files.outputs._1 }}
             ${{ steps.signed_files.outputs._2 }}
