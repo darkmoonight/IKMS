@@ -20,9 +20,9 @@ jobs:
           echo $KEYSTORE_BASE64 | base64 -d > $RUNNER_TEMP/my_production.keystore
       - run: flutter pub get
       - run: flutter build apk --split-per-abi
-      - run: jarsigner -keystore $RUNNER_TEMP/my_production.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEYSTORE_PASSWORD_ALIAS }} -sigalg SHA256withRSA -digestalg SHA-256 -signedjar build/app/outputs/flutter-apk/app-armeabi-v7a-release-signed.apk build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk upload
-      - run: jarsigner -keystore $RUNNER_TEMP/my_production.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEYSTORE_PASSWORD_ALIAS }} -sigalg SHA256withRSA -digestalg SHA-256 -signedjar build/app/outputs/flutter-apk/app-arm64-v8a-release-signed.apk build/app/outputs/flutter-apk/app-arm64-v8a-release.apk upload
-      - run: jarsigner -keystore $RUNNER_TEMP/my_production.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEYSTORE_PASSWORD_ALIAS }} -sigalg SHA256withRSA -digestalg SHA-256 -signedjar build/app/outputs/flutter-apk/app-x86_64-release-signed.apk build/app/outputs/flutter-apk/app-x86_64-release.apk upload
+      - run: jarsigner -keystore $RUNNER_TEMP/my_production.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEYSTORE_PASSWORD_ALIAS }} -sigalg SHA256withRSA -digestalg SHA-256 -signedjar build/app/outputs/flutter-apk/app-armeabi-v7a-release-signed.apk build/app/outputs/flutter-apk/app-armeabi-v7a-release-unsigned.apk upload
+      - run: jarsigner -keystore $RUNNER_TEMP/my_production.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEYSTORE_PASSWORD_ALIAS }} -sigalg SHA256withRSA -digestalg SHA-256 -signedjar build/app/outputs/flutter-apk/app-arm64-v8a-release-signed.apk build/app/outputs/flutter-apk/app-arm64-v8a-release-unsigned.apk upload
+      - run: jarsigner -keystore $RUNNER_TEMP/my_production.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEYSTORE_PASSWORD_ALIAS }} -sigalg SHA256withRSA -digestalg SHA-256 -signedjar build/app/outputs/flutter-apk/app-x86_64-release-signed.apk build/app/outputs/flutter-apk/app-x86_64-release-unsigned.apk upload
       - uses: actions/upload-artifact@v3
         with:
           name: apk-build
@@ -30,3 +30,16 @@ jobs:
             build/app/outputs/flutter-apk/app-armeabi-v7a-release-signed.apk
             build/app/outputs/flutter-apk/app-arm64-v8a-release-signed.apk
             build/app/outputs/flutter-apk/app-x86_64-release-signed.apk
+      - name: publish new release
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            Commit message: ${{ github.event.commits[0].message }}
+            
+            Repository: ${{ github.repository }}
+            
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+          document: build/app/outputs/flutter-apk/app-armeabi-v7a-release-signed.apk
