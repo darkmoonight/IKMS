@@ -30,7 +30,7 @@ jobs:
         id: signed_files
         with:
           msg: ${{ steps.sign_app.signedReleaseFiles }}
-          seperator: ':'
+          separator: ':'
       - name: Example Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
