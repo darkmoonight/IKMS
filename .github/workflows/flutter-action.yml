@@ -30,8 +30,7 @@ jobs:
       - uses: jungwinter/split@v2
         id: signed_files
         with:
-#          msg: ${{ steps.sign_app.outputs.signedFiles }}
-          msg: ${{ env.ANDROID_SIGNED_FILES }}
+          msg: '${{ steps.sign_app.outputs.signedFilesCount }}:${{ steps.sign_app.outputs.signedFiles }}'
           separator: ':'
 #      - name: Example Release
 #        uses: "marvinpinto/action-automatic-releases@latest"
@@ -42,25 +41,28 @@ jobs:
 #          title: "Test release"
 #          files: |
 #
-#            ${{ steps.signed_files.outputs._0 }}
-#            ${{ steps.signed_files.outputs._1 }}
-#            ${{ steps.signed_files.outputs._2 }}
-#            ${{ steps.signed_files.outputs._3 }}
-      - run: echo ${{ env.GITHUB_ACTION }} > run.txt
+#            ${{ steps.signed_files.outputs._4 }}
+#            ${{ steps.signed_files.outputs._5 }}
+#            ${{ steps.signed_files.outputs._6 }}
+#            ${{ steps.signed_files.outputs._7 }}
+      - run: echo ${{ steps.signed_files.outputs._1 }}
+      - run: echo ${{ steps.signed_files.outputs._2 }}
+      - run: echo ${{ steps.signed_files.outputs._3 }}
+      - run: echo ${{ steps.signed_files.outputs._4 }}
       - uses: actions/upload-artifact@v3
         with:
           name: apk-build
           path: | 
             run.txt
-            ${{ steps.signed_files.outputs._0 }}
             ${{ steps.signed_files.outputs._1 }}
             ${{ steps.signed_files.outputs._2 }}
             ${{ steps.signed_files.outputs._3 }}
+            ${{ steps.signed_files.outputs._4 }}
 #      - name: publish new release
 #        uses: appleboy/telegram-action@master
 #        with:
 #          to: ${{ secrets.TELEGRAM_TO }}
 #          token: ${{ secrets.TELEGRAM_TOKEN }}
 #          message: 'Repository: ${{ github.repository }}'
-#          document: ${{ steps.signed_files.outputs._3 }}
+#          document: ${{ steps.signed_files.outputs._4 }}
 
