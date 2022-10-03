@@ -12,24 +12,39 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.3.2'
-      - name: Create the Keystore
-        env:
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-        run: |
-          # import keystore from secrets
-          echo $KEYSTORE_BASE64 | base64 -d > $RUNNER_TEMP/my_production.keystore
       - run: flutter pub get
       - run: flutter build apk --split-per-abi
-      - run: jarsigner -keystore $RUNNER_TEMP/my_production.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEYSTORE_PASSWORD_ALIAS }} -sigalg SHA256withRSA -digestalg SHA-256 -signedjar build/app/outputs/flutter-apk/app-armeabi-v7a-release-signed.apk build/app/outputs/flutter-apk/app-armeabi-v7a-release-unsigned.apk upload
-      - run: jarsigner -keystore $RUNNER_TEMP/my_production.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEYSTORE_PASSWORD_ALIAS }} -sigalg SHA256withRSA -digestalg SHA-256 -signedjar build/app/outputs/flutter-apk/app-arm64-v8a-release-signed.apk build/app/outputs/flutter-apk/app-arm64-v8a-release-unsigned.apk upload
-      - run: jarsigner -keystore $RUNNER_TEMP/my_production.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEYSTORE_PASSWORD_ALIAS }} -sigalg SHA256withRSA -digestalg SHA-256 -signedjar build/app/outputs/flutter-apk/app-x86_64-release-signed.apk build/app/outputs/flutter-apk/app-x86_64-release-unsigned.apk upload
+      - uses: r0adkll/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDirectory: build/app/outputs/flutter-apk
+          signingKeyBase64: ${{ secrets.KEYSTORE_BASE64 }}
+          alias: ${{ secrets.KEYSTORE_PASSWORD_ALIAS }}
+          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEYSTORE_PASSWORD }}
+      - uses: jungwinter/split@v1
+        id: signed_files
+        with:
+          msg: ${{ steps.sign_app.signedReleaseFiles }}
+          separator: ':'
+      - name: Example Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Test release"
+          files: |
+            ${{ steps.signed_files._0 }}
+            ${{ steps.signed_files._1 }}
+            ${{ steps.signed_files._2 }}
       - uses: actions/upload-artifact@v3
         with:
           name: apk-build
           path: |
-            build/app/outputs/flutter-apk/app-armeabi-v7a-release-signed.apk
-            build/app/outputs/flutter-apk/app-arm64-v8a-release-signed.apk
-            build/app/outputs/flutter-apk/app-x86_64-release-signed.apk
+            ${{ steps.signed_files._0 }}
+            ${{ steps.signed_files._1 }}
+            ${{ steps.signed_files._2 }}
       - name: publish new release
         uses: appleboy/telegram-action@master
         with:
@@ -42,4 +57,4 @@ jobs:
             Repository: ${{ github.repository }}
             
             See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
-          document: build/app/outputs/flutter-apk/app-armeabi-v7a-release-signed.apk
+          document: ${{ steps.signed_files._0 }}
