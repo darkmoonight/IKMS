@@ -28,7 +28,7 @@ class _AudiencesPageState extends State<AudiencesPage> {
 
   getData() async {
     audiences = await RomoteServise().getAudiencesData();
-    audiencesFiltered = audiences;
+    applyFilter('');
     if (audiencesFiltered != null) {
       setState(
         () {
@@ -36,6 +36,18 @@ class _AudiencesPageState extends State<AudiencesPage> {
         },
       );
     }
+  }
+
+  applyFilter(String value) {
+    value = value.toLowerCase();
+    setState(
+      () {
+        audiencesFiltered = audiences?.where((element) {
+          var professorsTitle = element.name.toLowerCase();
+          return professorsTitle.isNotEmpty && professorsTitle.contains(value);
+        }).toList();
+      },
+    );
   }
 
   @override
@@ -57,17 +69,7 @@ class _AudiencesPageState extends State<AudiencesPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
               child: TextField(
-                onChanged: (value) {
-                  value = value.toLowerCase();
-                  setState(
-                    () {
-                      audiencesFiltered = audiences?.where((element) {
-                        var audienceTitle = element.name.toLowerCase();
-                        return audienceTitle.contains(value);
-                      }).toList();
-                    },
-                  );
-                },
+                onChanged: applyFilter,
                 style: theme.textTheme.headline6,
                 decoration: InputDecoration(
                   fillColor: theme.primaryColor,

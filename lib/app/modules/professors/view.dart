@@ -28,7 +28,7 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
 
   getData() async {
     professors = await RomoteServise().getProfessorsData();
-    professorsFiltered = professors;
+    applyFilter('');
     if (professorsFiltered != null) {
       setState(
         () {
@@ -36,6 +36,18 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
         },
       );
     }
+  }
+
+  applyFilter(String value) {
+    value = value.toLowerCase();
+    setState(
+      () {
+        professorsFiltered = professors?.where((element) {
+          var professorsTitle = element.name.toLowerCase();
+          return professorsTitle.isNotEmpty && professorsTitle.contains(value);
+        }).toList();
+      },
+    );
   }
 
   @override
@@ -57,17 +69,7 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
               child: TextField(
-                onChanged: (value) {
-                  value = value.toLowerCase();
-                  setState(
-                    () {
-                      professorsFiltered = professors?.where((element) {
-                        var professorsTitle = element.name.toLowerCase();
-                        return professorsTitle.contains(value);
-                      }).toList();
-                    },
-                  );
-                },
+                onChanged: applyFilter,
                 style: theme.textTheme.headline6,
                 decoration: InputDecoration(
                   fillColor: theme.primaryColor,

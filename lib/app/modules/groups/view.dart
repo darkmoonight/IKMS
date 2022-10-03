@@ -28,7 +28,7 @@ class _GroupsPageState extends State<GroupsPage> {
 
   getData() async {
     groups = await RomoteServise().getGroupsData();
-    groupsFiltered = groups;
+    applyFilter('');
     if (groupsFiltered != null) {
       setState(
         () {
@@ -36,6 +36,18 @@ class _GroupsPageState extends State<GroupsPage> {
         },
       );
     }
+  }
+
+  applyFilter(String value) {
+    value = value.toLowerCase();
+    setState(
+      () {
+        groupsFiltered = groups?.where((element) {
+          var professorsTitle = element.name.toLowerCase();
+          return professorsTitle.isNotEmpty && professorsTitle.contains(value);
+        }).toList();
+      },
+    );
   }
 
   @override
@@ -76,17 +88,7 @@ class _GroupsPageState extends State<GroupsPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
               child: TextField(
-                onChanged: (value) {
-                  value = value.toLowerCase();
-                  setState(
-                    () {
-                      groupsFiltered = groups?.where((element) {
-                        var groupsTitle = element.name.toLowerCase();
-                        return groupsTitle.contains(value);
-                      }).toList();
-                    },
-                  );
-                },
+                onChanged: applyFilter,
                 style: theme.textTheme.headline6,
                 decoration: InputDecoration(
                   fillColor: theme.primaryColor,

@@ -71,8 +71,8 @@ class RomoteServise {
     var url = 'Rasp?idGroup=$group';
     try {
       Response response = await dio.get(baseUrl + url);
-      DataRasp raspData = DataRasp.fromJson(response.data);
-      return raspData.rasp;
+      Rasp rasp = Rasp.fromJson(response.data);
+      return rasp.data.rasp;
     } on DioError catch (e) {
       if (kDebugMode) {
         print(e);
@@ -86,8 +86,8 @@ class RomoteServise {
     var url = 'Rasp?idAudLine=$aud';
     try {
       Response response = await dio.get(baseUrl + url);
-      DataRasp raspData = DataRasp.fromJson(response.data);
-      return raspData.rasp;
+      Rasp rasp = Rasp.fromJson(response.data);
+      return rasp.data.rasp;
     } on DioError catch (e) {
       if (kDebugMode) {
         print(e);
@@ -101,8 +101,8 @@ class RomoteServise {
     var url = 'Rasp?idTeacher=$prof';
     try {
       Response response = await dio.get(baseUrl + url);
-      DataRasp raspData = DataRasp.fromJson(response.data);
-      return raspData.rasp;
+      Rasp rasp = Rasp.fromJson(response.data);
+      return rasp.data.rasp;
     } on DioError catch (e) {
       if (kDebugMode) {
         print(e);
