@@ -43,8 +43,8 @@ class _AudiencesPageState extends State<AudiencesPage> {
     setState(
       () {
         audiencesFiltered = audiences?.where((element) {
-          var professorsTitle = element.name.toLowerCase();
-          return professorsTitle.isNotEmpty && professorsTitle.contains(value);
+          var audiencesTitle = element.name.toLowerCase();
+          return audiencesTitle.isNotEmpty && audiencesTitle.contains(value);
         }).toList();
       },
     );

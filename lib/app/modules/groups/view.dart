@@ -43,8 +43,8 @@ class _GroupsPageState extends State<GroupsPage> {
     setState(
       () {
         groupsFiltered = groups?.where((element) {
-          var professorsTitle = element.name.toLowerCase();
-          return professorsTitle.isNotEmpty && professorsTitle.contains(value);
+          var groupsTitle = element.name.toLowerCase();
+          return groupsTitle.isNotEmpty && groupsTitle.contains(value);
         }).toList();
       },
     );
