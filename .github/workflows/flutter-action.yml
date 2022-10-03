@@ -30,7 +30,8 @@ jobs:
       - uses: jungwinter/split@v2
         id: signed_files
         with:
-          msg: ${{ steps.sign_app.outputs.signedFiles }}
+#          msg: ${{ steps.sign_app.outputs.signedFiles }}
+          msg: ${{ env.ANDROID_SIGNED_FILES }}
           separator: ':'
 #      - name: Example Release
 #        uses: "marvinpinto/action-automatic-releases@latest"
@@ -55,11 +56,11 @@ jobs:
             ${{ steps.signed_files.outputs._1 }}
             ${{ steps.signed_files.outputs._2 }}
             ${{ steps.signed_files.outputs._3 }}
-      - name: publish new release
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: 'Repository: ${{ github.repository }}'
-          document: ${{ steps.signed_files.outputs._3 }}
+#      - name: publish new release
+#        uses: appleboy/telegram-action@master
+#        with:
+#          to: ${{ secrets.TELEGRAM_TO }}
+#          token: ${{ secrets.TELEGRAM_TOKEN }}
+#          message: 'Repository: ${{ github.repository }}'
+#          document: ${{ steps.signed_files.outputs._3 }}
 
