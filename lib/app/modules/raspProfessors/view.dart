@@ -8,7 +8,8 @@ import 'package:project_cdis/app/services/remote_services.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class RaspProfessorsPage extends StatefulWidget {
-  const RaspProfessorsPage({super.key});
+  final name;
+  const RaspProfessorsPage({super.key, this.name});
 
   @override
   State<RaspProfessorsPage> createState() => _RaspProfessorsPageState();
@@ -20,7 +21,6 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
   DateTime focusedDay = DateTime.now();
   var isLoaded = false;
   String? dateNow;
-  final box = GetStorage();
   CalendarFormat calendarFormat = CalendarFormat.week;
 
   List<RaspElement>? raspElements;
@@ -66,7 +66,6 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
     var tag = Localizations.maybeLocaleOf(context)?.toLanguageTag();
     var theme = Theme.of(context);
     final squareWidth = Get.width;
-    final profName = box.read('isProfessorName');
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -90,7 +89,7 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
                   ),
                   Expanded(
                     child: Text(
-                      '${AppLocalizations.of(context)!.schedule} - $profName',
+                      '${AppLocalizations.of(context)!.schedule} - ${widget.name}',
                       style: theme.textTheme.headline4,
                       overflow: TextOverflow.fade,
                     ),

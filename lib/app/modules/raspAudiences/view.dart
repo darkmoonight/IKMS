@@ -8,7 +8,8 @@ import 'package:project_cdis/app/services/remote_services.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class RaspAudiencesPage extends StatefulWidget {
-  const RaspAudiencesPage({super.key});
+  final name;
+  const RaspAudiencesPage({super.key, this.name});
 
   @override
   State<RaspAudiencesPage> createState() => _RaspAudiencesPageState();
@@ -20,7 +21,6 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
   DateTime focusedDay = DateTime.now();
   var isLoaded = false;
   String? dateNow;
-  final box = GetStorage();
   CalendarFormat calendarFormat = CalendarFormat.week;
 
   List<RaspElement>? raspElements;
@@ -66,7 +66,6 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
     var tag = Localizations.maybeLocaleOf(context)?.toLanguageTag();
     var theme = Theme.of(context);
     final squareWidth = Get.width;
-    final audName = box.read('isAudName');
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -90,7 +89,7 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
                   ),
                   Expanded(
                     child: Text(
-                      '${AppLocalizations.of(context)!.schedule} - $audName',
+                      '${AppLocalizations.of(context)!.schedule} - ${widget.name}',
                       style: theme.textTheme.headline4,
                       overflow: TextOverflow.fade,
                     ),
