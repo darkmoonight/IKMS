@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:project_cdis/app/data/professors.dart';
 import 'package:project_cdis/app/modules/raspProfessors/view.dart';
-
 import '../../services/remote_services.dart';
 
 class ProfessorsPage extends StatefulWidget {
@@ -17,40 +16,26 @@ class ProfessorsPage extends StatefulWidget {
 
 class _ProfessorsPageState extends State<ProfessorsPage> {
   List<Professors>? professors;
-  List<Professors>? professor;
+  List<Professors>? professorsFiltered;
   final box = GetStorage();
   var isLoaded = false;
-  TextEditingController textEditingController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    professor = professors;
     getData();
   }
 
   getData() async {
-    // TODO: deduplicate
-    // professor = await RomoteServise().getProfessorsData();
     professors = await RomoteServise().getProfessorsData();
-    professor = professors;
-    if (professor != null) {
+    professorsFiltered = professors;
+    if (professorsFiltered != null) {
       setState(
         () {
           isLoaded = true;
-          getProfessors();
         },
       );
     }
-  }
-
-  getProfessors() {
-    setState(
-      () {
-        professor =
-            professors?.where((element) => element.name.isNotEmpty).toList();
-      },
-    );
   }
 
   @override
@@ -72,20 +57,14 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
               child: TextField(
-                controller: textEditingController,
                 onChanged: (value) {
                   value = value.toLowerCase();
                   setState(
                     () {
-                      professor = professors?.where(
-                        (element) {
-                          var professorsTitle = element.name.toLowerCase();
-                          return professorsTitle.contains(value);
-                        },
-                      ).toList();
-                      if (textEditingController.text.isEmpty) {
-                        getProfessors();
-                      }
+                      professorsFiltered = professors?.where((element) {
+                        var professorsTitle = element.name.toLowerCase();
+                        return professorsTitle.contains(value);
+                      }).toList();
                     },
                   );
                 },
@@ -132,9 +111,9 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
                   child: CircularProgressIndicator(),
                 ),
                 child: ListView.builder(
-                  itemCount: professor?.length,
+                  itemCount: professorsFiltered?.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final professorPage = professor![index];
+                    final professorPage = professorsFiltered![index];
                     return Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),

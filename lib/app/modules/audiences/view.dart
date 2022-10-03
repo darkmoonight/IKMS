@@ -16,23 +16,20 @@ class AudiencesPage extends StatefulWidget {
 
 class _AudiencesPageState extends State<AudiencesPage> {
   List<Audiences>? audiences;
-  List<Audiences>? audience;
+  List<Audiences>? audiencesFiltered;
   final box = GetStorage();
   var isLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    audience = audiences;
     getData();
   }
 
   getData() async {
-    // TODO: deduplicate
-    // audience = await RomoteServise().getAudiencesData();
     audiences = await RomoteServise().getAudiencesData();
-    audience = audiences;
-    if (audience != null) {
+    audiencesFiltered = audiences;
+    if (audiencesFiltered != null) {
       setState(
         () {
           isLoaded = true;
@@ -64,12 +61,10 @@ class _AudiencesPageState extends State<AudiencesPage> {
                   value = value.toLowerCase();
                   setState(
                     () {
-                      audience = audiences?.where(
-                        (element) {
-                          var audiensesTitle = element.name.toLowerCase();
-                          return audiensesTitle.contains(value);
-                        },
-                      ).toList();
+                      audiencesFiltered = audiences?.where((element) {
+                        var audienceTitle = element.name.toLowerCase();
+                        return audienceTitle.contains(value);
+                      }).toList();
                     },
                   );
                 },
@@ -116,9 +111,9 @@ class _AudiencesPageState extends State<AudiencesPage> {
                   child: CircularProgressIndicator(),
                 ),
                 child: ListView.builder(
-                  itemCount: audience?.length,
+                  itemCount: audiencesFiltered?.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final audiencePage = audience![index];
+                    final audiencePage = audiencesFiltered![index];
                     return Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),

@@ -26,23 +26,20 @@ class _HomePageState extends State<HomePage> {
   final tabIndex = 0.obs;
   CalendarFormat calendarFormat = CalendarFormat.week;
 
-  Rasp? raspElement;
   List<RaspElement>? raspElements;
+  List<RaspElement>? raspElementsFiltered;
 
   @override
   void initState() {
     super.initState();
     selectedDay = DateTime(now.year, now.month, now.day);
-
     getData();
   }
 
   getData() async {
-    // TODO: deduplicate
-    raspElement = await RomoteServise().getRaspElementData();
-    // raspElements = await RomoteServise().getRaspsElementData();
-    raspElements = raspElement?.data.rasp;
-    if (raspElement != null) {
+    raspElements = await RomoteServise().getRaspsElementData();
+    raspElementsFiltered = raspElements;
+    if (raspElements != null) {
       setState(() {
         isLoaded = true;
         getRasp();
@@ -57,7 +54,7 @@ class _HomePageState extends State<HomePage> {
   void getRasp() {
     var value = selectedDay!.toIso8601String().substring(0, 19);
     setState(() {
-      raspElements = raspElement?.data.rasp.where((element) {
+      raspElementsFiltered = raspElements?.where((element) {
         var raspTitle = element.date;
         return raspTitle.contains(value);
       }).toList();
@@ -88,6 +85,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       TableCalendar(
                         startingDayOfWeek: StartingDayOfWeek.monday,
+                        // TODO: add calendar limit from schedule
                         firstDay: DateTime(2022, 09, 01),
                         lastDay: DateTime(2100, 09, 01),
                         focusedDay: selectedDay!,
@@ -134,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                       Builder(
                         builder: (context) {
                           // ignore: prefer_is_empty
-                          return raspElements?.length == 0
+                          return raspElementsFiltered?.length == 0
                               ? Expanded(
                                   child: Center(
                                     child: ListView(
@@ -159,11 +157,11 @@ class _HomePageState extends State<HomePage> {
                                       child: CircularProgressIndicator(),
                                     ),
                                     child: ListView.builder(
-                                      itemCount: raspElements?.length,
+                                      itemCount: raspElementsFiltered?.length,
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         final raspElementPage =
-                                            raspElements?[index];
+                                            raspElementsFiltered?[index];
                                         return Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,

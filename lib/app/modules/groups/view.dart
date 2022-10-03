@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:project_cdis/app/data/groups.dart';
 import 'package:project_cdis/app/modules/home/view.dart';
-
 import '../../services/remote_services.dart';
 
 class GroupsPage extends StatefulWidget {
@@ -17,23 +16,20 @@ class GroupsPage extends StatefulWidget {
 
 class _GroupsPageState extends State<GroupsPage> {
   List<Groups>? groups;
-  List<Groups>? group;
+  List<Groups>? groupsFiltered;
   final box = GetStorage();
   var isLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    group = groups;
     getData();
   }
 
   getData() async {
-    // TODO: deduplicate
-    // group = await RomoteServise().getGroupsData();
     groups = await RomoteServise().getGroupsData();
-    group = groups;
-    if (group != null) {
+    groupsFiltered = groups;
+    if (groupsFiltered != null) {
       setState(
         () {
           isLoaded = true;
@@ -84,7 +80,7 @@ class _GroupsPageState extends State<GroupsPage> {
                   value = value.toLowerCase();
                   setState(
                     () {
-                      group = groups?.where((element) {
+                      groupsFiltered = groups?.where((element) {
                         var groupsTitle = element.name.toLowerCase();
                         return groupsTitle.contains(value);
                       }).toList();
@@ -134,9 +130,9 @@ class _GroupsPageState extends State<GroupsPage> {
                   child: CircularProgressIndicator(),
                 ),
                 child: ListView.builder(
-                  itemCount: group?.length,
+                  itemCount: groupsFiltered?.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final groupPage = group![index];
+                    final groupPage = groupsFiltered![index];
                     return Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),

@@ -1,5 +1,5 @@
-class Univesity {
-  Univesity({
+class University {
+  University({
     required this.id,
     required this.name,
     required this.url,
