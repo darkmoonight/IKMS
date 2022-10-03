@@ -1,5 +1,5 @@
 name: test-apk-build
-on: [ push ]
+on: [] # [ push ]
 jobs:
   build-android:
     runs-on: ubuntu-latest

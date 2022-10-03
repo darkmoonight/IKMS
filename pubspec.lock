@@ -127,6 +127,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.4"
+  flat_buffers:
+    dependency: transitive
+    description:
+      name: flat_buffers
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.5"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -273,6 +280,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0"
+  objectbox:
+    dependency: "direct main"
+    description:
+      name: objectbox
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.6.2"
+  objectbox_flutter_libs:
+    dependency: "direct main"
+    description:
+      name: objectbox_flutter_libs
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.6.2"
   path:
     dependency: transitive
     description:
