@@ -12,6 +12,10 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.3.2'
+          cache: true
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:' # optional, change this to force refresh cache
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:' # optional, change this to specify the cache path
+          architecture: x64 # optional, x64 or arm64
       - run: flutter pub get
       - run: flutter build apk --split-per-abi
       - uses: r0adkll/sign-android-release@v1
@@ -22,11 +26,11 @@ jobs:
           alias: ${{ secrets.KEYSTORE_PASSWORD_ALIAS }}
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
           keyPassword: ${{ secrets.KEYSTORE_PASSWORD }}
-      - uses: jungwinter/split@v1
+      - uses: jungwinter/split@v2
         id: signed_files
         with:
           msg: ${{ steps.sign_app.signedReleaseFiles }}
-          separator: ':'
+          seperator: ':'
       - name: Example Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -35,16 +39,16 @@ jobs:
           prerelease: true
           title: "Test release"
           files: |
-            ${{ steps.signed_files._0 }}
-            ${{ steps.signed_files._1 }}
-            ${{ steps.signed_files._2 }}
+            ${{ steps.signed_files.outputs._0 }}
+            ${{ steps.signed_files.outputs._1 }}
+            ${{ steps.signed_files.outputs._2 }}
       - uses: actions/upload-artifact@v3
         with:
           name: apk-build
           path: |
-            ${{ steps.signed_files._0 }}
-            ${{ steps.signed_files._1 }}
-            ${{ steps.signed_files._2 }}
+            ${{ steps.signed_files.outputs._0 }}
+            ${{ steps.signed_files.outputs._1 }}
+            ${{ steps.signed_files.outputs._2 }}
       - name: publish new release
         uses: appleboy/telegram-action@master
         with:
