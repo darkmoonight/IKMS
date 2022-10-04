@@ -1,0 +1,284 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:8986370823140907839",
+      "lastPropertyId": "4:5646898550087937778",
+      "name": "Audience",
+      "properties": [
+        {
+          "id": "1:5511796300181358019",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:3987180180372121954",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:2685221212238023837",
+          "name": "updateDate",
+          "type": 10
+        },
+        {
+          "id": "4:5646898550087937778",
+          "name": "universityId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "1:4293741876052313708",
+          "relationTarget": "University"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:7825799799327162533",
+      "lastPropertyId": "5:4973336008343511562",
+      "name": "Group",
+      "properties": [
+        {
+          "id": "1:5542713122894232778",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:2309982007539729736",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:7537998481934170433",
+          "name": "faculty",
+          "type": 9
+        },
+        {
+          "id": "4:3409491108964691247",
+          "name": "updateDate",
+          "type": 10
+        },
+        {
+          "id": "5:4973336008343511562",
+          "name": "universityId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "2:8825854323129085942",
+          "relationTarget": "University"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:3867662394590718743",
+      "lastPropertyId": "13:7865361433580220335",
+      "name": "Pair",
+      "properties": [
+        {
+          "id": "1:3913059692551515385",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8672012723021863491",
+          "name": "date",
+          "type": 10
+        },
+        {
+          "id": "3:8714173011750805291",
+          "name": "begin",
+          "type": 9
+        },
+        {
+          "id": "4:8727363908954495935",
+          "name": "end",
+          "type": 9
+        },
+        {
+          "id": "5:5778823535833621441",
+          "name": "subject",
+          "type": 9
+        },
+        {
+          "id": "6:6314912701058882555",
+          "name": "audiences",
+          "type": 9
+        },
+        {
+          "id": "7:7627392035127597724",
+          "name": "professors",
+          "type": 9
+        },
+        {
+          "id": "8:6830360267721083595",
+          "name": "groups",
+          "type": 9
+        },
+        {
+          "id": "9:6504269020248700860",
+          "name": "pair",
+          "type": 6
+        },
+        {
+          "id": "10:5408287299973858254",
+          "name": "groupId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "3:288492023571152897",
+          "relationTarget": "Group"
+        },
+        {
+          "id": "11:7435029280930633043",
+          "name": "professorId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "4:3122722910975071676",
+          "relationTarget": "Professor"
+        },
+        {
+          "id": "12:3970773238385352507",
+          "name": "audienceId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "5:6332164295458013122",
+          "relationTarget": "Audience"
+        },
+        {
+          "id": "13:7865361433580220335",
+          "name": "universityId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "6:150815068961671340",
+          "relationTarget": "University"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:7674787838428590245",
+      "lastPropertyId": "5:7496215681257410289",
+      "name": "Professor",
+      "properties": [
+        {
+          "id": "1:6927400822543595247",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:720805719709893528",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:7552053672446152381",
+          "name": "department",
+          "type": 9
+        },
+        {
+          "id": "4:8072511558441353082",
+          "name": "updateDate",
+          "type": 10
+        },
+        {
+          "id": "5:7496215681257410289",
+          "name": "universityId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "7:5870759893465235990",
+          "relationTarget": "University"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "5:61467738301042776",
+      "lastPropertyId": "5:7061083299579797683",
+      "name": "Settings",
+      "properties": [
+        {
+          "id": "1:5240928547006931404",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:450520608605413494",
+          "name": "theme",
+          "type": 1
+        },
+        {
+          "id": "3:353598719514935749",
+          "name": "universityId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "8:330817802647310864",
+          "relationTarget": "University"
+        },
+        {
+          "id": "4:160301548614272204",
+          "name": "groupId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "9:2116924416618599641",
+          "relationTarget": "Group"
+        },
+        {
+          "id": "5:7061083299579797683",
+          "name": "locale",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "6:3651496700350268951",
+      "lastPropertyId": "5:3139465459634543261",
+      "name": "University",
+      "properties": [
+        {
+          "id": "1:3120297054426941942",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:447248646850416776",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:3302356567568330774",
+          "name": "groupsUpdateDate",
+          "type": 10
+        },
+        {
+          "id": "4:452725490388480131",
+          "name": "professorsUpdateDate",
+          "type": 10
+        },
+        {
+          "id": "5:3139465459634543261",
+          "name": "audiencesUpdateDate",
+          "type": 10
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "6:3651496700350268951",
+  "lastIndexId": "9:2116924416618599641",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

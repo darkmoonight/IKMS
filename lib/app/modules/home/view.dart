@@ -6,6 +6,7 @@ import 'package:project_cdis/app/data/shedule.dart';
 import 'package:project_cdis/app/modules/audiences/view.dart';
 import 'package:project_cdis/app/modules/professors/view.dart';
 import 'package:project_cdis/app/modules/settings/view.dart';
+import 'package:project_cdis/main.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../services/remote_services.dart';
@@ -37,7 +38,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   getData() async {
-    raspElements = await RomoteServise().getRaspsElementData();
+    raspElements = await RomoteServise()
+        .getRaspsElementData(objectbox.settings.group.target?.id);
     raspElementsFiltered = raspElements;
     if (raspElements != null) {
       setState(() {

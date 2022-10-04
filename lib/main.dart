@@ -5,10 +5,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:project_cdis/app/data/objectbox.dart';
 import 'package:project_cdis/app/modules/home/view.dart';
 import 'package:project_cdis/utils/theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'utils/theme_controller.dart';
+
+late final ObjectBox objectbox;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +19,7 @@ void main() async {
   SecurityContext context = SecurityContext.defaultContext;
   context.setTrustedCertificatesBytes(data.buffer.asUint8List());
   await GetStorage.init();
+  objectbox = await ObjectBox.create();
   runApp(MyApp());
 }
 

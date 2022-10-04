@@ -32,6 +32,8 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.10.0
   flutter_native_splash: ^2.2.7
+  build_runner: ^2.0.0
+  objectbox_generator: any
 
 flutter_icons:
   android: true

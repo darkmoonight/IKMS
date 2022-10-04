@@ -11,6 +11,8 @@ class UniversityPage extends StatefulWidget {
 }
 
 class _UniversityPageState extends State<UniversityPage> {
+  var isLoaded = false;
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);

@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
 import 'package:project_cdis/app/data/audiences.dart';
@@ -10,19 +9,18 @@ import 'package:project_cdis/app/data/professors.dart';
 import 'package:project_cdis/app/data/shedule.dart';
 
 class RomoteServise {
-  final Dio dio = Dio()
-    ..interceptors.add(
-      DioCacheInterceptor(
-        options: CacheOptions(
-          store: HiveCacheStore(Directory.systemTemp.path),
-          maxStale: const Duration(days: 14),
-          policy: CachePolicy.forceCache,
-          priority: CachePriority.low,
-        ),
-      ),
-    );
+  final Dio dio = Dio();
+    // ..interceptors.add(
+    //   DioCacheInterceptor(
+    //     options: CacheOptions(
+    //       store: HiveCacheStore(Directory.systemTemp.path),
+    //       maxStale: const Duration(days: 14),
+    //       policy: CachePolicy.forceCache,
+    //       priority: CachePriority.low,
+    //     ),
+    //   ),
+    // );
   final baseUrl = 'https://edu.donstu.ru/api/';
-  final box = GetStorage();
 
   Future<List<Audiences>> getAudiencesData() async {
     var url = 'raspAudlist';
@@ -66,9 +64,8 @@ class RomoteServise {
     }
   }
 
-  Future<List<RaspElement>> getRaspsElementData() async {
-    final group = box.read('isGroups');
-    var url = 'Rasp?idGroup=$group';
+  Future<List<RaspElement>> getRaspsElementData(int? id) async {
+    var url = 'Rasp?idGroup=$id';
     try {
       Response response = await dio.get(baseUrl + url);
       Rasp rasp = Rasp.fromJson(response.data);
@@ -81,7 +78,7 @@ class RomoteServise {
     }
   }
 
-  Future<List<RaspElement>> getRaspsAudElementData(int id) async {
+  Future<List<RaspElement>> getRaspsAudElementData(int? id) async {
     var url = 'Rasp?idAudLine=$id';
     try {
       Response response = await dio.get(baseUrl + url);
@@ -95,7 +92,7 @@ class RomoteServise {
     }
   }
 
-  Future<List<RaspElement>> getRaspsProfElementData(int id) async {
+  Future<List<RaspElement>> getRaspsProfElementData(int? id) async {
     var url = 'Rasp?idTeacher=$id';
     try {
       Response response = await dio.get(baseUrl + url);

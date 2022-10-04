@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:project_cdis/app/modules/groups/view.dart';
 import 'package:project_cdis/app/modules/university/view.dart';
+import 'package:project_cdis/main.dart';
 import '../../../utils/theme_controller.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -16,13 +16,12 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final themeController = Get.put(ThemeController());
-  final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     Locale locale = Localizations.localeOf(context);
-    final groupsName = box.read('isGroupsName');
+    final groupsName = objectbox.settings.group.target?.name;
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(

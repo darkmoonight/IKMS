@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:project_cdis/app/data/groups.dart';
 import 'package:project_cdis/app/modules/home/view.dart';
+import 'package:project_cdis/main.dart';
 import '../../services/remote_services.dart';
 
 class GroupsPage extends StatefulWidget {
@@ -17,7 +17,6 @@ class GroupsPage extends StatefulWidget {
 class _GroupsPageState extends State<GroupsPage> {
   List<Groups>? groups;
   List<Groups>? groupsFiltered;
-  final box = GetStorage();
   var isLoaded = false;
 
   @override
@@ -147,8 +146,10 @@ class _GroupsPageState extends State<GroupsPage> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            box.write('isGroups', groupPage.id.toString());
-                            box.write('isGroupsName', groupPage.name);
+                            // TODO: migrate to objectbox objects
+                            objectbox.settings.group.target =
+                                objectbox.groupBox.get(groupPage.id);
+                            objectbox.settingsBox.put(objectbox.settings);
                             Get.to(() => const HomePage(),
                                 transition: Transition.upToDown);
                           },
