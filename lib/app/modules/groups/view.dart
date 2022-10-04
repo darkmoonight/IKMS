@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:project_cdis/app/data/groups.dart';
 import 'package:project_cdis/app/modules/home/view.dart';
+import 'package:project_cdis/app/widgets/selection_list.dart';
 import 'package:project_cdis/main.dart';
 import '../../services/remote_services.dart';
 
@@ -51,124 +51,23 @@ class _GroupsPageState extends State<GroupsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 15.w, left: 10.w),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: const Icon(Icons.arrow_back),
-                    iconSize: theme.iconTheme.size,
-                    color: theme.iconTheme.color,
-                    splashColor: Colors.transparent,
-                    highlightColor: Colors.transparent,
-                  ),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  Expanded(
-                    child: Text(
-                      AppLocalizations.of(context)!.groups,
-                      style: theme.textTheme.headline2,
-                      overflow: TextOverflow.fade,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
-              child: TextField(
-                onChanged: applyFilter,
-                style: theme.textTheme.headline6,
-                decoration: InputDecoration(
-                  fillColor: theme.primaryColor,
-                  filled: true,
-                  prefixIcon: const Icon(
-                    Icons.search_outlined,
-                    color: Colors.grey,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                    borderSide: BorderSide(
-                      color: theme.primaryColor,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                    borderSide: BorderSide(
-                      color: theme.primaryColor,
-                    ),
-                  ),
-                  hintText: AppLocalizations.of(context)!.groupsName,
-                  hintStyle: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 15.sp,
-                  ),
-                ),
-                autofocus: false,
-              ),
-            ),
-            Divider(
-              color: theme.dividerColor,
-              height: 20.w,
-              thickness: 2,
-              indent: 10.w,
-              endIndent: 10.w,
-            ),
-            Expanded(
-              child: Visibility(
-                visible: isLoaded,
-                replacement: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                child: ListView.builder(
-                  itemCount: groupsFiltered?.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final groupPage = groupsFiltered![index];
-                    return Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
-                      child: Container(
-                        height: 40.w,
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(15)),
-                          color: theme.primaryColor,
-                        ),
-                        child: TextButton(
-                          onPressed: () {
-                            // TODO: migrate to objectbox objects
-                            objectbox.settings.group.target =
-                                objectbox.groupBox.get(groupPage.id);
-                            objectbox.settingsBox.put(objectbox.settings);
-                            Get.to(() => const HomePage(),
-                                transition: Transition.upToDown);
-                          },
-                          child: Center(
-                            child: Text(
-                              groupPage.name,
-                              style: theme.textTheme.headline6,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+    return SelectionList(
+      headerText: AppLocalizations.of(context)!.groups,
+      hintText: AppLocalizations.of(context)!.groupsName,
+      onTextChanged: applyFilter,
+      isLoaded: isLoaded,
+      selectionTextStyle: Theme.of(context).textTheme.headline6,
+      onBackPressed: Get.back,
+      filteredData: groupsFiltered
+          ?.map((Groups group) => SelectionData(id: group.id, name: group.name))
+          .toList(),
+      onEntrySelected: (SelectionData selectionData) {
+        // TODO: migrate to objectbox objects
+        objectbox.settings.group.target =
+            objectbox.groupBox.get(selectionData.id);
+        objectbox.settingsBox.put(objectbox.settings);
+        Get.to(() => const HomePage(), transition: Transition.upToDown);
+      },
     );
   }
 }

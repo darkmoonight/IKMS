@@ -37,7 +37,7 @@ class Audiences {
   });
 
   String name;
-  int? id;
+  int id;
 
   factory Audiences.fromJson(Map<String, dynamic> json) => Audiences(
         name: json["name"] ?? '',

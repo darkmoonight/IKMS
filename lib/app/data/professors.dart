@@ -40,7 +40,7 @@ class Professors {
 
   String name;
   String kaf;
-  int? id;
+  int id;
   bool? idFromRasp;
 
   factory Professors.fromJson(Map<String, dynamic> json) => Professors(

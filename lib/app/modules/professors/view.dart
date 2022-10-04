@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:project_cdis/app/data/professors.dart';
 import 'package:project_cdis/app/modules/raspProfessors/view.dart';
+import 'package:project_cdis/app/widgets/selection_list.dart';
 import '../../services/remote_services.dart';
 
 class ProfessorsPage extends StatefulWidget {
@@ -50,104 +50,22 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 15.w),
-              child: Text(
-                AppLocalizations.of(context)!.professors,
-                style: theme.textTheme.headline2,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
-              child: TextField(
-                onChanged: applyFilter,
-                style: theme.textTheme.headline6,
-                decoration: InputDecoration(
-                  fillColor: theme.primaryColor,
-                  filled: true,
-                  prefixIcon: const Icon(
-                    Icons.search_outlined,
-                    color: Colors.grey,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                    borderSide: BorderSide(
-                      color: theme.primaryColor,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                    borderSide: BorderSide(
-                      color: theme.primaryColor,
-                    ),
-                  ),
-                  hintText: AppLocalizations.of(context)!.fio,
-                  hintStyle: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 15.sp,
-                  ),
-                ),
-                autofocus: false,
-              ),
-            ),
-            Divider(
-              color: theme.dividerColor,
-              height: 20.w,
-              thickness: 2,
-              indent: 10.w,
-              endIndent: 10.w,
-            ),
-            Expanded(
-              child: Visibility(
-                visible: isLoaded,
-                replacement: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                child: ListView.builder(
-                  itemCount: professorsFiltered?.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final professorPage = professorsFiltered![index];
-                    return Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
-                      child: Container(
-                        height: 40.w,
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(15)),
-                            color: theme.primaryColor),
-                        child: TextButton(
-                          onPressed: () {
-                            Get.to(
-                                () => RaspProfessorsPage(
-                                    id: professorPage.id,
-                                    name: professorPage.name),
-                                transition: Transition.downToUp);
-                          },
-                          child: Center(
-                            child: Text(
-                              professorPage.name,
-                              style: theme.primaryTextTheme.headline4,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+    return SelectionList(
+      headerText: AppLocalizations.of(context)!.professors,
+      hintText: AppLocalizations.of(context)!.fio,
+      onTextChanged: applyFilter,
+      isLoaded: isLoaded,
+      selectionTextStyle: Theme.of(context).primaryTextTheme.headline4,
+      filteredData: professorsFiltered
+          ?.map((Professors professor) =>
+              SelectionData(id: professor.id, name: professor.name))
+          .toList(),
+      onEntrySelected: (SelectionData selectionData) {
+        Get.to(
+            () => RaspProfessorsPage(
+                id: selectionData.id, name: selectionData.name),
+            transition: Transition.downToUp);
+      },
     );
   }
 }
