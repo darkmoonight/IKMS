@@ -51,23 +51,29 @@ class _GroupsPageState extends State<GroupsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SelectionList(
-      headerText: AppLocalizations.of(context)!.groups,
-      hintText: AppLocalizations.of(context)!.groupsName,
-      onTextChanged: applyFilter,
-      isLoaded: isLoaded,
-      selectionTextStyle: Theme.of(context).textTheme.headline6,
-      onBackPressed: Get.back,
-      filteredData: groupsFiltered
-          ?.map((Groups group) => SelectionData(id: group.id, name: group.name))
-          .toList(),
-      onEntrySelected: (SelectionData selectionData) {
-        // TODO: migrate to objectbox objects
-        objectbox.settings.group.target =
-            objectbox.groupBox.get(selectionData.id);
-        objectbox.settingsBox.put(objectbox.settings);
-        Get.to(() => const HomePage(), transition: Transition.upToDown);
-      },
+    final theme = Theme.of(context);
+    return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
+      body: SelectionList(
+        theme: theme,
+        headerText: AppLocalizations.of(context)!.groups,
+        hintText: AppLocalizations.of(context)!.groupsName,
+        onTextChanged: applyFilter,
+        isLoaded: isLoaded,
+        selectionTextStyle: Theme.of(context).textTheme.headline6,
+        onBackPressed: Get.back,
+        filteredData: groupsFiltered
+            ?.map(
+                (Groups group) => SelectionData(id: group.id, name: group.name))
+            .toList(),
+        onEntrySelected: (SelectionData selectionData) {
+          // TODO: migrate to objectbox objects
+          objectbox.settings.group.target =
+              objectbox.groupBox.get(selectionData.id);
+          objectbox.settingsBox.put(objectbox.settings);
+          Get.to(() => const HomePage(), transition: Transition.upToDown);
+        },
+      ),
     );
   }
 }

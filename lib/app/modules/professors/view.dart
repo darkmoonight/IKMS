@@ -50,22 +50,27 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SelectionList(
-      headerText: AppLocalizations.of(context)!.professors,
-      hintText: AppLocalizations.of(context)!.fio,
-      onTextChanged: applyFilter,
-      isLoaded: isLoaded,
-      selectionTextStyle: Theme.of(context).primaryTextTheme.headline4,
-      filteredData: professorsFiltered
-          ?.map((Professors professor) =>
-              SelectionData(id: professor.id, name: professor.name))
-          .toList(),
-      onEntrySelected: (SelectionData selectionData) {
-        Get.to(
-            () => RaspProfessorsPage(
-                id: selectionData.id, name: selectionData.name),
-            transition: Transition.downToUp);
-      },
+    final theme = Theme.of(context);
+    return Scaffold(
+      backgroundColor: theme.scaffoldBackgroundColor,
+      body: SelectionList(
+        theme: theme,
+        headerText: AppLocalizations.of(context)!.professors,
+        hintText: AppLocalizations.of(context)!.fio,
+        onTextChanged: applyFilter,
+        isLoaded: isLoaded,
+        selectionTextStyle: Theme.of(context).primaryTextTheme.headline4,
+        filteredData: professorsFiltered
+            ?.map((Professors professor) =>
+                SelectionData(id: professor.id, name: professor.name))
+            .toList(),
+        onEntrySelected: (SelectionData selectionData) {
+          Get.to(
+              () => RaspProfessorsPage(
+                  id: selectionData.id, name: selectionData.name),
+              transition: Transition.downToUp);
+        },
+      ),
     );
   }
 }

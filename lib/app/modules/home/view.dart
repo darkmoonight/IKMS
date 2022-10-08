@@ -75,7 +75,6 @@ class _HomePageState extends State<HomePage> {
               children: [
                 SafeArea(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
                         padding: EdgeInsets.only(top: 15.w),
