@@ -44,18 +44,26 @@ class RaspWidget extends StatefulWidget {
 class _RaspWidgetState extends State<RaspWidget> {
   late List<RaspData> raspElementsFiltered;
   DateTime selectedDay = DateTime.now();
-  DateTime focusedDay = DateTime.now();
   CalendarFormat calendarFormat = CalendarFormat.week;
+  final DateTime now = DateTime.now();
 
-  RaspData get firstDay =>
-      widget.raspElements.reduce((a, b) => a.date.isBefore(b.date) ? a : b);
+  DateTime get firstDay => widget.raspElements.isNotEmpty
+      ? widget.raspElements
+          .reduce((a, b) => a.date.isBefore(b.date) ? a : b)
+          .date
+      : DateTime.now();
 
-  RaspData get lastDay =>
-      widget.raspElements.reduce((a, b) => a.date.isAfter(b.date) ? a : b);
+  DateTime get lastDay => widget.raspElements.isNotEmpty
+      ? widget.raspElements
+          .reduce((a, b) => a.date.isAfter(b.date) ? a : b)
+          .date
+      : DateTime.now();
 
   @override
   void initState() {
     super.initState();
+    print(firstDay);
+    print(lastDay);
     getRasp();
   }
 
@@ -115,24 +123,24 @@ class _RaspWidgetState extends State<RaspWidget> {
                 ),
           TableCalendar(
             startingDayOfWeek: StartingDayOfWeek.monday,
-            firstDay: firstDay.date,
-            lastDay: lastDay.date,
+            firstDay: firstDay,
+            lastDay: lastDay,
             focusedDay: selectedDay,
             locale: '$tag',
             selectedDayPredicate: (day) {
               return isSameDay(selectedDay, day);
             },
             onDaySelected: (selected, focused) {
-              setState(
-                () {
-                  selectedDay = selected;
-                  focusedDay = focused;
-                  getRasp();
-                },
-              );
+              setState(() {
+                selectedDay = selected;
+              });
+              getRasp();
             },
             onPageChanged: (focused) {
-              focusedDay = focused;
+              setState(() {
+                selectedDay = focused;
+              });
+              getRasp();
             },
             availableCalendarFormats: {
               CalendarFormat.month: AppLocalizations.of(context)!.month,
@@ -157,8 +165,7 @@ class _RaspWidgetState extends State<RaspWidget> {
           ),
           Builder(
             builder: (context) {
-              // ignore: prefer_is_empty
-              return raspElementsFiltered.length == 0
+              return raspElementsFiltered.isEmpty
                   ? Expanded(
                       child: Center(
                         child: ListView(
