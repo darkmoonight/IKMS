@@ -25,7 +25,6 @@ class _MySchedulePageState extends State<MySchedulePage> {
   }
 
   getData() async {
-    print(widget.groupId);
     final raspElements =
         await RomoteServise().getRaspsElementData(widget.groupId);
     setState(() {

@@ -43,20 +43,18 @@ class _RaspWidgetState extends State<RaspWidget> {
   late List<RaspData> raspElementsFiltered;
   DateTime selectedDay = DateTime.now();
   CalendarFormat calendarFormat = CalendarFormat.week;
-  final DateTime now = DateTime.now();
 
-  // TODO: resolve calendar rewind issue
   DateTime get firstDay => widget.raspElements.isNotEmpty
       ? widget.raspElements
           .reduce((a, b) => a.date.isBefore(b.date) ? a : b)
           .date
-      : DateTime(now.year, 9, 1);
+      : DateTime.now();
 
   DateTime get lastDay => widget.raspElements.isNotEmpty
       ? widget.raspElements
           .reduce((a, b) => a.date.isAfter(b.date) ? a : b)
           .date
-      : DateTime.utc(now.year + 1, 8, 31);
+      : DateTime.now();
 
   @override
   void initState() {
@@ -119,6 +117,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                   ),
                 ),
           TableCalendar(
+            key: UniqueKey(),
             startingDayOfWeek: StartingDayOfWeek.monday,
             firstDay: firstDay,
             lastDay: lastDay,
