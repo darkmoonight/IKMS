@@ -16,7 +16,7 @@ class MySchedulePage extends StatefulWidget {
 
 class _MySchedulePageState extends State<MySchedulePage> {
   var isLoaded = false;
-  List<RaspData> raspData = <RaspData>[];
+  ValueNotifier<List<RaspData>> raspData = ValueNotifier(<RaspData>[]);
 
   @override
   void initState() {
@@ -28,7 +28,7 @@ class _MySchedulePageState extends State<MySchedulePage> {
     final raspElements =
         await RomoteServise().getRaspsElementData(widget.groupId);
     setState(() {
-      raspData = raspElements
+      raspData.value = raspElements
           .map((RaspElement element) => RaspData(
               discipline: element.discipline,
               teacher: element.teacher,

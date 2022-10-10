@@ -23,7 +23,7 @@ class RaspData {
 class RaspWidget extends StatefulWidget {
   final double squareWidth;
   final bool isLoaded;
-  final List<RaspData> raspElements;
+  final ValueNotifier<List<RaspData>> raspElements;
   final Function()? onBackPressed;
   final String? headerText;
 
@@ -41,17 +41,17 @@ class RaspWidget extends StatefulWidget {
 
 class _RaspWidgetState extends State<RaspWidget> {
   late List<RaspData> raspElementsFiltered;
-  DateTime selectedDay = DateTime.now();
+  DateTime selectedDay = normalizeDate(DateTime.now());
   CalendarFormat calendarFormat = CalendarFormat.week;
 
-  DateTime get firstDay => widget.raspElements.isNotEmpty
-      ? widget.raspElements
+  DateTime get firstDay => widget.raspElements.value.isNotEmpty
+      ? widget.raspElements.value
           .reduce((a, b) => a.date.isBefore(b.date) ? a : b)
           .date
       : DateTime.now();
 
-  DateTime get lastDay => widget.raspElements.isNotEmpty
-      ? widget.raspElements
+  DateTime get lastDay => widget.raspElements.value.isNotEmpty
+      ? widget.raspElements.value
           .reduce((a, b) => a.date.isAfter(b.date) ? a : b)
           .date
       : DateTime.now();
@@ -60,12 +60,19 @@ class _RaspWidgetState extends State<RaspWidget> {
   void initState() {
     super.initState();
     getRasp();
+    widget.raspElements.addListener(getRasp);
+  }
+
+  @override
+  void dispose() {
+    widget.raspElements.removeListener(getRasp);
+    super.dispose();
   }
 
   void getRasp() {
     setState(
       () {
-        raspElementsFiltered = widget.raspElements.where(
+        raspElementsFiltered = widget.raspElements.value.where(
           (element) {
             return element.date.isAtSameMomentAs(selectedDay);
           },
@@ -159,95 +166,84 @@ class _RaspWidgetState extends State<RaspWidget> {
             indent: 10.w,
             endIndent: 10.w,
           ),
-          Builder(
-            builder: (context) {
-              return raspElementsFiltered.isEmpty
-                  ? Expanded(
-                      child: Center(
-                        child: ListView(
-                          children: [
-                            Image.asset(
-                              'assets/images/no.png',
-                              scale: 1,
-                            ),
-                            Text(
-                              AppLocalizations.of(context)!.no_par,
-                              style: Theme.of(context).textTheme.headline3,
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
+          Expanded(
+            child: Visibility(
+              visible: widget.isLoaded,
+              replacement: const Center(
+                child: CircularProgressIndicator(),
+              ),
+              child: Visibility(
+                visible: raspElementsFiltered.isNotEmpty,
+                replacement: Center(
+                  child: ListView(
+                    children: [
+                      Image.asset(
+                        'assets/images/no.png',
+                        scale: 1,
                       ),
-                    )
-                  : Expanded(
-                      child: Visibility(
-                        visible: widget.isLoaded,
-                        replacement: const Center(
-                          child: CircularProgressIndicator(),
+                      Text(
+                        AppLocalizations.of(context)!.no_par,
+                        style: Theme.of(context).textTheme.headline3,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                child: ListView.builder(
+                  itemCount: raspElementsFiltered.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final raspElementPage = raspElementsFiltered[index];
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 15.w, vertical: 10.w),
+                          child: Text(
+                              '${raspElementPage.beginning}-${raspElementPage.end}',
+                              style: Theme.of(context).textTheme.headline6),
                         ),
-                        child: ListView.builder(
-                          itemCount: raspElementsFiltered.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final raspElementPage = raspElementsFiltered[index];
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 15.w, vertical: 10.w),
-                                  child: Text(
-                                      '${raspElementPage.beginning}-${raspElementPage.end}',
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10.w, vertical: 5.w),
+                          child: Container(
+                            height: 120.w,
+                            width: widget.squareWidth,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(15)),
+                                color: Theme.of(context).primaryColor),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15.w),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(raspElementPage.discipline,
                                       style: Theme.of(context)
                                           .textTheme
                                           .headline6),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10.w, vertical: 5.w),
-                                  child: Container(
-                                    height: 120.w,
-                                    width: widget.squareWidth,
-                                    decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(15)),
-                                        color: Theme.of(context).primaryColor),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 15.w),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(raspElementPage.discipline,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .headline6),
-                                          Flexible(
-                                              child: SizedBox(height: 10.w)),
-                                          Text(raspElementPage.teacher,
-                                              style: Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .subtitle1),
-                                          Flexible(
-                                              child: SizedBox(height: 10.w)),
-                                          Text(raspElementPage.audience,
-                                              style: Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .subtitle1),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
+                                  Flexible(child: SizedBox(height: 10.w)),
+                                  Text(raspElementPage.teacher,
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .subtitle1),
+                                  Flexible(child: SizedBox(height: 10.w)),
+                                  Text(raspElementPage.audience,
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .subtitle1),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     );
-            },
+                  },
+                ),
+              ),
+            ),
           ),
         ],
       ),

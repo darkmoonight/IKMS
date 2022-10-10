@@ -17,7 +17,7 @@ class RaspAudiencesPage extends StatefulWidget {
 
 class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
   var isLoaded = false;
-  List<RaspData> raspData = <RaspData>[];
+  ValueNotifier<List<RaspData>> raspData = ValueNotifier(<RaspData>[]);
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
         await RomoteServise().getRaspsAudElementData(widget.id);
     setState(
       () {
-        raspData = raspElements
+        raspData.value = raspElements
             .map((RaspElement element) => RaspData(
                 discipline: element.discipline,
                 teacher: element.teacher,
