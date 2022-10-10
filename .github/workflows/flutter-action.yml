@@ -1,5 +1,8 @@
 name: test-apk-build
-on: [] # [ push ]
+on:
+  push:
+    tags:
+      - '*'
 jobs:
   build-android:
     runs-on: ubuntu-latest
@@ -59,11 +62,10 @@ jobs:
             ${{ steps.signed_files.outputs._2 }}
             ${{ steps.signed_files.outputs._3 }}
             ${{ steps.signed_files.outputs._4 }}
-#      - name: publish new release
-#        uses: appleboy/telegram-action@master
-#        with:
-#          to: ${{ secrets.TELEGRAM_TO }}
-#          token: ${{ secrets.TELEGRAM_TOKEN }}
-#          message: 'Repository: ${{ github.repository }}'
-#          document: ${{ steps.signed_files.outputs._4 }}
-
+      - name: publish new release
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: 'Repository: ${{ github.repository }}'
+          document: ${{ steps.signed_files.outputs._4 }}

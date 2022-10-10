@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:project_cdis/app/data/groups.dart';
-import 'package:project_cdis/app/modules/home/view.dart';
+import 'package:project_cdis/app/services/remote_services.dart';
 import 'package:project_cdis/app/widgets/selection_list.dart';
-import 'package:project_cdis/main.dart';
-import '../../services/remote_services.dart';
 
 class GroupsPage extends StatefulWidget {
   const GroupsPage({super.key});
@@ -51,11 +49,9 @@ class _GroupsPageState extends State<GroupsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SelectionList(
-        theme: theme,
         headerText: AppLocalizations.of(context)!.groups,
         hintText: AppLocalizations.of(context)!.groupsName,
         onTextChanged: applyFilter,
@@ -67,11 +63,7 @@ class _GroupsPageState extends State<GroupsPage> {
                 (Groups group) => SelectionData(id: group.id, name: group.name))
             .toList(),
         onEntrySelected: (SelectionData selectionData) {
-          // TODO: migrate to objectbox objects
-          objectbox.settings.group.target =
-              objectbox.groupBox.get(selectionData.id);
-          objectbox.settingsBox.put(objectbox.settings);
-          Get.to(() => const HomePage(), transition: Transition.upToDown);
+          Get.back(result: selectionData);
         },
       ),
     );

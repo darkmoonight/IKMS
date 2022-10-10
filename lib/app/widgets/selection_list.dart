@@ -10,7 +10,6 @@ class SelectionData {
 }
 
 class SelectionList extends StatefulWidget {
-  final ThemeData theme;
   final String headerText;
   final String hintText;
   final Function(String)? onTextChanged;
@@ -22,14 +21,13 @@ class SelectionList extends StatefulWidget {
 
   const SelectionList({
     super.key,
-    required this.theme,
     required this.headerText,
     required this.hintText,
     required this.isLoaded,
     required this.onEntrySelected,
     required this.selectionTextStyle,
+    required this.filteredData,
     this.onTextChanged,
-    this.filteredData,
     this.onBackPressed,
   });
 
@@ -48,7 +46,7 @@ class _SelectionListState extends State<SelectionList> {
                   padding: EdgeInsets.only(top: 15.w),
                   child: Text(
                     widget.headerText,
-                    style: widget.theme.textTheme.headline2,
+                    style: Theme.of(context).textTheme.headline2,
                     textAlign: TextAlign.center,
                   ),
                 )
@@ -59,8 +57,8 @@ class _SelectionListState extends State<SelectionList> {
                       IconButton(
                         onPressed: widget.onBackPressed,
                         icon: const Icon(Icons.arrow_back),
-                        iconSize: widget.theme.iconTheme.size,
-                        color: widget.theme.iconTheme.color,
+                        iconSize: Theme.of(context).iconTheme.size,
+                        color: Theme.of(context).iconTheme.color,
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                       ),
@@ -70,7 +68,7 @@ class _SelectionListState extends State<SelectionList> {
                       Expanded(
                         child: Text(
                           widget.headerText,
-                          style: widget.theme.textTheme.headline2,
+                          style: Theme.of(context).textTheme.headline2,
                           overflow: TextOverflow.fade,
                         ),
                       ),
@@ -81,9 +79,9 @@ class _SelectionListState extends State<SelectionList> {
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
             child: TextField(
               onChanged: widget.onTextChanged,
-              style: widget.theme.textTheme.headline6,
+              style: Theme.of(context).textTheme.headline6,
               decoration: InputDecoration(
-                fillColor: widget.theme.primaryColor,
+                fillColor: Theme.of(context).primaryColor,
                 filled: true,
                 prefixIcon: const Icon(
                   Icons.search_outlined,
@@ -92,13 +90,13 @@ class _SelectionListState extends State<SelectionList> {
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),
                   borderSide: BorderSide(
-                    color: widget.theme.primaryColor,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),
                   borderSide: BorderSide(
-                    color: widget.theme.primaryColor,
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
                 hintText: widget.hintText,
@@ -111,7 +109,7 @@ class _SelectionListState extends State<SelectionList> {
             ),
           ),
           Divider(
-            color: widget.theme.dividerColor,
+            color: Theme.of(context).dividerColor,
             height: 20.w,
             thickness: 2,
             indent: 10.w,
@@ -135,7 +133,7 @@ class _SelectionListState extends State<SelectionList> {
                       decoration: BoxDecoration(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(15)),
-                          color: widget.theme.primaryColor),
+                          color: Theme.of(context).primaryColor),
                       child: TextButton(
                         onPressed: () => widget.onEntrySelected(data),
                         child: Center(

@@ -32,12 +32,12 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
       () {
         raspData = raspElements
             .map((RaspElement element) => RaspData(
-            discipline: element.discipline,
-            teacher: element.teacher,
-            audience: element.audience,
-            date: DateFormat("yyyy-MM-ddThh:mm:ss").parseUTC(element.date),
-            beginning: element.beginning,
-            end: element.end))
+                discipline: element.discipline,
+                teacher: element.teacher,
+                audience: element.audience,
+                date: DateFormat("yyyy-MM-ddThh:mm:ss").parseUTC(element.date),
+                beginning: element.beginning,
+                end: element.end))
             .toList();
         isLoaded = true;
       },
@@ -46,14 +46,12 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
     final squareWidth = Get.width;
     return Scaffold(
       body: RaspWidget(
-        theme: theme,
         squareWidth: squareWidth,
         isLoaded: isLoaded,
-        raspElements:  raspData,
+        raspElements: raspData,
         onBackPressed: () {
           Get.back();
         },

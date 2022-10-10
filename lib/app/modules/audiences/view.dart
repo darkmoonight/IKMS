@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:project_cdis/app/data/audiences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:project_cdis/app/modules/raspAudiences/view.dart';
+import 'package:project_cdis/app/services/remote_services.dart';
 import 'package:project_cdis/app/widgets/selection_list.dart';
-import '../../services/remote_services.dart';
 
 class AudiencesPage extends StatefulWidget {
   const AudiencesPage({super.key});
@@ -50,27 +50,22 @@ class _AudiencesPageState extends State<AudiencesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      body: SelectionList(
-        theme: theme,
-        headerText: AppLocalizations.of(context)!.audiences,
-        hintText: AppLocalizations.of(context)!.number,
-        onTextChanged: applyFilter,
-        isLoaded: isLoaded,
-        selectionTextStyle: Theme.of(context).primaryTextTheme.headline4,
-        filteredData: audiencesFiltered
-            ?.map((Audiences audience) =>
-                SelectionData(id: audience.id, name: audience.name))
-            .toList(),
-        onEntrySelected: (SelectionData selectionData) {
-          Get.to(
-              () => RaspAudiencesPage(
-                  id: selectionData.id, name: selectionData.name),
-              transition: Transition.downToUp);
-        },
-      ),
+    return SelectionList(
+      headerText: AppLocalizations.of(context)!.audiences,
+      hintText: AppLocalizations.of(context)!.number,
+      onTextChanged: applyFilter,
+      isLoaded: isLoaded,
+      selectionTextStyle: Theme.of(context).primaryTextTheme.headline4,
+      filteredData: audiencesFiltered
+          ?.map((Audiences audience) =>
+              SelectionData(id: audience.id, name: audience.name))
+          .toList(),
+      onEntrySelected: (SelectionData selectionData) {
+        Get.to(
+            () => RaspAudiencesPage(
+                id: selectionData.id, name: selectionData.name),
+            transition: Transition.downToUp);
+      },
     );
   }
 }

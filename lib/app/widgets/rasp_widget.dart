@@ -21,7 +21,6 @@ class RaspData {
 }
 
 class RaspWidget extends StatefulWidget {
-  final ThemeData theme;
   final double squareWidth;
   final bool isLoaded;
   final List<RaspData> raspElements;
@@ -30,7 +29,6 @@ class RaspWidget extends StatefulWidget {
 
   const RaspWidget(
       {super.key,
-      required this.theme,
       required this.squareWidth,
       required this.isLoaded,
       required this.raspElements,
@@ -47,23 +45,22 @@ class _RaspWidgetState extends State<RaspWidget> {
   CalendarFormat calendarFormat = CalendarFormat.week;
   final DateTime now = DateTime.now();
 
+  // TODO: resolve calendar rewind issue
   DateTime get firstDay => widget.raspElements.isNotEmpty
       ? widget.raspElements
           .reduce((a, b) => a.date.isBefore(b.date) ? a : b)
           .date
-      : DateTime.now();
+      : DateTime(now.year, 9, 1);
 
   DateTime get lastDay => widget.raspElements.isNotEmpty
       ? widget.raspElements
           .reduce((a, b) => a.date.isAfter(b.date) ? a : b)
           .date
-      : DateTime.now();
+      : DateTime.utc(now.year + 1, 8, 31);
 
   @override
   void initState() {
     super.initState();
-    print(firstDay);
-    print(lastDay);
     getRasp();
   }
 
@@ -90,7 +87,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                   padding: EdgeInsets.only(top: 15.w),
                   child: Text(
                     AppLocalizations.of(context)!.schedule,
-                    style: widget.theme.textTheme.headline2,
+                    style: Theme.of(context).textTheme.headline2,
                     textAlign: TextAlign.center,
                   ),
                 )
@@ -101,8 +98,8 @@ class _RaspWidgetState extends State<RaspWidget> {
                       IconButton(
                         onPressed: widget.onBackPressed,
                         icon: const Icon(Icons.arrow_back),
-                        iconSize: widget.theme.iconTheme.size,
-                        color: widget.theme.iconTheme.color,
+                        iconSize: Theme.of(context).iconTheme.size,
+                        color: Theme.of(context).iconTheme.color,
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                       ),
@@ -114,7 +111,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                           widget.headerText == null
                               ? AppLocalizations.of(context)!.schedule
                               : '${AppLocalizations.of(context)!.schedule} - ${widget.headerText}',
-                          style: widget.theme.textTheme.headline4,
+                          style: Theme.of(context).textTheme.headline4,
                           overflow: TextOverflow.fade,
                         ),
                       ),
@@ -157,7 +154,7 @@ class _RaspWidgetState extends State<RaspWidget> {
             },
           ),
           Divider(
-            color: widget.theme.dividerColor,
+            color: Theme.of(context).dividerColor,
             height: 20.w,
             thickness: 2,
             indent: 10.w,
@@ -176,7 +173,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                             ),
                             Text(
                               AppLocalizations.of(context)!.no_par,
-                              style: widget.theme.textTheme.headline3,
+                              style: Theme.of(context).textTheme.headline3,
                               textAlign: TextAlign.center,
                             ),
                           ],
@@ -201,7 +198,9 @@ class _RaspWidgetState extends State<RaspWidget> {
                                       horizontal: 15.w, vertical: 10.w),
                                   child: Text(
                                       '${raspElementPage.beginning}-${raspElementPage.end}',
-                                      style: widget.theme.textTheme.headline6),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline6),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.symmetric(
@@ -212,7 +211,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                                     decoration: BoxDecoration(
                                         borderRadius: const BorderRadius.all(
                                             Radius.circular(15)),
-                                        color: widget.theme.primaryColor),
+                                        color: Theme.of(context).primaryColor),
                                     child: Padding(
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 15.w),
@@ -223,18 +222,21 @@ class _RaspWidgetState extends State<RaspWidget> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(raspElementPage.discipline,
-                                              style: widget
-                                                  .theme.textTheme.headline6),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline6),
                                           Flexible(
                                               child: SizedBox(height: 10.w)),
                                           Text(raspElementPage.teacher,
-                                              style: widget.theme
-                                                  .primaryTextTheme.subtitle1),
+                                              style: Theme.of(context)
+                                                  .primaryTextTheme
+                                                  .subtitle1),
                                           Flexible(
                                               child: SizedBox(height: 10.w)),
                                           Text(raspElementPage.audience,
-                                              style: widget.theme
-                                                  .primaryTextTheme.subtitle1),
+                                              style: Theme.of(context)
+                                                  .primaryTextTheme
+                                                  .subtitle1),
                                         ],
                                       ),
                                     ),

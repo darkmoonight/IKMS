@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:project_cdis/app/data/shedule.dart';
 import 'package:project_cdis/app/modules/audiences/view.dart';
+import 'package:project_cdis/app/modules/mySchedule/view.dart';
 import 'package:project_cdis/app/modules/professors/view.dart';
 import 'package:project_cdis/app/modules/settings/view.dart';
-import 'package:project_cdis/main.dart';
-import 'package:project_cdis/app/widgets/rasp_widget.dart';
-
-import '../../services/remote_services.dart';
+import 'package:project_cdis/app/widgets/selection_list.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,31 +15,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var isLoaded = false;
-  List<RaspData> raspData = <RaspData>[];
+  int? groupId;
   final tabIndex = 0.obs;
 
   @override
   void initState() {
     super.initState();
-    getData();
-  }
-
-  getData() async {
-    final raspElements = await RomoteServise()
-        .getRaspsElementData(objectbox.settings.group.target?.id);
-    setState(() {
-      raspData = raspElements
-          .map((RaspElement element) => RaspData(
-              discipline: element.discipline,
-              teacher: element.teacher,
-              audience: element.audience,
-              date: DateFormat("yyyy-MM-ddThh:mm:ss").parseUTC(element.date),
-              beginning: element.beginning,
-              end: element.end))
-          .toList();
-      isLoaded = true;
-    });
   }
 
   void changeTabIndex(int index) {
@@ -52,22 +29,24 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    final squareWidth = Get.width;
     return Scaffold(
       body: Obx(
         (() => IndexedStack(
               index: tabIndex.value,
               children: [
-                RaspWidget(
-                  theme: theme,
-                  squareWidth: squareWidth,
-                  isLoaded: isLoaded,
-                  raspElements: raspData,
+                MySchedulePage(
+                  groupId: groupId,
+                  key: UniqueKey(),
                 ),
                 const ProfessorsPage(),
                 const AudiencesPage(),
-                const SettingsPage(),
+                SettingsPage(
+                  onGroupSelected: (SelectionData data) {
+                    setState(() {
+                      groupId = data.id;
+                    });
+                  },
+                ),
               ],
             )),
       ),
@@ -80,7 +59,7 @@ class _HomePageState extends State<HomePage> {
           child: BottomNavigationBar(
             onTap: (int index) => changeTabIndex(index),
             currentIndex: tabIndex.value,
-            backgroundColor: theme.primaryColor,
+            backgroundColor: Theme.of(context).primaryColor,
             showUnselectedLabels: false,
             selectedItemColor: Colors.blue,
             unselectedItemColor: Colors.grey[500],

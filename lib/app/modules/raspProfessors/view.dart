@@ -6,8 +6,8 @@ import 'package:project_cdis/app/services/remote_services.dart';
 import 'package:project_cdis/app/widgets/rasp_widget.dart';
 
 class RaspProfessorsPage extends StatefulWidget {
-  // ignore: prefer_typing_uninitialized_variables
-  final id, name;
+  final int? id;
+  final String? name;
 
   const RaspProfessorsPage({super.key, this.id, this.name});
 
@@ -46,11 +46,9 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
     final squareWidth = Get.width;
     return Scaffold(
       body: RaspWidget(
-        theme: theme,
         squareWidth: squareWidth,
         isLoaded: isLoaded,
         raspElements: raspData,
