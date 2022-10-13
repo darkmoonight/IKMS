@@ -7,6 +7,7 @@ class RaspData {
   final String discipline;
   final String teacher;
   final String audience;
+  final String group;
   final DateTime date;
   final String beginning;
   final String end;
@@ -15,6 +16,7 @@ class RaspData {
       {required this.discipline,
       required this.teacher,
       required this.audience,
+      required this.group,
       required this.date,
       required this.beginning,
       required this.end});
@@ -112,12 +114,15 @@ class _RaspWidgetState extends State<RaspWidget> {
                         width: 5.w,
                       ),
                       Expanded(
-                        child: Text(
-                          widget.headerText == null
-                              ? AppLocalizations.of(context)!.schedule
-                              : '${AppLocalizations.of(context)!.schedule} - ${widget.headerText}',
-                          style: Theme.of(context).textTheme.headline4,
-                          overflow: TextOverflow.fade,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 5.w),
+                          child: Text(
+                            widget.headerText == null
+                                ? AppLocalizations.of(context)!.schedule
+                                : '${AppLocalizations.of(context)!.schedule} - ${widget.headerText}',
+                            style: Theme.of(context).textTheme.headline4,
+                            overflow: TextOverflow.fade,
+                          ),
                         ),
                       ),
                     ],
@@ -207,7 +212,6 @@ class _RaspWidgetState extends State<RaspWidget> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 10.w, vertical: 5.w),
                           child: Container(
-                            height: 120.w,
                             width: widget.squareWidth,
                             decoration: BoxDecoration(
                                 borderRadius:
@@ -216,9 +220,11 @@ class _RaspWidgetState extends State<RaspWidget> {
                             child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 15.w),
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
                                 mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
+                                  Flexible(child: SizedBox(height: 15.w)),
                                   Text(raspElementPage.discipline,
                                       style: Theme.of(context)
                                           .textTheme
@@ -229,10 +235,46 @@ class _RaspWidgetState extends State<RaspWidget> {
                                           .primaryTextTheme
                                           .subtitle1),
                                   Flexible(child: SizedBox(height: 10.w)),
-                                  Text(raspElementPage.audience,
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .subtitle1),
+                                  Builder(builder: (context) {
+                                    final groupList = raspElementPage.group;
+                                    if (groupList.length < 30) {
+                                      return Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(raspElementPage.audience,
+                                              style: Theme.of(context)
+                                                  .primaryTextTheme
+                                                  .subtitle1),
+                                          Text(raspElementPage.group,
+                                              style: Theme.of(context)
+                                                  .primaryTextTheme
+                                                  .subtitle1),
+                                        ],
+                                      );
+                                    } else {
+                                      return Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(raspElementPage.audience,
+                                              style: Theme.of(context)
+                                                  .primaryTextTheme
+                                                  .subtitle1),
+                                          Flexible(
+                                              child: SizedBox(height: 10.w)),
+                                          Text(raspElementPage.group,
+                                              style: Theme.of(context)
+                                                  .primaryTextTheme
+                                                  .subtitle1),
+                                        ],
+                                      );
+                                    }
+                                  }),
+                                  Flexible(child: SizedBox(height: 15.w)),
                                 ],
                               ),
                             ),
