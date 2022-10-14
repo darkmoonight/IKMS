@@ -198,6 +198,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                   itemCount: raspElementsFiltered.length,
                   itemBuilder: (BuildContext context, int index) {
                     final raspElementPage = raspElementsFiltered[index];
+                    final groupList = raspElementPage.group;
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -235,45 +236,40 @@ class _RaspWidgetState extends State<RaspWidget> {
                                           .primaryTextTheme
                                           .subtitle1),
                                   Flexible(child: SizedBox(height: 10.w)),
-                                  Builder(builder: (context) {
-                                    final groupList = raspElementPage.group;
-                                    if (groupList.length < 30) {
-                                      return Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(raspElementPage.audience,
-                                              style: Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .subtitle1),
-                                          Text(raspElementPage.group,
-                                              style: Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .subtitle1),
-                                        ],
-                                      );
-                                    } else {
-                                      return Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(raspElementPage.audience,
-                                              style: Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .subtitle1),
-                                          Flexible(
-                                              child: SizedBox(height: 10.w)),
-                                          Text(raspElementPage.group,
-                                              style: Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .subtitle1),
-                                        ],
-                                      );
-                                    }
-                                  }),
+                                  groupList.length < 30
+                                      ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(raspElementPage.audience,
+                                                style: Theme.of(context)
+                                                    .primaryTextTheme
+                                                    .subtitle1),
+                                            Text(raspElementPage.group,
+                                                style: Theme.of(context)
+                                                    .primaryTextTheme
+                                                    .subtitle1),
+                                          ],
+                                        )
+                                      : Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(raspElementPage.audience,
+                                                style: Theme.of(context)
+                                                    .primaryTextTheme
+                                                    .subtitle1),
+                                            Flexible(
+                                                child: SizedBox(height: 10.w)),
+                                            Text(raspElementPage.group,
+                                                style: Theme.of(context)
+                                                    .primaryTextTheme
+                                                    .subtitle1),
+                                          ],
+                                        ),
                                   Flexible(child: SizedBox(height: 15.w)),
                                 ],
                               ),
