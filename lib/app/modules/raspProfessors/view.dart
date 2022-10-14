@@ -36,6 +36,7 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
                 teacher: element.teacher,
                 audience: element.audience,
                 group: element.group,
+                numberOfJobs: element.numberOfJobs,
                 date: DateFormat("yyyy-MM-ddThh:mm:ss").parseUTC(element.date),
                 beginning: element.beginning,
                 end: element.end))

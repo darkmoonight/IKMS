@@ -9,7 +9,6 @@ import 'package:project_cdis/utils/theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'utils/theme_controller.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   ByteData data = await rootBundle.load('assets/lets-encrypt-r3.pem');

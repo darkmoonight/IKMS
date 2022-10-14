@@ -8,6 +8,7 @@ class RaspData {
   final String teacher;
   final String audience;
   final String group;
+  final int numberOfJobs;
   final DateTime date;
   final String beginning;
   final String end;
@@ -17,6 +18,7 @@ class RaspData {
       required this.teacher,
       required this.audience,
       required this.group,
+      required this.numberOfJobs,
       required this.date,
       required this.beginning,
       required this.end});
