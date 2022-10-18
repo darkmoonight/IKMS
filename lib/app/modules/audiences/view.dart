@@ -58,9 +58,8 @@ class _AudiencesPageState extends State<AudiencesPage> {
       isLoaded: isLoaded,
       selectionTextStyle: Theme.of(context).primaryTextTheme.headline4,
       filteredData: audiencesFiltered
-          ?.map((Audiences audience) => SelectionData()
-            ..id = audience.id
-            ..name = audience.name)
+          ?.map((Audiences audience) =>
+              SelectionData(id: audience.id, name: audience.name))
           .toList(),
       onEntrySelected: (SelectionData selectionData) {
         Get.to(

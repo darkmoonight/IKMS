@@ -122,7 +122,7 @@ class _SelectionListState extends State<SelectionList> {
                     padding:
                         EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
                     child: Container(
-                      height: 40.w,
+                      height: 45.w,
                       decoration: BoxDecoration(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(15)),

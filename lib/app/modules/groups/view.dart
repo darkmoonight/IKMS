@@ -60,9 +60,8 @@ class _GroupsPageState extends State<GroupsPage> {
         selectionTextStyle: Theme.of(context).textTheme.headline6,
         onBackPressed: Get.back,
         filteredData: groupsFiltered
-            ?.map((Groups group) => SelectionData()
-              ..id = group.id
-              ..name = group.name)
+            ?.map(
+                (Groups group) => SelectionData(id: group.id, name: group.name))
             .toList(),
         onEntrySelected: (SelectionData selectionData) {
           Get.back(result: selectionData);

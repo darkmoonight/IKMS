@@ -7,6 +7,8 @@ class RaspData {
   final String discipline;
   final String teacher;
   final String audience;
+  final String group;
+  final int numberOfJobs;
   final DateTime date;
   final String beginning;
   final String end;
@@ -15,6 +17,8 @@ class RaspData {
       {required this.discipline,
       required this.teacher,
       required this.audience,
+      required this.group,
+      required this.numberOfJobs,
       required this.date,
       required this.beginning,
       required this.end});
@@ -112,12 +116,15 @@ class _RaspWidgetState extends State<RaspWidget> {
                         width: 5.w,
                       ),
                       Expanded(
-                        child: Text(
-                          widget.headerText == null
-                              ? AppLocalizations.of(context)!.schedule
-                              : '${AppLocalizations.of(context)!.schedule} - ${widget.headerText}',
-                          style: Theme.of(context).textTheme.headline4,
-                          overflow: TextOverflow.fade,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 5.w),
+                          child: Text(
+                            widget.headerText == null
+                                ? AppLocalizations.of(context)!.schedule
+                                : '${AppLocalizations.of(context)!.schedule} - ${widget.headerText}',
+                            style: Theme.of(context).textTheme.headline4,
+                            overflow: TextOverflow.fade,
+                          ),
                         ),
                       ),
                     ],
@@ -189,59 +196,101 @@ class _RaspWidgetState extends State<RaspWidget> {
                     ],
                   ),
                 ),
-                child: ListView.builder(
-                  itemCount: raspElementsFiltered.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final raspElementPage = raspElementsFiltered[index];
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 15.w, vertical: 10.w),
-                          child: Text(
-                              '${raspElementPage.beginning}-${raspElementPage.end}',
-                              style: Theme.of(context).textTheme.headline6),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 5.w),
-                          child: Container(
-                            height: 120.w,
-                            width: widget.squareWidth,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(15)),
-                                color: Theme.of(context).primaryColor),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 15.w),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(raspElementPage.discipline,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6),
-                                  Flexible(child: SizedBox(height: 10.w)),
-                                  Text(raspElementPage.teacher,
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .subtitle1),
-                                  Flexible(child: SizedBox(height: 10.w)),
-                                  Text(raspElementPage.audience,
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .subtitle1),
-                                ],
+                child: Builder(builder: (context) {
+                  final seen = <String>{};
+                  var raspElements = raspElementsFiltered
+                      .where((element) =>
+                          seen.add(element.numberOfJobs.toString()))
+                      .toList();
+                  return ListView.builder(
+                    itemCount: raspElements.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final raspElementPage = raspElements[index];
+                      final groupList = raspElementPage.group;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15.w, vertical: 10.w),
+                            child: Text(
+                                '${raspElementPage.beginning}-${raspElementPage.end}',
+                                style: Theme.of(context).textTheme.headline6),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 5.w),
+                            child: Container(
+                              width: widget.squareWidth,
+                              decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(15)),
+                                  color: Theme.of(context).primaryColor),
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Flexible(child: SizedBox(height: 15.w)),
+                                    Text(raspElementPage.discipline,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6),
+                                    Flexible(child: SizedBox(height: 10.w)),
+                                    Text(raspElementPage.teacher,
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .subtitle1),
+                                    Flexible(child: SizedBox(height: 10.w)),
+                                    groupList.length < 30
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(raspElementPage.audience,
+                                                  style: Theme.of(context)
+                                                      .primaryTextTheme
+                                                      .subtitle1),
+                                              Text(raspElementPage.group,
+                                                  style: Theme.of(context)
+                                                      .primaryTextTheme
+                                                      .subtitle1),
+                                            ],
+                                          )
+                                        : Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(raspElementPage.audience,
+                                                  style: Theme.of(context)
+                                                      .primaryTextTheme
+                                                      .subtitle1),
+                                              Flexible(
+                                                  child:
+                                                      SizedBox(height: 10.w)),
+                                              Text(raspElementPage.group,
+                                                  style: Theme.of(context)
+                                                      .primaryTextTheme
+                                                      .subtitle1),
+                                            ],
+                                          ),
+                                    Flexible(child: SizedBox(height: 15.w)),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                        ],
+                      );
+                    },
+                  );
+                }),
               ),
             ),
           ),

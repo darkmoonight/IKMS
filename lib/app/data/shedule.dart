@@ -248,7 +248,7 @@ class RaspElement {
   int? userCode;
   bool? writingElement;
   String topic;
-  int? numberOfJobs;
+  int numberOfJobs;
   dynamic link;
   bool? creatingWebinar;
   dynamic codVebinara;
