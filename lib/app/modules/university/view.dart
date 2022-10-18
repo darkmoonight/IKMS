@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
+import 'package:isar/isar.dart';
+import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/widgets/selection_list.dart';
+import 'package:project_cdis/main.dart';
 
 class UniversityPage extends StatefulWidget {
   const UniversityPage({super.key});
@@ -12,6 +15,18 @@ class UniversityPage extends StatefulWidget {
 
 class _UniversityPageState extends State<UniversityPage> {
   var isLoaded = true;
+  final data = isar.universitys
+      .where()
+      .findAllSync()
+      .map((University university) => SelectionData()
+        ..id = university.id
+        ..name = university.name)
+      .toList();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +43,7 @@ class _UniversityPageState extends State<UniversityPage> {
         onBackPressed: () {
           Get.back();
         },
-        filteredData: [SelectionData(id: 1, name: 'ДГТУ')],
+        filteredData: data,
       ),
     );
   }

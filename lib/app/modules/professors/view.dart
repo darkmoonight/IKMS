@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:project_cdis/app/data/professors.dart';
+import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/raspProfessors/view.dart';
 import 'package:project_cdis/app/widgets/selection_list.dart';
 import '../../services/remote_services.dart';
@@ -57,8 +58,9 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
       isLoaded: isLoaded,
       selectionTextStyle: Theme.of(context).primaryTextTheme.headline4,
       filteredData: professorsFiltered
-          ?.map((Professors professor) =>
-              SelectionData(id: professor.id, name: professor.name))
+          ?.map((Professors professor) => SelectionData()
+            ..id = professor.id
+            ..name = professor.name)
           .toList(),
       onEntrySelected: (SelectionData selectionData) {
         Get.to(

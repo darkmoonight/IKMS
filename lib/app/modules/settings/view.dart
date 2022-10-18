@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:isar/isar.dart';
+import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/groups/view.dart';
 import 'package:project_cdis/app/modules/university/view.dart';
-import 'package:project_cdis/app/widgets/selection_list.dart';
+import 'package:project_cdis/main.dart';
 import 'package:project_cdis/utils/theme_controller.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -18,10 +20,12 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final themeController = Get.put(ThemeController());
+  final settings = isar.settings.where().findFirstSync()!;
 
-  // TODO: finish this change
-  SelectionData? group;
-  SelectionData? university;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,13 +151,21 @@ class _SettingsPageState extends State<SettingsPage> {
                         transition: Transition.downToUp);
                     if (selectionData != null) {
                       widget.onGroupSelected(selectionData);
-                      setState(() {
-                        group = selectionData;
+                      var data = GroupSchedule.fromSelectionData(selectionData);
+                      data.university.value = settings.university.value;
+                      settings.group.value = data;
+
+                      await isar.writeTxn(() async {
+                        await isar.groupSchedules.put(data);
+                        await data.university.save();
+                        await isar.settings.put(settings);
+                        await settings.group.save();
                       });
+                      setState(() {});
                     }
                   },
                   child: Text(
-                    group?.name ?? 'Группа не выбрана',
+                    settings.group.value?.name ?? 'Группа не выбрана',
                     style: Theme.of(context).primaryTextTheme.subtitle2,
                   ),
                 ),
@@ -187,12 +199,15 @@ class _SettingsPageState extends State<SettingsPage> {
                         transition: Transition.downToUp);
                     if (selectionData != null) {
                       setState(() {
-                        university = selectionData;
+                        settings.university.value =
+                            isar.universitys.getSync(selectionData.id);
+                        isar.writeTxnSync(
+                            () => isar.settings.putSync(settings));
                       });
                     }
                   },
                   child: Text(
-                    university?.name ?? 'Университет не выбран',
+                    settings.university.value?.name ?? 'Университет не выбран',
                     style: Theme.of(context).primaryTextTheme.subtitle2,
                   ),
                 ),

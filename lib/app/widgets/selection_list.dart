@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-class SelectionData {
-  final int id;
-  final String name;
-  final String? description;
-
-  SelectionData({required this.id, required this.name, this.description});
-}
+import 'package:project_cdis/app/data/schema.dart';
 
 class SelectionList extends StatefulWidget {
   final String headerText;

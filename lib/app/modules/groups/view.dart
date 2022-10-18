@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:project_cdis/app/data/groups.dart';
+import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/services/remote_services.dart';
 import 'package:project_cdis/app/widgets/selection_list.dart';
 
@@ -59,8 +60,9 @@ class _GroupsPageState extends State<GroupsPage> {
         selectionTextStyle: Theme.of(context).textTheme.headline6,
         onBackPressed: Get.back,
         filteredData: groupsFiltered
-            ?.map(
-                (Groups group) => SelectionData(id: group.id, name: group.name))
+            ?.map((Groups group) => SelectionData()
+              ..id = group.id
+              ..name = group.name)
             .toList(),
         onEntrySelected: (SelectionData selectionData) {
           Get.back(result: selectionData);

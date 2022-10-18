@@ -1,15 +1,17 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
+import 'package:project_cdis/app/data/schema.dart';
+import 'package:project_cdis/main.dart';
 
 class ThemeController extends GetxController {
+  final _settings = isar.settings.where().findFirstSync()!;
 
-  ThemeMode get theme => _loadTheme() ? ThemeMode.dark : ThemeMode.light;
+  ThemeMode get theme => _settings.theme ? ThemeMode.dark : ThemeMode.light;
 
-  // TODO: wrap with settings save
-  bool _loadTheme() => false;
-
-  void saveTheme(bool isDarkMode) {
-    // TODO: wrap with settings save
+  void saveTheme(bool isDarkMode) async {
+    _settings.theme = isDarkMode;
+    isar.writeTxn(() async => isar.settings.put(_settings));
   }
 
   void changeTheme(ThemeData theme) => Get.changeTheme(theme);

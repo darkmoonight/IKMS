@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project_cdis/app/data/audiences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/raspAudiences/view.dart';
 import 'package:project_cdis/app/services/remote_services.dart';
 import 'package:project_cdis/app/widgets/selection_list.dart';
@@ -57,8 +58,9 @@ class _AudiencesPageState extends State<AudiencesPage> {
       isLoaded: isLoaded,
       selectionTextStyle: Theme.of(context).primaryTextTheme.headline4,
       filteredData: audiencesFiltered
-          ?.map((Audiences audience) =>
-              SelectionData(id: audience.id, name: audience.name))
+          ?.map((Audiences audience) => SelectionData()
+            ..id = audience.id
+            ..name = audience.name)
           .toList(),
       onEntrySelected: (SelectionData selectionData) {
         Get.to(
