@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:project_cdis/app/data/professors.dart';
 import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/raspProfessors/view.dart';
+import 'package:project_cdis/app/api/donstu.dart';
 import 'package:project_cdis/app/widgets/selection_list.dart';
-import '../../services/remote_services.dart';
 
 class ProfessorsPage extends StatefulWidget {
   const ProfessorsPage({super.key});
@@ -15,8 +14,8 @@ class ProfessorsPage extends StatefulWidget {
 }
 
 class _ProfessorsPageState extends State<ProfessorsPage> {
-  List<Professors>? professors;
-  List<Professors>? professorsFiltered;
+  List<TeacherSchedule>? teachers;
+  List<TeacherSchedule>? teachersFiltered;
   var isLoaded = false;
 
   @override
@@ -26,9 +25,9 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
   }
 
   getData() async {
-    professors = await RomoteServise().getProfessorsData();
+    teachers = (await DonstuAPI().getProfessorsData());
     applyFilter('');
-    if (professorsFiltered != null) {
+    if (teachersFiltered != null) {
       setState(
         () {
           isLoaded = true;
@@ -41,7 +40,7 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
     value = value.toLowerCase();
     setState(
       () {
-        professorsFiltered = professors?.where((element) {
+        teachersFiltered = teachers?.where((element) {
           var professorsTitle = element.name.toLowerCase();
           return professorsTitle.isNotEmpty && professorsTitle.contains(value);
         }).toList();
@@ -57,10 +56,7 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
       onTextChanged: applyFilter,
       isLoaded: isLoaded,
       selectionTextStyle: Theme.of(context).primaryTextTheme.headline4,
-      filteredData: professorsFiltered
-          ?.map((Professors professor) =>
-              SelectionData(id: professor.id, name: professor.name))
-          .toList(),
+      filteredData: teachersFiltered,
       onEntrySelected: (SelectionData selectionData) {
         Get.to(
             () => RaspProfessorsPage(

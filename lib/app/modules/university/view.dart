@@ -15,13 +15,7 @@ class UniversityPage extends StatefulWidget {
 
 class _UniversityPageState extends State<UniversityPage> {
   var isLoaded = true;
-  final data = isar.universitys
-      .where()
-      .findAllSync()
-      .map((University university) => SelectionData()
-        ..id = university.id
-        ..name = university.name)
-      .toList();
+  final data = isar.universitys.where().findAllSync();
 
   @override
   void initState() {

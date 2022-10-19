@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:isar/isar.dart';
 import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/groups/view.dart';
 import 'package:project_cdis/app/modules/university/view.dart';
@@ -20,7 +19,6 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final themeController = Get.put(ThemeController());
-  final settings = isar.settings.where().findFirstSync()!;
 
   @override
   void initState() {
@@ -147,7 +145,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   onPressed: () async {
                     SelectionData? selectionData = await Get.to(
-                        () => const GroupsPage(),
+                        () => const GroupsPage(isSettings: true),
                         transition: Transition.downToUp);
                     if (selectionData != null) {
                       widget.onGroupSelected(selectionData);

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:isar/isar.dart';
 import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/audiences/view.dart';
+import 'package:project_cdis/app/modules/groups/view.dart';
 import 'package:project_cdis/app/modules/mySchedule/view.dart';
 import 'package:project_cdis/app/modules/professors/view.dart';
 import 'package:project_cdis/app/modules/settings/view.dart';
@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int? groupId = isar.settings.where().findFirstSync()?.group.value?.id;
+  int? groupId = settings.group.value?.id;
   final tabIndex = 0.obs;
 
   @override
@@ -41,6 +41,9 @@ class _HomePageState extends State<HomePage> {
                   key: ValueKey<int>(groupId ?? 0),
                 ),
                 const ProfessorsPage(),
+                const GroupsPage(
+                  isSettings: false,
+                ),
                 const AudiencesPage(),
                 SettingsPage(
                   onGroupSelected: (SelectionData data) {
@@ -73,6 +76,10 @@ class _HomePageState extends State<HomePage> {
               BottomNavigationBarItem(
                 label: AppLocalizations.of(context)!.professors,
                 icon: const Icon(Icons.person_outline),
+              ),
+              BottomNavigationBarItem(
+                label: AppLocalizations.of(context)!.groups,
+                icon: const Icon(Icons.groups_outlined),
               ),
               BottomNavigationBarItem(
                 label: AppLocalizations.of(context)!.audiences,

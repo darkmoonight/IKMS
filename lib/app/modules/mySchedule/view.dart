@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:project_cdis/app/data/shedule.dart';
-import 'package:project_cdis/app/services/remote_services.dart';
+import 'package:project_cdis/app/data/schema.dart';
+import 'package:project_cdis/app/api/donstu.dart';
 import 'package:project_cdis/app/widgets/rasp_widget.dart';
 
 class MySchedulePage extends StatefulWidget {
@@ -16,7 +15,7 @@ class MySchedulePage extends StatefulWidget {
 
 class _MySchedulePageState extends State<MySchedulePage> {
   var isLoaded = false;
-  ValueNotifier<List<RaspData>> raspData = ValueNotifier(<RaspData>[]);
+  ValueNotifier<List<Schedule>> raspData = ValueNotifier(<Schedule>[]);
 
   @override
   void initState() {
@@ -25,20 +24,8 @@ class _MySchedulePageState extends State<MySchedulePage> {
   }
 
   getData() async {
-    final raspElements =
-        await RomoteServise().getRaspsElementData(widget.groupId);
+    raspData.value = await DonstuAPI().getRaspsElementData(widget.groupId);
     setState(() {
-      raspData.value = raspElements
-          .map((RaspElement element) => RaspData(
-              discipline: element.discipline,
-              teacher: element.teacher,
-              audience: element.audience,
-              group: element.group,
-              numberOfJobs: element.numberOfJobs,
-              date: DateFormat("yyyy-MM-ddThh:mm:ss").parseUTC(element.date),
-              beginning: element.beginning,
-              end: element.end))
-          .toList();
       isLoaded = true;
     });
   }

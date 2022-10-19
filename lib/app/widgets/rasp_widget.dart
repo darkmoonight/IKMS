@@ -1,33 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:project_cdis/app/data/schema.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-class RaspData {
-  final String discipline;
-  final String teacher;
-  final String audience;
-  final String group;
-  final int numberOfJobs;
-  final DateTime date;
-  final String beginning;
-  final String end;
-
-  RaspData(
-      {required this.discipline,
-      required this.teacher,
-      required this.audience,
-      required this.group,
-      required this.numberOfJobs,
-      required this.date,
-      required this.beginning,
-      required this.end});
-}
 
 class RaspWidget extends StatefulWidget {
   final double squareWidth;
   final bool isLoaded;
-  final ValueNotifier<List<RaspData>> raspElements;
+  final ValueNotifier<List<Schedule>> raspElements;
   final Function()? onBackPressed;
   final String? headerText;
 
@@ -44,7 +24,7 @@ class RaspWidget extends StatefulWidget {
 }
 
 class _RaspWidgetState extends State<RaspWidget> {
-  late List<RaspData> raspElementsFiltered;
+  late List<Schedule> raspElementsFiltered;
   DateTime selectedDay = normalizeDate(DateTime.now());
   CalendarFormat calendarFormat = CalendarFormat.week;
 
@@ -199,8 +179,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                 child: Builder(builder: (context) {
                   final seen = <String>{};
                   var raspElements = raspElementsFiltered
-                      .where((element) =>
-                          seen.add(element.numberOfJobs.toString()))
+                      .where((element) => seen.add(element.pair.toString()))
                       .toList();
                   return ListView.builder(
                     itemCount: raspElements.length,
@@ -214,7 +193,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 15.w, vertical: 10.w),
                             child: Text(
-                                '${raspElementPage.beginning}-${raspElementPage.end}',
+                                '${raspElementPage.begin}-${raspElementPage.end}',
                                 style: Theme.of(context).textTheme.headline6),
                           ),
                           Padding(

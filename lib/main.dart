@@ -19,6 +19,8 @@ Isar isar = Isar.openSync([
   AudienceScheduleSchema,
   ScheduleSchema
 ], compactOnLaunch: const CompactCondition(minRatio: 2));
+late Settings settings;
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,16 +28,13 @@ void main() async {
   SecurityContext context = SecurityContext.defaultContext;
   context.setTrustedCertificatesBytes(data.buffer.asUint8List());
   isarInit();
+  settings = isar.settings.where().findFirstSync() ?? Settings();
   runApp(MyApp());
 }
 
 void isarInit() {
-  if (isar.settings.countSync() == 0) {
-    final newSettings = Settings();
-    isar.writeTxnSync(() => isar.settings.putSync(newSettings));
-  }
   if (isar.universitys.countSync() == 0) {
-    final DonSTU = University()..name = 'ДГТУ';
+    final DonSTU = University(name: 'ДГТУ');
     isar.writeTxnSync(() => isar.universitys.putSync(DonSTU));
   }
 }

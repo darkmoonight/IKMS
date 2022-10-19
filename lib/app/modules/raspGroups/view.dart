@@ -4,17 +4,17 @@ import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/api/donstu.dart';
 import 'package:project_cdis/app/widgets/rasp_widget.dart';
 
-class RaspAudiencesPage extends StatefulWidget {
+class RaspGroupsPage extends StatefulWidget {
   final int? id;
   final String? name;
 
-  const RaspAudiencesPage({super.key, this.id, this.name});
+  const RaspGroupsPage({super.key, this.id, this.name});
 
   @override
-  State<RaspAudiencesPage> createState() => _RaspAudiencesPageState();
+  State<RaspGroupsPage> createState() => _RaspGroupsPageState();
 }
 
-class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
+class _RaspGroupsPageState extends State<RaspGroupsPage> {
   var isLoaded = false;
   ValueNotifier<List<Schedule>> raspData = ValueNotifier(<Schedule>[]);
 
@@ -25,7 +25,7 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
   }
 
   getData() async {
-    raspData.value = await DonstuAPI().getRaspsAudElementData(widget.id);
+    raspData.value = await DonstuAPI().getRaspsElementData(widget.id);
     setState(
       () {
         isLoaded = true;

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:project_cdis/app/data/audiences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/raspAudiences/view.dart';
-import 'package:project_cdis/app/services/remote_services.dart';
+import 'package:project_cdis/app/api/donstu.dart';
 import 'package:project_cdis/app/widgets/selection_list.dart';
 
 class AudiencesPage extends StatefulWidget {
@@ -15,8 +14,8 @@ class AudiencesPage extends StatefulWidget {
 }
 
 class _AudiencesPageState extends State<AudiencesPage> {
-  List<Audiences>? audiences;
-  List<Audiences>? audiencesFiltered;
+  List<AudienceSchedule>? audiences;
+  List<AudienceSchedule>? audiencesFiltered;
   var isLoaded = false;
 
   @override
@@ -26,7 +25,7 @@ class _AudiencesPageState extends State<AudiencesPage> {
   }
 
   getData() async {
-    audiences = await RomoteServise().getAudiencesData();
+    audiences = await DonstuAPI().getAudiencesData();
     applyFilter('');
     if (audiencesFiltered != null) {
       setState(
@@ -57,10 +56,7 @@ class _AudiencesPageState extends State<AudiencesPage> {
       onTextChanged: applyFilter,
       isLoaded: isLoaded,
       selectionTextStyle: Theme.of(context).primaryTextTheme.headline4,
-      filteredData: audiencesFiltered
-          ?.map((Audiences audience) =>
-              SelectionData(id: audience.id, name: audience.name))
-          .toList(),
+      filteredData: audiencesFiltered,
       onEntrySelected: (SelectionData selectionData) {
         Get.to(
             () => RaspAudiencesPage(

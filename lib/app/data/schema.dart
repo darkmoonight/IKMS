@@ -37,6 +37,8 @@ class University extends SelectionData {
   final teachers = IsarLinks<TeacherSchedule>();
   @Backlink(to: 'university')
   final audiences = IsarLinks<AudienceSchedule>();
+
+  University({super.id, super.name, super.description});
 }
 
 @collection
@@ -57,10 +59,10 @@ class TeacherSchedule extends ScheduleData {
 
   TeacherSchedule.fromSelectionData(SelectionData data)
       : super(
-    id: data.id,
-    name: data.name,
-    description: data.description,
-  );
+          id: data.id,
+          name: data.name,
+          description: data.description,
+        );
 }
 
 @collection
@@ -69,10 +71,10 @@ class AudienceSchedule extends ScheduleData {
 
   AudienceSchedule.fromSelectionData(SelectionData data)
       : super(
-    id: data.id,
-    name: data.name,
-    description: data.description,
-  );
+          id: data.id,
+          name: data.name,
+          description: data.description,
+        );
 }
 
 @collection
@@ -88,4 +90,15 @@ class Schedule {
   late String teacher;
   late String audience;
   late String group;
+
+  Schedule({
+    required this.date,
+    required this.begin,
+    required this.end,
+    required this.pair,
+    required this.discipline,
+    required this.teacher,
+    required this.audience,
+    required this.group,
+  });
 }

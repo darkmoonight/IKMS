@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:project_cdis/app/data/groups.dart';
 import 'package:project_cdis/app/data/schema.dart';
-import 'package:project_cdis/app/services/remote_services.dart';
+import 'package:project_cdis/app/modules/raspGroups/view.dart';
+import 'package:project_cdis/app/api/donstu.dart';
 import 'package:project_cdis/app/widgets/selection_list.dart';
 
 class GroupsPage extends StatefulWidget {
-  const GroupsPage({super.key});
+  final bool isSettings;
+
+  const GroupsPage({super.key, required this.isSettings});
 
   @override
   State<GroupsPage> createState() => _GroupsPageState();
 }
 
 class _GroupsPageState extends State<GroupsPage> {
-  List<Groups>? groups;
-  List<Groups>? groupsFiltered;
+  List<GroupSchedule>? groups;
+  List<GroupSchedule>? groupsFiltered;
   var isLoaded = false;
 
   @override
@@ -25,7 +27,7 @@ class _GroupsPageState extends State<GroupsPage> {
   }
 
   getData() async {
-    groups = await RomoteServise().getGroupsData();
+    groups = (await DonstuAPI().getGroupsData());
     applyFilter('');
     if (groupsFiltered != null) {
       setState(
@@ -57,15 +59,21 @@ class _GroupsPageState extends State<GroupsPage> {
         hintText: AppLocalizations.of(context)!.groupsName,
         onTextChanged: applyFilter,
         isLoaded: isLoaded,
-        selectionTextStyle: Theme.of(context).textTheme.headline6,
-        onBackPressed: Get.back,
-        filteredData: groupsFiltered
-            ?.map(
-                (Groups group) => SelectionData(id: group.id, name: group.name))
-            .toList(),
-        onEntrySelected: (SelectionData selectionData) {
-          Get.back(result: selectionData);
-        },
+        selectionTextStyle: widget.isSettings
+            ? Theme.of(context).textTheme.headline6
+            : Theme.of(context).primaryTextTheme.headline4,
+        onBackPressed: widget.isSettings ? Get.back : null,
+        filteredData: groupsFiltered,
+        onEntrySelected: widget.isSettings
+            ? (SelectionData selectionData) {
+                Get.back(result: selectionData);
+              }
+            : (SelectionData selectionData) {
+                Get.to(
+                    () => RaspGroupsPage(
+                        id: selectionData.id, name: selectionData.name),
+                    transition: Transition.downToUp);
+              },
       ),
     );
   }
