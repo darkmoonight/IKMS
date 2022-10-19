@@ -5,10 +5,9 @@ import 'package:project_cdis/app/api/donstu.dart';
 import 'package:project_cdis/app/widgets/rasp_widget.dart';
 
 class RaspAudiencesPage extends StatefulWidget {
-  final int? id;
-  final String? name;
+  final AudienceSchedule audienceSchedule;
 
-  const RaspAudiencesPage({super.key, this.id, this.name});
+  const RaspAudiencesPage({super.key, required this.audienceSchedule});
 
   @override
   State<RaspAudiencesPage> createState() => _RaspAudiencesPageState();
@@ -25,7 +24,8 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
   }
 
   getData() async {
-    raspData.value = await DonstuAPI().getRaspsAudElementData(widget.id);
+    raspData.value =
+        await DonstuAPI().getRaspsAudElementData(widget.audienceSchedule.id);
     setState(
       () {
         isLoaded = true;
@@ -44,7 +44,7 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
         onBackPressed: () {
           Get.back();
         },
-        headerText: widget.name,
+        headerText: widget.audienceSchedule.name,
       ),
     );
   }

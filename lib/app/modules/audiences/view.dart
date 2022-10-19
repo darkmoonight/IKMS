@@ -57,10 +57,8 @@ class _AudiencesPageState extends State<AudiencesPage> {
       isLoaded: isLoaded,
       selectionTextStyle: Theme.of(context).primaryTextTheme.headline4,
       filteredData: audiencesFiltered,
-      onEntrySelected: (SelectionData selectionData) {
-        Get.to(
-            () => RaspAudiencesPage(
-                id: selectionData.id, name: selectionData.name),
+      onEntrySelected: (AudienceSchedule selectionData) {
+        Get.to(() => RaspAudiencesPage(audienceSchedule: selectionData),
             transition: Transition.downToUp);
       },
     );

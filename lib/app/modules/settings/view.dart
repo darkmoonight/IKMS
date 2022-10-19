@@ -143,25 +143,28 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                   ),
-                  onPressed: () async {
-                    SelectionData? selectionData = await Get.to(
-                        () => const GroupsPage(isSettings: true),
-                        transition: Transition.downToUp);
-                    if (selectionData != null) {
-                      widget.onGroupSelected(selectionData);
-                      var data = GroupSchedule.fromSelectionData(selectionData);
-                      data.university.value = settings.university.value;
-                      settings.group.value = data;
+                  onPressed: settings.university.value != null
+                      ? () async {
+                          GroupSchedule? selectionData = await Get.to(
+                              () => const GroupsPage(isSettings: true),
+                              transition: Transition.downToUp);
+                          if (selectionData != null) {
+                            widget.onGroupSelected(selectionData);
+                            settings.group.value = selectionData;
 
-                      await isar.writeTxn(() async {
-                        await isar.groupSchedules.put(data);
-                        await data.university.save();
-                        await isar.settings.put(settings);
-                        await settings.group.save();
-                      });
-                      setState(() {});
-                    }
-                  },
+                            await isar.writeTxn(() async {
+                              await isar.groupSchedules.put(selectionData);
+                              await selectionData.university.save();
+                              await isar.settings.put(settings);
+                              await settings.group.save();
+                            });
+                            setState(() {});
+                          }
+                        }
+                      : () => Get.showSnackbar(const GetSnackBar(
+                            message: 'Университет не выбран',
+                            duration: Duration(seconds: 3),
+                          )),
                   child: Text(
                     settings.group.value?.name ?? 'Группа не выбрана',
                     style: Theme.of(context).primaryTextTheme.subtitle2,
@@ -192,16 +195,16 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                   onPressed: () async {
-                    SelectionData? selectionData = await Get.to(
+                    University? selectionData = await Get.to(
                         () => const UniversityPage(),
                         transition: Transition.downToUp);
                     if (selectionData != null) {
-                      setState(() {
-                        settings.university.value =
-                            isar.universitys.getSync(selectionData.id);
-                        isar.writeTxnSync(
-                            () => isar.settings.putSync(settings));
+                      settings.university.value = selectionData;
+                      await isar.writeTxn(() async {
+                        await isar.settings.put(settings);
+                        await settings.university.save();
                       });
+                      setState(() {});
                     }
                   },
                   child: Text(

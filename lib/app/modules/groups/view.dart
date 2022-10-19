@@ -65,13 +65,11 @@ class _GroupsPageState extends State<GroupsPage> {
         onBackPressed: widget.isSettings ? Get.back : null,
         filteredData: groupsFiltered,
         onEntrySelected: widget.isSettings
-            ? (SelectionData selectionData) {
+            ? (GroupSchedule selectionData) {
                 Get.back(result: selectionData);
               }
-            : (SelectionData selectionData) {
-                Get.to(
-                    () => RaspGroupsPage(
-                        id: selectionData.id, name: selectionData.name),
+            : (GroupSchedule selectionData) {
+                Get.to(() => RaspGroupsPage(groupSchedule: selectionData),
                     transition: Transition.downToUp);
               },
       ),

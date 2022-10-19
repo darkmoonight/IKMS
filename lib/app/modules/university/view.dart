@@ -30,7 +30,7 @@ class _UniversityPageState extends State<UniversityPage> {
         headerText: AppLocalizations.of(context)!.universities,
         hintText: AppLocalizations.of(context)!.universitiesName,
         isLoaded: isLoaded,
-        onEntrySelected: (SelectionData selectionData) {
+        onEntrySelected: (University selectionData) {
           Get.back(result: selectionData);
         },
         selectionTextStyle: Theme.of(context).textTheme.headline6,

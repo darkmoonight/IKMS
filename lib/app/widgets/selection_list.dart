@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:project_cdis/app/data/schema.dart';
 
-class SelectionList extends StatefulWidget {
+class SelectionList<T extends SelectionData> extends StatefulWidget {
   final String headerText;
   final String hintText;
   final Function(String)? onTextChanged;
   final bool isLoaded;
-  final List<SelectionData>? filteredData;
-  final Function(SelectionData) onEntrySelected;
+  final List<T>? filteredData;
+  final Function(T) onEntrySelected;
   final Function()? onBackPressed;
   final TextStyle? selectionTextStyle;
 
@@ -25,10 +25,11 @@ class SelectionList extends StatefulWidget {
   });
 
   @override
-  State<SelectionList> createState() => _SelectionListState();
+  State<SelectionList<T>> createState() => _SelectionListState<T>();
 }
 
-class _SelectionListState extends State<SelectionList> {
+class _SelectionListState<T extends SelectionData>
+    extends State<SelectionList<T>> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -117,7 +118,7 @@ class _SelectionListState extends State<SelectionList> {
               child: ListView.builder(
                 itemCount: widget.filteredData?.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final data = widget.filteredData![index];
+                  final T data = widget.filteredData![index];
                   return Padding(
                     padding:
                         EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),

@@ -5,10 +5,9 @@ import 'package:project_cdis/app/api/donstu.dart';
 import 'package:project_cdis/app/widgets/rasp_widget.dart';
 
 class RaspGroupsPage extends StatefulWidget {
-  final int? id;
-  final String? name;
+  final GroupSchedule groupSchedule;
 
-  const RaspGroupsPage({super.key, this.id, this.name});
+  const RaspGroupsPage({super.key, required this.groupSchedule});
 
   @override
   State<RaspGroupsPage> createState() => _RaspGroupsPageState();
@@ -25,7 +24,8 @@ class _RaspGroupsPageState extends State<RaspGroupsPage> {
   }
 
   getData() async {
-    raspData.value = await DonstuAPI().getRaspsElementData(widget.id);
+    raspData.value =
+        await DonstuAPI().getRaspsElementData(widget.groupSchedule.id);
     setState(
       () {
         isLoaded = true;
@@ -44,7 +44,7 @@ class _RaspGroupsPageState extends State<RaspGroupsPage> {
         onBackPressed: () {
           Get.back();
         },
-        headerText: widget.name,
+        headerText: widget.groupSchedule.name,
       ),
     );
   }

@@ -57,10 +57,8 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
       isLoaded: isLoaded,
       selectionTextStyle: Theme.of(context).primaryTextTheme.headline4,
       filteredData: teachersFiltered,
-      onEntrySelected: (SelectionData selectionData) {
-        Get.to(
-            () => RaspProfessorsPage(
-                id: selectionData.id, name: selectionData.name),
+      onEntrySelected: (TeacherSchedule selectionData) {
+        Get.to(() => RaspProfessorsPage(teacherSchedule: selectionData),
             transition: Transition.downToUp);
       },
     );
