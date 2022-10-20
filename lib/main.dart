@@ -21,7 +21,6 @@ Isar isar = Isar.openSync([
 ], compactOnLaunch: const CompactCondition(minRatio: 2));
 late Settings settings;
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   ByteData data = await rootBundle.load('assets/lets-encrypt-r3.pem');

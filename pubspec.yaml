@@ -35,7 +35,7 @@ flutter_icons:
   android: true
   image_path: "assets/images/schedule.png"
   adaptive_icon_background: "#1F1F1F"
-  adaptive_icon_foreground: "assets/images/schedule.png"
+  adaptive_icon_foreground: "assets/images/schedule2.png"
 
 flutter_native_splash:
   color: "#1F1F1F"
