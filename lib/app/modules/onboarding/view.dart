@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/university/view.dart';
-import 'package:project_cdis/main.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -64,14 +62,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
               ),
               onPressed: () async {
-                settings.onboard = 1;
                 Get.to(
                     () => const UniversityPage(
                           isOnBoard: true,
                         ),
                     transition: Transition.downToUp);
-                await isar
-                    .writeTxn(() async => await isar.settings.put(settings));
               },
               child: Text(
                 'Начать',

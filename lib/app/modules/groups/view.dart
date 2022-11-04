@@ -72,6 +72,8 @@ class _GroupsPageState extends State<GroupsPage> {
       await settings.group.save();
     });
     setState(() {});
+    settings.onboard = 1;
+    await isar.writeTxn(() async => await isar.settings.put(settings));
     Get.to(() => const HomePage(), transition: Transition.downToUp);
   }
 
