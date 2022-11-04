@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:project_cdis/app/data/schema.dart';
+import 'package:project_cdis/app/modules/home/view.dart';
 import 'package:project_cdis/app/modules/raspGroups/view.dart';
 import 'package:project_cdis/app/api/donstu.dart';
 import 'package:project_cdis/app/widgets/selection_list.dart';
+import 'package:project_cdis/main.dart';
 
 class GroupsPage extends StatefulWidget {
   final bool isSettings;
+  final bool isOnBoard;
 
-  const GroupsPage({super.key, required this.isSettings});
+  const GroupsPage(
+      {super.key, required this.isSettings, required this.isOnBoard});
 
   @override
   State<GroupsPage> createState() => _GroupsPageState();
@@ -50,6 +54,27 @@ class _GroupsPageState extends State<GroupsPage> {
     );
   }
 
+  void isSettings(GroupSchedule selectionData) {
+    widget.isSettings
+        ? Get.back(result: selectionData)
+        : Get.to(() => RaspGroupsPage(groupSchedule: selectionData),
+            transition: Transition.downToUp);
+  }
+
+  void isOndoard(GroupSchedule selectionData) async {
+    selectionData.university.value = settings.university.value;
+    settings.group.value = selectionData;
+
+    await isar.writeTxn(() async {
+      await isar.groupSchedules.put(selectionData);
+      await selectionData.university.save();
+      await isar.settings.put(settings);
+      await settings.group.save();
+    });
+    setState(() {});
+    Get.to(() => const HomePage(), transition: Transition.downToUp);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,14 +89,7 @@ class _GroupsPageState extends State<GroupsPage> {
             : Theme.of(context).primaryTextTheme.headline4,
         onBackPressed: widget.isSettings ? Get.back : null,
         filteredData: groupsFiltered,
-        onEntrySelected: widget.isSettings
-            ? (GroupSchedule selectionData) {
-                Get.back(result: selectionData);
-              }
-            : (GroupSchedule selectionData) {
-                Get.to(() => RaspGroupsPage(groupSchedule: selectionData),
-                    transition: Transition.downToUp);
-              },
+        onEntrySelected: widget.isOnBoard ? isOndoard : isSettings,
       ),
     );
   }

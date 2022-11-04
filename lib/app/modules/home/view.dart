@@ -1,6 +1,5 @@
-import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:project_cdis/app/modules/audiences/view.dart';
@@ -30,52 +29,74 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Obx(
-        (() => IndexedStack(
-              index: tabIndex.value,
-              children: const [
-                MySchedulePage(),
-                ProfessorsPage(),
-                GroupsPage(
-                  isSettings: false,
+    ShapeBorder? bottomBarShape = const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(25)),
+    );
+    SnakeBarBehaviour snakeBarStyle = SnakeBarBehaviour.floating;
+    EdgeInsets padding =
+        const EdgeInsets.symmetric(horizontal: 15, vertical: 10);
+
+    SnakeShape snakeShape = SnakeShape.circle;
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: Obx(
+          (() => IndexedStack(
+                index: tabIndex.value,
+                children: const [
+                  MySchedulePage(),
+                  ProfessorsPage(),
+                  GroupsPage(
+                    isSettings: false,
+                    isOnBoard: false,
+                  ),
+                  AudiencesPage(),
+                  SettingsPage(),
+                ],
+              )),
+        ),
+        bottomNavigationBar: Obx(
+          () => Theme(
+            data: Theme.of(context).copyWith(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+            ),
+            child: SnakeNavigationBar.color(
+              onTap: (int index) => changeTabIndex(index),
+              currentIndex: tabIndex.value,
+              behaviour: snakeBarStyle,
+              snakeShape: snakeShape,
+              shape: bottomBarShape,
+              padding: padding,
+              backgroundColor: Theme.of(context).backgroundColor,
+              snakeViewColor: Theme.of(context).backgroundColor,
+              selectedItemColor: Colors.blue,
+              unselectedItemColor: Colors.grey[500],
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              items: const [
+                BottomNavigationBarItem(
+                  label: 'Shedule',
+                  icon: Icon(Iconsax.calendar_1),
                 ),
-                AudiencesPage(),
-                SettingsPage(),
+                BottomNavigationBarItem(
+                  label: 'Professors',
+                  icon: Icon(Iconsax.user_search),
+                ),
+                BottomNavigationBarItem(
+                  label: 'Groups',
+                  icon: Icon(Iconsax.people),
+                ),
+                BottomNavigationBarItem(
+                  label: 'Audiences',
+                  icon: Icon(Iconsax.buliding),
+                ),
+                BottomNavigationBarItem(
+                  label: 'Settings',
+                  icon: Icon(Iconsax.setting_2),
+                ),
               ],
-            )),
-      ),
-      bottomNavigationBar: Obx(
-        () => Theme(
-          data: Theme.of(context).copyWith(
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-          ),
-          child: DotNavigationBar(
-            onTap: (int index) => changeTabIndex(index),
-            currentIndex: tabIndex.value,
-            backgroundColor: Theme.of(context).primaryColor,
-            selectedItemColor: Colors.blue,
-            unselectedItemColor: Colors.grey[500],
-            enablePaddingAnimation: false,
-            marginR: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.w),
-            items: [
-              DotNavigationBarItem(
-                icon: const Icon(Iconsax.calendar_1),
-              ),
-              DotNavigationBarItem(
-                icon: const Icon(Iconsax.user_search),
-              ),
-              DotNavigationBarItem(
-                icon: const Icon(Iconsax.people),
-              ),
-              DotNavigationBarItem(
-                icon: const Icon(Iconsax.buliding),
-              ),
-              DotNavigationBarItem(
-                icon: const Icon(Iconsax.setting_2),
-              ),
-            ],
+            ),
           ),
         ),
       ),

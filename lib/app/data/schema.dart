@@ -24,6 +24,7 @@ class Settings {
   Id id = Isar.autoIncrement;
   bool theme = false;
   String locale = '';
+  int onboard = 0;
 
   final university = IsarLink<University>();
   final group = IsarLink<GroupSchedule>();

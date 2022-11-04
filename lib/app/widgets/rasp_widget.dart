@@ -162,7 +162,8 @@ class _RaspWidgetState extends State<RaspWidget> {
               child: Visibility(
                 visible: raspElementsFiltered.isNotEmpty,
                 replacement: Center(
-                  child: ListView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
                         'assets/images/no.png',
@@ -173,6 +174,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                         style: Theme.of(context).textTheme.headline3,
                         textAlign: TextAlign.center,
                       ),
+                      const Flexible(child: SizedBox(height: 20))
                     ],
                   ),
                 ),
@@ -200,8 +202,6 @@ class _RaspWidgetState extends State<RaspWidget> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 10.w, vertical: 5.w),
                             child: Container(
-                              // TODO: check value is useless
-                              // width: Get.width,
                               decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(15)),

@@ -9,6 +9,7 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/home/view.dart';
+import 'package:project_cdis/app/modules/onboarding/view.dart';
 import 'package:project_cdis/theme/theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'theme/theme_controller.dart';
@@ -80,7 +81,9 @@ class MyApp extends StatelessWidget {
           themeMode: themeController.theme,
           theme: IKMSTheme.lightTheme,
           darkTheme: IKMSTheme.darkTheme,
-          home: const HomePage(),
+          home: settings.onboard != 1
+              ? const OnboardingScreen()
+              : const HomePage(),
           builder: EasyLoading.init(),
         );
       },

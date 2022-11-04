@@ -145,7 +145,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   onPressed: settings.university.value != null
                       ? () async {
                           GroupSchedule? selectionData = await Get.to(
-                              () => const GroupsPage(isSettings: true),
+                              () => const GroupsPage(
+                                    isSettings: true,
+                                    isOnBoard: false,
+                                  ),
                               transition: Transition.downToUp);
                           if (selectionData != null) {
                             selectionData.university.value =
@@ -195,7 +198,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   onPressed: () async {
                     University? selectionData = await Get.to(
-                        () => const UniversityPage(),
+                        () => const UniversityPage(isOnBoard: false),
                         transition: Transition.downToUp);
                     if (selectionData != null) {
                       settings.university.value = selectionData;
