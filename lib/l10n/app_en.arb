@@ -18,5 +18,7 @@
     "week": "Week",
     "two_week": "2 weeks",
     "month": "Month",
-    "no_par": "There are no lessons today"
+    "no_par": "There are no lessons today",
+    "no_univer": "University not selected",
+    "no_group": "Group not selected"
 }

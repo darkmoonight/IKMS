@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -6,7 +7,7 @@ import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/groups/view.dart';
 import 'package:project_cdis/app/modules/university/view.dart';
 import 'package:project_cdis/main.dart';
-import 'package:project_cdis/utils/theme_controller.dart';
+import 'package:project_cdis/theme/theme_controller.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -160,12 +161,11 @@ class _SettingsPageState extends State<SettingsPage> {
                             setState(() {});
                           }
                         }
-                      : () => Get.showSnackbar(const GetSnackBar(
-                            message: 'Университет не выбран',
-                            duration: Duration(seconds: 3),
-                          )),
+                      : () => EasyLoading.showInfo(
+                          AppLocalizations.of(context)!.no_univer),
                   child: Text(
-                    settings.group.value?.name ?? 'Группа не выбрана',
+                    settings.group.value?.name ??
+                        AppLocalizations.of(context)!.no_group,
                     style: Theme.of(context).primaryTextTheme.subtitle2,
                   ),
                 ),
@@ -207,7 +207,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     }
                   },
                   child: Text(
-                    settings.university.value?.name ?? 'Университет не выбран',
+                    settings.university.value?.name ??
+                        AppLocalizations.of(context)!.no_univer,
                     style: Theme.of(context).primaryTextTheme.subtitle2,
                   ),
                 ),

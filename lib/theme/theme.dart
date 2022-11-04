@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 final ThemeData baseLigth = ThemeData.light();
 final ThemeData baseDark = ThemeData.dark();
 
-class ThemeApp {
+class IKMSTheme {
   static ThemeData get lightTheme {
     return baseLigth.copyWith(
       brightness: Brightness.light,
@@ -13,11 +13,11 @@ class ThemeApp {
         size: 20.sp,
       ),
       dividerColor: Colors.black,
+      backgroundColor: Colors.white,
       selectedRowColor: Colors.grey[850],
-      primaryColor: const Color.fromARGB(255, 210, 210, 210),
+      primaryColor: const Color.fromARGB(255, 250, 250, 250),
       unselectedWidgetColor: Colors.grey[600],
-      scaffoldBackgroundColor: const Color.fromARGB(255, 230, 230, 230),
-      disabledColor: Colors.grey[700],
+      scaffoldBackgroundColor: const Color.fromARGB(255, 240, 240, 240),
       textTheme: baseLigth.textTheme.copyWith(
         headline1: TextStyle(
           color: Colors.black,
@@ -92,9 +92,8 @@ class ThemeApp {
       dividerColor: Colors.white,
       selectedRowColor: Colors.grey[200],
       primaryColor: const Color.fromARGB(255, 40, 40, 40),
-      backgroundColor: const Color.fromARGB(255, 30, 30, 30),
+      backgroundColor: Colors.black,
       unselectedWidgetColor: Colors.grey[200],
-      disabledColor: Colors.grey[400],
       scaffoldBackgroundColor: const Color.fromARGB(255, 30, 30, 30),
       textTheme: baseDark.textTheme.copyWith(
         headline1: TextStyle(

@@ -1,16 +1,17 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/home/view.dart';
-import 'package:project_cdis/utils/theme.dart';
+import 'package:project_cdis/theme/theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'utils/theme_controller.dart';
-import 'package:path_provider/path_provider.dart';
+import 'theme/theme_controller.dart';
 
 late Isar isar;
 late Settings settings;
@@ -77,9 +78,10 @@ class MyApp extends StatelessWidget {
           locale: settings.locale.isNotEmpty ? Locale(settings.locale) : null,
           debugShowCheckedModeBanner: false,
           themeMode: themeController.theme,
-          theme: ThemeApp.lightTheme,
-          darkTheme: ThemeApp.darkTheme,
+          theme: IKMSTheme.lightTheme,
+          darkTheme: IKMSTheme.darkTheme,
           home: const HomePage(),
+          builder: EasyLoading.init(),
         );
       },
     );

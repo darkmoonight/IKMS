@@ -14,6 +14,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  iconsax: ^0.0.8
+  dot_navigation_bar: ^1.0.1+4
+  flutter_easyloading: ^3.0.5
   get: ^4.6.5
   intl: ^0.17.0
   flutter_screenutil: ^5.5.3+2

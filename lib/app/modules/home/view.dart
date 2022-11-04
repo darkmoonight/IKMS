@@ -1,6 +1,8 @@
+import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:project_cdis/app/modules/audiences/view.dart';
 import 'package:project_cdis/app/modules/groups/view.dart';
 import 'package:project_cdis/app/modules/mySchedule/view.dart';
@@ -49,33 +51,29 @@ class _HomePageState extends State<HomePage> {
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
           ),
-          child: BottomNavigationBar(
+          child: DotNavigationBar(
             onTap: (int index) => changeTabIndex(index),
             currentIndex: tabIndex.value,
             backgroundColor: Theme.of(context).primaryColor,
-            showUnselectedLabels: false,
             selectedItemColor: Colors.blue,
             unselectedItemColor: Colors.grey[500],
+            enablePaddingAnimation: false,
+            marginR: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.w),
             items: [
-              BottomNavigationBarItem(
-                label: AppLocalizations.of(context)!.schedule,
-                icon: const Icon(Icons.event_outlined),
+              DotNavigationBarItem(
+                icon: const Icon(Iconsax.calendar_1),
               ),
-              BottomNavigationBarItem(
-                label: AppLocalizations.of(context)!.professors,
-                icon: const Icon(Icons.person_outline),
+              DotNavigationBarItem(
+                icon: const Icon(Iconsax.user_search),
               ),
-              BottomNavigationBarItem(
-                label: AppLocalizations.of(context)!.groups,
-                icon: const Icon(Icons.groups_outlined),
+              DotNavigationBarItem(
+                icon: const Icon(Iconsax.people),
               ),
-              BottomNavigationBarItem(
-                label: AppLocalizations.of(context)!.audiences,
-                icon: const Icon(Icons.door_back_door_outlined),
+              DotNavigationBarItem(
+                icon: const Icon(Iconsax.buliding),
               ),
-              BottomNavigationBarItem(
-                label: AppLocalizations.of(context)!.settings,
-                icon: const Icon(Icons.settings_outlined),
+              DotNavigationBarItem(
+                icon: const Icon(Iconsax.setting_2),
               ),
             ],
           ),
