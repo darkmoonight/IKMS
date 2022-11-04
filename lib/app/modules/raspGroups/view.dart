@@ -35,10 +35,8 @@ class _RaspGroupsPageState extends State<RaspGroupsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final squareWidth = Get.width;
     return Scaffold(
       body: RaspWidget(
-        squareWidth: squareWidth,
         isLoaded: isLoaded,
         raspElements: raspData,
         onBackPressed: () {

@@ -21,6 +21,7 @@ dependencies:
   table_calendar: ^3.0.7
   isar: ^3.0.2
   isar_flutter_libs: ^3.0.2
+  path_provider: ^2.0.11
 
 dev_dependencies:
   flutter_test:

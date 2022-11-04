@@ -10,15 +10,9 @@ import 'package:project_cdis/app/modules/home/view.dart';
 import 'package:project_cdis/utils/theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'utils/theme_controller.dart';
+import 'package:path_provider/path_provider.dart';
 
-Isar isar = Isar.openSync([
-  SettingsSchema,
-  UniversitySchema,
-  GroupScheduleSchema,
-  TeacherScheduleSchema,
-  AudienceScheduleSchema,
-  ScheduleSchema
-], compactOnLaunch: const CompactCondition(minRatio: 2));
+late Isar isar;
 late Settings settings;
 
 void main() async {
@@ -26,15 +20,27 @@ void main() async {
   ByteData data = await rootBundle.load('assets/lets-encrypt-r3.pem');
   SecurityContext context = SecurityContext.defaultContext;
   context.setTrustedCertificatesBytes(data.buffer.asUint8List());
-  isarInit();
-  settings = isar.settings.where().findFirstSync() ?? Settings();
+  await isarInit();
   runApp(MyApp());
 }
 
-void isarInit() {
+Future<void> isarInit() async {
+  isar = await Isar.open([
+    SettingsSchema,
+    UniversitySchema,
+    GroupScheduleSchema,
+    TeacherScheduleSchema,
+    AudienceScheduleSchema,
+    ScheduleSchema
+  ],
+      compactOnLaunch: const CompactCondition(minRatio: 2),
+      directory: (await getApplicationSupportDirectory()).path);
+
+  settings = await isar.settings.where().findFirst() ?? Settings();
+
   if (isar.universitys.countSync() == 0) {
     final DonSTU = University(name: 'ДГТУ');
-    isar.writeTxnSync(() => isar.universitys.putSync(DonSTU));
+    await isar.writeTxn(() async => await isar.universitys.put(DonSTU));
   }
 }
 
@@ -68,6 +74,7 @@ class MyApp extends StatelessWidget {
             }
             return supportedLocales.first;
           },
+          locale: settings.locale.isNotEmpty ? Locale(settings.locale) : null,
           debugShowCheckedModeBanner: false,
           themeMode: themeController.theme,
           theme: ThemeApp.lightTheme,

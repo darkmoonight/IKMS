@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
-import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/audiences/view.dart';
 import 'package:project_cdis/app/modules/groups/view.dart';
 import 'package:project_cdis/app/modules/mySchedule/view.dart';
 import 'package:project_cdis/app/modules/professors/view.dart';
 import 'package:project_cdis/app/modules/settings/view.dart';
-import 'package:project_cdis/main.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,7 +15,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int? groupId = settings.group.value?.id;
   final tabIndex = 0.obs;
 
   @override
@@ -35,23 +32,14 @@ class _HomePageState extends State<HomePage> {
       body: Obx(
         (() => IndexedStack(
               index: tabIndex.value,
-              children: [
-                MySchedulePage(
-                  groupId: groupId,
-                  key: ValueKey<int>(groupId ?? 0),
-                ),
-                const ProfessorsPage(),
-                const GroupsPage(
+              children: const [
+                MySchedulePage(),
+                ProfessorsPage(),
+                GroupsPage(
                   isSettings: false,
                 ),
-                const AudiencesPage(),
-                SettingsPage(
-                  onGroupSelected: (SelectionData data) {
-                    setState(() {
-                      groupId = data.id;
-                    });
-                  },
-                ),
+                AudiencesPage(),
+                SettingsPage(),
               ],
             )),
       ),

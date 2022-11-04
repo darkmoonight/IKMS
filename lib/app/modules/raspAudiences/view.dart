@@ -35,10 +35,8 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final squareWidth = Get.width;
     return Scaffold(
       body: RaspWidget(
-        squareWidth: squareWidth,
         isLoaded: isLoaded,
         raspElements: raspData,
         onBackPressed: () {

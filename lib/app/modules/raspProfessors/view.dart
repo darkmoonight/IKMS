@@ -36,10 +36,8 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final squareWidth = Get.width;
     return Scaffold(
       body: RaspWidget(
-        squareWidth: squareWidth,
         isLoaded: isLoaded,
         raspElements: raspData,
         onBackPressed: () {

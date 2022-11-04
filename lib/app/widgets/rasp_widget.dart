@@ -5,7 +5,6 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RaspWidget extends StatefulWidget {
-  final double squareWidth;
   final bool isLoaded;
   final ValueNotifier<List<Schedule>> raspElements;
   final Function()? onBackPressed;
@@ -13,7 +12,6 @@ class RaspWidget extends StatefulWidget {
 
   const RaspWidget(
       {super.key,
-      required this.squareWidth,
       required this.isLoaded,
       required this.raspElements,
       this.onBackPressed,
@@ -25,6 +23,8 @@ class RaspWidget extends StatefulWidget {
 
 class _RaspWidgetState extends State<RaspWidget> {
   late List<Schedule> raspElementsFiltered;
+
+  // TODO, ISSUE: change selected day to max value on case if schedule is old
   DateTime selectedDay = normalizeDate(DateTime.now());
   CalendarFormat calendarFormat = CalendarFormat.week;
 
@@ -111,7 +111,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                   ),
                 ),
           TableCalendar(
-            key: UniqueKey(),
+            key: ValueKey(widget.raspElements.value),
             startingDayOfWeek: StartingDayOfWeek.monday,
             firstDay: firstDay,
             lastDay: lastDay,
@@ -200,7 +200,8 @@ class _RaspWidgetState extends State<RaspWidget> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 10.w, vertical: 5.w),
                             child: Container(
-                              width: widget.squareWidth,
+                              // TODO: check value is useless
+                              // width: Get.width,
                               decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(15)),

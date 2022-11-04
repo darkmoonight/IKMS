@@ -9,9 +9,7 @@ import 'package:project_cdis/main.dart';
 import 'package:project_cdis/utils/theme_controller.dart';
 
 class SettingsPage extends StatefulWidget {
-  final Function(SelectionData) onGroupSelected;
-
-  const SettingsPage({super.key, required this.onGroupSelected});
+  const SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
@@ -27,7 +25,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    Locale locale = Localizations.localeOf(context);
     return SafeArea(
       child: ListView(
         children: [
@@ -105,14 +102,15 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                   ),
-                  onPressed: () {
-                    if (locale.toString() == 'ru') {
-                      Locale locale = const Locale('en');
-                      Get.updateLocale(locale);
+                  onPressed: () async {
+                    if (Get.locale.toString() == 'ru') {
+                      settings.locale = 'en';
                     } else {
-                      Locale locale = const Locale('ru');
-                      Get.updateLocale(locale);
+                      settings.locale = 'ru';
                     }
+                    await isar.writeTxn(
+                        () async => await isar.settings.put(settings));
+                    Get.updateLocale(Locale(settings.locale));
                   },
                   child: Text(
                     getLocal(),
@@ -149,7 +147,8 @@ class _SettingsPageState extends State<SettingsPage> {
                               () => const GroupsPage(isSettings: true),
                               transition: Transition.downToUp);
                           if (selectionData != null) {
-                            widget.onGroupSelected(selectionData);
+                            selectionData.university.value =
+                                settings.university.value;
                             settings.group.value = selectionData;
 
                             await isar.writeTxn(() async {
