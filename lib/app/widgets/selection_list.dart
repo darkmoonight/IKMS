@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:project_cdis/app/data/schema.dart';
 
 class SelectionList<T extends SelectionData> extends StatefulWidget {
@@ -40,7 +41,7 @@ class _SelectionListState<T extends SelectionData>
                   padding: EdgeInsets.only(top: 15.w),
                   child: Text(
                     widget.headerText,
-                    style: Theme.of(context).textTheme.headline2,
+                    style: Get.theme.textTheme.headline2,
                     textAlign: TextAlign.center,
                   ),
                 )
@@ -51,8 +52,8 @@ class _SelectionListState<T extends SelectionData>
                       IconButton(
                         onPressed: widget.onBackPressed,
                         icon: const Icon(Icons.arrow_back),
-                        iconSize: Theme.of(context).iconTheme.size,
-                        color: Theme.of(context).iconTheme.color,
+                        iconSize: Get.theme.iconTheme.size,
+                        color: Get.theme.iconTheme.color,
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                       ),
@@ -62,7 +63,7 @@ class _SelectionListState<T extends SelectionData>
                       Expanded(
                         child: Text(
                           widget.headerText,
-                          style: Theme.of(context).textTheme.headline2,
+                          style: Get.theme.textTheme.headline2,
                           overflow: TextOverflow.fade,
                         ),
                       ),
@@ -73,9 +74,9 @@ class _SelectionListState<T extends SelectionData>
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
             child: TextField(
               onChanged: widget.onTextChanged,
-              style: Theme.of(context).textTheme.headline6,
+              style: Get.theme.textTheme.headline6,
               decoration: InputDecoration(
-                fillColor: Theme.of(context).primaryColor,
+                fillColor: Get.theme.primaryColor,
                 filled: true,
                 prefixIcon: const Icon(
                   Icons.search_outlined,
@@ -84,13 +85,13 @@ class _SelectionListState<T extends SelectionData>
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),
                   borderSide: BorderSide(
-                    color: Theme.of(context).primaryColor,
+                    color: Get.theme.primaryColor,
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),
                   borderSide: BorderSide(
-                    color: Theme.of(context).primaryColor,
+                    color: Get.theme.primaryColor,
                   ),
                 ),
                 hintText: widget.hintText,
@@ -103,7 +104,7 @@ class _SelectionListState<T extends SelectionData>
             ),
           ),
           Divider(
-            color: Theme.of(context).dividerColor,
+            color: Get.theme.dividerColor,
             height: 20.w,
             thickness: 2,
             indent: 10.w,
@@ -127,7 +128,7 @@ class _SelectionListState<T extends SelectionData>
                       decoration: BoxDecoration(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(15)),
-                          color: Theme.of(context).primaryColor),
+                          color: Get.theme.primaryColor),
                       child: TextButton(
                         onPressed: () => widget.onEntrySelected(data),
                         child: Center(

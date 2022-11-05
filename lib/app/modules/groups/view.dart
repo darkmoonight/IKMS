@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/home/view.dart';
@@ -61,7 +60,7 @@ class _GroupsPageState extends State<GroupsPage> {
             transition: Transition.downToUp);
   }
 
-  void isOndoard(GroupSchedule selectionData) async {
+  void isOnboard(GroupSchedule selectionData) async {
     selectionData.university.value = settings.university.value;
     settings.group.value = selectionData;
 
@@ -72,7 +71,7 @@ class _GroupsPageState extends State<GroupsPage> {
       await settings.group.save();
     });
     setState(() {});
-    settings.onboard = 1;
+    settings.onboard = true;
     await isar.writeTxn(() async => await isar.settings.put(settings));
     Get.to(() => const HomePage(), transition: Transition.downToUp);
   }
@@ -80,18 +79,18 @@ class _GroupsPageState extends State<GroupsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Get.theme.scaffoldBackgroundColor,
       body: SelectionList(
-        headerText: AppLocalizations.of(context)!.groups,
-        hintText: AppLocalizations.of(context)!.groupsName,
+        headerText: 'groups'.tr,
+        hintText: 'groupsName'.tr,
         onTextChanged: applyFilter,
         isLoaded: isLoaded,
         selectionTextStyle: widget.isSettings
-            ? Theme.of(context).textTheme.headline6
-            : Theme.of(context).primaryTextTheme.headline4,
+            ? Get.theme.textTheme.headline6
+            : Get.theme.primaryTextTheme.headline4,
         onBackPressed: widget.isSettings ? Get.back : null,
         filteredData: groupsFiltered,
-        onEntrySelected: widget.isOnBoard ? isOndoard : isSettings,
+        onEntrySelected: widget.isOnBoard ? isOnboard : isSettings,
       ),
     );
   }

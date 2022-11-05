@@ -6,6 +6,7 @@ import 'package:project_cdis/app/api/donstu/groups.dart';
 import 'package:project_cdis/app/api/donstu/professors.dart';
 import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/api/donstu/shedule.dart';
+import 'package:project_cdis/main.dart';
 
 class DonstuAPI {
   final Dio dio = Dio();
@@ -18,7 +19,8 @@ class DonstuAPI {
       AudiencesData audiencesData = AudiencesData.fromJson(response.data);
       return audiencesData.data
           .map((Audiences audiences) =>
-              AudienceSchedule(id: audiences.id, name: audiences.name))
+              AudienceSchedule(id: audiences.id, name: audiences.name)
+                ..university.value = donstu)
           .toList();
     } on DioError catch (e) {
       if (kDebugMode) {
@@ -35,7 +37,8 @@ class DonstuAPI {
       ProfessorsData professorsData = ProfessorsData.fromJson(response.data);
       return professorsData.data
           .map((Professors professors) =>
-              TeacherSchedule(id: professors.id, name: professors.name))
+              TeacherSchedule(id: professors.id, name: professors.name)
+                ..university.value = donstu)
           .toList();
     } on DioError catch (e) {
       if (kDebugMode) {
@@ -52,7 +55,8 @@ class DonstuAPI {
       GroupsData groupsData = GroupsData.fromJson(response.data);
       return groupsData.data
           .map((Groups groups) =>
-              GroupSchedule(id: groups.id, name: groups.name))
+              GroupSchedule(id: groups.id, name: groups.name)
+                ..university.value = donstu)
           .toList();
     } on DioError catch (e) {
       if (kDebugMode) {

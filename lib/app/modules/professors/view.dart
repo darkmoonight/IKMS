@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/raspProfessors/view.dart';
@@ -51,11 +50,11 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
   @override
   Widget build(BuildContext context) {
     return SelectionList(
-      headerText: AppLocalizations.of(context)!.professors,
-      hintText: AppLocalizations.of(context)!.fio,
+      headerText: 'professors'.tr,
+      hintText: 'fio'.tr,
       onTextChanged: applyFilter,
       isLoaded: isLoaded,
-      selectionTextStyle: Theme.of(context).primaryTextTheme.headline4,
+      selectionTextStyle: Get.theme.primaryTextTheme.headline4,
       filteredData: teachersFiltered,
       onEntrySelected: (TeacherSchedule selectionData) {
         Get.to(() => RaspProfessorsPage(teacherSchedule: selectionData),

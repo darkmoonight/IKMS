@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/raspAudiences/view.dart';
 import 'package:project_cdis/app/api/donstu.dart';
@@ -51,11 +50,11 @@ class _AudiencesPageState extends State<AudiencesPage> {
   @override
   Widget build(BuildContext context) {
     return SelectionList(
-      headerText: AppLocalizations.of(context)!.audiences,
-      hintText: AppLocalizations.of(context)!.number,
+      headerText: 'audiences'.tr,
+      hintText: 'number'.tr,
       onTextChanged: applyFilter,
       isLoaded: isLoaded,
-      selectionTextStyle: Theme.of(context).primaryTextTheme.headline4,
+      selectionTextStyle: Get.theme.primaryTextTheme.headline4,
       filteredData: audiencesFiltered,
       onEntrySelected: (AudienceSchedule selectionData) {
         Get.to(() => RaspAudiencesPage(audienceSchedule: selectionData),

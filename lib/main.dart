@@ -2,20 +2,21 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/home/view.dart';
 import 'package:project_cdis/app/modules/onboarding/view.dart';
+import 'package:project_cdis/l10n/translation.dart';
 import 'package:project_cdis/theme/theme.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'theme/theme_controller.dart';
 
 late Isar isar;
 late Settings settings;
+late University donstu;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,10 +40,14 @@ Future<void> isarInit() async {
       directory: (await getApplicationSupportDirectory()).path);
 
   settings = await isar.settings.where().findFirst() ?? Settings();
+  donstu = await isar.universitys.get(1) ?? University(id: 1, name: 'ДГТУ');
 
-  if (isar.universitys.countSync() == 0) {
-    final DonSTU = University(name: 'ДГТУ');
-    await isar.writeTxn(() async => await isar.universitys.put(DonSTU));
+  if (await isar.settings.count() == 0) {
+    await isar.writeTxn(() async => await isar.settings.put(settings));
+  }
+
+  if (await isar.universitys.count() == 0) {
+    await isar.writeTxn(() async => await isar.universitys.put(donstu));
   }
 }
 
@@ -59,14 +64,16 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return GetMaterialApp(
           localizationsDelegates: const [
-            AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
+          translations: Translation(),
+          locale: const Locale('ru', 'RU'),
+          fallbackLocale: const Locale('ru', 'RU'),
           supportedLocales: const [
-            Locale('en', ''),
-            Locale('ru', ''),
+            Locale('ru', 'RU'),
+            Locale('en', 'US'),
           ],
           localeResolutionCallback: (locale, supportedLocales) {
             for (var supportedLocale in supportedLocales) {
@@ -76,14 +83,11 @@ class MyApp extends StatelessWidget {
             }
             return supportedLocales.first;
           },
-          locale: settings.locale.isNotEmpty ? Locale(settings.locale) : null,
           debugShowCheckedModeBanner: false,
           themeMode: themeController.theme,
           theme: IKMSTheme.lightTheme,
           darkTheme: IKMSTheme.darkTheme,
-          home: settings.onboard != 1
-              ? const OnboardingScreen()
-              : const HomePage(),
+          home: settings.onboard ? const OnboardingScreen() : const HomePage(),
           builder: EasyLoading.init(),
         );
       },

@@ -58,9 +58,9 @@ class _MySchedulePageState extends State<MySchedulePage> {
         isLoaded = true;
       });
     } catch (e) {
-      Get.showSnackbar(const GetSnackBar(
-        message: 'Нет интернета',
-        duration: Duration(seconds: 3),
+      Get.showSnackbar(GetSnackBar(
+        message: 'no_internet'.tr,
+        duration: const Duration(seconds: 3),
       ));
     }
   }

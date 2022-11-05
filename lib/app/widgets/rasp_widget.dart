@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:project_cdis/app/data/schema.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RaspWidget extends StatefulWidget {
   final bool isLoaded;
@@ -75,8 +75,8 @@ class _RaspWidgetState extends State<RaspWidget> {
               ? Padding(
                   padding: EdgeInsets.only(top: 15.w),
                   child: Text(
-                    AppLocalizations.of(context)!.schedule,
-                    style: Theme.of(context).textTheme.headline2,
+                    'schedule'.tr,
+                    style: Get.theme.textTheme.headline2,
                     textAlign: TextAlign.center,
                   ),
                 )
@@ -87,8 +87,8 @@ class _RaspWidgetState extends State<RaspWidget> {
                       IconButton(
                         onPressed: widget.onBackPressed,
                         icon: const Icon(Icons.arrow_back),
-                        iconSize: Theme.of(context).iconTheme.size,
-                        color: Theme.of(context).iconTheme.color,
+                        iconSize: Get.theme.iconTheme.size,
+                        color: Get.theme.iconTheme.color,
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                       ),
@@ -100,9 +100,9 @@ class _RaspWidgetState extends State<RaspWidget> {
                           padding: EdgeInsets.only(right: 5.w),
                           child: Text(
                             widget.headerText == null
-                                ? AppLocalizations.of(context)!.schedule
-                                : '${AppLocalizations.of(context)!.schedule} - ${widget.headerText}',
-                            style: Theme.of(context).textTheme.headline4,
+                                ? 'schedule'.tr
+                                : '${'schedule'.tr} - ${widget.headerText}',
+                            style: Get.theme.textTheme.headline4,
                             overflow: TextOverflow.fade,
                           ),
                         ),
@@ -133,9 +133,9 @@ class _RaspWidgetState extends State<RaspWidget> {
               getRasp();
             },
             availableCalendarFormats: {
-              CalendarFormat.month: AppLocalizations.of(context)!.month,
-              CalendarFormat.twoWeeks: AppLocalizations.of(context)!.two_week,
-              CalendarFormat.week: AppLocalizations.of(context)!.week
+              CalendarFormat.month: 'month'.tr,
+              CalendarFormat.twoWeeks: 'two_week'.tr,
+              CalendarFormat.week: 'week'.tr
             },
             calendarFormat: calendarFormat,
             onFormatChanged: (format) {
@@ -147,7 +147,7 @@ class _RaspWidgetState extends State<RaspWidget> {
             },
           ),
           Divider(
-            color: Theme.of(context).dividerColor,
+            color: Get.theme.dividerColor,
             height: 20.w,
             thickness: 2,
             indent: 10.w,
@@ -170,8 +170,8 @@ class _RaspWidgetState extends State<RaspWidget> {
                         scale: 1,
                       ),
                       Text(
-                        AppLocalizations.of(context)!.no_par,
-                        style: Theme.of(context).textTheme.headline3,
+                        'no_par'.tr,
+                        style: Get.theme.textTheme.headline3,
                         textAlign: TextAlign.center,
                       ),
                       const Flexible(child: SizedBox(height: 20))
@@ -196,7 +196,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                                 horizontal: 15.w, vertical: 10.w),
                             child: Text(
                                 '${raspElementPage.begin}-${raspElementPage.end}',
-                                style: Theme.of(context).textTheme.headline6),
+                                style: Get.theme.textTheme.headline6),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(
@@ -205,7 +205,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                               decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(15)),
-                                  color: Theme.of(context).primaryColor),
+                                  color: Get.theme.primaryColor),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 15.w),
                                 child: Column(

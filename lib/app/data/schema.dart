@@ -23,8 +23,7 @@ class ScheduleData extends SelectionData {
 class Settings {
   Id id = Isar.autoIncrement;
   bool theme = false;
-  String locale = '';
-  int onboard = 0;
+  bool onboard = false;
 
   final university = IsarLink<University>();
   final group = IsarLink<GroupSchedule>();

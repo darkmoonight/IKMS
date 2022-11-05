@@ -28,8 +28,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             Text(
-              'Расписание занятий',
-              style: Theme.of(context).textTheme.headline1,
+              'timetable'.tr,
+              style: Get.theme.textTheme.headline1,
               textAlign: TextAlign.center,
             ),
             Flexible(
@@ -40,8 +40,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             SizedBox(
               width: MediaQuery.of(context).size.width - 20,
               child: Text(
-                'В нашем приложении вы сможете посмотреть свое расписание, а также расписание преподавателей, аудиторий и других групп.',
-                style: Theme.of(context).textTheme.headline3,
+                'sched_hint'.tr,
+                style: Get.theme.textTheme.headline3,
                 textAlign: TextAlign.center,
               ),
             ),
@@ -53,7 +53,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ElevatedButton(
               style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all(Theme.of(context).primaryColor),
+                    MaterialStateProperty.all(Get.theme.primaryColor),
                 minimumSize: MaterialStateProperty.all(const Size(130, 45)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
@@ -69,8 +69,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     transition: Transition.downToUp);
               },
               child: Text(
-                'Начать',
-                style: Theme.of(context).textTheme.headline5,
+                'get_started'.tr,
+                style: Get.theme.textTheme.headline5,
               ),
             )
           ],

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/groups/view.dart';
 import 'package:project_cdis/app/modules/university/view.dart';
@@ -32,13 +31,13 @@ class _SettingsPageState extends State<SettingsPage> {
           Padding(
             padding: EdgeInsets.only(top: 15.w),
             child: Text(
-              AppLocalizations.of(context)!.settings,
-              style: Theme.of(context).textTheme.headline2,
+              'settings'.tr,
+              style: Get.theme.textTheme.headline2,
               textAlign: TextAlign.center,
             ),
           ),
           Divider(
-            color: Theme.of(context).dividerColor,
+            color: Get.theme.dividerColor,
             height: 20.w,
             thickness: 2,
             indent: 10.w,
@@ -51,13 +50,13 @@ class _SettingsPageState extends State<SettingsPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.theme,
-                  style: Theme.of(context).primaryTextTheme.headline5,
+                  'theme'.tr,
+                  style: Get.theme.primaryTextTheme.headline5,
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Theme.of(context).primaryColor),
+                    backgroundColor:
+                        MaterialStateProperty.all(Get.theme.primaryColor),
                     minimumSize: MaterialStateProperty.all(const Size(110, 40)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
@@ -76,7 +75,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   },
                   child: Text(
                     getTheme(),
-                    style: Theme.of(context).primaryTextTheme.subtitle2,
+                    style: Get.theme.primaryTextTheme.subtitle2,
                   ),
                 ),
               ],
@@ -89,52 +88,13 @@ class _SettingsPageState extends State<SettingsPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.language,
-                  style: Theme.of(context).primaryTextTheme.headline5,
+                  'group'.tr,
+                  style: Get.theme.primaryTextTheme.headline5,
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Theme.of(context).primaryColor),
-                    minimumSize: MaterialStateProperty.all(const Size(110, 40)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
-                  ),
-                  onPressed: () async {
-                    if (Get.locale.toString() == 'ru') {
-                      settings.locale = 'en';
-                    } else {
-                      settings.locale = 'ru';
-                    }
-                    await isar.writeTxn(
-                        () async => await isar.settings.put(settings));
-                    Get.updateLocale(Locale(settings.locale));
-                  },
-                  child: Text(
-                    getLocal(),
-                    style: Theme.of(context).primaryTextTheme.subtitle2,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 2.w),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.group,
-                  style: Theme.of(context).primaryTextTheme.headline5,
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Theme.of(context).primaryColor),
+                    backgroundColor:
+                        MaterialStateProperty.all(Get.theme.primaryColor),
                     minimumSize: MaterialStateProperty.all(const Size(110, 40)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
@@ -164,12 +124,10 @@ class _SettingsPageState extends State<SettingsPage> {
                             setState(() {});
                           }
                         }
-                      : () => EasyLoading.showInfo(
-                          AppLocalizations.of(context)!.no_univer),
+                      : () => EasyLoading.showInfo('no_university'.tr),
                   child: Text(
-                    settings.group.value?.name ??
-                        AppLocalizations.of(context)!.no_group,
-                    style: Theme.of(context).primaryTextTheme.subtitle2,
+                    settings.group.value?.name ?? 'no_group'.tr,
+                    style: Get.theme.primaryTextTheme.subtitle2,
                   ),
                 ),
               ],
@@ -182,13 +140,13 @@ class _SettingsPageState extends State<SettingsPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.university,
-                  style: Theme.of(context).primaryTextTheme.headline5,
+                  'university'.tr,
+                  style: Get.theme.primaryTextTheme.headline5,
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Theme.of(context).primaryColor),
+                    backgroundColor:
+                        MaterialStateProperty.all(Get.theme.primaryColor),
                     minimumSize: MaterialStateProperty.all(const Size(110, 40)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
@@ -210,9 +168,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     }
                   },
                   child: Text(
-                    settings.university.value?.name ??
-                        AppLocalizations.of(context)!.no_univer,
-                    style: Theme.of(context).primaryTextTheme.subtitle2,
+                    settings.university.value?.name ?? 'no_university'.tr,
+                    style: Get.theme.primaryTextTheme.subtitle2,
                   ),
                 ),
               ],
@@ -223,23 +180,12 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  String getLocal() {
-    Locale locale = Localizations.localeOf(context);
-    final String myLocal;
-    if (locale.toString() == "ru") {
-      myLocal = "English";
-    } else {
-      myLocal = "Русский";
-    }
-    return myLocal;
-  }
-
   String getTheme() {
     final String myTheme;
     if (Get.isDarkMode) {
-      myTheme = AppLocalizations.of(context)!.light;
+      myTheme = 'light'.tr;
     } else {
-      myTheme = AppLocalizations.of(context)!.dark;
+      myTheme = 'dark'.tr;
     }
     return myTheme;
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 import 'package:project_cdis/app/data/schema.dart';
@@ -43,13 +42,13 @@ class _UniversityPageState extends State<UniversityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Get.theme.scaffoldBackgroundColor,
       body: SelectionList(
-        headerText: AppLocalizations.of(context)!.universities,
-        hintText: AppLocalizations.of(context)!.universitiesName,
+        headerText: 'universities'.tr,
+        hintText: 'universitiesName'.tr,
         isLoaded: isLoaded,
         onEntrySelected: widget.isOnBoard ? isOnboard : isSettings,
-        selectionTextStyle: Theme.of(context).textTheme.headline6,
+        selectionTextStyle: Get.theme.textTheme.headline6,
         onBackPressed: widget.isOnBoard ? null : Get.back,
         filteredData: data,
       ),
