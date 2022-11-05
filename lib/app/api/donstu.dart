@@ -66,7 +66,7 @@ class DonstuAPI {
     }
   }
 
-  Future<List<Schedule>> getRaspsElementData(int? id) async {
+  Future<List<Schedule>> getRaspsGroupElementData(int? id) async {
     var url = 'Rasp?idGroup=$id';
     try {
       Response response = await dio.get(baseUrl + url);

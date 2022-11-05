@@ -31,9 +31,10 @@ class _MySchedulePageState extends State<MySchedulePage> {
   }
 
   getData() async {
-    if (settings.group.value != null) {
-      final l = settings.group.value?.schedules.toList();
-      if (l != null && l.isNotEmpty) {
+    final t = settings.group.value;
+    if (t != null) {
+      final l = t.schedules.toList();
+      if (l.isNotEmpty) {
         setState(() {
           raspData.value = l;
           isLoaded = true;
@@ -41,17 +42,16 @@ class _MySchedulePageState extends State<MySchedulePage> {
       }
     }
     try {
-      final l = await DonstuAPI().getRaspsElementData(settings.group.value?.id);
+      final l = await DonstuAPI().getRaspsGroupElementData(t?.id);
 
       await isar.writeTxn(() async {
-        if (settings.group.value != null) {
-          await isar.schedules.deleteAll(settings.group.value!.schedules
-              .map((schedule) => schedule.id)
-              .toList());
-          settings.group.value!.schedules.addAll(l);
+        if (t != null) {
+          await isar.schedules
+              .deleteAll(t.schedules.map((schedule) => schedule.id).toList());
+          t.schedules.addAll(l);
         }
         await isar.schedules.putAll(l);
-        await settings.group.value?.schedules.save();
+        await t?.schedules.save();
       });
       setState(() {
         raspData.value = l;

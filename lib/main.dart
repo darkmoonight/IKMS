@@ -12,7 +12,7 @@ import 'package:project_cdis/app/modules/home/view.dart';
 import 'package:project_cdis/app/modules/onboarding/view.dart';
 import 'package:project_cdis/l10n/translation.dart';
 import 'package:project_cdis/theme/theme.dart';
-import 'theme/theme_controller.dart';
+import 'package:project_cdis/theme/theme_controller.dart';
 
 late Isar isar;
 late Settings settings;

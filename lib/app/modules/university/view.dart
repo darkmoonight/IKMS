@@ -42,13 +42,13 @@ class _UniversityPageState extends State<UniversityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Get.theme.scaffoldBackgroundColor,
+      backgroundColor: context.theme.scaffoldBackgroundColor,
       body: SelectionList(
         headerText: 'universities'.tr,
         hintText: 'universitiesName'.tr,
         isLoaded: isLoaded,
         onEntrySelected: widget.isOnBoard ? isOnboard : isSettings,
-        selectionTextStyle: Get.theme.textTheme.headline6,
+        selectionTextStyle: context.theme.textTheme.headline6,
         onBackPressed: widget.isOnBoard ? null : Get.back,
         filteredData: data,
       ),

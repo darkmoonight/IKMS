@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
         ),
         bottomNavigationBar: Obx(
           () => Theme(
-            data: Get.theme.copyWith(
+            data: context.theme.copyWith(
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
             ),
@@ -68,8 +68,8 @@ class _HomePageState extends State<HomePage> {
               snakeShape: snakeShape,
               shape: bottomBarShape,
               padding: padding,
-              backgroundColor: Get.theme.backgroundColor,
-              snakeViewColor: Get.theme.backgroundColor,
+              backgroundColor: context.theme.backgroundColor,
+              snakeViewColor: context.theme.backgroundColor,
               selectedItemColor: Colors.blue,
               unselectedItemColor: Colors.grey[500],
               showSelectedLabels: false,

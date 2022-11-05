@@ -54,7 +54,7 @@ class _AudiencesPageState extends State<AudiencesPage> {
       hintText: 'number'.tr,
       onTextChanged: applyFilter,
       isLoaded: isLoaded,
-      selectionTextStyle: Get.theme.primaryTextTheme.headline4,
+      selectionTextStyle: context.theme.primaryTextTheme.headline4,
       filteredData: audiencesFiltered,
       onEntrySelected: (AudienceSchedule selectionData) {
         Get.to(() => RaspAudiencesPage(audienceSchedule: selectionData),

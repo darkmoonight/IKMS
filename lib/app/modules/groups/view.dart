@@ -79,15 +79,15 @@ class _GroupsPageState extends State<GroupsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Get.theme.scaffoldBackgroundColor,
+      backgroundColor: context.theme.scaffoldBackgroundColor,
       body: SelectionList(
         headerText: 'groups'.tr,
         hintText: 'groupsName'.tr,
         onTextChanged: applyFilter,
         isLoaded: isLoaded,
         selectionTextStyle: widget.isSettings
-            ? Get.theme.textTheme.headline6
-            : Get.theme.primaryTextTheme.headline4,
+            ? context.theme.textTheme.headline6
+            : context.theme.primaryTextTheme.headline4,
         onBackPressed: widget.isSettings ? Get.back : null,
         filteredData: groupsFiltered,
         onEntrySelected: widget.isOnBoard ? isOnboard : isSettings,

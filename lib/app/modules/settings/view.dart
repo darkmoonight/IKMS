@@ -32,12 +32,12 @@ class _SettingsPageState extends State<SettingsPage> {
             padding: EdgeInsets.only(top: 15.w),
             child: Text(
               'settings'.tr,
-              style: Get.theme.textTheme.headline2,
+              style: context.theme.textTheme.headline2,
               textAlign: TextAlign.center,
             ),
           ),
           Divider(
-            color: Get.theme.dividerColor,
+            color: context.theme.dividerColor,
             height: 20.w,
             thickness: 2,
             indent: 10.w,
@@ -51,12 +51,12 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 Text(
                   'theme'.tr,
-                  style: Get.theme.primaryTextTheme.headline5,
+                  style: context.theme.primaryTextTheme.headline5,
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all(Get.theme.primaryColor),
+                        MaterialStateProperty.all(context.theme.primaryColor),
                     minimumSize: MaterialStateProperty.all(const Size(110, 40)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
@@ -75,7 +75,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   },
                   child: Text(
                     getTheme(),
-                    style: Get.theme.primaryTextTheme.subtitle2,
+                    style: context.theme.primaryTextTheme.subtitle2,
                   ),
                 ),
               ],
@@ -89,12 +89,12 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 Text(
                   'group'.tr,
-                  style: Get.theme.primaryTextTheme.headline5,
+                  style: context.theme.primaryTextTheme.headline5,
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all(Get.theme.primaryColor),
+                        MaterialStateProperty.all(context.theme.primaryColor),
                     minimumSize: MaterialStateProperty.all(const Size(110, 40)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
@@ -127,7 +127,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       : () => EasyLoading.showInfo('no_university'.tr),
                   child: Text(
                     settings.group.value?.name ?? 'no_group'.tr,
-                    style: Get.theme.primaryTextTheme.subtitle2,
+                    style: context.theme.primaryTextTheme.subtitle2,
                   ),
                 ),
               ],
@@ -141,12 +141,12 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 Text(
                   'university'.tr,
-                  style: Get.theme.primaryTextTheme.headline5,
+                  style: context.theme.primaryTextTheme.headline5,
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all(Get.theme.primaryColor),
+                        MaterialStateProperty.all(context.theme.primaryColor),
                     minimumSize: MaterialStateProperty.all(const Size(110, 40)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
@@ -169,7 +169,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   },
                   child: Text(
                     settings.university.value?.name ?? 'no_university'.tr,
-                    style: Get.theme.primaryTextTheme.subtitle2,
+                    style: context.theme.primaryTextTheme.subtitle2,
                   ),
                 ),
               ],

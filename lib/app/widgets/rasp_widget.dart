@@ -24,8 +24,10 @@ class RaspWidget extends StatefulWidget {
 class _RaspWidgetState extends State<RaspWidget> {
   late List<Schedule> raspElementsFiltered;
 
-  // TODO, ISSUE: change selected day to max value on case if schedule is old
-  DateTime selectedDay = normalizeDate(DateTime.now());
+  DateTime _selectedDay = normalizeDate(DateTime.now());
+
+  DateTime get selectedDay =>
+      _selectedDay.isAfter(lastDay) ? lastDay : _selectedDay;
   CalendarFormat calendarFormat = CalendarFormat.week;
 
   DateTime get firstDay => widget.raspElements.value.isNotEmpty
@@ -76,7 +78,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                   padding: EdgeInsets.only(top: 15.w),
                   child: Text(
                     'schedule'.tr,
-                    style: Get.theme.textTheme.headline2,
+                    style: context.theme.textTheme.headline2,
                     textAlign: TextAlign.center,
                   ),
                 )
@@ -87,8 +89,8 @@ class _RaspWidgetState extends State<RaspWidget> {
                       IconButton(
                         onPressed: widget.onBackPressed,
                         icon: const Icon(Icons.arrow_back),
-                        iconSize: Get.theme.iconTheme.size,
-                        color: Get.theme.iconTheme.color,
+                        iconSize: context.theme.iconTheme.size,
+                        color: context.theme.iconTheme.color,
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                       ),
@@ -102,7 +104,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                             widget.headerText == null
                                 ? 'schedule'.tr
                                 : '${'schedule'.tr} - ${widget.headerText}',
-                            style: Get.theme.textTheme.headline4,
+                            style: context.theme.textTheme.headline4,
                             overflow: TextOverflow.fade,
                           ),
                         ),
@@ -122,13 +124,13 @@ class _RaspWidgetState extends State<RaspWidget> {
             },
             onDaySelected: (selected, focused) {
               setState(() {
-                selectedDay = selected;
+                _selectedDay = selected;
               });
               getRasp();
             },
             onPageChanged: (focused) {
               setState(() {
-                selectedDay = focused;
+                _selectedDay = focused;
               });
               getRasp();
             },
@@ -147,7 +149,7 @@ class _RaspWidgetState extends State<RaspWidget> {
             },
           ),
           Divider(
-            color: Get.theme.dividerColor,
+            color: context.theme.dividerColor,
             height: 20.w,
             thickness: 2,
             indent: 10.w,
@@ -171,7 +173,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                       ),
                       Text(
                         'no_par'.tr,
-                        style: Get.theme.textTheme.headline3,
+                        style: context.theme.textTheme.headline3,
                         textAlign: TextAlign.center,
                       ),
                       const Flexible(child: SizedBox(height: 20))
@@ -196,7 +198,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                                 horizontal: 15.w, vertical: 10.w),
                             child: Text(
                                 '${raspElementPage.begin}-${raspElementPage.end}',
-                                style: Get.theme.textTheme.headline6),
+                                style: context.theme.textTheme.headline6),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(
@@ -205,7 +207,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                               decoration: BoxDecoration(
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(15)),
-                                  color: Get.theme.primaryColor),
+                                  color: context.theme.primaryColor),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 15.w),
                                 child: Column(

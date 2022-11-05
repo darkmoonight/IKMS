@@ -29,7 +29,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             Text(
               'timetable'.tr,
-              style: Get.theme.textTheme.headline1,
+              style: context.theme.textTheme.headline1,
               textAlign: TextAlign.center,
             ),
             Flexible(
@@ -41,7 +41,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               width: MediaQuery.of(context).size.width - 20,
               child: Text(
                 'sched_hint'.tr,
-                style: Get.theme.textTheme.headline3,
+                style: context.theme.textTheme.headline3,
                 textAlign: TextAlign.center,
               ),
             ),
@@ -53,7 +53,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ElevatedButton(
               style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all(Get.theme.primaryColor),
+                    MaterialStateProperty.all(context.theme.primaryColor),
                 minimumSize: MaterialStateProperty.all(const Size(130, 45)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
@@ -70,7 +70,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               },
               child: Text(
                 'get_started'.tr,
-                style: Get.theme.textTheme.headline5,
+                style: context.theme.textTheme.headline5,
               ),
             )
           ],

@@ -54,7 +54,7 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
       hintText: 'fio'.tr,
       onTextChanged: applyFilter,
       isLoaded: isLoaded,
-      selectionTextStyle: Get.theme.primaryTextTheme.headline4,
+      selectionTextStyle: context.theme.primaryTextTheme.headline4,
       filteredData: teachersFiltered,
       onEntrySelected: (TeacherSchedule selectionData) {
         Get.to(() => RaspProfessorsPage(teacherSchedule: selectionData),
