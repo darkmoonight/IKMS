@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:isar/isar.dart';
+import 'package:project_cdis/app/api/donstu/caching.dart';
 import 'package:project_cdis/app/data/schema.dart';
-import 'package:project_cdis/app/modules/home/view.dart';
 import 'package:project_cdis/app/modules/raspGroups/view.dart';
-import 'package:project_cdis/app/api/donstu.dart';
 import 'package:project_cdis/app/widgets/selection_list.dart';
 import 'package:project_cdis/main.dart';
 
 class GroupsPage extends StatefulWidget {
   final bool isSettings;
-  final bool isOnBoard;
 
-  const GroupsPage(
-      {super.key, required this.isSettings, required this.isOnBoard});
+  const GroupsPage({super.key, required this.isSettings});
 
   @override
   State<GroupsPage> createState() => _GroupsPageState();
 }
 
 class _GroupsPageState extends State<GroupsPage> {
-  List<GroupSchedule>? groups;
+  late List<GroupSchedule> groups;
   List<GroupSchedule>? groupsFiltered;
+  final isDialog = Get.isDialogOpen ?? false;
   var isLoaded = false;
 
   @override
@@ -30,50 +29,25 @@ class _GroupsPageState extends State<GroupsPage> {
   }
 
   getData() async {
-    groups = (await DonstuAPI().getGroupsData());
+    groups = await DonstuCaching.cacheGroups()
+        ? await donstu.groups.filter().sortByLastUpdateDesc().findAll()
+        : donstu.groups.where((e) => e.schedules.isNotEmpty).toList();
     applyFilter('');
-    if (groupsFiltered != null) {
-      setState(
-        () {
-          isLoaded = true;
-        },
-      );
-    }
+    setState(() {
+      isLoaded = true;
+    });
   }
 
   applyFilter(String value) {
     value = value.toLowerCase();
     setState(
       () {
-        groupsFiltered = groups?.where((element) {
+        groupsFiltered = groups.where((element) {
           var groupsTitle = element.name.toLowerCase();
           return groupsTitle.isNotEmpty && groupsTitle.contains(value);
         }).toList();
       },
     );
-  }
-
-  void isSettings(GroupSchedule selectionData) {
-    widget.isSettings
-        ? Get.back(result: selectionData)
-        : Get.to(() => RaspGroupsPage(groupSchedule: selectionData),
-            transition: Transition.downToUp);
-  }
-
-  void isOnboard(GroupSchedule selectionData) async {
-    selectionData.university.value = settings.university.value;
-    settings.group.value = selectionData;
-
-    await isar.writeTxn(() async {
-      await isar.groupSchedules.put(selectionData);
-      await selectionData.university.save();
-      await isar.settings.put(settings);
-      await settings.group.save();
-    });
-    setState(() {});
-    settings.onboard = true;
-    await isar.writeTxn(() async => await isar.settings.put(settings));
-    Get.to(() => const HomePage(), transition: Transition.downToUp);
   }
 
   @override
@@ -90,7 +64,11 @@ class _GroupsPageState extends State<GroupsPage> {
             : context.theme.primaryTextTheme.headline4,
         onBackPressed: widget.isSettings ? Get.back : null,
         filteredData: groupsFiltered,
-        onEntrySelected: widget.isOnBoard ? isOnboard : isSettings,
+        onEntrySelected: (GroupSchedule selectionData) =>
+            widget.isSettings || isDialog
+                ? Get.back(result: selectionData)
+                : Get.to(() => RaspGroupsPage(groupSchedule: selectionData),
+                    transition: Transition.downToUp),
       ),
     );
   }

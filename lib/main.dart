@@ -34,7 +34,6 @@ Future<void> isarInit() async {
     GroupScheduleSchema,
     TeacherScheduleSchema,
     AudienceScheduleSchema,
-    ScheduleSchema
   ],
       compactOnLaunch: const CompactCondition(minRatio: 2),
       directory: (await getApplicationSupportDirectory()).path);
@@ -87,7 +86,10 @@ class MyApp extends StatelessWidget {
           themeMode: themeController.theme,
           theme: IKMSTheme.lightTheme,
           darkTheme: IKMSTheme.darkTheme,
-          home: settings.onboard ? const OnboardingScreen() : const HomePage(),
+          home: (settings.university.value == null) ||
+                  (settings.group.value == null)
+              ? const OnBoardingScreen()
+              : const HomePage(),
           builder: EasyLoading.init(),
         );
       },

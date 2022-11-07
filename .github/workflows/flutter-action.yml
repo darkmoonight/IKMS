@@ -20,7 +20,7 @@ jobs:
           cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:' # optional, change this to specify the cache path
           architecture: x64 # optional, x64 or arm64
       - run: flutter pub get
-      - run: flutter pub run build_runner build
+      - run: flutter pub run build_runner build --delete-conflicting-outputs
       - run: flutter build apk --split-per-abi
       - uses: ilharp/sign-android-release@v1
         id: sign_app

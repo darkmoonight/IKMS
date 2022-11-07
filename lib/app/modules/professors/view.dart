@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:isar/isar.dart';
+import 'package:project_cdis/app/api/donstu/caching.dart';
 import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/raspProfessors/view.dart';
-import 'package:project_cdis/app/api/donstu.dart';
 import 'package:project_cdis/app/widgets/selection_list.dart';
+import 'package:project_cdis/main.dart';
 
 class ProfessorsPage extends StatefulWidget {
   const ProfessorsPage({super.key});
@@ -13,7 +15,7 @@ class ProfessorsPage extends StatefulWidget {
 }
 
 class _ProfessorsPageState extends State<ProfessorsPage> {
-  List<TeacherSchedule>? teachers;
+  late List<TeacherSchedule> teachers;
   List<TeacherSchedule>? teachersFiltered;
   var isLoaded = false;
 
@@ -24,22 +26,20 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
   }
 
   getData() async {
-    teachers = (await DonstuAPI().getProfessorsData());
+    teachers = await DonstuCaching.cacheTeachers()
+        ? await donstu.teachers.filter().sortByLastUpdateDesc().findAll()
+        : donstu.teachers.where((e) => e.schedules.isNotEmpty).toList();
     applyFilter('');
-    if (teachersFiltered != null) {
-      setState(
-        () {
-          isLoaded = true;
-        },
-      );
-    }
+    setState(() {
+      isLoaded = true;
+    });
   }
 
   applyFilter(String value) {
     value = value.toLowerCase();
     setState(
       () {
-        teachersFiltered = teachers?.where((element) {
+        teachersFiltered = teachers.where((element) {
           var professorsTitle = element.name.toLowerCase();
           return professorsTitle.isNotEmpty && professorsTitle.contains(value);
         }).toList();

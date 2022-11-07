@@ -46,7 +46,7 @@ flutter_native_splash:
   image: "assets/images/schedule_splash.png"
 
 flutter:
-  generate: true
+  generate: false
   uses-material-design: true
 
   assets:

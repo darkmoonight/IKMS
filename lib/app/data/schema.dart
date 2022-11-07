@@ -14,7 +14,8 @@ class SelectionData {
 class ScheduleData extends SelectionData {
   DateTime lastUpdate = DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
   final university = IsarLink<University>();
-  final schedules = IsarLinks<Schedule>();
+
+  List<Schedule> schedules = <Schedule>[];
 
   ScheduleData({super.id, super.name, super.description});
 }
@@ -23,7 +24,6 @@ class ScheduleData extends SelectionData {
 class Settings {
   Id id = Isar.autoIncrement;
   bool theme = false;
-  bool onboard = false;
 
   final university = IsarLink<University>();
   final group = IsarLink<GroupSchedule>();
@@ -31,6 +31,13 @@ class Settings {
 
 @collection
 class University extends SelectionData {
+  DateTime lastUpdateGroups =
+      DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
+  DateTime lastUpdateTeachers =
+      DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
+  DateTime lastUpdateAudiences =
+      DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
+
   @Backlink(to: 'university')
   final groups = IsarLinks<GroupSchedule>();
   @Backlink(to: 'university')
@@ -77,28 +84,27 @@ class AudienceSchedule extends ScheduleData {
         );
 }
 
-@collection
+@embedded
 class Schedule {
-  Id id = Isar.autoIncrement;
-  late DateTime date;
+  DateTime date;
 
-  late String begin;
-  late String end;
-  late int pair;
+  String begin;
+  String end;
+  int pair;
 
-  late String discipline;
-  late String teacher;
-  late String audience;
-  late String group;
+  String discipline;
+  String teacher;
+  String audience;
+  String group;
 
   Schedule({
-    required this.date,
-    required this.begin,
-    required this.end,
-    required this.pair,
-    required this.discipline,
-    required this.teacher,
-    required this.audience,
-    required this.group,
-  });
+    DateTime? dateTime,
+    this.begin = '',
+    this.end = '',
+    this.pair = -1,
+    this.discipline = '',
+    this.teacher = '',
+    this.audience = '',
+    this.group = '',
+  }) : date = dateTime ?? DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
 }

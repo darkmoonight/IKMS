@@ -48,7 +48,6 @@ class _HomePageState extends State<HomePage> {
                   ProfessorsPage(),
                   GroupsPage(
                     isSettings: false,
-                    isOnBoard: false,
                   ),
                   AudiencesPage(),
                   SettingsPage(),
@@ -76,7 +75,7 @@ class _HomePageState extends State<HomePage> {
               showUnselectedLabels: false,
               items: const [
                 BottomNavigationBarItem(
-                  label: 'Shedule',
+                  label: 'Schedule',
                   icon: Icon(Iconsax.calendar_1),
                 ),
                 BottomNavigationBarItem(

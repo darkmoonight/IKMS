@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:project_cdis/app/api/donstu/caching.dart';
 import 'package:project_cdis/app/data/schema.dart';
-import 'package:project_cdis/app/api/donstu.dart';
 import 'package:project_cdis/app/widgets/rasp_widget.dart';
 import 'package:project_cdis/main.dart';
 
@@ -31,37 +30,19 @@ class _MySchedulePageState extends State<MySchedulePage> {
   }
 
   getData() async {
-    final t = settings.group.value;
-    if (t != null) {
-      final l = t.schedules.toList();
-      if (l.isNotEmpty) {
+    final g = settings.group.value;
+    if (g != null) {
+      final t = await DonstuCaching.cacheGroupSchedule(g);
+      if (t.schedules.isNotEmpty) {
         setState(() {
-          raspData.value = l;
+          raspData.value = t.schedules.toList();
           isLoaded = true;
         });
       }
-    }
-    try {
-      final l = await DonstuAPI().getRaspsGroupElementData(t?.id);
-
-      await isar.writeTxn(() async {
-        if (t != null) {
-          await isar.schedules
-              .deleteAll(t.schedules.map((schedule) => schedule.id).toList());
-          t.schedules.addAll(l);
-        }
-        await isar.schedules.putAll(l);
-        await t?.schedules.save();
-      });
+    } else {
       setState(() {
-        raspData.value = l;
         isLoaded = true;
       });
-    } catch (e) {
-      Get.showSnackbar(GetSnackBar(
-        message: 'no_internet'.tr,
-        duration: const Duration(seconds: 3),
-      ));
     }
   }
 

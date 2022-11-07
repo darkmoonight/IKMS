@@ -88,6 +88,48 @@ class _SettingsPageState extends State<SettingsPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
+                  'university'.tr,
+                  style: context.theme.primaryTextTheme.headline5,
+                ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(context.theme.primaryColor),
+                    minimumSize: MaterialStateProperty.all(const Size(110, 40)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                  ),
+                  onPressed: () async {
+                    University? selectionData = await Get.to(
+                        () => const UniversityPage(),
+                        transition: Transition.downToUp);
+                    if (selectionData != null) {
+                      settings.university.value = selectionData;
+                      await isar.writeTxn(() async {
+                        await isar.settings.put(settings);
+                        await settings.university.save();
+                      });
+                      setState(() {});
+                    }
+                  },
+                  child: Text(
+                    settings.university.value?.name ?? 'no_university'.tr,
+                    style: context.theme.primaryTextTheme.subtitle2,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 2.w),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
                   'group'.tr,
                   style: context.theme.primaryTextTheme.headline5,
                 ),
@@ -107,7 +149,6 @@ class _SettingsPageState extends State<SettingsPage> {
                           GroupSchedule? selectionData = await Get.to(
                               () => const GroupsPage(
                                     isSettings: true,
-                                    isOnBoard: false,
                                   ),
                               transition: Transition.downToUp);
                           if (selectionData != null) {
@@ -127,48 +168,6 @@ class _SettingsPageState extends State<SettingsPage> {
                       : () => EasyLoading.showInfo('no_university'.tr),
                   child: Text(
                     settings.group.value?.name ?? 'no_group'.tr,
-                    style: context.theme.primaryTextTheme.subtitle2,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 2.w),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'university'.tr,
-                  style: context.theme.primaryTextTheme.headline5,
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(context.theme.primaryColor),
-                    minimumSize: MaterialStateProperty.all(const Size(110, 40)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
-                  ),
-                  onPressed: () async {
-                    University? selectionData = await Get.to(
-                        () => const UniversityPage(isOnBoard: false),
-                        transition: Transition.downToUp);
-                    if (selectionData != null) {
-                      settings.university.value = selectionData;
-                      await isar.writeTxn(() async {
-                        await isar.settings.put(settings);
-                        await settings.university.save();
-                      });
-                      setState(() {});
-                    }
-                  },
-                  child: Text(
-                    settings.university.value?.name ?? 'no_university'.tr,
                     style: context.theme.primaryTextTheme.subtitle2,
                   ),
                 ),

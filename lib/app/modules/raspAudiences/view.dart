@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:project_cdis/app/api/donstu/caching.dart';
 import 'package:project_cdis/app/data/schema.dart';
-import 'package:project_cdis/app/api/donstu.dart';
 import 'package:project_cdis/app/widgets/rasp_widget.dart';
-import 'package:project_cdis/main.dart';
 
 class RaspAudiencesPage extends StatefulWidget {
   final AudienceSchedule audienceSchedule;
@@ -25,40 +24,13 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
   }
 
   getData() async {
-    final t = widget.audienceSchedule;
-    await isar.writeTxn(() async {
-      await isar.audienceSchedules.put(t);
-      await t.university.save();
-    });
-    final l = t.schedules.toList();
-    if (l.isNotEmpty) {
-      setState(
-        () {
-          raspData.value = l;
-          isLoaded = true;
-        },
-      );
-    }
-
-    try {
-      final l = await DonstuAPI().getRaspsAudElementData(t.id);
-
-      await isar.writeTxn(() async {
-        await isar.schedules
-            .deleteAll(t.schedules.map((schedule) => schedule.id).toList());
-        t.schedules.addAll(l);
-        await isar.schedules.putAll(l);
-        await t.schedules.save();
-      });
+    final t =
+        await DonstuCaching.cacheAudienceSchedule(widget.audienceSchedule);
+    if (t.schedules.isNotEmpty) {
       setState(() {
-        raspData.value = l;
+        raspData.value = t.schedules.toList();
         isLoaded = true;
       });
-    } catch (e) {
-      Get.showSnackbar(GetSnackBar(
-        message: 'no_internet'.tr,
-        duration: const Duration(seconds: 3),
-      ));
     }
   }
 
