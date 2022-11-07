@@ -126,9 +126,10 @@ class _SelectionListState<T extends SelectionData>
                     child: Container(
                       height: 45.w,
                       decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(15)),
-                          color: context.theme.primaryColor),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
+                        color: context.theme.primaryColor,
+                      ),
                       child: TextButton(
                         onPressed: () => widget.onEntrySelected(data),
                         child: Center(

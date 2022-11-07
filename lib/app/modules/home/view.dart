@@ -30,13 +30,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     ShapeBorder? bottomBarShape = const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(25)),
-    );
+        borderRadius: BorderRadius.all(Radius.circular(25)));
     SnakeBarBehaviour snakeBarStyle = SnakeBarBehaviour.floating;
     EdgeInsets padding =
         const EdgeInsets.symmetric(horizontal: 15, vertical: 10);
-
     SnakeShape snakeShape = SnakeShape.circle;
+
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -67,8 +66,8 @@ class _HomePageState extends State<HomePage> {
               snakeShape: snakeShape,
               shape: bottomBarShape,
               padding: padding,
-              backgroundColor: context.theme.backgroundColor,
-              snakeViewColor: context.theme.backgroundColor,
+              backgroundColor: context.theme.primaryColor,
+              snakeViewColor: context.theme.primaryColor,
               selectedItemColor: Colors.blue,
               unselectedItemColor: Colors.grey[500],
               showSelectedLabels: false,

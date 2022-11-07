@@ -163,22 +163,19 @@ class _RaspWidgetState extends State<RaspWidget> {
               ),
               child: Visibility(
                 visible: raspElementsFiltered.isNotEmpty,
-                replacement: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/images/no.png',
-                        scale: 1,
-                      ),
-                      Text(
-                        'no_par'.tr,
-                        style: context.theme.textTheme.headline3,
-                        textAlign: TextAlign.center,
-                      ),
-                      const Flexible(child: SizedBox(height: 20))
-                    ],
-                  ),
+                replacement: Column(
+                  children: [
+                    Image.asset(
+                      'assets/images/no.png',
+                      scale: 1,
+                    ),
+                    Text(
+                      'no_par'.tr,
+                      style: context.theme.textTheme.headline3,
+                      textAlign: TextAlign.center,
+                    ),
+                    const Flexible(child: SizedBox(height: 20))
+                  ],
                 ),
                 child: Builder(builder: (context) {
                   final seen = <String>{};
@@ -205,9 +202,10 @@ class _RaspWidgetState extends State<RaspWidget> {
                                 horizontal: 10.w, vertical: 5.w),
                             child: Container(
                               decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(15)),
-                                  color: context.theme.primaryColor),
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(15)),
+                                color: context.theme.primaryColor,
+                              ),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 15.w),
                                 child: Column(

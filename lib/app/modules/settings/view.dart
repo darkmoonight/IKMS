@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/groups/view.dart';
 import 'package:project_cdis/app/modules/university/view.dart';
+import 'package:project_cdis/app/widgets/setting_links.dart';
 import 'package:project_cdis/main.dart';
 import 'package:project_cdis/theme/theme_controller.dart';
 
@@ -38,154 +40,81 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           Divider(
             color: context.theme.dividerColor,
-            height: 20.w,
+            height: 25.w,
             thickness: 2,
             indent: 10.w,
             endIndent: 10.w,
           ),
-          const SizedBox(height: 5),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'theme'.tr,
-                  style: context.theme.primaryTextTheme.headline5,
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(context.theme.primaryColor),
-                    minimumSize: MaterialStateProperty.all(const Size(110, 40)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    if (Get.isDarkMode) {
-                      themeController.changeThemeMode(ThemeMode.light);
-                      themeController.saveTheme(false);
-                    } else {
-                      themeController.changeThemeMode(ThemeMode.dark);
-                      themeController.saveTheme(true);
-                    }
-                  },
-                  child: Text(
-                    getTheme(),
-                    style: context.theme.primaryTextTheme.subtitle2,
-                  ),
-                ),
-              ],
-            ),
+          SettingLinks(
+            icon: const Icon(Iconsax.moon),
+            text: 'theme'.tr,
+            switcher: true,
+            value: Get.isDarkMode,
+            onChange: (_) {
+              if (Get.isDarkMode) {
+                themeController.changeThemeMode(ThemeMode.light);
+                themeController.saveTheme(false);
+              } else {
+                themeController.changeThemeMode(ThemeMode.dark);
+                themeController.saveTheme(true);
+              }
+            },
           ),
-          SizedBox(height: 2.w),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'university'.tr,
-                  style: context.theme.primaryTextTheme.headline5,
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(context.theme.primaryColor),
-                    minimumSize: MaterialStateProperty.all(const Size(110, 40)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
-                  ),
-                  onPressed: () async {
-                    University? selectionData = await Get.to(
-                        () => const UniversityPage(),
+          SettingLinks(
+            icon: const Icon(Iconsax.buliding),
+            text: 'university'.tr,
+            switcher: false,
+            description: Text(
+              settings.university.value?.name ?? 'no_university'.tr,
+              style: context.theme.primaryTextTheme.subtitle2,
+            ),
+            onPressed: () async {
+              University? selectionData = await Get.to(
+                  () => const UniversityPage(),
+                  transition: Transition.downToUp);
+              if (selectionData != null) {
+                settings.university.value = selectionData;
+                await isar.writeTxn(() async {
+                  await isar.settings.put(settings);
+                  await settings.university.save();
+                });
+                setState(() {});
+              }
+            },
+          ),
+          SettingLinks(
+            icon: const Icon(Iconsax.people),
+            text: 'group'.tr,
+            switcher: false,
+            description: Text(
+              settings.group.value?.name ?? 'no_group'.tr,
+              style: context.theme.primaryTextTheme.subtitle2,
+            ),
+            onPressed: settings.university.value != null
+                ? () async {
+                    GroupSchedule? selectionData = await Get.to(
+                        () => const GroupsPage(
+                              isSettings: true,
+                            ),
                         transition: Transition.downToUp);
                     if (selectionData != null) {
-                      settings.university.value = selectionData;
+                      selectionData.university.value =
+                          settings.university.value;
+                      settings.group.value = selectionData;
+
                       await isar.writeTxn(() async {
+                        await isar.groupSchedules.put(selectionData);
+                        await selectionData.university.save();
                         await isar.settings.put(settings);
-                        await settings.university.save();
+                        await settings.group.save();
                       });
                       setState(() {});
                     }
-                  },
-                  child: Text(
-                    settings.university.value?.name ?? 'no_university'.tr,
-                    style: context.theme.primaryTextTheme.subtitle2,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 2.w),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'group'.tr,
-                  style: context.theme.primaryTextTheme.headline5,
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(context.theme.primaryColor),
-                    minimumSize: MaterialStateProperty.all(const Size(110, 40)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                    ),
-                  ),
-                  onPressed: settings.university.value != null
-                      ? () async {
-                          GroupSchedule? selectionData = await Get.to(
-                              () => const GroupsPage(
-                                    isSettings: true,
-                                  ),
-                              transition: Transition.downToUp);
-                          if (selectionData != null) {
-                            selectionData.university.value =
-                                settings.university.value;
-                            settings.group.value = selectionData;
-
-                            await isar.writeTxn(() async {
-                              await isar.groupSchedules.put(selectionData);
-                              await selectionData.university.save();
-                              await isar.settings.put(settings);
-                              await settings.group.save();
-                            });
-                            setState(() {});
-                          }
-                        }
-                      : () => EasyLoading.showInfo('no_university'.tr),
-                  child: Text(
-                    settings.group.value?.name ?? 'no_group'.tr,
-                    style: context.theme.primaryTextTheme.subtitle2,
-                  ),
-                ),
-              ],
-            ),
+                  }
+                : () => EasyLoading.showInfo('no_university'.tr),
           ),
         ],
       ),
     );
-  }
-
-  String getTheme() {
-    final String myTheme;
-    if (Get.isDarkMode) {
-      myTheme = 'light'.tr;
-    } else {
-      myTheme = 'dark'.tr;
-    }
-    return myTheme;
   }
 }
