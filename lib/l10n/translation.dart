@@ -25,6 +25,7 @@ class Translation extends Translations {
           'month': 'Month',
           'no_par': 'There are no lessons today',
           'no_select': 'Not selected',
+          'no_university': 'University not selected',
           'no_internet': 'No connection to internet',
           'get_started': 'Get started'
         },
@@ -50,6 +51,7 @@ class Translation extends Translations {
           'month': 'Месяц',
           'no_par': 'Сегодня пар нет',
           'no_select': 'Не выбран',
+          'no_university': 'Университет не выбран',
           'no_internet': 'Нет интернета',
           'get_started': 'Начать'
         }

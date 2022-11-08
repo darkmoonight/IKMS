@@ -37,13 +37,13 @@ dev_dependencies:
 
 flutter_icons:
   android: true
-  image_path: "assets/images/schedule.png"
+  image_path: "assets/icons/schedule.png"
   adaptive_icon_background: "#1F1F1F"
-  adaptive_icon_foreground: "assets/images/schedule2.png"
+  adaptive_icon_foreground: "assets/icons/schedule2.png"
 
 flutter_native_splash:
   color: "#1F1F1F"
-  image: "assets/images/schedule_splash.png"
+  image: "assets/icons/schedule_splash.png"
 
 flutter:
   generate: false
@@ -51,4 +51,5 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/icons/
     - assets/

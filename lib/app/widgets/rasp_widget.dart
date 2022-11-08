@@ -163,19 +163,21 @@ class _RaspWidgetState extends State<RaspWidget> {
               ),
               child: Visibility(
                 visible: raspElementsFiltered.isNotEmpty,
-                replacement: Column(
-                  children: [
-                    Image.asset(
-                      'assets/images/no.png',
-                      scale: 1,
+                replacement: Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/images/no.png',
+                          scale: 5,
+                        ),
+                        Text(
+                          'no_par'.tr,
+                          style: context.theme.textTheme.headline3,
+                        ),
+                      ],
                     ),
-                    Text(
-                      'no_par'.tr,
-                      style: context.theme.textTheme.headline3,
-                      textAlign: TextAlign.center,
-                    ),
-                    const Flexible(child: SizedBox(height: 20))
-                  ],
+                  ),
                 ),
                 child: Builder(builder: (context) {
                   final seen = <String>{};
@@ -214,7 +216,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Flexible(child: SizedBox(height: 15.w)),
+                                    SizedBox(height: 15.w),
                                     Text(raspElementPage.discipline,
                                         style: Theme.of(context)
                                             .textTheme
@@ -224,7 +226,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                                         style: Theme.of(context)
                                             .primaryTextTheme
                                             .subtitle1),
-                                    Flexible(child: SizedBox(height: 10.w)),
+                                    SizedBox(height: 10.w),
                                     groupList.length < 30
                                         ? Row(
                                             mainAxisAlignment:
@@ -251,16 +253,14 @@ class _RaspWidgetState extends State<RaspWidget> {
                                                   style: Theme.of(context)
                                                       .primaryTextTheme
                                                       .subtitle1),
-                                              Flexible(
-                                                  child:
-                                                      SizedBox(height: 10.w)),
+                                              SizedBox(height: 10.w),
                                               Text(raspElementPage.group,
                                                   style: Theme.of(context)
                                                       .primaryTextTheme
                                                       .subtitle1),
                                             ],
                                           ),
-                                    Flexible(child: SizedBox(height: 15.w)),
+                                    SizedBox(height: 15.w),
                                   ],
                                 ),
                               ),

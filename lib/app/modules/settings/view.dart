@@ -65,7 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
             text: 'university'.tr,
             switcher: false,
             description: Text(
-              settings.university.value?.name ?? 'no_university'.tr,
+              settings.university.value?.name ?? 'no_select'.tr,
               style: context.theme.primaryTextTheme.subtitle2,
             ),
             onPressed: () async {
@@ -87,7 +87,7 @@ class _SettingsPageState extends State<SettingsPage> {
             text: 'group'.tr,
             switcher: false,
             description: Text(
-              settings.group.value?.name ?? 'no_group'.tr,
+              settings.group.value?.name ?? 'no_select'.tr,
               style: context.theme.primaryTextTheme.subtitle2,
             ),
             onPressed: settings.university.value != null

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:project_cdis/app/api/donstu/caching.dart';
 import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/app/modules/groups/view.dart';
 import 'package:project_cdis/app/modules/home/view.dart';
 import 'package:project_cdis/app/modules/university/view.dart';
+import 'package:project_cdis/app/widgets/button.dart';
 import 'package:project_cdis/main.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -19,54 +19,40 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/images/onboard.png',
-              scale: 1,
-            ),
-            Flexible(
-              child: SizedBox(
-                height: 10.w,
-              ),
-            ),
-            Text(
-              'timetable'.tr,
-              style: context.theme.textTheme.headline1,
-              textAlign: TextAlign.center,
-            ),
-            Flexible(
-              child: SizedBox(
-                height: 10.w,
-              ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width - 20,
-              child: Text(
-                'sched_hint'.tr,
-                style: context.theme.textTheme.headline3,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Flexible(
-              child: SizedBox(
-                height: 20.w,
-              ),
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(context.theme.primaryColor),
-                minimumSize: MaterialStateProperty.all(const Size(130, 45)),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
+      body: Column(
+        children: [
+          Flexible(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/onboard.png',
+                  scale: 5,
+                ),
+                Text(
+                  'timetable'.tr,
+                  style: context.theme.textTheme.headline1,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Text(
+                    'sched_hint'.tr,
+                    style: context.theme.textTheme.headline6,
+                    textAlign: TextAlign.center,
                   ),
                 ),
-              ),
-              onPressed: () async {
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: MyTextButton(
+              buttonName: 'get_started'.tr,
+              onTap: () async {
                 University? university;
                 GroupSchedule? group;
                 do {
@@ -105,13 +91,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
                 Get.off(() => const HomePage());
               },
-              child: Text(
-                'get_started'.tr,
-                style: context.theme.textTheme.headline5,
-              ),
-            )
-          ],
-        ),
+              bgColor: context.theme.primaryColor,
+              textColor: context.theme.dividerColor,
+            ),
+          ),
+        ],
       ),
     );
   }
