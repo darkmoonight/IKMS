@@ -37,7 +37,14 @@ class _HomePageState extends State<HomePage> {
     SnakeShape snakeShape = SnakeShape.circle;
 
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async {
+        if (tabIndex.value == 0) {
+          return true;
+        } else {
+          changeTabIndex(0);
+          return false;
+        }
+      },
       child: Scaffold(
         body: Obx(
           (() => IndexedStack(

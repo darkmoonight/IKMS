@@ -14,7 +14,7 @@ jobs:
           java-version: '11'
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.3.2'
+          channel: 'stable'
           cache: true
           cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:' # optional, change this to force refresh cache
           cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:' # optional, change this to specify the cache path
@@ -45,14 +45,10 @@ jobs:
 #          title: "Test release"
 #          files: |
 #
+#            ${{ steps.signed_files.outputs._1 }}
+#            ${{ steps.signed_files.outputs._2 }}
+#            ${{ steps.signed_files.outputs._3 }}
 #            ${{ steps.signed_files.outputs._4 }}
-#            ${{ steps.signed_files.outputs._5 }}
-#            ${{ steps.signed_files.outputs._6 }}
-#            ${{ steps.signed_files.outputs._7 }}
-      - run: echo ${{ steps.signed_files.outputs._1 }}
-      - run: echo ${{ steps.signed_files.outputs._2 }}
-      - run: echo ${{ steps.signed_files.outputs._3 }}
-      - run: echo ${{ steps.signed_files.outputs._4 }}
       - uses: actions/upload-artifact@v3
         with:
           name: apk-build
