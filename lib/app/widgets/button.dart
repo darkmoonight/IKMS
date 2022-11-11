@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MyTextButton extends StatelessWidget {
   const MyTextButton({
@@ -15,7 +16,6 @@ class MyTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
     return Container(
       height: 50,
       width: double.infinity,
@@ -27,7 +27,7 @@ class MyTextButton extends StatelessWidget {
         onPressed: onTap,
         child: Text(
           buttonName,
-          style: theme.textTheme.headline6?.copyWith(color: textColor),
+          style: context.theme.textTheme.headline6?.copyWith(color: textColor),
         ),
       ),
     );

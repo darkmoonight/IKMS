@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:project_cdis/app/data/schema.dart';
 
 class SelectionList<T extends SelectionData> extends StatefulWidget {
@@ -51,7 +52,7 @@ class _SelectionListState<T extends SelectionData>
                     children: [
                       IconButton(
                         onPressed: widget.onBackPressed,
-                        icon: const Icon(Icons.arrow_back),
+                        icon: const Icon(Iconsax.arrow_left_1),
                         iconSize: context.theme.iconTheme.size,
                         color: context.theme.iconTheme.color,
                         splashColor: Colors.transparent,
@@ -64,7 +65,7 @@ class _SelectionListState<T extends SelectionData>
                         child: Text(
                           widget.headerText,
                           style: context.theme.textTheme.headline2,
-                          overflow: TextOverflow.fade,
+                          overflow: TextOverflow.visible,
                         ),
                       ),
                     ],
@@ -79,8 +80,9 @@ class _SelectionListState<T extends SelectionData>
                 fillColor: context.theme.primaryColor,
                 filled: true,
                 prefixIcon: const Icon(
-                  Icons.search_outlined,
+                  Iconsax.search_normal_1,
                   color: Colors.grey,
+                  size: 18,
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),
@@ -117,28 +119,24 @@ class _SelectionListState<T extends SelectionData>
                 child: CircularProgressIndicator(),
               ),
               child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
                 itemCount: widget.filteredData?.length,
                 itemBuilder: (BuildContext context, int index) {
                   final T data = widget.filteredData![index];
-                  return Padding(
-                    padding:
+                  return Container(
+                    margin:
                         EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
-                    child: Container(
-                      height: 45.w,
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(15)),
-                        color: context.theme.primaryColor,
-                      ),
-                      child: TextButton(
-                        onPressed: () => widget.onEntrySelected(data),
-                        child: Center(
-                          child: Text(
-                            data.name,
-                            style: widget.selectionTextStyle,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                    height: 45.w,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                      color: context.theme.primaryColor,
+                    ),
+                    child: TextButton(
+                      onPressed: () => widget.onEntrySelected(data),
+                      child: Text(
+                        data.name,
+                        style: widget.selectionTextStyle,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   );

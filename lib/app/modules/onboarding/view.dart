@@ -41,7 +41,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: Text(
                     'sched_hint'.tr,
-                    style: context.theme.textTheme.headline6,
+                    style: context.theme.primaryTextTheme.headline4,
                     textAlign: TextAlign.center,
                   ),
                 ),

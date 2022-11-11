@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SettingLinks extends StatelessWidget {
@@ -23,12 +24,11 @@ class SettingLinks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       decoration: BoxDecoration(
-        color: theme.primaryColor,
+        color: context.theme.primaryColor,
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),
@@ -44,7 +44,7 @@ class SettingLinks extends StatelessWidget {
                 ),
                 Text(
                   text,
-                  style: theme.textTheme.headline6,
+                  style: context.theme.textTheme.headline6,
                 ),
               ],
             ),
