@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -35,6 +36,12 @@ class _HomePageState extends State<HomePage> {
     EdgeInsets padding =
         const EdgeInsets.symmetric(horizontal: 15, vertical: 10);
     SnakeShape snakeShape = SnakeShape.circle;
+
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarColor: context.theme.backgroundColor,
+      ),
+    );
 
     return WillPopScope(
       onWillPop: () async {
