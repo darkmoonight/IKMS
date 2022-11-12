@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:project_cdis/app/data/schema.dart';
@@ -17,6 +19,8 @@ import 'package:project_cdis/theme/theme_controller.dart';
 late Isar isar;
 late Settings settings;
 late University donstu;
+final ValueNotifier<Future<bool>> isDeviceConnectedNotifier =
+    ValueNotifier(InternetConnectionChecker().hasConnection);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +28,16 @@ void main() async {
   SecurityContext context = SecurityContext.defaultContext;
   context.setTrustedCertificatesBytes(data.buffer.asUint8List());
   await isarInit();
+  Connectivity()
+      .onConnectivityChanged
+      .listen((ConnectivityResult result) async {
+    if (result != ConnectivityResult.none) {
+      isDeviceConnectedNotifier.value =
+          InternetConnectionChecker().hasConnection;
+    } else {
+      isDeviceConnectedNotifier.value = Future(() => false);
+    }
+  });
   runApp(MyApp());
 }
 

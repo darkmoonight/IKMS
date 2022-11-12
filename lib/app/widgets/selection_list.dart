@@ -9,7 +9,7 @@ class SelectionList<T extends SelectionData> extends StatefulWidget {
   final String hintText;
   final Function(String)? onTextChanged;
   final bool isLoaded;
-  final List<T>? filteredData;
+  final List<T> data;
   final Function(T) onEntrySelected;
   final Function()? onBackPressed;
   final TextStyle? selectionTextStyle;
@@ -21,7 +21,7 @@ class SelectionList<T extends SelectionData> extends StatefulWidget {
     required this.isLoaded,
     required this.onEntrySelected,
     required this.selectionTextStyle,
-    required this.filteredData,
+    required this.data,
     this.onTextChanged,
     this.onBackPressed,
   });
@@ -32,6 +32,8 @@ class SelectionList<T extends SelectionData> extends StatefulWidget {
 
 class _SelectionListState<T extends SelectionData>
     extends State<SelectionList<T>> {
+  TextEditingController textEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -74,6 +76,7 @@ class _SelectionListState<T extends SelectionData>
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
             child: TextField(
+              controller: textEditingController,
               onChanged: widget.onTextChanged,
               style: context.theme.textTheme.headline6,
               decoration: InputDecoration(
@@ -84,6 +87,21 @@ class _SelectionListState<T extends SelectionData>
                   color: Colors.grey,
                   size: 18,
                 ),
+                suffixIcon: textEditingController.text.isNotEmpty
+                    ? IconButton(
+                        onPressed: () {
+                          textEditingController.clear();
+                          if (widget.onTextChanged != null) {
+                            widget.onTextChanged!('');
+                          }
+                        },
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.grey,
+                          size: 20,
+                        ),
+                      )
+                    : null,
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),
                   borderSide: BorderSide(
@@ -120,9 +138,9 @@ class _SelectionListState<T extends SelectionData>
               ),
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: widget.filteredData?.length,
+                itemCount: widget.data.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final T data = widget.filteredData![index];
+                  final T data = widget.data[index];
                   return Container(
                     margin:
                         EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),

@@ -15,36 +15,46 @@ class AudiencesPage extends StatefulWidget {
 }
 
 class _AudiencesPageState extends State<AudiencesPage> {
-  late List<AudienceSchedule> audiences;
-  List<AudienceSchedule>? audiencesFiltered;
+  List<AudienceSchedule> audiences = List.empty();
+  String filter = '';
   var isLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    getData();
+    isDeviceConnectedNotifier.addListener(reApplyFilter);
+    applyFilter('');
   }
 
-  getData() async {
-    audiences = await DonstuCaching.cacheAudiences()
+  @override
+  void dispose() {
+    isDeviceConnectedNotifier.removeListener(reApplyFilter);
+    super.dispose();
+  }
+
+  Future<List<AudienceSchedule>> get getData async {
+    return await isDeviceConnectedNotifier.value &&
+            await DonstuCaching.cacheAudiences()
         ? await donstu.audiences.filter().sortByLastUpdateDesc().findAll()
         : donstu.audiences.where((e) => e.schedules.isNotEmpty).toList();
-    applyFilter('');
-    setState(() {
-      isLoaded = true;
-    });
   }
 
-  applyFilter(String value) {
-    value = value.toLowerCase();
+  applyFilter(String value) async {
+    filter = value.toLowerCase();
+    final data = (await getData).where((element) {
+      var audiencesTitle = element.name.toLowerCase();
+      return audiencesTitle.isNotEmpty && audiencesTitle.contains(filter);
+    }).toList();
     setState(
       () {
-        audiencesFiltered = audiences.where((element) {
-          var audiencesTitle = element.name.toLowerCase();
-          return audiencesTitle.isNotEmpty && audiencesTitle.contains(value);
-        }).toList();
+        audiences = data;
+        isLoaded = true;
       },
     );
+  }
+
+  reApplyFilter() {
+    applyFilter(filter);
   }
 
   @override
@@ -55,10 +65,11 @@ class _AudiencesPageState extends State<AudiencesPage> {
       onTextChanged: applyFilter,
       isLoaded: isLoaded,
       selectionTextStyle: context.theme.primaryTextTheme.headline4,
-      filteredData: audiencesFiltered,
-      onEntrySelected: (AudienceSchedule selectionData) {
-        Get.to(() => RaspAudiencesPage(audienceSchedule: selectionData),
+      data: audiences,
+      onEntrySelected: (AudienceSchedule selectionData) async {
+        await Get.to(() => RaspAudiencesPage(audienceSchedule: selectionData),
             transition: Transition.downToUp);
+        reApplyFilter();
       },
     );
   }

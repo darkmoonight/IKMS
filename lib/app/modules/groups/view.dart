@@ -17,37 +17,47 @@ class GroupsPage extends StatefulWidget {
 }
 
 class _GroupsPageState extends State<GroupsPage> {
-  late List<GroupSchedule> groups;
-  List<GroupSchedule>? groupsFiltered;
+  List<GroupSchedule> groups = List.empty();
+  String filter = '';
   final isDialog = Get.isDialogOpen ?? false;
   var isLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    getData();
+    isDeviceConnectedNotifier.addListener(reApplyFilter);
+    applyFilter('');
   }
 
-  getData() async {
-    groups = await DonstuCaching.cacheGroups()
+  @override
+  void dispose() {
+    isDeviceConnectedNotifier.removeListener(reApplyFilter);
+    super.dispose();
+  }
+
+  Future<List<GroupSchedule>> get getData async {
+    return await isDeviceConnectedNotifier.value &&
+            await DonstuCaching.cacheGroups()
         ? await donstu.groups.filter().sortByLastUpdateDesc().findAll()
         : donstu.groups.where((e) => e.schedules.isNotEmpty).toList();
-    applyFilter('');
-    setState(() {
-      isLoaded = true;
-    });
   }
 
-  applyFilter(String value) {
-    value = value.toLowerCase();
+  applyFilter(String value) async {
+    filter = value.toLowerCase();
+    final data = (await getData).where((element) {
+      var groupsTitle = element.name.toLowerCase();
+      return groupsTitle.isNotEmpty && groupsTitle.contains(filter);
+    }).toList();
     setState(
       () {
-        groupsFiltered = groups.where((element) {
-          var groupsTitle = element.name.toLowerCase();
-          return groupsTitle.isNotEmpty && groupsTitle.contains(value);
-        }).toList();
+        groups = data;
+        isLoaded = true;
       },
     );
+  }
+
+  reApplyFilter() {
+    applyFilter(filter);
   }
 
   @override
@@ -55,21 +65,24 @@ class _GroupsPageState extends State<GroupsPage> {
     return Scaffold(
       backgroundColor: context.theme.scaffoldBackgroundColor,
       body: SelectionList(
-        headerText: 'groups'.tr,
-        hintText: 'groupsName'.tr,
-        onTextChanged: applyFilter,
-        isLoaded: isLoaded,
-        selectionTextStyle: widget.isSettings
-            ? context.theme.textTheme.headline6
-            : context.theme.primaryTextTheme.headline4,
-        onBackPressed: widget.isSettings ? Get.back : null,
-        filteredData: groupsFiltered,
-        onEntrySelected: (GroupSchedule selectionData) =>
-            widget.isSettings || isDialog
-                ? Get.back(result: selectionData)
-                : Get.to(() => RaspGroupsPage(groupSchedule: selectionData),
-                    transition: Transition.downToUp),
-      ),
+          headerText: 'groups'.tr,
+          hintText: 'groupsName'.tr,
+          onTextChanged: applyFilter,
+          isLoaded: isLoaded,
+          selectionTextStyle: widget.isSettings
+              ? context.theme.textTheme.headline6
+              : context.theme.primaryTextTheme.headline4,
+          onBackPressed: widget.isSettings ? Get.back : null,
+          data: groups,
+          onEntrySelected: (GroupSchedule selectionData) async {
+            if (widget.isSettings || isDialog) {
+              Get.back(result: selectionData);
+            } else {
+              await Get.to(() => RaspGroupsPage(groupSchedule: selectionData),
+                  transition: Transition.downToUp);
+              reApplyFilter();
+            }
+          }),
     );
   }
 }

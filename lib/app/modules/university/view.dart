@@ -34,7 +34,7 @@ class _UniversityPageState extends State<UniversityPage> {
             Get.back(result: selectionData),
         selectionTextStyle: context.theme.textTheme.headline6,
         onBackPressed: isDialog ? null : Get.back,
-        filteredData: data,
+        data: data,
       ),
     );
   }

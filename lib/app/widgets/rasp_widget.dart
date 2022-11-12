@@ -119,6 +119,7 @@ class _RaspWidgetState extends State<RaspWidget> {
             firstDay: firstDay,
             lastDay: lastDay,
             focusedDay: selectedDay,
+            weekendDays: const [DateTime.sunday],
             locale: '$tag',
             selectedDayPredicate: (day) {
               return isSameDay(selectedDay, day);

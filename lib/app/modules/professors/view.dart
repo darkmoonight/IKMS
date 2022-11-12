@@ -15,36 +15,46 @@ class ProfessorsPage extends StatefulWidget {
 }
 
 class _ProfessorsPageState extends State<ProfessorsPage> {
-  late List<TeacherSchedule> teachers;
-  List<TeacherSchedule>? teachersFiltered;
+  List<TeacherSchedule> teachers = List.empty();
+  String filter = '';
   var isLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    getData();
+    isDeviceConnectedNotifier.addListener(reApplyFilter);
+    applyFilter('');
   }
 
-  getData() async {
-    teachers = await DonstuCaching.cacheTeachers()
+  @override
+  void dispose() {
+    isDeviceConnectedNotifier.removeListener(reApplyFilter);
+    super.dispose();
+  }
+
+  Future<List<TeacherSchedule>> get getData async {
+    return await isDeviceConnectedNotifier.value &&
+            await DonstuCaching.cacheTeachers()
         ? await donstu.teachers.filter().sortByLastUpdateDesc().findAll()
         : donstu.teachers.where((e) => e.schedules.isNotEmpty).toList();
-    applyFilter('');
-    setState(() {
-      isLoaded = true;
-    });
   }
 
-  applyFilter(String value) {
-    value = value.toLowerCase();
+  applyFilter(String value) async {
+    filter = value.toLowerCase();
+    final data = (await getData).where((element) {
+      var professorsTitle = element.name.toLowerCase();
+      return professorsTitle.isNotEmpty && professorsTitle.contains(filter);
+    }).toList();
     setState(
       () {
-        teachersFiltered = teachers.where((element) {
-          var professorsTitle = element.name.toLowerCase();
-          return professorsTitle.isNotEmpty && professorsTitle.contains(value);
-        }).toList();
+        teachers = data;
+        isLoaded = true;
       },
     );
+  }
+
+  reApplyFilter() {
+    applyFilter(filter);
   }
 
   @override
@@ -55,10 +65,11 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
       onTextChanged: applyFilter,
       isLoaded: isLoaded,
       selectionTextStyle: context.theme.primaryTextTheme.headline4,
-      filteredData: teachersFiltered,
-      onEntrySelected: (TeacherSchedule selectionData) {
-        Get.to(() => RaspProfessorsPage(teacherSchedule: selectionData),
+      data: teachers,
+      onEntrySelected: (TeacherSchedule selectionData) async {
+        await Get.to(() => RaspProfessorsPage(teacherSchedule: selectionData),
             transition: Transition.downToUp);
+        applyFilter(filter);
       },
     );
   }
