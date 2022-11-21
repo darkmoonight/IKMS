@@ -23,7 +23,7 @@ class ScheduleData extends SelectionData {
 @collection
 class Settings {
   Id id = Isar.autoIncrement;
-  bool theme = false;
+  bool? theme;
 
   final university = IsarLink<University>();
   final group = IsarLink<GroupSchedule>();

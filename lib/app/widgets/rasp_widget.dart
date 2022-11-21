@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:project_cdis/app/data/schema.dart';
@@ -76,7 +75,7 @@ class _RaspWidgetState extends State<RaspWidget> {
         children: [
           widget.onBackPressed == null
               ? Padding(
-                  padding: EdgeInsets.only(top: 15.w),
+                  padding: const EdgeInsets.only(top: 15),
                   child: Text(
                     'schedule'.tr,
                     style: context.theme.textTheme.headline2,
@@ -84,7 +83,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                   ),
                 )
               : Padding(
-                  padding: EdgeInsets.only(top: 15.w, left: 10.w),
+                  padding: const EdgeInsets.only(top: 15, left: 10),
                   child: Row(
                     children: [
                       IconButton(
@@ -95,8 +94,8 @@ class _RaspWidgetState extends State<RaspWidget> {
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                       ),
-                      SizedBox(
-                        width: 5.w,
+                      const SizedBox(
+                        width: 5,
                       ),
                       Expanded(
                         child: Padding(
@@ -152,10 +151,10 @@ class _RaspWidgetState extends State<RaspWidget> {
           ),
           Divider(
             color: context.theme.dividerColor,
-            height: 20.w,
+            height: 20,
             thickness: 2,
-            indent: 10.w,
-            endIndent: 10.w,
+            indent: 10,
+            endIndent: 10,
           ),
           Expanded(
             child: Visibility(
@@ -197,18 +196,18 @@ class _RaspWidgetState extends State<RaspWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 15.w, vertical: 10.w),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 10),
                               child: Text(
                                 '${raspElementPage.begin}-${raspElementPage.end}',
                                 style: context.theme.textTheme.headline6,
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 10.w, vertical: 5.w),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 15.w, vertical: 15),
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 15),
                               decoration: BoxDecoration(
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(15)),
@@ -223,13 +222,13 @@ class _RaspWidgetState extends State<RaspWidget> {
                                     raspElementPage.discipline,
                                     style: context.theme.textTheme.headline6,
                                   ),
-                                  SizedBox(height: 10.w),
+                                  const SizedBox(height: 10),
                                   Text(
                                     raspElementPage.teacher,
                                     style: context
                                         .theme.primaryTextTheme.subtitle1,
                                   ),
-                                  SizedBox(height: 10.w),
+                                  const SizedBox(height: 10),
                                   groupList.length < 30
                                       ? Row(
                                           mainAxisAlignment:
@@ -265,7 +264,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                                                 overflow: TextOverflow.visible,
                                               ),
                                             ),
-                                            SizedBox(height: 10.w),
+                                            const SizedBox(height: 10),
                                             Text(
                                               raspElementPage.audience,
                                               style: context.theme

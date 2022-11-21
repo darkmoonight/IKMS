@@ -13,11 +13,12 @@ class IKMSTheme {
         size: 20.sp,
       ),
       dividerColor: Colors.black,
+      bottomAppBarColor: const Color.fromARGB(255, 245, 245, 245),
       backgroundColor: Colors.white,
       selectedRowColor: Colors.grey[850],
-      primaryColor: const Color.fromARGB(255, 250, 250, 250),
+      primaryColor: const Color.fromARGB(255, 240, 240, 240),
       unselectedWidgetColor: Colors.grey[600],
-      scaffoldBackgroundColor: const Color.fromARGB(255, 240, 240, 240),
+      scaffoldBackgroundColor: const Color.fromARGB(255, 230, 230, 230),
       // rgb(247, 247, 247)
       textTheme: baseLigth.textTheme.copyWith(
         headline1: TextStyle(
@@ -94,6 +95,7 @@ class IKMSTheme {
       selectedRowColor: Colors.grey[200],
       primaryColor: const Color.fromARGB(255, 40, 40, 40),
       backgroundColor: Colors.black,
+      bottomAppBarColor: const Color.fromARGB(255, 28, 28, 28),
       unselectedWidgetColor: Colors.grey[700],
       scaffoldBackgroundColor: const Color.fromARGB(255, 30, 30, 30),
       textTheme: baseDark.textTheme.copyWith(

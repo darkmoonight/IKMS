@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:project_cdis/app/data/schema.dart';
@@ -31,7 +30,7 @@ class _SettingsPageState extends State<SettingsPage> {
       child: ListView(
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 15.w),
+            padding: const EdgeInsets.only(top: 15),
             child: Text(
               'settings'.tr,
               style: context.theme.textTheme.headline2,
@@ -40,10 +39,10 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           Divider(
             color: context.theme.dividerColor,
-            height: 25.w,
+            height: 25,
             thickness: 2,
-            indent: 10.w,
-            endIndent: 10.w,
+            indent: 10,
+            endIndent: 10,
           ),
           SettingLinks(
             icon: const Icon(Iconsax.moon),
@@ -61,7 +60,7 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
           SettingLinks(
-            icon: const Icon(Iconsax.buliding),
+            icon: const Icon(Iconsax.buildings),
             text: 'university'.tr,
             switcher: false,
             description: Text(

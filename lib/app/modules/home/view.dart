@@ -1,6 +1,6 @@
+import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:project_cdis/app/modules/audiences/view.dart';
@@ -30,85 +30,55 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    ShapeBorder? bottomBarShape = const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(25)));
-    SnakeBarBehaviour snakeBarStyle = SnakeBarBehaviour.floating;
-    EdgeInsets padding =
-        const EdgeInsets.symmetric(horizontal: 15, vertical: 10);
-    SnakeShape snakeShape = SnakeShape.circle;
-
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        systemNavigationBarColor: context.theme.backgroundColor,
+        systemNavigationBarColor: context.theme.bottomAppBarColor,
       ),
     );
 
-    return WillPopScope(
-      onWillPop: () async {
-        if (tabIndex.value == 0) {
-          return true;
-        } else {
-          changeTabIndex(0);
-          return false;
-        }
-      },
-      child: Scaffold(
-        body: Obx(
-          (() => IndexedStack(
-                index: tabIndex.value,
-                children: const [
-                  MySchedulePage(),
-                  ProfessorsPage(),
-                  GroupsPage(
-                    isSettings: false,
-                  ),
-                  AudiencesPage(),
-                  SettingsPage(),
-                ],
-              )),
-        ),
-        bottomNavigationBar: Obx(
-          () => Theme(
-            data: context.theme.copyWith(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-            ),
-            child: SnakeNavigationBar.color(
-              onTap: (int index) => changeTabIndex(index),
-              currentIndex: tabIndex.value,
-              behaviour: snakeBarStyle,
-              snakeShape: snakeShape,
-              shape: bottomBarShape,
-              padding: padding,
-              backgroundColor: context.theme.primaryColor,
-              snakeViewColor: context.theme.primaryColor,
-              selectedItemColor: Colors.blue,
-              unselectedItemColor: Colors.grey[500],
-              showSelectedLabels: false,
-              showUnselectedLabels: false,
-              items: const [
-                BottomNavigationBarItem(
-                  label: 'Schedule',
-                  icon: Icon(Iconsax.calendar_1),
+    return Scaffold(
+      body: Obx(
+        (() => IndexedStack(
+              index: tabIndex.value,
+              children: const [
+                MySchedulePage(),
+                ProfessorsPage(),
+                GroupsPage(
+                  isSettings: false,
                 ),
-                BottomNavigationBarItem(
-                  label: 'Professors',
-                  icon: Icon(Iconsax.user_search),
-                ),
-                BottomNavigationBarItem(
-                  label: 'Groups',
-                  icon: Icon(Iconsax.people),
-                ),
-                BottomNavigationBarItem(
-                  label: 'Audiences',
-                  icon: Icon(Iconsax.buliding),
-                ),
-                BottomNavigationBarItem(
-                  label: 'Settings',
-                  icon: Icon(Iconsax.setting_2),
-                ),
+                AudiencesPage(),
+                SettingsPage(),
               ],
-            ),
+            )),
+      ),
+      bottomNavigationBar: Obx(
+        () => Theme(
+          data: context.theme.copyWith(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+          ),
+          child: CustomNavigationBar(
+            onTap: (int index) => changeTabIndex(index),
+            currentIndex: tabIndex.value,
+            backgroundColor: context.theme.bottomAppBarColor,
+            strokeColor: const Color(0x300c18fb),
+            items: [
+              CustomNavigationBarItem(
+                icon: const Icon(Iconsax.calendar_1),
+              ),
+              CustomNavigationBarItem(
+                icon: const Icon(Iconsax.user_search),
+              ),
+              CustomNavigationBarItem(
+                icon: const Icon(Iconsax.people),
+              ),
+              CustomNavigationBarItem(
+                icon: const Icon(Iconsax.buliding),
+              ),
+              CustomNavigationBarItem(
+                icon: const Icon(Iconsax.setting_2),
+              ),
+            ],
           ),
         ),
       ),

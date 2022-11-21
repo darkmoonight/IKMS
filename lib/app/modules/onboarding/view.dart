@@ -89,7 +89,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   await settings.university.save();
                 });
 
-                Get.off(() => const HomePage());
+                Get.offAll(() => const HomePage());
               },
               bgColor: context.theme.primaryColor,
               textColor: context.theme.dividerColor,

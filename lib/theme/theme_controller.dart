@@ -4,7 +4,11 @@ import 'package:project_cdis/app/data/schema.dart';
 import 'package:project_cdis/main.dart';
 
 class ThemeController extends GetxController {
-  ThemeMode get theme => settings.theme ? ThemeMode.dark : ThemeMode.light;
+  ThemeMode get theme => settings.theme == null
+      ? ThemeMode.system
+      : settings.theme == true
+          ? ThemeMode.dark
+          : ThemeMode.light;
 
   void saveTheme(bool isDarkMode) async {
     settings.theme = isDarkMode;

@@ -41,7 +41,7 @@ class _SelectionListState<T extends SelectionData>
         children: [
           widget.onBackPressed == null
               ? Padding(
-                  padding: EdgeInsets.only(top: 15.w),
+                  padding: const EdgeInsets.only(top: 15),
                   child: Text(
                     widget.headerText,
                     style: context.theme.textTheme.headline2,
@@ -49,7 +49,7 @@ class _SelectionListState<T extends SelectionData>
                   ),
                 )
               : Padding(
-                  padding: EdgeInsets.only(top: 15.w, left: 10.w),
+                  padding: const EdgeInsets.only(top: 15, left: 10),
                   child: Row(
                     children: [
                       IconButton(
@@ -60,8 +60,8 @@ class _SelectionListState<T extends SelectionData>
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                       ),
-                      SizedBox(
-                        width: 5.w,
+                      const SizedBox(
+                        width: 5,
                       ),
                       Expanded(
                         child: Text(
@@ -74,7 +74,7 @@ class _SelectionListState<T extends SelectionData>
                   ),
                 ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: TextField(
               controller: textEditingController,
               onChanged: widget.onTextChanged,
@@ -103,13 +103,13 @@ class _SelectionListState<T extends SelectionData>
                       )
                     : null,
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15.0),
+                  borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide(
                     color: context.theme.primaryColor,
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15.0),
+                  borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide(
                     color: context.theme.primaryColor,
                   ),
@@ -125,10 +125,10 @@ class _SelectionListState<T extends SelectionData>
           ),
           Divider(
             color: context.theme.dividerColor,
-            height: 20.w,
+            height: 20,
             thickness: 2,
-            indent: 10.w,
-            endIndent: 10.w,
+            indent: 10,
+            endIndent: 10,
           ),
           Expanded(
             child: Visibility(
@@ -143,7 +143,7 @@ class _SelectionListState<T extends SelectionData>
                   final T data = widget.data[index];
                   return Container(
                     margin:
-                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     height: 45.w,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(15)),

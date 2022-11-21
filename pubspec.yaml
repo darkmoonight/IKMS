@@ -14,7 +14,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   iconsax: ^0.0.8
-  flutter_snake_navigationbar: ^0.6.1
+  custom_navigation_bar: ^0.8.2
   flutter_easyloading: ^3.0.5
   get: ^4.6.5
   intl: ^0.17.0
