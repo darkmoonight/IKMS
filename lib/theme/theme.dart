@@ -76,9 +76,9 @@ class IKMSTheme {
           fontSize: 17.sp,
         ),
         headline6: TextStyle(
-          decoration: TextDecoration.lineThrough,
           color: Colors.black,
-          fontSize: 16.sp,
+          fontSize: 12.sp,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
@@ -154,9 +154,9 @@ class IKMSTheme {
           fontSize: 17.sp,
         ),
         headline6: TextStyle(
-          decoration: TextDecoration.lineThrough,
           color: Colors.white,
-          fontSize: 16.sp,
+          fontSize: 12.sp,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:project_cdis/app/data/schema.dart';
+import 'package:swipe/swipe.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class RaspWidget extends StatefulWidget {
@@ -66,6 +67,9 @@ class _RaspWidgetState extends State<RaspWidget> {
       },
     );
   }
+
+  int getCountEventsCalendar(DateTime date) =>
+      widget.raspElements.value.where((e) => e.date == date).length;
 
   @override
   Widget build(BuildContext context) {
@@ -148,6 +152,20 @@ class _RaspWidgetState extends State<RaspWidget> {
                 },
               );
             },
+            calendarBuilders: CalendarBuilders(
+              markerBuilder: (context, day, events) {
+                return getCountEventsCalendar(day) != 0
+                    ? Container(
+                        width: 10,
+                        height: 10,
+                        decoration: const BoxDecoration(
+                          color: Colors.green,
+                          shape: BoxShape.circle,
+                        ),
+                      )
+                    : null;
+              },
+            ),
           ),
           Divider(
             color: context.theme.dividerColor,
@@ -162,124 +180,142 @@ class _RaspWidgetState extends State<RaspWidget> {
               replacement: const Center(
                 child: CircularProgressIndicator(),
               ),
-              child: Visibility(
-                visible: raspElementsFiltered.isNotEmpty,
-                replacement: Center(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/no.png',
-                          scale: 5,
-                        ),
-                        Text(
-                          'no_par'.tr,
-                          style: context.theme.textTheme.headline3,
-                        ),
-                      ],
+              child: Swipe(
+                horizontalMinDisplacement: 1,
+                onSwipeLeft: () {
+                  _selectedDay = selectedDay.add(const Duration(days: 1));
+                  getRasp();
+                },
+                onSwipeRight: () {
+                  _selectedDay = selectedDay.add(const Duration(days: -1));
+                  getRasp();
+                },
+                child: Visibility(
+                  visible: raspElementsFiltered.isNotEmpty,
+                  replacement: Center(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            'assets/images/no.png',
+                            scale: 5,
+                          ),
+                          Text(
+                            'no_par'.tr,
+                            style: context.theme.textTheme.headline3,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                child: Builder(
-                  builder: (context) {
-                    final seen = <String>{};
-                    var raspElements = raspElementsFiltered
-                        .where((element) => seen.add(element.pair.toString()))
-                        .toList();
-                    return ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: raspElements.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final raspElementPage = raspElements[index];
-                        final groupList = raspElementPage.group;
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 10),
-                              child: Text(
-                                '${raspElementPage.begin}-${raspElementPage.end}',
-                                style: context.theme.textTheme.headline6,
+                  child: Builder(
+                    builder: (context) {
+                      final seen = <String>{};
+                      var raspElements = raspElementsFiltered
+                          .where((element) => seen.add(element.pair.toString()))
+                          .toList();
+                      return ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: raspElements.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final raspElementPage = raspElements[index];
+                          final groupList = raspElementPage.group;
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 10),
+                                child: Text(
+                                  '${raspElementPage.begin}-${raspElementPage.end}',
+                                  style: context.theme.textTheme.headline6,
+                                ),
                               ),
-                            ),
-                            Container(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 15),
-                              decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(15)),
-                                color: context.theme.primaryColor,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    raspElementPage.discipline,
-                                    style: context.theme.textTheme.headline6,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    raspElementPage.teacher,
-                                    style: context
-                                        .theme.primaryTextTheme.subtitle1,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  groupList.length < 30
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              child: Text(
+                              Container(
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(15)),
+                                  color: context.theme.primaryColor,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      raspElementPage.discipline,
+                                      style: context.theme.textTheme.headline6,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      raspElementPage.teacher,
+                                      style: context
+                                          .theme.primaryTextTheme.subtitle1,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    groupList.length < 30
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  raspElementPage.audience,
+                                                  style: context
+                                                      .theme
+                                                      .primaryTextTheme
+                                                      .subtitle1,
+                                                  overflow:
+                                                      TextOverflow.visible,
+                                                ),
+                                              ),
+                                              Text(
+                                                raspElementPage.group,
+                                                style: context.theme
+                                                    .primaryTextTheme.subtitle1,
+                                              ),
+                                            ],
+                                          )
+                                        : Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  raspElementPage.audience,
+                                                  style: context
+                                                      .theme
+                                                      .primaryTextTheme
+                                                      .subtitle1,
+                                                  overflow:
+                                                      TextOverflow.visible,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 10),
+                                              Text(
                                                 raspElementPage.audience,
                                                 style: context.theme
                                                     .primaryTextTheme.subtitle1,
-                                                overflow: TextOverflow.visible,
                                               ),
-                                            ),
-                                            Text(
-                                              raspElementPage.group,
-                                              style: context.theme
-                                                  .primaryTextTheme.subtitle1,
-                                            ),
-                                          ],
-                                        )
-                                      : Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                raspElementPage.audience,
-                                                style: context.theme
-                                                    .primaryTextTheme.subtitle1,
-                                                overflow: TextOverflow.visible,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              raspElementPage.audience,
-                                              style: context.theme
-                                                  .primaryTextTheme.subtitle1,
-                                            ),
-                                          ],
-                                        ),
-                                ],
+                                            ],
+                                          ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
