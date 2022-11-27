@@ -19,7 +19,6 @@ class IKMSTheme {
       primaryColor: const Color.fromARGB(255, 240, 240, 240),
       unselectedWidgetColor: Colors.grey[600],
       scaffoldBackgroundColor: const Color.fromARGB(255, 230, 230, 230),
-      // rgb(247, 247, 247)
       textTheme: baseLigth.textTheme.copyWith(
         headline1: TextStyle(
           color: Colors.black,

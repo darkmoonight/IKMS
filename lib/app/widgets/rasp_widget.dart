@@ -43,6 +43,18 @@ class _RaspWidgetState extends State<RaspWidget> {
           .date
       : DateTime.now();
 
+  static const List<MaterialColor> primaries = <MaterialColor>[
+    Colors.lightGreen,
+    Colors.green,
+    Colors.teal,
+    Colors.yellow,
+    Colors.amber,
+    Colors.orange,
+    Colors.deepOrange,
+    Colors.red,
+    Colors.pink,
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -68,8 +80,13 @@ class _RaspWidgetState extends State<RaspWidget> {
     );
   }
 
-  int getCountEventsCalendar(DateTime date) =>
-      widget.raspElements.value.where((e) => e.date == date).length;
+  int getCountEventsCalendar(DateTime date) {
+    final seen = <String>{};
+    return widget.raspElements.value
+        .where((element) =>
+            element.date == date && seen.add(element.pair.toString()))
+        .length;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,14 +172,30 @@ class _RaspWidgetState extends State<RaspWidget> {
             calendarBuilders: CalendarBuilders(
               markerBuilder: (context, day, events) {
                 return getCountEventsCalendar(day) != 0
-                    ? Container(
-                        width: 10,
-                        height: 10,
-                        decoration: const BoxDecoration(
-                          color: Colors.green,
-                          shape: BoxShape.circle,
-                        ),
-                      )
+                    ? selectedDay == day
+                        ? Container(
+                            width: 15,
+                            height: 15,
+                            decoration: BoxDecoration(
+                              color: primaries[getCountEventsCalendar(day)],
+                              shape: BoxShape.circle,
+                            ),
+                            child: Center(
+                                child: Text(
+                              getCountEventsCalendar(day).toString(),
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )),
+                          )
+                        : Text(
+                            getCountEventsCalendar(day).toString(),
+                            style: TextStyle(
+                              color: primaries[getCountEventsCalendar(day)],
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
                     : null;
               },
             ),
