@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:project_cdis/app/data/schema.dart';
-import 'package:project_cdis/app/modules/groups/view.dart';
-import 'package:project_cdis/app/modules/university/view.dart';
-import 'package:project_cdis/app/widgets/setting_links.dart';
-import 'package:project_cdis/main.dart';
-import 'package:project_cdis/theme/theme_controller.dart';
+import 'package:ikms/app/data/schema.dart';
+import 'package:ikms/app/modules/groups/view.dart';
+import 'package:ikms/app/modules/university/view.dart';
+import 'package:ikms/app/widgets/setting_links.dart';
+import 'package:ikms/main.dart';
+import 'package:ikms/theme/theme_controller.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});

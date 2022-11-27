@@ -9,12 +9,12 @@ import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:project_cdis/app/data/schema.dart';
-import 'package:project_cdis/app/modules/home/view.dart';
-import 'package:project_cdis/app/modules/onboarding/view.dart';
-import 'package:project_cdis/l10n/translation.dart';
-import 'package:project_cdis/theme/theme.dart';
-import 'package:project_cdis/theme/theme_controller.dart';
+import 'package:ikms/app/data/schema.dart';
+import 'package:ikms/app/modules/home/view.dart';
+import 'package:ikms/app/modules/onboarding/view.dart';
+import 'package:ikms/l10n/translation.dart';
+import 'package:ikms/theme/theme.dart';
+import 'package:ikms/theme/theme_controller.dart';
 
 late Isar isar;
 late Settings settings;

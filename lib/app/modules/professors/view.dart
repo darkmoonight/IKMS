@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:isar/isar.dart';
-import 'package:project_cdis/app/api/donstu/caching.dart';
-import 'package:project_cdis/app/data/schema.dart';
-import 'package:project_cdis/app/modules/raspProfessors/view.dart';
-import 'package:project_cdis/app/widgets/selection_list.dart';
-import 'package:project_cdis/main.dart';
+import 'package:ikms/app/api/donstu/caching.dart';
+import 'package:ikms/app/data/schema.dart';
+import 'package:ikms/app/modules/raspProfessors/view.dart';
+import 'package:ikms/app/widgets/selection_list.dart';
+import 'package:ikms/main.dart';
 
 class ProfessorsPage extends StatefulWidget {
   const ProfessorsPage({super.key});

@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
-import 'package:project_cdis/app/api/donstu/audiences.dart';
-import 'package:project_cdis/app/api/donstu/groups.dart';
-import 'package:project_cdis/app/api/donstu/professors.dart';
-import 'package:project_cdis/app/data/schema.dart';
-import 'package:project_cdis/app/api/donstu/shedule.dart';
-import 'package:project_cdis/main.dart';
+import 'package:ikms/app/api/donstu/audiences.dart';
+import 'package:ikms/app/api/donstu/groups.dart';
+import 'package:ikms/app/api/donstu/professors.dart';
+import 'package:ikms/app/data/schema.dart';
+import 'package:ikms/app/api/donstu/shedule.dart';
+import 'package:ikms/main.dart';
 
 class DonstuAPI {
   final Dio dio = Dio();

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:project_cdis/app/modules/audiences/view.dart';
-import 'package:project_cdis/app/modules/groups/view.dart';
-import 'package:project_cdis/app/modules/mySchedule/view.dart';
-import 'package:project_cdis/app/modules/professors/view.dart';
-import 'package:project_cdis/app/modules/settings/view.dart';
+import 'package:ikms/app/modules/audiences/view.dart';
+import 'package:ikms/app/modules/groups/view.dart';
+import 'package:ikms/app/modules/mySchedule/view.dart';
+import 'package:ikms/app/modules/professors/view.dart';
+import 'package:ikms/app/modules/settings/view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

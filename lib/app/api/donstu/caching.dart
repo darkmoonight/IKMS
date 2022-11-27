@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:project_cdis/app/api/donstu/api.dart';
-import 'package:project_cdis/app/data/schema.dart';
-import 'package:project_cdis/main.dart';
+import 'package:ikms/app/api/donstu/api.dart';
+import 'package:ikms/app/data/schema.dart';
+import 'package:ikms/main.dart';
 
 class DonstuCaching {
   static Future<bool> cacheAudiences() async {

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:project_cdis/app/data/schema.dart';
-import 'package:project_cdis/main.dart';
+import 'package:ikms/app/data/schema.dart';
+import 'package:ikms/main.dart';
 
 class ThemeController extends GetxController {
   ThemeMode get theme => settings.theme == null

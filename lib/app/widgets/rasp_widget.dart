@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:project_cdis/app/data/schema.dart';
+import 'package:ikms/app/data/schema.dart';
 import 'package:swipe/swipe.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -84,7 +84,8 @@ class _RaspWidgetState extends State<RaspWidget> {
     final seen = <String>{};
     return widget.raspElements.value
         .where((element) =>
-            element.date == date && seen.add(element.pair.toString()))
+            element.date.isAtSameMomentAs(date) &&
+            seen.add(element.pair.toString()))
         .length;
   }
 
@@ -172,7 +173,7 @@ class _RaspWidgetState extends State<RaspWidget> {
             calendarBuilders: CalendarBuilders(
               markerBuilder: (context, day, events) {
                 return getCountEventsCalendar(day) != 0
-                    ? selectedDay == day
+                    ? selectedDay.isAtSameMomentAs(day)
                         ? Container(
                             width: 15,
                             height: 15,
@@ -181,13 +182,14 @@ class _RaspWidgetState extends State<RaspWidget> {
                               shape: BoxShape.circle,
                             ),
                             child: Center(
-                                child: Text(
-                              getCountEventsCalendar(day).toString(),
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
+                              child: Text(
+                                getCountEventsCalendar(day).toString(),
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            )),
+                            ),
                           )
                         : Text(
                             getCountEventsCalendar(day).toString(),
