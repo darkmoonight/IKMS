@@ -18,6 +18,7 @@ dependencies:
   isar: ^3.0.2
   intl: ^0.17.0
   swipe: ^0.0.1
+  shimmer: ^2.0.0
   iconsax: ^0.0.8
   path_provider: ^2.0.11
   table_calendar: ^3.0.7

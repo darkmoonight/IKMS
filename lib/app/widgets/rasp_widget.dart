@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ikms/app/data/schema.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:swipe/swipe.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -11,12 +12,13 @@ class RaspWidget extends StatefulWidget {
   final Function()? onBackPressed;
   final String? headerText;
 
-  const RaspWidget(
-      {super.key,
-      required this.isLoaded,
-      required this.raspElements,
-      this.onBackPressed,
-      this.headerText});
+  const RaspWidget({
+    super.key,
+    required this.isLoaded,
+    required this.raspElements,
+    this.onBackPressed,
+    this.headerText,
+  });
 
   @override
   State<RaspWidget> createState() => _RaspWidgetState();
@@ -212,8 +214,43 @@ class _RaspWidgetState extends State<RaspWidget> {
           Expanded(
             child: Visibility(
               visible: widget.isLoaded,
-              replacement: const Center(
-                child: CircularProgressIndicator(),
+              replacement: Shimmer.fromColors(
+                baseColor: context.theme.primaryColor,
+                highlightColor: context.theme.unselectedWidgetColor,
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: 5,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                          child: Container(
+                            width: 100,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              color: context.theme.primaryColor,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          height: 110,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(15)),
+                            color: context.theme.primaryColor,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
               child: Swipe(
                 horizontalMinDisplacement: 1,

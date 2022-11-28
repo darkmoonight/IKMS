@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ikms/app/data/schema.dart';
+import 'package:shimmer/shimmer.dart';
 
 class SelectionList<T extends SelectionData> extends StatefulWidget {
   final String headerText;
@@ -133,8 +134,25 @@ class _SelectionListState<T extends SelectionData>
           Expanded(
             child: Visibility(
               visible: widget.isLoaded,
-              replacement: const Center(
-                child: CircularProgressIndicator(),
+              replacement: Shimmer.fromColors(
+                baseColor: context.theme.primaryColor,
+                highlightColor: context.theme.unselectedWidgetColor,
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: 10,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      height: 45.w,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
+                        color: context.theme.primaryColor,
+                      ),
+                    );
+                  },
+                ),
               ),
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),

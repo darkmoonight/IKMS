@@ -17,7 +17,7 @@ class IKMSTheme {
       backgroundColor: Colors.white,
       selectedRowColor: Colors.grey[850],
       primaryColor: const Color.fromARGB(255, 240, 240, 240),
-      unselectedWidgetColor: Colors.grey[600],
+      unselectedWidgetColor: Colors.grey[350],
       scaffoldBackgroundColor: const Color.fromARGB(255, 230, 230, 230),
       textTheme: baseLigth.textTheme.copyWith(
         headline1: TextStyle(
@@ -95,7 +95,7 @@ class IKMSTheme {
       primaryColor: const Color.fromARGB(255, 40, 40, 40),
       backgroundColor: Colors.black,
       bottomAppBarColor: const Color.fromARGB(255, 28, 28, 28),
-      unselectedWidgetColor: Colors.grey[700],
+      unselectedWidgetColor: Colors.grey[850],
       scaffoldBackgroundColor: const Color.fromARGB(255, 30, 30, 30),
       textTheme: baseDark.textTheme.copyWith(
         headline1: TextStyle(
