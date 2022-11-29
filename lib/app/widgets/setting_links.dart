@@ -63,6 +63,8 @@ class SettingLinks extends StatelessWidget {
                     IconButton(
                       onPressed: onPressed,
                       icon: const Icon(Iconsax.arrow_right_3),
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
                     ),
                   ],
                 ),

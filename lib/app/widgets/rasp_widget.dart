@@ -49,7 +49,7 @@ class _RaspWidgetState extends State<RaspWidget> {
     Colors.lightGreen,
     Colors.green,
     Colors.teal,
-    Colors.yellow,
+    Colors.lime,
     Colors.amber,
     Colors.orange,
     Colors.deepOrange,
@@ -253,14 +253,18 @@ class _RaspWidgetState extends State<RaspWidget> {
                 ),
               ),
               child: Swipe(
-                horizontalMinDisplacement: 1,
+                horizontalMinDisplacement: 20,
                 onSwipeLeft: () {
-                  _selectedDay = selectedDay.add(const Duration(days: 1));
-                  getRasp();
+                  if (selectedDay.isBefore(lastDay)) {
+                    _selectedDay = selectedDay.add(const Duration(days: 1));
+                    getRasp();
+                  }
                 },
                 onSwipeRight: () {
-                  _selectedDay = selectedDay.add(const Duration(days: -1));
-                  getRasp();
+                  if (selectedDay.isAfter(firstDay)) {
+                    _selectedDay = selectedDay.add(const Duration(days: -1));
+                    getRasp();
+                  }
                 },
                 child: Visibility(
                   visible: raspElementsFiltered.isNotEmpty,
