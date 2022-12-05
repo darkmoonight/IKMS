@@ -21,7 +21,7 @@ jobs:
           architecture: x64 # optional, x64 or arm64
       - run: flutter pub get
       - run: flutter pub run build_runner build --delete-conflicting-outputs
-      - run: flutter build apk --split-per-abi
+      - run: flutter build apk --split-per-abi --dart-define="SIGNING_TYPE=NO_SIGN"
       - uses: ilharp/sign-android-release@v1
         id: sign_app
         with:

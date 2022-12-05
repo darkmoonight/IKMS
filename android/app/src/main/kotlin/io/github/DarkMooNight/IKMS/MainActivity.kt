@@ -1,4 +1,4 @@
-package com.example.project_cdis
+package io.github.DarkMooNight.IKMS
 
 import io.flutter.embedding.android.FlutterActivity
 
