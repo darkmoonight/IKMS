@@ -1,0 +1,67 @@
+name: test-apk-build
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:' # optional, change this to force refresh cache
+          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:' # optional, change this to specify the cache path
+          architecture: x64 # optional, x64 or arm64
+      - run: flutter pub get
+      - run: flutter pub run build_runner build --delete-conflicting-outputs
+      - run: flutter build apk --split-per-abi --dart-define="SIGNING_TYPE=NO_SIGN"
+      - uses: ilharp/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDir: build/app/outputs/flutter-apk
+          signingKey: ${{ secrets.KEYSTORE_BASE64 }}
+          keyAlias: ${{ secrets.KEYSTORE_PASSWORD_ALIAS }}
+          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEYSTORE_PASSWORD }}
+          buildToolsVersion: 33.0.0
+      - uses: jungwinter/split@v2
+        id: signed_files
+        with:
+          msg: '${{ steps.sign_app.outputs.signedFilesCount }}:${{ steps.sign_app.outputs.signedFiles }}'
+          separator: ':'
+#      - name: Example Release
+#        uses: "marvinpinto/action-automatic-releases@latest"
+#        with:
+#          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+#          automatic_release_tag: "latest"
+#          prerelease: true
+#          title: "Test release"
+#          files: |
+#
+#            ${{ steps.signed_files.outputs._1 }}
+#            ${{ steps.signed_files.outputs._2 }}
+#            ${{ steps.signed_files.outputs._3 }}
+#            ${{ steps.signed_files.outputs._4 }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: apk-build
+          path: | 
+            run.txt
+            ${{ steps.signed_files.outputs._1 }}
+            ${{ steps.signed_files.outputs._2 }}
+            ${{ steps.signed_files.outputs._3 }}
+            ${{ steps.signed_files.outputs._4 }}
+      - name: publish new release
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: 'Repository: ${{ github.repository }}'
+          document: ${{ steps.signed_files.outputs._4 }}

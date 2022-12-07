@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:project_cdis/app/data/audiences.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../services/remote_services.dart';
+import 'package:get/get.dart';
+import 'package:isar/isar.dart';
+import 'package:ikms/app/api/donstu/caching.dart';
+import 'package:ikms/app/data/schema.dart';
+import 'package:ikms/app/modules/raspAudiences/view.dart';
+import 'package:ikms/app/widgets/selection_list.dart';
+import 'package:ikms/main.dart';
 
 class AudiencesPage extends StatefulWidget {
   const AudiencesPage({super.key});
@@ -12,127 +15,62 @@ class AudiencesPage extends StatefulWidget {
 }
 
 class _AudiencesPageState extends State<AudiencesPage> {
-  List<Audiences>? audiences;
-  List<Audiences>? audience;
+  List<AudienceSchedule> audiences = List.empty();
+  String filter = '';
   var isLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    audience = audiences;
-    getData();
+    isDeviceConnectedNotifier.addListener(reApplyFilter);
+    applyFilter('');
   }
 
-  getData() async {
-    audience = await RomoteServise().getAudiencesData();
-    audiences = await RomoteServise().getAudiencesData();
-    if (audience != null) {
-      setState(() {
+  @override
+  void dispose() {
+    isDeviceConnectedNotifier.removeListener(reApplyFilter);
+    super.dispose();
+  }
+
+  Future<List<AudienceSchedule>> get getData async {
+    return await isDeviceConnectedNotifier.value &&
+            await DonstuCaching.cacheAudiences()
+        ? await donstu.audiences.filter().sortByLastUpdateDesc().findAll()
+        : donstu.audiences.where((e) => e.schedules.isNotEmpty).toList();
+  }
+
+  applyFilter(String value) async {
+    filter = value.toLowerCase();
+    final data = (await getData).where((element) {
+      var audiencesTitle = element.name.toLowerCase();
+      return audiencesTitle.isNotEmpty && audiencesTitle.contains(filter);
+    }).toList();
+    setState(
+      () {
+        audiences = data;
         isLoaded = true;
-      });
-    }
+      },
+    );
+  }
+
+  reApplyFilter() {
+    applyFilter(filter);
   }
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 15.w),
-              child: Text(
-                AppLocalizations.of(context)!.audiences,
-                style: theme.textTheme.headline2,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
-              child: TextField(
-                onChanged: (value) {
-                  value = value.toLowerCase();
-                  setState(() {
-                    audience = audiences?.where((element) {
-                      var audiensesTitle = element.name.toLowerCase();
-                      return audiensesTitle.contains(value);
-                    }).toList();
-                  });
-                },
-                style: theme.textTheme.headline6,
-                decoration: InputDecoration(
-                  fillColor: theme.primaryColor,
-                  filled: true,
-                  prefixIcon: const Icon(
-                    Icons.search_outlined,
-                    color: Colors.grey,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                    borderSide: BorderSide(
-                      color: theme.primaryColor,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                    borderSide: BorderSide(
-                      color: theme.primaryColor,
-                    ),
-                  ),
-                  hintText: AppLocalizations.of(context)!.number,
-                  hintStyle: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 15.sp,
-                  ),
-                ),
-                autofocus: false,
-              ),
-            ),
-            Divider(
-              color: theme.dividerColor,
-              height: 20.w,
-              thickness: 2,
-              indent: 10.w,
-              endIndent: 10.w,
-            ),
-            Expanded(
-              child: Visibility(
-                visible: isLoaded,
-                replacement: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                child: ListView.builder(
-                  itemCount: audience?.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final audiencePage = audience![index];
-                    return Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
-                      child: Container(
-                        height: 40.w,
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(15)),
-                            color: theme.primaryColor),
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Center(
-                              child: Text(
-                            audiencePage.name,
-                            style: theme.textTheme.headline6,
-                          )),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+    return SelectionList(
+      headerText: 'audiences'.tr,
+      hintText: 'number'.tr,
+      onTextChanged: applyFilter,
+      isLoaded: isLoaded,
+      selectionTextStyle: context.theme.primaryTextTheme.headline4,
+      data: audiences,
+      onEntrySelected: (AudienceSchedule selectionData) async {
+        await Get.to(() => RaspAudiencesPage(audienceSchedule: selectionData),
+            transition: Transition.downToUp);
+        reApplyFilter();
+      },
     );
   }
 }

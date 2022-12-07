@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:project_cdis/app/data/professors.dart';
-
-import '../../services/remote_services.dart';
+import 'package:get/get.dart';
+import 'package:isar/isar.dart';
+import 'package:ikms/app/api/donstu/caching.dart';
+import 'package:ikms/app/data/schema.dart';
+import 'package:ikms/app/modules/raspProfessors/view.dart';
+import 'package:ikms/app/widgets/selection_list.dart';
+import 'package:ikms/main.dart';
 
 class ProfessorsPage extends StatefulWidget {
   const ProfessorsPage({super.key});
@@ -13,127 +15,62 @@ class ProfessorsPage extends StatefulWidget {
 }
 
 class _ProfessorsPageState extends State<ProfessorsPage> {
-  List<Professors>? professors;
-  List<Professors>? professor;
+  List<TeacherSchedule> teachers = List.empty();
+  String filter = '';
   var isLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    professor = professors;
-    getData();
+    isDeviceConnectedNotifier.addListener(reApplyFilter);
+    applyFilter('');
   }
 
-  getData() async {
-    professor = await RomoteServise().getProfessorsData();
-    professors = await RomoteServise().getProfessorsData();
-    if (professor != null) {
-      setState(() {
+  @override
+  void dispose() {
+    isDeviceConnectedNotifier.removeListener(reApplyFilter);
+    super.dispose();
+  }
+
+  Future<List<TeacherSchedule>> get getData async {
+    return await isDeviceConnectedNotifier.value &&
+            await DonstuCaching.cacheTeachers()
+        ? await donstu.teachers.filter().sortByLastUpdateDesc().findAll()
+        : donstu.teachers.where((e) => e.schedules.isNotEmpty).toList();
+  }
+
+  applyFilter(String value) async {
+    filter = value.toLowerCase();
+    final data = (await getData).where((element) {
+      var professorsTitle = element.name.toLowerCase();
+      return professorsTitle.isNotEmpty && professorsTitle.contains(filter);
+    }).toList();
+    setState(
+      () {
+        teachers = data;
         isLoaded = true;
-      });
-    }
+      },
+    );
+  }
+
+  reApplyFilter() {
+    applyFilter(filter);
   }
 
   @override
   Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 15.w),
-              child: Text(
-                AppLocalizations.of(context)!.professors,
-                style: theme.textTheme.headline2,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
-              child: TextField(
-                onChanged: (value) {
-                  value = value.toLowerCase();
-                  setState(() {
-                    professor = professors?.where((element) {
-                      var professorsTitle = element.name.toLowerCase();
-                      return professorsTitle.contains(value);
-                    }).toList();
-                  });
-                },
-                style: theme.textTheme.headline6,
-                decoration: InputDecoration(
-                  fillColor: theme.primaryColor,
-                  filled: true,
-                  prefixIcon: const Icon(
-                    Icons.search_outlined,
-                    color: Colors.grey,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                    borderSide: BorderSide(
-                      color: theme.primaryColor,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                    borderSide: BorderSide(
-                      color: theme.primaryColor,
-                    ),
-                  ),
-                  hintText: AppLocalizations.of(context)!.fio,
-                  hintStyle: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 15.sp,
-                  ),
-                ),
-                autofocus: false,
-              ),
-            ),
-            Divider(
-              color: theme.dividerColor,
-              height: 20.w,
-              thickness: 2,
-              indent: 10.w,
-              endIndent: 10.w,
-            ),
-            Expanded(
-              child: Visibility(
-                visible: isLoaded,
-                replacement: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                child: ListView.builder(
-                  itemCount: professor?.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final professorPage = professor![index];
-                    return Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
-                      child: Container(
-                        height: 40.w,
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(15)),
-                            color: theme.primaryColor),
-                        child: TextButton(
-                          onPressed: () {},
-                          child: Center(
-                              child: Text(
-                            professorPage.name,
-                            style: theme.textTheme.headline6,
-                          )),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+    return SelectionList(
+      headerText: 'professors'.tr,
+      hintText: 'fio'.tr,
+      onTextChanged: applyFilter,
+      isLoaded: isLoaded,
+      selectionTextStyle: context.theme.primaryTextTheme.headline4,
+      data: teachers,
+      onEntrySelected: (TeacherSchedule selectionData) async {
+        await Get.to(() => RaspProfessorsPage(teacherSchedule: selectionData),
+            transition: Transition.downToUp);
+        applyFilter(filter);
+      },
     );
   }
 }
