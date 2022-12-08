@@ -19,11 +19,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final tabIndex = 0.obs;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   void changeTabIndex(int index) {
     tabIndex.value = index;
   }

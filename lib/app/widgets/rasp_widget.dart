@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:shimmer/shimmer.dart';
@@ -284,114 +285,78 @@ class _RaspWidgetState extends State<RaspWidget> {
                       ),
                     ),
                   ),
-                  child: Builder(
-                    builder: (context) {
-                      final seen = <String>{};
-                      var raspElements = raspElementsFiltered
-                          .where((element) => seen.add(element.pair.toString()))
-                          .toList();
-                      return ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: raspElements.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final raspElementPage = raspElements[index];
-                          final groupList = raspElementPage.group;
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                  child: GroupedListView<Schedule, String>(
+                      physics: const BouncingScrollPhysics(),
+                      elements: raspElementsFiltered,
+                      groupBy: (element) {
+                        return '${element.begin}-${element.end}';
+                      },
+                      groupSeparatorBuilder: (String groupByValue) => Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 10),
+                            child: Text(
+                              groupByValue,
+                              style: context.theme.textTheme.headline6,
+                            ),
+                          ),
+                      itemBuilder: (BuildContext context, dynamic element) {
+                        final raspElementPage = element;
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 15),
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(15)),
+                            color: context.theme.primaryColor,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 10),
+                              Text(
+                                raspElementPage.discipline,
+                                style: context.theme.textTheme.headline6,
+                              ),
+                              const SizedBox(height: 10),
+                              Flexible(
                                 child: Text(
-                                  '${raspElementPage.begin}-${raspElementPage.end}',
-                                  style: context.theme.textTheme.headline6,
+                                  raspElementPage.teacher,
+                                  style:
+                                      context.theme.primaryTextTheme.subtitle1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 15),
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(15)),
-                                  color: context.theme.primaryColor,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      raspElementPage.discipline,
-                                      style: context.theme.textTheme.headline6,
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      raspElementPage.teacher,
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      raspElementPage.audience,
                                       style: context
                                           .theme.primaryTextTheme.subtitle1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    const SizedBox(height: 10),
-                                    groupList.length < 30
-                                        ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  raspElementPage.audience,
-                                                  style: context
-                                                      .theme
-                                                      .primaryTextTheme
-                                                      .subtitle1,
-                                                  overflow:
-                                                      TextOverflow.visible,
-                                                ),
-                                              ),
-                                              Text(
-                                                raspElementPage.group,
-                                                style: context.theme
-                                                    .primaryTextTheme.subtitle1,
-                                              ),
-                                            ],
-                                          )
-                                        : Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  raspElementPage.audience,
-                                                  style: context
-                                                      .theme
-                                                      .primaryTextTheme
-                                                      .subtitle1,
-                                                  overflow:
-                                                      TextOverflow.visible,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 10),
-                                              Text(
-                                                raspElementPage.audience,
-                                                style: context.theme
-                                                    .primaryTextTheme.subtitle1,
-                                              ),
-                                            ],
-                                          ),
-                                  ],
-                                ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      raspElementPage.group,
+                                      style: context
+                                          .theme.primaryTextTheme.subtitle1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.right,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
-                          );
-                        },
-                      );
-                    },
-                  ),
+                          ),
+                        );
+                      }),
                 ),
               ),
             ),
