@@ -31,6 +31,7 @@ class RaspWidget extends StatefulWidget {
 
 class _RaspWidgetState extends State<RaspWidget> {
   late List<Schedule> raspElementsFiltered;
+  final locale = Get.locale;
 
   DateTime _selectedDay = normalizeDate(DateTime.now());
 
@@ -98,7 +99,6 @@ class _RaspWidgetState extends State<RaspWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final tag = Localizations.maybeLocaleOf(context)?.toLanguageTag();
     return SafeArea(
       child: Column(
         children: [
@@ -148,7 +148,7 @@ class _RaspWidgetState extends State<RaspWidget> {
             lastDay: lastDay,
             focusedDay: selectedDay,
             weekendDays: const [DateTime.sunday],
-            locale: '$tag',
+            locale: '${locale?.languageCode}' == 'ru' ? 'ru_RU' : 'en_US',
             selectedDayPredicate: (day) {
               return isSameDay(selectedDay, day);
             },
