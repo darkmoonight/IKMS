@@ -1,4 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_yandex_ads/pigeons/banner.dart';
+import 'package:flutter_yandex_ads/widgets/banner.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:iconsax/iconsax.dart';
@@ -178,8 +182,8 @@ class _RaspWidgetState extends State<RaspWidget> {
                 return getCountEventsCalendar(day) != 0
                     ? selectedDay.isAtSameMomentAs(day)
                         ? Container(
-                            width: 15,
-                            height: 15,
+                            width: 15.w,
+                            height: 15.w,
                             decoration: BoxDecoration(
                               color: primaries[getCountEventsCalendar(day)],
                               shape: BoxShape.circle,
@@ -359,6 +363,36 @@ class _RaspWidgetState extends State<RaspWidget> {
                       }),
                 ),
               ),
+            ),
+          ),
+          Container(
+            height: 52,
+            margin: const EdgeInsets.only(top: 10),
+            child: YandexAdsBannerWidget(
+              width: 320,
+              height: 50,
+              id: 'R-M-2007823-1',
+              onAdLoaded: () {
+                if (kDebugMode) {
+                  print('banner onAdLoaded');
+                }
+              },
+              onAdFailedToLoad: (BannerError err) {
+                if (kDebugMode) {
+                  print(
+                      'banner onAdFailedToLoad code: ${err.code}, description: ${err.description}');
+                }
+              },
+              onImpression: (BannerImpression? data) {
+                if (kDebugMode) {
+                  print("banner onImpression ${data?.data}");
+                }
+              },
+              onAdClicked: () {
+                if (kDebugMode) {
+                  print('banner onAdClicked');
+                }
+              },
             ),
           ),
         ],

@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: 'none'
 
-version: 1.0.2
+version: 1.0.0+1
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
@@ -29,6 +29,8 @@ dependencies:
   flutter_screenutil: ^5.6.0
   custom_navigation_bar: ^0.8.2
   internet_connection_checker: ^1.0.0+1
+  
+  flutter_yandex_ads: ^1.0.0+1
 
 dev_dependencies:
   flutter_test:
