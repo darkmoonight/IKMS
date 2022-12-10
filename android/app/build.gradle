@@ -25,10 +25,34 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+// build unsigned for future sign
+// flutter build apk --split-per-abi --dart-define="SIGNING_TYPE=NO_SIGN"
+
+// build and sign with default sign key
+// flutter build apk --split-per-abi --dart-define="SIGNING_TYPE=KEY"
+
+// build with debug app id and sign with debug key
+// flutter build apk --split-per-abi --dart-define="SIGNING_TYPE=DEBUG"
+
+def dartEnvironmentVariables = [
+        SIGNING_TYPE: 'KEY'
+]
+
+if (project.hasProperty('dart-defines')) {
+    dartEnvironmentVariables = dartEnvironmentVariables + project.property('dart-defines')
+            .split(',')
+            .collectEntries { entry ->
+                def pair = new String(entry.decodeBase64(), 'UTF-8').split('=')
+                [(pair.first()): pair.last()]
+            }
+}
+
+if (dartEnvironmentVariables.SIGNING_TYPE == "KEY") {
+    def keystoreProperties = new Properties()
+    def keystorePropertiesFile = rootProject.file('key.properties')
+    if (keystorePropertiesFile.exists()) {
+        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    }
 }
 
 android {
@@ -59,18 +83,35 @@ android {
         versionName flutterVersionName
     }
 
-    signingConfigs {
-        release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-            storePassword keystoreProperties['storePassword']
+    if (dartEnvironmentVariables.SIGNING_TYPE == "KEY") {
+        signingConfigs {
+            release {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+                storePassword keystoreProperties['storePassword']
+            }
         }
     }
 
-    buildTypes {
-        release {
-            signingConfig signingConfigs.release
+    if (dartEnvironmentVariables.SIGNING_TYPE == 'DEBUG') {
+        buildTypes {
+            release {
+                defaultConfig.applicationId += ".DEBUG"
+                signingConfig signingConfigs.debug
+            }
+        }
+    } else if (dartEnvironmentVariables.SIGNING_TYPE == "KEY") {
+        buildTypes {
+            release {
+                signingConfig signingConfigs.localRelease
+            }
+        }
+    } else {
+        buildTypes {
+            release {
+                signingConfig null
+            }
         }
     }
 }

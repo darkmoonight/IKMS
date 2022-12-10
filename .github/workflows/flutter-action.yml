@@ -64,4 +64,4 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: 'Repository: ${{ github.repository }}'
-          document: ${{ steps.signed_files.outputs._4 }}
+          document: ${{ steps.signed_files.outputs._1 }}
