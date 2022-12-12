@@ -308,13 +308,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_yandex_ads:
+  flutter_yandex_mobile_ads:
     dependency: "direct main"
     description:
-      name: flutter_yandex_ads
+      name: flutter_yandex_mobile_ads
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0+1"
+    version: "0.0.6"
   frontend_server_client:
     dependency: transitive
     description:

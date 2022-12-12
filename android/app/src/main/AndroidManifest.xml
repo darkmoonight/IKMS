@@ -3,7 +3,6 @@
     package="io.github.DarkMooNight.IKMS">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
 
    <application
         android:label="IKMS - Расписание"
@@ -32,9 +31,5 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~1458002511"/>
     </application>
 </manifest>

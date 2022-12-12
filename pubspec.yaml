@@ -30,7 +30,7 @@ dependencies:
   custom_navigation_bar: ^0.8.2
   internet_connection_checker: ^1.0.0+1
   
-  flutter_yandex_ads: ^1.0.0+1
+  flutter_yandex_mobile_ads: ^0.0.6
 
 dev_dependencies:
   flutter_test:

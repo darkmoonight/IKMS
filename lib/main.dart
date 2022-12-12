@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_yandex_ads/yandex.dart';
+import 'package:flutter_yandex_mobile_ads/yandex.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:isar/isar.dart';
@@ -25,7 +25,7 @@ final ValueNotifier<Future<bool>> isDeviceConnectedNotifier =
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  FlutterYandexAds.initialize();
+  Yandex.initialize();
   ByteData data = await rootBundle.load('assets/lets-encrypt-r3.pem');
   SecurityContext context = SecurityContext.defaultContext;
   context.setTrustedCertificatesBytes(data.buffer.asUint8List());
