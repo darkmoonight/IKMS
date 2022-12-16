@@ -53,7 +53,6 @@ class IKMSTheme {
         subtitle2: TextStyle(
           color: Colors.grey[800],
           fontSize: 12.sp,
-          fontWeight: FontWeight.bold,
         ),
       ),
       primaryTextTheme: baseLigth.primaryTextTheme.copyWith(
@@ -131,7 +130,6 @@ class IKMSTheme {
         subtitle2: TextStyle(
           color: Colors.grey[300],
           fontSize: 12.sp,
-          fontWeight: FontWeight.bold,
         ),
       ),
       primaryTextTheme: baseLigth.primaryTextTheme.copyWith(

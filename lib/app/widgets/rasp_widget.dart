@@ -301,7 +301,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                               style: context.theme.textTheme.headline6,
                             ),
                           ),
-                      itemBuilder: (BuildContext context, dynamic element) {
+                      itemBuilder: (BuildContext context, Schedule element) {
                         final raspElementPage = element;
                         return Container(
                           margin: const EdgeInsets.symmetric(
@@ -364,7 +364,7 @@ class _RaspWidgetState extends State<RaspWidget> {
             ),
           ),
           YandexBanner(
-            adUnitId: "R-M-2007823-1",
+            adUnitId: 'R-M-2101511-1',
             size: YandexBannerSize.flexibleSize(320, 50),
           )
         ],

@@ -50,6 +50,7 @@ Future<void> isarInit() async {
     GroupScheduleSchema,
     TeacherScheduleSchema,
     AudienceScheduleSchema,
+    TodosSchema,
   ],
       compactOnLaunch: const CompactCondition(minRatio: 2),
       directory: (await getApplicationSupportDirectory()).path);

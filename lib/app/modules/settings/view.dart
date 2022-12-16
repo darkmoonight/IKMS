@@ -27,7 +27,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: ListView(
+      child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 15),

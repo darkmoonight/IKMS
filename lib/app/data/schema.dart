@@ -108,3 +108,19 @@ class Schedule {
     this.group = '',
   }) : date = dateTime ?? DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
 }
+
+@collection
+class Todos {
+  Id id;
+  String name;
+  String discipline;
+
+  bool done;
+
+  Todos({
+    this.id = Isar.autoIncrement,
+    required this.name,
+    required this.discipline,
+    this.done = false,
+  });
+}
