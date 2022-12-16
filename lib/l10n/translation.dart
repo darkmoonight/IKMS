@@ -4,6 +4,8 @@ class Translation extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         'en_US': {
+          'completed': 'Completed',
+          'unfulfilled': 'Unfulfilled',
           "update": "Todo changed",
           "addTodo": "Add a todo",
           "copletedTodo": "Complete the todo",
@@ -48,6 +50,8 @@ class Translation extends Translations {
           'discipline': 'Discipline',
         },
         'ru_RU': {
+          'completed': 'Выполненные',
+          'unfulfilled': 'Невыполненные',
           "update": "Задача изменена",
           "addTodo": "Добавьте задачу",
           "copletedTodo": "Выполните задачу",
@@ -89,7 +93,7 @@ class Translation extends Translations {
           'no_university': 'Университет не выбран',
           'no_internet': 'Нет интернета',
           'get_started': 'Начать',
-          'discipline': 'Дисциплину',
+          'discipline': 'Дисциплина',
         }
       };
 }

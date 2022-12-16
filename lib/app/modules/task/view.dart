@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ikms/app/widgets/todos_list_nodone.dart';
-import 'package:ikms/app/widgets/todos_list_done.dart';
+import 'package:ikms/app/widgets/todos_list.dart';
 
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
@@ -34,9 +33,9 @@ class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
                 },
               ),
               indicatorColor: Colors.blueAccent,
-              tabs: const [
-                Tab(text: 'Выполненные'),
-                Tab(text: 'Невыполненные'),
+              tabs: [
+                Tab(text: 'unfulfilled'.tr),
+                Tab(text: 'completed'.tr),
               ],
               labelStyle: context.theme.textTheme.headline6,
               labelColor: context.theme.textTheme.headline6?.color,
@@ -46,8 +45,8 @@ class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
             const Flexible(
               child: TabBarView(
                 children: [
-                  TodosListNoDone(),
-                  TodosListDone(),
+                  TodosList(isDone: false),
+                  TodosList(isDone: true),
                 ],
               ),
             ),

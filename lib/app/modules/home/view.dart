@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 );
               },
-              backgroundColor: context.theme.primaryColor,
+              backgroundColor: const Color.fromARGB(255, 40, 40, 40),
               child: const Icon(
                 Iconsax.add,
                 color: Colors.greenAccent,
