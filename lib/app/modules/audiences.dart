@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 import 'package:ikms/app/api/donstu/caching.dart';
 import 'package:ikms/app/data/schema.dart';
-import 'package:ikms/app/modules/raspAudiences/view.dart';
+import 'package:ikms/app/modules/rasp_audiences.dart';
 import 'package:ikms/app/widgets/selection_list.dart';
 import 'package:ikms/main.dart';
 

@@ -55,6 +55,7 @@ class MyTextForm extends StatelessWidget {
             fontSize: 15.sp,
           ),
         ),
+        autofocus: false,
         validator: validator,
       ),
     );

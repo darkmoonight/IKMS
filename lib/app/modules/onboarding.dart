@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ikms/app/api/donstu/caching.dart';
 import 'package:ikms/app/data/schema.dart';
-import 'package:ikms/app/modules/groups/view.dart';
-import 'package:ikms/app/modules/home/view.dart';
-import 'package:ikms/app/modules/university/view.dart';
+import 'package:ikms/app/modules/groups.dart';
+import 'package:ikms/app/modules/home.dart';
+import 'package:ikms/app/modules/university.dart';
 import 'package:ikms/app/widgets/button.dart';
 import 'package:ikms/main.dart';
 

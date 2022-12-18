@@ -63,6 +63,8 @@ class _TodosCeState extends State<TodosCe> {
           List<Schedule> scheduleList =
               t.schedules.where((list) => seen.add(list.discipline)).toList();
           disciplineList = scheduleList.toList();
+          disciplineList!.sort((a, b) =>
+              a.discipline.toLowerCase().compareTo(b.discipline.toLowerCase()));
           widget.todo != null
               ? selectedDiscipline = disciplineList
                   ?.firstWhere((e) => e.discipline == widget.todo!.discipline)

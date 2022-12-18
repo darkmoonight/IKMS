@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:ikms/app/modules/audiences/view.dart';
-import 'package:ikms/app/modules/groups/view.dart';
-import 'package:ikms/app/modules/mySchedule/view.dart';
-import 'package:ikms/app/modules/professors/view.dart';
-import 'package:ikms/app/modules/settings/view.dart';
-import 'package:ikms/app/modules/task/view.dart';
+import 'package:ikms/app/modules/audiences.dart';
+import 'package:ikms/app/modules/groups.dart';
+import 'package:ikms/app/modules/my_schedule.dart';
+import 'package:ikms/app/modules/professors.dart';
+import 'package:ikms/app/modules/settings.dart';
+import 'package:ikms/app/modules/task.dart';
 import 'package:ikms/app/widgets/todos_ce.dart';
 
 class HomePage extends StatefulWidget {
