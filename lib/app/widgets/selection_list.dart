@@ -41,7 +41,14 @@ class _SelectionListState<T extends SelectionData>
       child: Column(
         children: [
           widget.onBackPressed == null
-              ? Container()
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Text(
+                    widget.headerText,
+                    style: context.theme.textTheme.headline2,
+                    textAlign: TextAlign.center,
+                  ),
+                )
               : Padding(
                   padding: const EdgeInsets.only(top: 15, left: 10),
                   child: Row(

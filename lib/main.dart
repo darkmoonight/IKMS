@@ -3,6 +3,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_yandex_mobile_ads/yandex.dart';
@@ -16,12 +18,18 @@ import 'package:ikms/app/modules/onboarding/view.dart';
 import 'package:ikms/l10n/translation.dart';
 import 'package:ikms/theme/theme.dart';
 import 'package:ikms/theme/theme_controller.dart';
+// ignore_for_file: depend_on_referenced_packages
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 late Isar isar;
 late Settings settings;
 late University donstu;
 final ValueNotifier<Future<bool>> isDeviceConnectedNotifier =
     ValueNotifier(InternetConnectionChecker().hasConnection);
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,6 +48,16 @@ void main() async {
       isDeviceConnectedNotifier.value = Future(() => false);
     }
   });
+
+  final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+  const InitializationSettings initializationSettings =
+      InitializationSettings(android: initializationSettingsAndroid);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  tz.initializeTimeZones();
+  tz.setLocalLocation(tz.getLocation(timeZoneName));
+
   runApp(MyApp());
 }
 

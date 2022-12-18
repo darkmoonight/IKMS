@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:ikms/app/modules/audiences/view.dart';
+import 'package:ikms/app/modules/groups/view.dart';
 import 'package:ikms/app/modules/mySchedule/view.dart';
-import 'package:ikms/app/modules/search/view.dart';
+import 'package:ikms/app/modules/professors/view.dart';
 import 'package:ikms/app/modules/settings/view.dart';
 import 'package:ikms/app/modules/task/view.dart';
 import 'package:ikms/app/widgets/todos_ce.dart';
@@ -39,12 +41,16 @@ class _HomePageState extends State<HomePage> {
         index: tabIndex,
         children: const [
           MySchedulePage(),
-          SearchBar(),
+          ProfessorsPage(),
+          GroupsPage(
+            isSettings: false,
+          ),
+          AudiencesPage(),
           TaskPage(),
           SettingsPage(),
         ],
       ),
-      floatingActionButton: tabIndex == 2
+      floatingActionButton: tabIndex == 4
           ? FloatingActionButton(
               onPressed: () {
                 showModalBottomSheet(
@@ -87,7 +93,13 @@ class _HomePageState extends State<HomePage> {
               icon: const Icon(Iconsax.calendar_1),
             ),
             CustomNavigationBarItem(
-              icon: const Icon(Iconsax.search_normal_1),
+              icon: const Icon(Iconsax.user_search),
+            ),
+            CustomNavigationBarItem(
+              icon: const Icon(Iconsax.people),
+            ),
+            CustomNavigationBarItem(
+              icon: const Icon(Iconsax.buliding),
             ),
             CustomNavigationBarItem(
               icon: const Icon(Iconsax.task_square),

@@ -114,6 +114,7 @@ class Todos {
   Id id;
   String name;
   String discipline;
+  DateTime? todoCompletedTime;
 
   bool done;
 
@@ -121,6 +122,7 @@ class Todos {
     this.id = Isar.autoIncrement,
     required this.name,
     required this.discipline,
+    this.todoCompletedTime,
     this.done = false,
   });
 }
