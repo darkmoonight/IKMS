@@ -5,10 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_yandex_mobile_ads/yandex.dart';
 import 'package:get/get.dart';
+import 'package:ikms/theme/theme.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -16,7 +16,6 @@ import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/app/modules/home.dart';
 import 'package:ikms/app/modules/onboarding.dart';
 import 'package:ikms/l10n/translation.dart';
-import 'package:ikms/theme/theme.dart';
 import 'package:ikms/theme/theme_controller.dart';
 // ignore_for_file: depend_on_referenced_packages
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -91,43 +90,36 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(360, 640),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) {
-        return GetMaterialApp(
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          translations: Translation(),
-          locale: Get.deviceLocale,
-          fallbackLocale: const Locale('en', 'US'),
-          supportedLocales: const [
-            Locale('ru', 'RU'),
-            Locale('en', 'US'),
-          ],
-          localeResolutionCallback: (locale, supportedLocales) {
-            for (var supportedLocale in supportedLocales) {
-              if (supportedLocale.languageCode == locale?.languageCode) {
-                return supportedLocale;
-              }
-            }
-            return supportedLocales.first;
-          },
-          debugShowCheckedModeBanner: false,
-          themeMode: themeController.theme,
-          theme: IKMSTheme.lightTheme,
-          darkTheme: IKMSTheme.darkTheme,
-          home: (settings.university.value == null) ||
-                  (settings.group.value == null)
+    return GetMaterialApp(
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      translations: Translation(),
+      locale: Get.deviceLocale,
+      fallbackLocale: const Locale('en', 'US'),
+      supportedLocales: const [
+        Locale('en', 'US'),
+        Locale('ru', 'RU'),
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale?.languageCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
+      debugShowCheckedModeBanner: false,
+      themeMode: themeController.theme,
+      theme: IKMSTheme.lightTheme,
+      darkTheme: IKMSTheme.darkTheme,
+      home:
+          (settings.university.value == null) || (settings.group.value == null)
               ? const OnBoardingScreen()
               : const HomePage(),
-          builder: EasyLoading.init(),
-        );
-      },
+      builder: EasyLoading.init(),
     );
   }
 }

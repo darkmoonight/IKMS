@@ -33,7 +33,9 @@ class _SettingsPageState extends State<SettingsPage> {
             padding: const EdgeInsets.only(top: 15),
             child: Text(
               'settings'.tr,
-              style: context.theme.textTheme.headline2,
+              style: context.theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
               textAlign: TextAlign.center,
             ),
           ),
@@ -65,7 +67,7 @@ class _SettingsPageState extends State<SettingsPage> {
             switcher: false,
             description: Text(
               settings.university.value?.name ?? 'no_select'.tr,
-              style: context.theme.primaryTextTheme.subtitle2,
+              style: context.theme.textTheme.bodySmall,
             ),
             onPressed: () async {
               University? selectionData = await Get.to(
@@ -87,7 +89,7 @@ class _SettingsPageState extends State<SettingsPage> {
             switcher: false,
             description: Text(
               settings.group.value?.name ?? 'no_select'.tr,
-              style: context.theme.primaryTextTheme.subtitle2,
+              style: context.theme.textTheme.bodySmall,
             ),
             onPressed: settings.university.value != null
                 ? () async {

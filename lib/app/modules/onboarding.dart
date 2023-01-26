@@ -31,7 +31,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ),
                 Text(
                   'timetable'.tr,
-                  style: context.theme.textTheme.headline1,
+                  style: context.theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(
@@ -41,7 +43,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: Text(
                     'sched_hint'.tr,
-                    style: context.theme.primaryTextTheme.headline4,
+                    style: context.theme.textTheme.titleMedium,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -91,8 +93,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
                 Get.offAll(() => const HomePage());
               },
-              bgColor: context.theme.primaryColor,
-              textColor: context.theme.dividerColor,
+              bgColor: context.theme.colorScheme.primaryContainer,
             ),
           ),
         ],

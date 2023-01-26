@@ -32,7 +32,7 @@ class _UniversityPageState extends State<UniversityPage> {
         isLoaded: isLoaded,
         onEntrySelected: (University selectionData) =>
             Get.back(result: selectionData),
-        selectionTextStyle: context.theme.textTheme.headline6,
+        selectionTextStyle: context.theme.textTheme.bodyMedium,
         onBackPressed: isDialog ? null : Get.back,
         data: data,
       ),

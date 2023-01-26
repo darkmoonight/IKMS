@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -23,6 +23,17 @@ class SettingLinks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MaterialStateProperty<Icon?> thumbIcon =
+        MaterialStateProperty.resolveWith<Icon?>(
+      (Set<MaterialState> states) {
+        // Thumb icon when the switch is selected.
+        if (states.contains(MaterialState.selected)) {
+          return const Icon(Iconsax.moon5);
+        }
+        return const Icon(Iconsax.sun_15);
+      },
+    );
+
     return GestureDetector(
       onTap: onPressed,
       child: Container(
@@ -30,7 +41,7 @@ class SettingLinks extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         height: 65,
         decoration: BoxDecoration(
-          color: context.theme.primaryColor,
+          color: context.theme.colorScheme.primaryContainer,
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),
@@ -46,7 +57,7 @@ class SettingLinks extends StatelessWidget {
                   ),
                   Text(
                     text,
-                    style: context.theme.textTheme.headline6,
+                    style: context.theme.textTheme.titleMedium,
                   ),
                 ],
               ),
@@ -54,7 +65,8 @@ class SettingLinks extends StatelessWidget {
             switcher
                 ? Transform.scale(
                     scale: 0.8,
-                    child: CupertinoSwitch(
+                    child: Switch(
+                      thumbIcon: thumbIcon,
                       value: value!,
                       onChanged: onChange,
                     ),

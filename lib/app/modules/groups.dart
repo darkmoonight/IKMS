@@ -70,8 +70,8 @@ class _GroupsPageState extends State<GroupsPage> {
           onTextChanged: applyFilter,
           isLoaded: isLoaded,
           selectionTextStyle: widget.isSettings
-              ? context.theme.textTheme.headline6
-              : context.theme.primaryTextTheme.headline4,
+              ? context.theme.textTheme.bodyMedium
+              : context.theme.textTheme.bodyMedium,
           onBackPressed: widget.isSettings ? Get.back : null,
           data: groups,
           onEntrySelected: (GroupSchedule selectionData) async {

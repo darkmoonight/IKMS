@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ikms/app/api/donstu/caching.dart';
@@ -104,7 +103,9 @@ class _TodosCeState extends State<TodosCe> {
                           ),
                           Text(
                             widget.text,
-                            style: context.theme.textTheme.headline2,
+                            style: context.theme.textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
@@ -139,9 +140,10 @@ class _TodosCeState extends State<TodosCe> {
               Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
                 child: DropdownButtonFormField(
+                  isExpanded: true,
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Iconsax.book),
-                    fillColor: context.theme.primaryColor,
+                    fillColor: context.theme.colorScheme.primaryContainer,
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                       borderSide: BorderSide(
@@ -160,21 +162,21 @@ class _TodosCeState extends State<TodosCe> {
                     "discipline".tr,
                     style: TextStyle(
                       color: Colors.grey[600],
-                      fontSize: 15.sp,
+                      fontSize: 15,
                     ),
                   ),
                   dropdownColor: context.theme.scaffoldBackgroundColor,
                   icon: const Icon(
                     Iconsax.arrow_down_1,
                   ),
-                  isExpanded: true,
                   value: selectedDiscipline,
                   items: disciplineList?.map((e) {
                     return DropdownMenuItem(
                         value: e,
                         child: Text(
                           e.discipline,
-                          style: context.theme.textTheme.subtitle2,
+                          style: context.theme.textTheme.bodyMedium,
+                          overflow: TextOverflow.visible,
                         ));
                   }).toList(),
                   onChanged: (Schedule? newValue) {
@@ -219,8 +221,7 @@ class _TodosCeState extends State<TodosCe> {
                                 context.theme.scaffoldBackgroundColor,
                             cancelStyle: const TextStyle(color: Colors.red),
                             itemStyle: TextStyle(
-                                color:
-                                    context.theme.textTheme.headline6?.color),
+                                color: context.theme.colorScheme.onSurface),
                           ),
                           minTime: DateTime.now(),
                           maxTime:

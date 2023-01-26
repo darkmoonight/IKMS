@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_yandex_mobile_ads/banner.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -105,7 +104,9 @@ class _RaspWidgetState extends State<RaspWidget> {
                   padding: const EdgeInsets.only(top: 15),
                   child: Text(
                     'schedule'.tr,
-                    style: context.theme.textTheme.headline2,
+                    style: context.theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 )
@@ -131,7 +132,10 @@ class _RaspWidgetState extends State<RaspWidget> {
                             widget.headerText == null
                                 ? 'schedule'.tr
                                 : '${'schedule'.tr} - ${widget.headerText}',
-                            style: context.theme.textTheme.headline4,
+                            style:
+                                context.theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                             overflow: TextOverflow.visible,
                           ),
                         ),
@@ -146,7 +150,7 @@ class _RaspWidgetState extends State<RaspWidget> {
             lastDay: lastDay,
             focusedDay: selectedDay,
             weekendDays: const [DateTime.sunday],
-            locale: '${locale?.languageCode}' == 'ru' ? 'ru_RU' : 'en_US',
+            locale: '${locale?.languageCode}',
             selectedDayPredicate: (day) {
               return isSameDay(selectedDay, day);
             },
@@ -180,8 +184,8 @@ class _RaspWidgetState extends State<RaspWidget> {
                 return getCountEventsCalendar(day) != 0
                     ? selectedDay.isAtSameMomentAs(day)
                         ? Container(
-                            width: 15.w,
-                            height: 15.w,
+                            width: 15,
+                            height: 15,
                             decoration: BoxDecoration(
                               color: primaries[getCountEventsCalendar(day)],
                               shape: BoxShape.circle,
@@ -218,7 +222,7 @@ class _RaspWidgetState extends State<RaspWidget> {
             child: Visibility(
               visible: widget.isLoaded,
               replacement: Shimmer.fromColors(
-                baseColor: context.theme.primaryColor,
+                baseColor: context.theme.colorScheme.primaryContainer,
                 highlightColor: context.theme.unselectedWidgetColor,
                 child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
@@ -236,7 +240,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                             decoration: BoxDecoration(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10)),
-                              color: context.theme.primaryColor,
+                              color: context.theme.colorScheme.primaryContainer,
                             ),
                           ),
                         ),
@@ -247,7 +251,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                           decoration: BoxDecoration(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(15)),
-                            color: context.theme.primaryColor,
+                            color: context.theme.colorScheme.primaryContainer,
                           ),
                         ),
                       ],
@@ -281,7 +285,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                           ),
                           Text(
                             'no_par'.tr,
-                            style: context.theme.textTheme.headline3,
+                            style: context.theme.textTheme.titleMedium,
                           ),
                         ],
                       ),
@@ -298,7 +302,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                                 horizontal: 15, vertical: 10),
                             child: Text(
                               groupByValue,
-                              style: context.theme.textTheme.headline6,
+                              style: context.theme.textTheme.titleMedium,
                             ),
                           ),
                       itemBuilder: (BuildContext context, Schedule element) {
@@ -311,7 +315,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                           decoration: BoxDecoration(
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(15)),
-                            color: context.theme.primaryColor,
+                            color: context.theme.colorScheme.primaryContainer,
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -320,14 +324,18 @@ class _RaspWidgetState extends State<RaspWidget> {
                             children: [
                               Text(
                                 raspElementPage.discipline,
-                                style: context.theme.textTheme.headline6,
+                                style: context.theme.textTheme.titleMedium
+                                    ?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                ),
                               ),
                               const SizedBox(height: 10),
                               Flexible(
                                 child: Text(
                                   raspElementPage.teacher,
-                                  style:
-                                      context.theme.primaryTextTheme.subtitle1,
+                                  style: context.theme.textTheme.bodyMedium
+                                      ?.copyWith(color: Colors.grey),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -339,16 +347,16 @@ class _RaspWidgetState extends State<RaspWidget> {
                                   Expanded(
                                     child: Text(
                                       raspElementPage.audience,
-                                      style: context
-                                          .theme.primaryTextTheme.subtitle1,
+                                      style: context.theme.textTheme.bodyMedium
+                                          ?.copyWith(color: Colors.grey),
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                   Expanded(
                                     child: Text(
                                       raspElementPage.group,
-                                      style: context
-                                          .theme.primaryTextTheme.subtitle1,
+                                      style: context.theme.textTheme.bodyMedium
+                                          ?.copyWith(color: Colors.grey),
                                       overflow: TextOverflow.ellipsis,
                                       textAlign: TextAlign.right,
                                     ),

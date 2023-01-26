@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ikms/app/data/schema.dart';
@@ -45,7 +44,9 @@ class _SelectionListState<T extends SelectionData>
                   padding: const EdgeInsets.only(top: 15),
                   child: Text(
                     widget.headerText,
-                    style: context.theme.textTheme.headline2,
+                    style: context.theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 )
@@ -67,7 +68,9 @@ class _SelectionListState<T extends SelectionData>
                       Expanded(
                         child: Text(
                           widget.headerText,
-                          style: context.theme.textTheme.headline2,
+                          style: context.theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
                           overflow: TextOverflow.visible,
                         ),
                       ),
@@ -79,9 +82,10 @@ class _SelectionListState<T extends SelectionData>
             child: TextField(
               controller: textEditingController,
               onChanged: widget.onTextChanged,
-              style: context.theme.textTheme.headline6,
+              style: context.theme.textTheme.titleMedium,
               decoration: InputDecoration(
-                fillColor: context.theme.primaryColor,
+                labelText: widget.hintText,
+                fillColor: context.theme.colorScheme.primaryContainer,
                 filled: true,
                 prefixIcon: const Icon(
                   Iconsax.search_normal_1,
@@ -106,19 +110,14 @@ class _SelectionListState<T extends SelectionData>
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide(
-                    color: context.theme.primaryColor,
+                    color: context.theme.colorScheme.primaryContainer,
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide(
-                    color: context.theme.primaryColor,
+                    color: context.theme.colorScheme.primaryContainer,
                   ),
-                ),
-                hintText: widget.hintText,
-                hintStyle: TextStyle(
-                  color: Colors.grey[600],
-                  fontSize: 15.sp,
                 ),
               ),
               autofocus: false,
@@ -135,7 +134,7 @@ class _SelectionListState<T extends SelectionData>
             child: Visibility(
               visible: widget.isLoaded,
               replacement: Shimmer.fromColors(
-                baseColor: context.theme.primaryColor,
+                baseColor: context.theme.colorScheme.primaryContainer,
                 highlightColor: context.theme.unselectedWidgetColor,
                 child: ListView.builder(
                   physics: const BouncingScrollPhysics(),
@@ -144,11 +143,11 @@ class _SelectionListState<T extends SelectionData>
                     return Container(
                       margin: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
-                      height: 45.w,
+                      height: 45,
                       decoration: BoxDecoration(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(15)),
-                        color: context.theme.primaryColor,
+                        color: context.theme.colorScheme.primaryContainer,
                       ),
                     );
                   },
@@ -162,10 +161,10 @@ class _SelectionListState<T extends SelectionData>
                   return Container(
                     margin:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    height: 45.w,
+                    height: 45,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
-                      color: context.theme.primaryColor,
+                      color: context.theme.colorScheme.primaryContainer,
                     ),
                     child: TextButton(
                       onPressed: () => widget.onEntrySelected(data),

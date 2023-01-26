@@ -31,7 +31,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        systemNavigationBarColor: context.theme.bottomAppBarColor,
+        systemNavigationBarColor:
+            context.theme.bottomNavigationBarTheme.backgroundColor,
       ),
     );
 
@@ -58,11 +59,6 @@ class _HomePageState extends State<HomePage> {
                   backgroundColor: context.theme.scaffoldBackgroundColor,
                   context: context,
                   isScrollControlled: true,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20),
-                    ),
-                  ),
                   builder: (BuildContext context) {
                     return TodosCe(
                       text: 'create'.tr,
@@ -84,9 +80,10 @@ class _HomePageState extends State<HomePage> {
           highlightColor: Colors.transparent,
         ),
         child: CustomNavigationBar(
+          backgroundColor:
+              context.theme.bottomNavigationBarTheme.backgroundColor!,
           onTap: (int index) => changeTabIndex(index),
           currentIndex: tabIndex,
-          backgroundColor: context.theme.bottomAppBarColor,
           strokeColor: const Color(0x300c18fb),
           items: [
             CustomNavigationBarItem(

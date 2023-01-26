@@ -50,7 +50,7 @@ class _TodosListState extends State<TodosList> {
                           widget.isDone == true
                               ? 'copletedTodo'.tr
                               : 'addTodo'.tr,
-                          style: context.theme.textTheme.headline3,
+                          style: context.theme.textTheme.titleMedium,
                         ),
                       ],
                     ),
@@ -128,15 +128,20 @@ class _TodosListState extends State<TodosList> {
                                     children: [
                                       Text(
                                         todosList.name,
-                                        style:
-                                            context.theme.textTheme.headline4,
+                                        style: context
+                                            .theme.textTheme.titleMedium
+                                            ?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                         overflow: TextOverflow.visible,
                                       ),
                                       const SizedBox(height: 3),
                                       Text(
                                         todosList.discipline,
-                                        style:
-                                            context.theme.textTheme.subtitle2,
+                                        style: context.theme.textTheme.bodySmall
+                                            ?.copyWith(
+                                          color: Colors.grey,
+                                        ),
                                         overflow: TextOverflow.visible,
                                       ),
                                       const SizedBox(height: 3),
@@ -145,16 +150,18 @@ class _TodosListState extends State<TodosList> {
                                               todosList.todoCompletedTime !=
                                                       null
                                                   ? DateFormat(
-                                                      'dd MMM yyyy kk:mm',
-                                                      '${locale?.languageCode}' ==
-                                                              'ru'
-                                                          ? 'ru_RU'
-                                                          : 'en_US',
-                                                    ).format(todosList
-                                                      .todoCompletedTime!)
+                                                      'dd MMM yyyy hh:mm',
+                                                      '${locale?.languageCode}',
+                                                    ).format(
+                                                      todosList
+                                                          .todoCompletedTime!,
+                                                    )
                                                   : '',
                                               style: context
-                                                  .theme.textTheme.subtitle2,
+                                                  .theme.textTheme.bodySmall
+                                                  ?.copyWith(
+                                                color: Colors.grey,
+                                              ),
                                             )
                                           : Container(),
                                     ],
