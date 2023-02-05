@@ -31,7 +31,7 @@ class MyTextForm extends StatelessWidget {
         onTap: readOnly == true ? onTap : null,
         controller: textEditingController,
         keyboardType: type,
-        style: context.theme.textTheme.bodyMedium,
+        style: context.theme.textTheme.titleMedium,
         decoration: InputDecoration(
           prefixIcon: icon,
           suffixIcon: iconButton,
@@ -48,13 +48,11 @@ class MyTextForm extends StatelessWidget {
               color: context.theme.disabledColor,
             ),
           ),
-          hintText: hintText,
-          hintStyle: TextStyle(
-            color: Colors.grey[600],
-            fontSize: 15,
+          labelText: hintText,
+          labelStyle: context.theme.textTheme.labelLarge?.copyWith(
+            color: Colors.grey,
           ),
         ),
-        autofocus: false,
         validator: validator,
       ),
     );

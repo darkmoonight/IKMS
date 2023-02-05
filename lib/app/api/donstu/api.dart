@@ -9,13 +9,12 @@ import 'package:ikms/app/api/donstu/shedule.dart';
 import 'package:ikms/main.dart';
 
 class DonstuAPI {
-  final Dio dio = Dio();
-  final baseUrl = 'https://edu.donstu.ru/api/';
+  final Dio dio = Dio()..options.baseUrl = 'https://edu.donstu.ru/api/';
 
   Future<List<AudienceSchedule>> getAudiencesData() async {
     var url = 'raspAudlist';
     try {
-      Response response = await dio.get(baseUrl + url);
+      Response response = await dio.get(url);
       AudiencesData audiencesData = AudiencesData.fromJson(response.data);
       return audiencesData.data
           .map((Audiences audiences) =>
@@ -33,7 +32,7 @@ class DonstuAPI {
   Future<List<TeacherSchedule>> getProfessorsData() async {
     var url = 'raspTeacherlist';
     try {
-      Response response = await dio.get(baseUrl + url);
+      Response response = await dio.get(url);
       ProfessorsData professorsData = ProfessorsData.fromJson(response.data);
       return professorsData.data
           .map((Professors professors) =>
@@ -51,7 +50,7 @@ class DonstuAPI {
   Future<List<GroupSchedule>> getGroupsData() async {
     var url = 'raspGrouplist';
     try {
-      Response response = await dio.get(baseUrl + url);
+      Response response = await dio.get(url);
       GroupsData groupsData = GroupsData.fromJson(response.data);
       return groupsData.data
           .map((Groups groups) =>
@@ -69,7 +68,7 @@ class DonstuAPI {
   Future<List<Schedule>> getRaspsGroupElementData(int? id) async {
     var url = 'Rasp?idGroup=$id';
     try {
-      Response response = await dio.get(baseUrl + url);
+      Response response = await dio.get(url);
       Rasp rasp = Rasp.fromJson(response.data);
       return rasp.data.rasp
           .map((RaspElement element) => Schedule(
@@ -94,7 +93,7 @@ class DonstuAPI {
   Future<List<Schedule>> getRaspsAudElementData(int? id) async {
     var url = 'Rasp?idAudLine=$id';
     try {
-      Response response = await dio.get(baseUrl + url);
+      Response response = await dio.get(url);
       Rasp rasp = Rasp.fromJson(response.data);
       return rasp.data.rasp
           .map((RaspElement element) => Schedule(
@@ -119,7 +118,7 @@ class DonstuAPI {
   Future<List<Schedule>> getRaspsProfElementData(int? id) async {
     var url = 'Rasp?idTeacher=$id';
     try {
-      Response response = await dio.get(baseUrl + url);
+      Response response = await dio.get(url);
       Rasp rasp = Rasp.fromJson(response.data);
       return rasp.data.rasp
           .map((RaspElement element) => Schedule(

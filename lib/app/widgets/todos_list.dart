@@ -150,7 +150,7 @@ class _TodosListState extends State<TodosList> {
                                               todosList.todoCompletedTime !=
                                                       null
                                                   ? DateFormat(
-                                                      'dd MMM yyyy hh:mm',
+                                                      'dd MMM yyyy HH:mm',
                                                       '${locale?.languageCode}',
                                                     ).format(
                                                       todosList

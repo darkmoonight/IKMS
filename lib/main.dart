@@ -1,7 +1,5 @@
-import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
@@ -32,10 +30,6 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Yandex.initialize();
-  ByteData data = await rootBundle.load('assets/lets-encrypt-r3.pem');
-  SecurityContext context = SecurityContext.defaultContext;
-  context.setTrustedCertificatesBytes(data.buffer.asUint8List());
   await isarInit();
   Connectivity()
       .onConnectivityChanged
@@ -47,7 +41,6 @@ void main() async {
       isDeviceConnectedNotifier.value = Future(() => false);
     }
   });
-
   final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -56,7 +49,7 @@ void main() async {
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation(timeZoneName));
-
+  Yandex.initialize();
   runApp(MyApp());
 }
 

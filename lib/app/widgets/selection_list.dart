@@ -85,6 +85,9 @@ class _SelectionListState<T extends SelectionData>
               style: context.theme.textTheme.titleMedium,
               decoration: InputDecoration(
                 labelText: widget.hintText,
+                labelStyle: context.theme.textTheme.labelLarge?.copyWith(
+                  color: Colors.grey,
+                ),
                 fillColor: context.theme.colorScheme.primaryContainer,
                 filled: true,
                 prefixIcon: const Icon(

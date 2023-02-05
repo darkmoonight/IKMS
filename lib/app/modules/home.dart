@@ -82,7 +82,10 @@ class _HomePageState extends State<HomePage> {
         child: CustomNavigationBar(
           backgroundColor:
               context.theme.bottomNavigationBarTheme.backgroundColor!,
-          onTap: (int index) => changeTabIndex(index),
+          onTap: (int index) {
+            changeTabIndex(index);
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
           currentIndex: tabIndex,
           strokeColor: const Color(0x300c18fb),
           items: [

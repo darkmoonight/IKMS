@@ -140,8 +140,15 @@ class _TodosCeState extends State<TodosCe> {
               Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
                 child: DropdownButtonFormField(
+                  style: context.theme.textTheme.titleMedium,
                   isExpanded: true,
                   decoration: InputDecoration(
+                    label: Text(
+                      "discipline".tr,
+                    ),
+                    labelStyle: context.theme.textTheme.labelLarge?.copyWith(
+                      color: Colors.grey,
+                    ),
                     prefixIcon: const Icon(Iconsax.book),
                     fillColor: context.theme.colorScheme.primaryContainer,
                     focusedBorder: OutlineInputBorder(
@@ -158,13 +165,6 @@ class _TodosCeState extends State<TodosCe> {
                     ),
                   ),
                   focusColor: Colors.transparent,
-                  hint: Text(
-                    "discipline".tr,
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 15,
-                    ),
-                  ),
                   dropdownColor: context.theme.scaffoldBackgroundColor,
                   icon: const Icon(
                     Iconsax.arrow_down_1,
@@ -248,7 +248,6 @@ class _TodosCeState extends State<TodosCe> {
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
                             textTrim(service.titleEdit.value);
-
                             widget.edit == false
                                 ? service.addTodo(
                                     service.titleEdit.value,
@@ -266,6 +265,7 @@ class _TodosCeState extends State<TodosCe> {
                         },
                         icon: const Icon(
                           Iconsax.send_1,
+                          color: Colors.white,
                         ),
                       ),
                     ),
