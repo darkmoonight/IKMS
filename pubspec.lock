@@ -249,6 +249,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.6"
+  dio_smart_retry:
+    dependency: "direct main"
+    description:
+      name: dio_smart_retry
+      sha256: "7c008542f7a5c5552a0757c7cd0e8c7b3131617120ee3e48456425f673f8ff09"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.0"
   fake_async:
     dependency: transitive
     description:

@@ -42,7 +42,8 @@ class Translation extends Translations {
           'no_par': 'There are no lessons today',
           'no_select': 'Not selected',
           'no_university': 'University not selected',
-          'no_internet': 'No connection to internet',
+          'no_internet':
+              'There is no connection to the server\nRefresh the page or check your internet connection',
           'get_started': 'Get started',
           'discipline': 'Choose a discipline',
         },
@@ -85,7 +86,8 @@ class Translation extends Translations {
           'no_par': 'Сегодня пар нет',
           'no_select': 'Не выбран',
           'no_university': 'Университет не выбран',
-          'no_internet': 'Нет интернета',
+          'no_internet':
+              'Нет связи с сервером\nОбновите страницу или проверьте подключение к интернету',
           'get_started': 'Начать',
           'discipline': 'Выберите дисциплинy',
         }

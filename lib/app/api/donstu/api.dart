@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:ikms/app/api/donstu/audiences.dart';
@@ -9,7 +10,22 @@ import 'package:ikms/app/api/donstu/shedule.dart';
 import 'package:ikms/main.dart';
 
 class DonstuAPI {
-  final Dio dio = Dio()..options.baseUrl = 'https://edu.donstu.ru/api/';
+  final Dio dio = Dio()
+    ..options.baseUrl = 'https://edu.donstu.ru/api/'
+    ..options.connectTimeout = 60 * 1000
+    ..options.receiveTimeout = 60 * 1000
+    ..interceptors.add(RetryInterceptor(
+      dio: Dio(),
+      logPrint: print,
+      retries: 4,
+      retryableExtraStatuses: {104},
+      retryDelays: const [
+        Duration(seconds: 1),
+        Duration(seconds: 2),
+        Duration(seconds: 3),
+        Duration(seconds: 4),
+      ],
+    ));
 
   Future<List<AudienceSchedule>> getAudiencesData() async {
     var url = 'raspAudlist';

@@ -60,7 +60,7 @@ class _TodosListState extends State<TodosList> {
               return StatefulBuilder(
                 builder: (context, innerState) {
                   return ListView.builder(
-                    physics: const BouncingScrollPhysics(),
+                    physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: todos.length,
                     itemBuilder: (context, index) {
                       final todosList = todos[index];

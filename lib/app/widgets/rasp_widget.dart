@@ -85,6 +85,18 @@ class _RaspWidgetState extends State<RaspWidget> {
     );
   }
 
+  Future<void> _pullRefresh() async {
+    List<Schedule> raspElements = widget.raspElements.value.where(
+      (element) {
+        return element.date.isAtSameMomentAs(selectedDay);
+      },
+    ).toList();
+
+    setState(() {
+      raspElementsFiltered = raspElements;
+    });
+  }
+
   int getCountEventsCalendar(DateTime date) {
     final seen = <String>{};
     return widget.raspElements.value
@@ -96,286 +108,296 @@ class _RaspWidgetState extends State<RaspWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        children: [
-          widget.onBackPressed == null
-              ? Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: Text(
-                    'schedule'.tr,
-                    style: context.theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+    return RefreshIndicator(
+      onRefresh: _pullRefresh,
+      child: SafeArea(
+        child: Column(
+          children: [
+            widget.onBackPressed == null
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: Text(
+                      'schedule'.tr,
+                      style: context.theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                )
-              : Padding(
-                  padding: const EdgeInsets.only(top: 15, left: 10),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        onPressed: widget.onBackPressed,
-                        icon: const Icon(Iconsax.arrow_left_1),
-                        iconSize: context.theme.iconTheme.size,
-                        color: context.theme.iconTheme.color,
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 15),
-                          child: Text(
-                            widget.headerText == null
-                                ? 'schedule'.tr
-                                : '${'schedule'.tr} - ${widget.headerText}',
-                            style:
-                                context.theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                            overflow: TextOverflow.visible,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-          TableCalendar(
-            key: ValueKey(widget.raspElements.value),
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            firstDay: firstDay,
-            lastDay: lastDay,
-            focusedDay: selectedDay,
-            weekendDays: const [DateTime.sunday],
-            locale: '${locale?.languageCode}',
-            selectedDayPredicate: (day) {
-              return isSameDay(selectedDay, day);
-            },
-            onDaySelected: (selected, focused) {
-              setState(() {
-                _selectedDay = selected;
-              });
-              getRasp();
-            },
-            onPageChanged: (focused) {
-              setState(() {
-                _selectedDay = focused;
-              });
-              getRasp();
-            },
-            availableCalendarFormats: {
-              CalendarFormat.month: 'month'.tr,
-              CalendarFormat.twoWeeks: 'two_week'.tr,
-              CalendarFormat.week: 'week'.tr
-            },
-            calendarFormat: calendarFormat,
-            onFormatChanged: (format) {
-              setState(
-                () {
-                  calendarFormat = format;
-                },
-              );
-            },
-            calendarBuilders: CalendarBuilders(
-              markerBuilder: (context, day, events) {
-                return getCountEventsCalendar(day) != 0
-                    ? selectedDay.isAtSameMomentAs(day)
-                        ? Container(
-                            width: 15,
-                            height: 15,
-                            decoration: BoxDecoration(
-                              color: primaries[getCountEventsCalendar(day)],
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: Text(
-                                getCountEventsCalendar(day).toString(),
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          )
-                        : Text(
-                            getCountEventsCalendar(day).toString(),
-                            style: TextStyle(
-                              color: primaries[getCountEventsCalendar(day)],
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                    : null;
-              },
-            ),
-          ),
-          Divider(
-            color: context.theme.dividerColor,
-            height: 20,
-            thickness: 2,
-            indent: 10,
-            endIndent: 10,
-          ),
-          Expanded(
-            child: Visibility(
-              visible: widget.isLoaded,
-              replacement: Shimmer.fromColors(
-                baseColor: context.theme.colorScheme.primaryContainer,
-                highlightColor: context.theme.unselectedWidgetColor,
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: 5,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  )
+                : Padding(
+                    padding: const EdgeInsets.only(top: 15, left: 10),
+                    child: Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 10),
-                          child: Container(
-                            width: 100,
-                            height: 20,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(10)),
-                              color: context.theme.colorScheme.primaryContainer,
-                            ),
-                          ),
+                        IconButton(
+                          onPressed: widget.onBackPressed,
+                          icon: const Icon(Iconsax.arrow_left_1),
+                          iconSize: context.theme.iconTheme.size,
+                          color: context.theme.iconTheme.color,
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
                         ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          height: 110,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(15)),
-                            color: context.theme.colorScheme.primaryContainer,
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: Text(
+                              widget.headerText == null
+                                  ? 'schedule'.tr
+                                  : '${'schedule'.tr} - ${widget.headerText}',
+                              style:
+                                  context.theme.textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              overflow: TextOverflow.visible,
+                            ),
                           ),
                         ),
                       ],
-                    );
-                  },
-                ),
-              ),
-              child: Swipe(
-                horizontalMinDisplacement: 20,
-                onSwipeLeft: () {
-                  if (selectedDay.isBefore(lastDay)) {
-                    _selectedDay = selectedDay.add(const Duration(days: 1));
-                    getRasp();
-                  }
-                },
-                onSwipeRight: () {
-                  if (selectedDay.isAfter(firstDay)) {
-                    _selectedDay = selectedDay.add(const Duration(days: -1));
-                    getRasp();
-                  }
-                },
-                child: Visibility(
-                  visible: raspElementsFiltered.isNotEmpty,
-                  replacement: Center(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/images/no.png',
-                            scale: 5,
-                          ),
-                          Text(
-                            'no_par'.tr,
-                            style: context.theme.textTheme.titleMedium,
-                          ),
-                        ],
-                      ),
                     ),
                   ),
-                  child: GroupedListView<Schedule, String>(
-                      physics: const BouncingScrollPhysics(),
-                      elements: raspElementsFiltered,
-                      groupBy: (element) {
-                        return '${element.begin}-${element.end}';
-                      },
-                      groupSeparatorBuilder: (String groupByValue) => Padding(
+            TableCalendar(
+              key: ValueKey(widget.raspElements.value),
+              startingDayOfWeek: StartingDayOfWeek.monday,
+              firstDay: firstDay,
+              lastDay: lastDay,
+              focusedDay: selectedDay,
+              weekendDays: const [DateTime.sunday],
+              locale: '${locale?.languageCode}',
+              selectedDayPredicate: (day) {
+                return isSameDay(selectedDay, day);
+              },
+              onDaySelected: (selected, focused) {
+                setState(() {
+                  _selectedDay = selected;
+                });
+                getRasp();
+              },
+              onPageChanged: (focused) {
+                setState(() {
+                  _selectedDay = focused;
+                });
+                getRasp();
+              },
+              availableCalendarFormats: {
+                CalendarFormat.month: 'month'.tr,
+                CalendarFormat.twoWeeks: 'two_week'.tr,
+                CalendarFormat.week: 'week'.tr
+              },
+              calendarFormat: calendarFormat,
+              onFormatChanged: (format) {
+                setState(
+                  () {
+                    calendarFormat = format;
+                  },
+                );
+              },
+              calendarBuilders: CalendarBuilders(
+                markerBuilder: (context, day, events) {
+                  return getCountEventsCalendar(day) != 0
+                      ? selectedDay.isAtSameMomentAs(day)
+                          ? Container(
+                              width: 15,
+                              height: 15,
+                              decoration: BoxDecoration(
+                                color: primaries[getCountEventsCalendar(day)],
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  getCountEventsCalendar(day).toString(),
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Text(
+                              getCountEventsCalendar(day).toString(),
+                              style: TextStyle(
+                                color: primaries[getCountEventsCalendar(day)],
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                      : null;
+                },
+              ),
+            ),
+            Divider(
+              color: context.theme.dividerColor,
+              height: 20,
+              thickness: 2,
+              indent: 10,
+              endIndent: 10,
+            ),
+            Expanded(
+              child: Visibility(
+                visible: widget.isLoaded,
+                replacement: Shimmer.fromColors(
+                  baseColor: context.theme.colorScheme.primaryContainer,
+                  highlightColor: context.theme.unselectedWidgetColor,
+                  child: ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: 5,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 10),
-                            child: Text(
-                              groupByValue,
-                              style: context.theme.textTheme.titleMedium,
+                            child: Container(
+                              width: 100,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(10)),
+                                color:
+                                    context.theme.colorScheme.primaryContainer,
+                              ),
                             ),
                           ),
-                      itemBuilder: (BuildContext context, Schedule element) {
-                        final raspElementPage = element;
-                        return Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(15)),
-                            color: context.theme.colorScheme.primaryContainer,
+                          Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            height: 110,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(15)),
+                              color: context.theme.colorScheme.primaryContainer,
+                            ),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                raspElementPage.discipline,
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                child: Swipe(
+                  horizontalMinDisplacement: 20,
+                  onSwipeLeft: () {
+                    if (selectedDay.isBefore(lastDay)) {
+                      _selectedDay = selectedDay.add(const Duration(days: 1));
+                      getRasp();
+                    }
+                  },
+                  onSwipeRight: () {
+                    if (selectedDay.isAfter(firstDay)) {
+                      _selectedDay = selectedDay.add(const Duration(days: -1));
+                      getRasp();
+                    }
+                  },
+                  child: Visibility(
+                    visible: raspElementsFiltered.isNotEmpty,
+                    replacement: Center(
+                      child: SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              'assets/images/no.png',
+                              scale: 5,
+                            ),
+                            Text(
+                              'no_par'.tr,
+                              style: context.theme.textTheme.titleMedium,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    child: GroupedListView<Schedule, String>(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        elements: raspElementsFiltered,
+                        groupBy: (element) {
+                          return '${element.begin}-${element.end}';
+                        },
+                        groupSeparatorBuilder: (String groupByValue) => Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 10),
+                              child: Text(
+                                groupByValue,
                                 style: context.theme.textTheme.titleMedium
                                     ?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              const SizedBox(height: 10),
-                              Flexible(
-                                child: Text(
-                                  raspElementPage.teacher,
-                                  style: context.theme.textTheme.bodyMedium
-                                      ?.copyWith(color: Colors.grey),
-                                  overflow: TextOverflow.ellipsis,
+                            ),
+                        itemBuilder: (BuildContext context, Schedule element) {
+                          final raspElementPage = element;
+                          return Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(15)),
+                              color: context.theme.colorScheme.primaryContainer,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  raspElementPage.discipline,
+                                  style: context.theme.textTheme.titleMedium
+                                      ?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      raspElementPage.audience,
-                                      style: context.theme.textTheme.bodyMedium
-                                          ?.copyWith(color: Colors.grey),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                                const SizedBox(height: 10),
+                                Flexible(
+                                  child: Text(
+                                    raspElementPage.teacher,
+                                    style: context.theme.textTheme.bodyMedium
+                                        ?.copyWith(color: Colors.grey),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  Expanded(
-                                    child: Text(
-                                      raspElementPage.group,
-                                      style: context.theme.textTheme.bodyMedium
-                                          ?.copyWith(color: Colors.grey),
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.right,
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        raspElementPage.audience,
+                                        style: context
+                                            .theme.textTheme.bodyMedium
+                                            ?.copyWith(color: Colors.grey),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
+                                    Expanded(
+                                      child: Text(
+                                        raspElementPage.group,
+                                        style: context
+                                            .theme.textTheme.bodyMedium
+                                            ?.copyWith(color: Colors.grey),
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                  ),
                 ),
               ),
             ),
-          ),
-          YandexBanner(
-            adUnitId: 'R-M-2101511-1',
-            size: YandexBannerSize.flexibleSize(320, 50),
-          )
-        ],
+            YandexBanner(
+              adUnitId: 'R-M-2101511-1',
+              size: YandexBannerSize.flexibleSize(320, 50),
+            )
+          ],
+        ),
       ),
     );
   }

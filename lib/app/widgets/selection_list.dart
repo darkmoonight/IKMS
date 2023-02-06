@@ -140,7 +140,7 @@ class _SelectionListState<T extends SelectionData>
                 baseColor: context.theme.colorScheme.primaryContainer,
                 highlightColor: context.theme.unselectedWidgetColor,
                 child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
+                  physics: const AlwaysScrollableScrollPhysics(),
                   itemCount: 10,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
@@ -157,7 +157,7 @@ class _SelectionListState<T extends SelectionData>
                 ),
               ),
               child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(),
                 itemCount: widget.data.length,
                 itemBuilder: (BuildContext context, int index) {
                   final T data = widget.data[index];
