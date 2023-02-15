@@ -39,13 +39,18 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RaspWidget(
-        isLoaded: isLoaded,
-        raspElements: raspData,
-        onBackPressed: () {
-          Get.back();
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await getData();
         },
-        headerText: widget.teacherSchedule.name,
+        child: RaspWidget(
+          isLoaded: isLoaded,
+          raspElements: raspData,
+          onBackPressed: () {
+            Get.back();
+          },
+          headerText: widget.teacherSchedule.name,
+        ),
       ),
     );
   }

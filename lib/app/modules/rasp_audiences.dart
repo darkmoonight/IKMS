@@ -40,13 +40,18 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RaspWidget(
-        isLoaded: isLoaded,
-        raspElements: raspData,
-        onBackPressed: () {
-          Get.back();
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await getData();
         },
-        headerText: widget.audienceSchedule.name,
+        child: RaspWidget(
+          isLoaded: isLoaded,
+          raspElements: raspData,
+          onBackPressed: () {
+            Get.back();
+          },
+          headerText: widget.audienceSchedule.name,
+        ),
       ),
     );
   }

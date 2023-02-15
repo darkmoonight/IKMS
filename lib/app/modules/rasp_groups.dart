@@ -39,13 +39,18 @@ class _RaspGroupsPageState extends State<RaspGroupsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RaspWidget(
-        isLoaded: isLoaded,
-        raspElements: raspData,
-        onBackPressed: () {
-          Get.back();
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await getData();
         },
-        headerText: widget.groupSchedule.name,
+        child: RaspWidget(
+          isLoaded: isLoaded,
+          raspElements: raspData,
+          onBackPressed: () {
+            Get.back();
+          },
+          headerText: widget.groupSchedule.name,
+        ),
       ),
     );
   }

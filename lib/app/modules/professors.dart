@@ -59,18 +59,23 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SelectionList(
-      headerText: 'professors'.tr,
-      hintText: 'fio'.tr,
-      onTextChanged: applyFilter,
-      isLoaded: isLoaded,
-      selectionTextStyle: context.theme.textTheme.bodyMedium,
-      data: teachers,
-      onEntrySelected: (TeacherSchedule selectionData) async {
-        await Get.to(() => RaspProfessorsPage(teacherSchedule: selectionData),
-            transition: Transition.downToUp);
-        applyFilter(filter);
+    return RefreshIndicator(
+      onRefresh: () async {
+        await applyFilter('');
       },
+      child: SelectionList(
+        headerText: 'professors'.tr,
+        hintText: 'fio'.tr,
+        onTextChanged: applyFilter,
+        isLoaded: isLoaded,
+        selectionTextStyle: context.theme.textTheme.bodyMedium,
+        data: teachers,
+        onEntrySelected: (TeacherSchedule selectionData) async {
+          await Get.to(() => RaspProfessorsPage(teacherSchedule: selectionData),
+              transition: Transition.downToUp);
+          applyFilter(filter);
+        },
+      ),
     );
   }
 }

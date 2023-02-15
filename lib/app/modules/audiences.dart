@@ -59,18 +59,23 @@ class _AudiencesPageState extends State<AudiencesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SelectionList(
-      headerText: 'audiences'.tr,
-      hintText: 'number'.tr,
-      onTextChanged: applyFilter,
-      isLoaded: isLoaded,
-      selectionTextStyle: context.theme.textTheme.bodyMedium,
-      data: audiences,
-      onEntrySelected: (AudienceSchedule selectionData) async {
-        await Get.to(() => RaspAudiencesPage(audienceSchedule: selectionData),
-            transition: Transition.downToUp);
-        reApplyFilter();
+    return RefreshIndicator(
+      onRefresh: () async {
+        await applyFilter('');
       },
+      child: SelectionList(
+        headerText: 'audiences'.tr,
+        hintText: 'number'.tr,
+        onTextChanged: applyFilter,
+        isLoaded: isLoaded,
+        selectionTextStyle: context.theme.textTheme.bodyMedium,
+        data: audiences,
+        onEntrySelected: (AudienceSchedule selectionData) async {
+          await Get.to(() => RaspAudiencesPage(audienceSchedule: selectionData),
+              transition: Transition.downToUp);
+          reApplyFilter();
+        },
+      ),
     );
   }
 }

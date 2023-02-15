@@ -52,9 +52,14 @@ class _MySchedulePageState extends State<MySchedulePage> {
 
   @override
   Widget build(BuildContext context) {
-    return RaspWidget(
-      isLoaded: isLoaded,
-      raspElements: raspData,
+    return RefreshIndicator(
+      onRefresh: () async {
+        await getData();
+      },
+      child: RaspWidget(
+        isLoaded: isLoaded,
+        raspElements: raspData,
+      ),
     );
   }
 }

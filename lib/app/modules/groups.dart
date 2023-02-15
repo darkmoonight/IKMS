@@ -64,25 +64,30 @@ class _GroupsPageState extends State<GroupsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.theme.scaffoldBackgroundColor,
-      body: SelectionList(
-          headerText: 'groups'.tr,
-          hintText: 'groupsName'.tr,
-          onTextChanged: applyFilter,
-          isLoaded: isLoaded,
-          selectionTextStyle: widget.isSettings
-              ? context.theme.textTheme.bodyMedium
-              : context.theme.textTheme.bodyMedium,
-          onBackPressed: widget.isSettings ? Get.back : null,
-          data: groups,
-          onEntrySelected: (GroupSchedule selectionData) async {
-            if (widget.isSettings || isDialog) {
-              Get.back(result: selectionData);
-            } else {
-              await Get.to(() => RaspGroupsPage(groupSchedule: selectionData),
-                  transition: Transition.downToUp);
-              reApplyFilter();
-            }
-          }),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await applyFilter('');
+        },
+        child: SelectionList(
+            headerText: 'groups'.tr,
+            hintText: 'groupsName'.tr,
+            onTextChanged: applyFilter,
+            isLoaded: isLoaded,
+            selectionTextStyle: widget.isSettings
+                ? context.theme.textTheme.bodyMedium
+                : context.theme.textTheme.bodyMedium,
+            onBackPressed: widget.isSettings ? Get.back : null,
+            data: groups,
+            onEntrySelected: (GroupSchedule selectionData) async {
+              if (widget.isSettings || isDialog) {
+                Get.back(result: selectionData);
+              } else {
+                await Get.to(() => RaspGroupsPage(groupSchedule: selectionData),
+                    transition: Transition.downToUp);
+                reApplyFilter();
+              }
+            }),
+      ),
     );
   }
 }

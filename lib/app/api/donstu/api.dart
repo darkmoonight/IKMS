@@ -39,7 +39,8 @@ class DonstuAPI {
           .toList();
     } on DioError catch (e) {
       if (kDebugMode) {
-        print(e);
+        var statusCode = e.response?.statusCode;
+        print(statusCode);
       }
       rethrow;
     }
@@ -57,7 +58,8 @@ class DonstuAPI {
           .toList();
     } on DioError catch (e) {
       if (kDebugMode) {
-        print(e);
+        var statusCode = e.response?.statusCode;
+        print(statusCode);
       }
       rethrow;
     }
@@ -75,7 +77,8 @@ class DonstuAPI {
           .toList();
     } on DioError catch (e) {
       if (kDebugMode) {
-        print(e);
+        var statusCode = e.response?.statusCode;
+        print(statusCode);
       }
       rethrow;
     }
@@ -100,7 +103,8 @@ class DonstuAPI {
           .toList();
     } on DioError catch (e) {
       if (kDebugMode) {
-        print(e);
+        var statusCode = e.response?.statusCode;
+        print(statusCode);
       }
       rethrow;
     }
@@ -125,7 +129,8 @@ class DonstuAPI {
           .toList();
     } on DioError catch (e) {
       if (kDebugMode) {
-        print(e);
+        var statusCode = e.response?.statusCode;
+        print(statusCode);
       }
       rethrow;
     }
@@ -150,7 +155,8 @@ class DonstuAPI {
           .toList();
     } on DioError catch (e) {
       if (kDebugMode) {
-        print(e);
+        var statusCode = e.response?.statusCode;
+        print(statusCode);
       }
       rethrow;
     }
