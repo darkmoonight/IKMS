@@ -12,8 +12,8 @@ import 'package:ikms/main.dart';
 class DonstuAPI {
   final Dio dio = Dio()
     ..options.baseUrl = 'https://edu.donstu.ru/api/'
-    ..options.connectTimeout = 60 * 1000
-    ..options.receiveTimeout = 60 * 1000
+    ..options.connectTimeout = const Duration(seconds: 60)
+    ..options.receiveTimeout = const Duration(seconds: 60)
     ..interceptors.add(RetryInterceptor(
       dio: Dio(),
       logPrint: print,

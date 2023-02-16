@@ -6,14 +6,14 @@ publish_to: 'none'
 version: 1.0.6+7
 
 environment:
-  sdk: ">=2.17.6 <3.0.0"
+  sdk: ">=2.19.2 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  dio: ^4.0.6
+  dio: ^5.0.0
   get: ^4.6.5
   isar: ^3.0.5
   intl: ^0.17.0
@@ -23,7 +23,7 @@ dependencies:
   grouped_list: ^5.1.2
   path_provider: ^2.0.11
   table_calendar: ^3.0.8
-  dio_smart_retry: ^1.4.0
+  dio_smart_retry: ^5.0.0
   isar_flutter_libs: ^3.0.5
   connectivity_plus: ^3.0.2
   flutter_easyloading: ^3.0.5
