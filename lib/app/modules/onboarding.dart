@@ -40,7 +40,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   height: 10,
                 ),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.8,
+                  width: 300,
                   child: Text(
                     'sched_hint'.tr,
                     style: context.theme.textTheme.titleMedium,

@@ -16,7 +16,6 @@ class DonstuAPI {
     ..options.receiveTimeout = const Duration(seconds: 60)
     ..interceptors.add(RetryInterceptor(
       dio: Dio(),
-      logPrint: print,
       retries: 4,
       retryableExtraStatuses: {104},
       retryDelays: const [
@@ -39,8 +38,7 @@ class DonstuAPI {
           .toList();
     } on DioError catch (e) {
       if (kDebugMode) {
-        var statusCode = e.response?.statusCode;
-        print(statusCode);
+        print(e);
       }
       rethrow;
     }
@@ -58,8 +56,7 @@ class DonstuAPI {
           .toList();
     } on DioError catch (e) {
       if (kDebugMode) {
-        var statusCode = e.response?.statusCode;
-        print(statusCode);
+        print(e);
       }
       rethrow;
     }
@@ -77,8 +74,7 @@ class DonstuAPI {
           .toList();
     } on DioError catch (e) {
       if (kDebugMode) {
-        var statusCode = e.response?.statusCode;
-        print(statusCode);
+        print(e);
       }
       rethrow;
     }
@@ -103,8 +99,7 @@ class DonstuAPI {
           .toList();
     } on DioError catch (e) {
       if (kDebugMode) {
-        var statusCode = e.response?.statusCode;
-        print(statusCode);
+        print(e);
       }
       rethrow;
     }
@@ -129,8 +124,7 @@ class DonstuAPI {
           .toList();
     } on DioError catch (e) {
       if (kDebugMode) {
-        var statusCode = e.response?.statusCode;
-        print(statusCode);
+        print(e);
       }
       rethrow;
     }
@@ -155,8 +149,7 @@ class DonstuAPI {
           .toList();
     } on DioError catch (e) {
       if (kDebugMode) {
-        var statusCode = e.response?.statusCode;
-        print(statusCode);
+        print(e);
       }
       rethrow;
     }
