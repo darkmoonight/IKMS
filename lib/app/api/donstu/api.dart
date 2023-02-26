@@ -14,18 +14,25 @@ class DonstuAPI {
     ..options.baseUrl = 'https://edu.donstu.ru/api/'
     ..options.connectTimeout = const Duration(seconds: 60)
     ..options.receiveTimeout = const Duration(seconds: 60)
-    ..interceptors.add(RetryInterceptor(
-      dio: Dio(),
-      logPrint: print,
-      retries: 4,
-      retryableExtraStatuses: {104},
-      retryDelays: const [
-        Duration(seconds: 1),
-        Duration(seconds: 2),
-        Duration(seconds: 3),
-        Duration(seconds: 4),
-      ],
-    ));
+    ..interceptors.addAll([
+      RetryInterceptor(
+        dio: Dio(),
+        logPrint: print,
+        retries: 4,
+        retryableExtraStatuses: {104},
+        retryDelays: const [
+          Duration(seconds: 1),
+          Duration(seconds: 2),
+          Duration(seconds: 3),
+          Duration(seconds: 4),
+        ],
+      ),
+      InterceptorsWrapper(
+        onError: (error, handler) {
+          handler.reject(error);
+        },
+      ),
+    ]);
 
   Future<List<AudienceSchedule>> getAudiencesData() async {
     var url = 'raspAudlist';
