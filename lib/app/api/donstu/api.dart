@@ -16,6 +16,7 @@ class DonstuAPI {
     ..options.receiveTimeout = const Duration(seconds: 60)
     ..interceptors.add(RetryInterceptor(
       dio: Dio(),
+      logPrint: print,
       retries: 4,
       retryableExtraStatuses: {104},
       retryDelays: const [
