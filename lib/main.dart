@@ -15,7 +15,6 @@ import 'package:ikms/app/modules/home.dart';
 import 'package:ikms/app/modules/onboarding.dart';
 import 'package:ikms/l10n/translation.dart';
 import 'package:ikms/theme/theme_controller.dart';
-// ignore_for_file: depend_on_referenced_packages
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 

@@ -1,6 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:ikms/main.dart';
-// ignore_for_file: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationShow {

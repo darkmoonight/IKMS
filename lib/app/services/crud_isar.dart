@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/main.dart';
 import 'package:isar/isar.dart';
-
 import 'notification.dart';
 
 class IsarServices {
