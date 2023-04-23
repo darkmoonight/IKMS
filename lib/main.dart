@@ -13,7 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/app/modules/home.dart';
 import 'package:ikms/app/modules/onboarding.dart';
-import 'package:ikms/l10n/translation.dart';
+import 'package:ikms/translation/translation.dart';
 import 'package:ikms/theme/theme_controller.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -24,7 +24,7 @@ late University donstu;
 final ValueNotifier<Future<bool>> isDeviceConnectedNotifier =
     ValueNotifier(InternetConnectionChecker().hasConnection);
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 void main() async {

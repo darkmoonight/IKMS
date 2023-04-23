@@ -5,6 +5,10 @@ import 'package:timezone/timezone.dart' as tz;
 class NotificationShow {
   Future showNotification(
       int id, String title, String body, DateTime? date) async {
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestPermission();
     AndroidNotificationDetails androidNotificationDetails =
         const AndroidNotificationDetails(
       'IKMS',
