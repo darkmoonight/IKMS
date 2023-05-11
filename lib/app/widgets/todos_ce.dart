@@ -5,6 +5,8 @@ import 'package:ikms/app/api/donstu/caching.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/app/services/crud_isar.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart'
+    as date_picker_theme;
 import 'package:ikms/app/widgets/my_text_form.dart';
 import 'package:ikms/main.dart';
 
@@ -216,7 +218,7 @@ class _TodosCeState extends State<TodosCe> {
                         DatePicker.showDateTimePicker(
                           context,
                           showTitleActions: true,
-                          theme: DatePickerTheme(
+                          theme: date_picker_theme.DatePickerTheme(
                             backgroundColor:
                                 context.theme.scaffoldBackgroundColor,
                             cancelStyle: const TextStyle(color: Colors.red),
