@@ -1,9 +1,10 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:flutter_yandex_mobile_ads/yandex.dart';
 import 'package:get/get.dart';
 import 'package:ikms/theme/theme.dart';
@@ -30,6 +31,7 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await isarInit();
+  await setOptimalDisplayMode();
   Connectivity()
       .onConnectivityChanged
       .listen((ConnectivityResult result) async {
@@ -40,7 +42,7 @@ void main() async {
       isDeviceConnectedNotifier.value = Future(() => false);
     }
   });
-  final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+  final String timeZoneName = await FlutterTimezone.getLocalTimezone();
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_launcher');
   const InitializationSettings initializationSettings =
@@ -50,6 +52,23 @@ void main() async {
   tz.setLocalLocation(tz.getLocation(timeZoneName));
   Yandex.initialize();
   runApp(MyApp());
+}
+
+Future<void> setOptimalDisplayMode() async {
+  final List<DisplayMode> supported = await FlutterDisplayMode.supported;
+  final DisplayMode active = await FlutterDisplayMode.active;
+
+  final List<DisplayMode> sameResolution = supported
+      .where((DisplayMode m) =>
+          m.width == active.width && m.height == active.height)
+      .toList()
+    ..sort((DisplayMode a, DisplayMode b) =>
+        b.refreshRate.compareTo(a.refreshRate));
+
+  final DisplayMode mostOptimalMode =
+      sameResolution.isNotEmpty ? sameResolution.first : active;
+
+  await FlutterDisplayMode.setPreferredMode(mostOptimalMode);
 }
 
 Future<void> isarInit() async {

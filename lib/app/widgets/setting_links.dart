@@ -12,27 +12,21 @@ class SettingLinks extends StatelessWidget {
     this.value,
     this.onPressed,
     this.onChange,
+    required this.info,
+    this.textInfo,
   });
   final Icon icon;
   final String text;
   final Text? description;
   final bool switcher;
   final bool? value;
+  final bool info;
+  final String? textInfo;
   final Function()? onPressed;
   final Function(bool)? onChange;
 
   @override
   Widget build(BuildContext context) {
-    final MaterialStateProperty<Icon?> thumbIcon =
-        MaterialStateProperty.resolveWith<Icon?>(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.selected)) {
-          return const Icon(Iconsax.moon5);
-        }
-        return const Icon(Iconsax.sun_15);
-      },
-    );
-
     return GestureDetector(
       onTap: onPressed,
       child: Container(
@@ -65,18 +59,26 @@ class SettingLinks extends StatelessWidget {
                 ? Transform.scale(
                     scale: 0.8,
                     child: Switch(
-                      thumbIcon: thumbIcon,
                       value: value!,
                       onChanged: onChange,
                     ),
                   )
-                : Row(
-                    children: [
-                      description!,
-                      const SizedBox(width: 5),
-                      const Icon(Iconsax.arrow_right_3),
-                    ],
-                  ),
+                : info
+                    ? Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: Text(
+                          textInfo!,
+                          style: context.theme.textTheme.titleMedium,
+                          overflow: TextOverflow.visible,
+                        ),
+                      )
+                    : Row(
+                        children: [
+                          description!,
+                          const SizedBox(width: 5),
+                          const Icon(Iconsax.arrow_right_3),
+                        ],
+                      ),
           ],
         ),
       ),

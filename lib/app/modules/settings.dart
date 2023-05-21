@@ -8,6 +8,7 @@ import 'package:ikms/app/modules/university.dart';
 import 'package:ikms/app/widgets/setting_links.dart';
 import 'package:ikms/main.dart';
 import 'package:ikms/theme/theme_controller.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -18,9 +19,18 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final themeController = Get.put(ThemeController());
+  String? appVersion;
+
+  Future<void> infoVersion() async {
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      appVersion = packageInfo.version;
+    });
+  }
 
   @override
   void initState() {
+    infoVersion();
     super.initState();
   }
 
@@ -50,6 +60,7 @@ class _SettingsPageState extends State<SettingsPage> {
             icon: const Icon(Iconsax.moon),
             text: 'theme'.tr,
             switcher: true,
+            info: false,
             value: Get.isDarkMode,
             onChange: (_) {
               if (Get.isDarkMode) {
@@ -65,6 +76,7 @@ class _SettingsPageState extends State<SettingsPage> {
             icon: const Icon(Iconsax.buildings),
             text: 'university'.tr,
             switcher: false,
+            info: false,
             description: Text(
               settings.university.value?.name ?? 'no_select'.tr,
               style: context.theme.textTheme.bodySmall,
@@ -87,6 +99,7 @@ class _SettingsPageState extends State<SettingsPage> {
             icon: const Icon(Iconsax.people),
             text: 'group'.tr,
             switcher: false,
+            info: false,
             description: Text(
               settings.group.value?.name ?? 'no_select'.tr,
               style: context.theme.textTheme.bodySmall,
@@ -113,6 +126,16 @@ class _SettingsPageState extends State<SettingsPage> {
                     }
                   }
                 : () => EasyLoading.showInfo('no_university'.tr),
+          ),
+          SettingLinks(
+            icon: Icon(
+              Iconsax.code_circle,
+              color: context.theme.iconTheme.color,
+            ),
+            text: 'version'.tr,
+            switcher: false,
+            info: true,
+            textInfo: '$appVersion',
           ),
         ],
       ),

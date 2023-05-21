@@ -1,12 +1,12 @@
+import 'package:bottom_picker/bottom_picker.dart';
+import 'package:bottom_picker/resources/arrays.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ikms/app/api/donstu/caching.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/app/services/crud_isar.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart'
-    as date_picker_theme;
 import 'package:ikms/app/widgets/my_text_form.dart';
 import 'package:ikms/main.dart';
 
@@ -215,27 +215,28 @@ class _TodosCeState extends State<TodosCe> {
                         },
                       ),
                       onTap: () {
-                        DatePicker.showDateTimePicker(
-                          context,
-                          showTitleActions: true,
-                          theme: date_picker_theme.DatePickerTheme(
-                            backgroundColor:
-                                context.theme.scaffoldBackgroundColor,
-                            cancelStyle: const TextStyle(color: Colors.red),
-                            itemStyle: TextStyle(
-                                color: context.theme.colorScheme.onSurface),
-                          ),
-                          minTime: DateTime.now(),
-                          maxTime:
-                              DateTime.now().add(const Duration(days: 1000)),
-                          onConfirm: (date) {
+                        BottomPicker.dateTime(
+                          title: 'time'.tr,
+                          description: 'timeDesc'.tr,
+                          titleStyle: context.theme.textTheme.titleMedium!,
+                          descriptionStyle: context.theme.textTheme.bodyLarge!
+                              .copyWith(color: Colors.grey),
+                          pickerTextStyle: context.theme.textTheme.bodyLarge!,
+                          iconColor: context.theme.iconTheme.color!,
+                          closeIconColor: Colors.red,
+                          backgroundColor:
+                              context.theme.scaffoldBackgroundColor,
+                          onSubmit: (date) {
                             service.timeEdit.value.text = date.toString();
                           },
-                          currentTime: DateTime.now(),
-                          locale: '${locale?.languageCode}' == 'ru'
-                              ? LocaleType.ru
-                              : LocaleType.en,
-                        );
+                          bottomPickerTheme: BottomPickerTheme.plumPlate,
+                          minDateTime: DateTime.now(),
+                          maxDateTime:
+                              DateTime.now().add(const Duration(days: 1000)),
+                          initialDateTime: DateTime.now(),
+                          use24hFormat: true,
+                          dateOrder: DatePickerDateOrder.dmy,
+                        ).show(context);
                       },
                     ),
                   ),
@@ -268,6 +269,7 @@ class _TodosCeState extends State<TodosCe> {
                         icon: const Icon(
                           Iconsax.send_1,
                           color: Colors.white,
+                          size: 18,
                         ),
                       ),
                     ),

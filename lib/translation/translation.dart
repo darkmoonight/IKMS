@@ -46,6 +46,9 @@ class Translation extends Translations {
               'There is no connection to the server\nRefresh the page or check your internet connection',
           'get_started': 'Get started',
           'discipline': 'Choose a discipline',
+          'version': 'Application version',
+          'time': 'Execution time',
+          'timeDesc': 'Select the time to complete the task',
         },
         'ru_RU': {
           "timeComlete": "Время выполнения",
@@ -90,6 +93,9 @@ class Translation extends Translations {
               'Нет связи с сервером\nОбновите страницу или проверьте подключение к интернету',
           'get_started': 'Начать',
           'discipline': 'Выберите дисциплинy',
+          'version': 'Версия приложения',
+          'time': 'Время выполнения',
+          'timeDesc': 'Выберите время для выполнения задачи',
         }
       };
 }

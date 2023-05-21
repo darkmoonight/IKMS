@@ -67,10 +67,10 @@ class _HomePageState extends State<HomePage> {
                   },
                 );
               },
-              backgroundColor: const Color.fromARGB(255, 40, 40, 40),
-              child: const Icon(
+              backgroundColor: context.theme.primaryColor,
+              child: Icon(
                 Iconsax.add,
-                color: Colors.greenAccent,
+                color: context.theme.iconTheme.color,
               ),
             )
           : null,
