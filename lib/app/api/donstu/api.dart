@@ -44,7 +44,7 @@ class DonstuAPI {
               AudienceSchedule(id: audiences.id, name: audiences.name)
                 ..university.value = donstu)
           .toList();
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (kDebugMode) {
         print(e);
       }
@@ -62,7 +62,7 @@ class DonstuAPI {
               TeacherSchedule(id: professors.id, name: professors.name)
                 ..university.value = donstu)
           .toList();
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (kDebugMode) {
         print(e);
       }
@@ -80,7 +80,7 @@ class DonstuAPI {
               GroupSchedule(id: groups.id, name: groups.name)
                 ..university.value = donstu)
           .toList();
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (kDebugMode) {
         print(e);
       }
@@ -105,7 +105,7 @@ class DonstuAPI {
               begin: element.beginning,
               end: element.end))
           .toList();
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (kDebugMode) {
         print(e);
       }
@@ -130,7 +130,7 @@ class DonstuAPI {
               begin: element.beginning,
               end: element.end))
           .toList();
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (kDebugMode) {
         print(e);
       }
@@ -155,7 +155,7 @@ class DonstuAPI {
               begin: element.beginning,
               end: element.end))
           .toList();
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (kDebugMode) {
         print(e);
       }
