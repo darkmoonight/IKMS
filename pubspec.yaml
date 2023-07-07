@@ -34,7 +34,7 @@ dependencies:
   flutter_displaymode: ^0.6.0
   custom_navigation_bar: ^0.8.2
   flutter_yandex_mobile_ads: ^0.0.12
-  flutter_local_notifications: ^15.0.1
+  flutter_local_notifications: ^15.1.0+1
   internet_connection_checker: ^1.0.0+1
 
 dev_dependencies:
@@ -50,12 +50,14 @@ dev_dependencies:
 flutter_icons:
   android: true
   image_path: "assets/icons/icon.png"
-  adaptive_icon_background: "#121212"
-  adaptive_icon_foreground: "assets/icons/icon_adaptive.png"
+  adaptive_icon_background: "#181818"
+  adaptive_icon_foreground: "assets/icons/icon.png"
 
 flutter_native_splash:
-  color: "#121212"
-  image: "assets/icons/icon_splash.png"
+  color: "#181818"
+  android_12:
+    color: "#181818"
+  image: "assets/icons/icon.png"
 
 flutter:
   generate: false
