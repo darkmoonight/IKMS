@@ -31,7 +31,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ),
                 Text(
                   'timetable'.tr,
-                  style: context.theme.textTheme.headlineSmall?.copyWith(
+                  style: context.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
@@ -43,7 +43,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   width: 300,
                   child: Text(
                     'sched_hint'.tr,
-                    style: context.theme.textTheme.titleMedium,
+                    style: context.textTheme.titleMedium,
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -54,7 +54,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             padding: const EdgeInsets.all(10),
             child: MyTextButton(
               buttonName: 'get_started'.tr,
-              onTap: () async {
+              onPressed: () async {
                 University? university;
                 GroupSchedule? group;
                 do {
@@ -93,7 +93,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
                 Get.offAll(() => const HomePage());
               },
-              bgColor: context.theme.colorScheme.primaryContainer,
             ),
           ),
         ],

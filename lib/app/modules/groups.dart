@@ -63,7 +63,6 @@ class _GroupsPageState extends State<GroupsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.theme.scaffoldBackgroundColor,
       body: RefreshIndicator(
         onRefresh: () async {
           await applyFilter('');
@@ -74,8 +73,8 @@ class _GroupsPageState extends State<GroupsPage> {
             onTextChanged: applyFilter,
             isLoaded: isLoaded,
             selectionTextStyle: widget.isSettings
-                ? context.theme.textTheme.bodyMedium
-                : context.theme.textTheme.bodyMedium,
+                ? context.textTheme.bodyMedium
+                : context.textTheme.bodyMedium,
             onBackPressed: widget.isSettings ? Get.back : null,
             data: groups,
             onEntrySelected: (GroupSchedule selectionData) async {

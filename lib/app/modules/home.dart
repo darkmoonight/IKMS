@@ -1,6 +1,4 @@
-import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:ikms/app/modules/audiences.dart';
@@ -21,6 +19,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var tabIndex = 0;
 
+  final pages = const [
+    MySchedulePage(),
+    ProfessorsPage(),
+    GroupsPage(
+      isSettings: false,
+    ),
+    AudiencesPage(),
+    TaskPage(),
+    SettingsPage(),
+  ];
+
   void changeTabIndex(int index) {
     setState(() {
       tabIndex = index;
@@ -29,34 +38,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        systemNavigationBarColor:
-            context.theme.bottomNavigationBarTheme.backgroundColor,
-      ),
-    );
-
     return Scaffold(
-      backgroundColor: context.theme.scaffoldBackgroundColor,
       body: IndexedStack(
         index: tabIndex,
-        children: const [
-          MySchedulePage(),
-          ProfessorsPage(),
-          GroupsPage(
-            isSettings: false,
-          ),
-          AudiencesPage(),
-          TaskPage(),
-          SettingsPage(),
-        ],
+        children: pages,
       ),
       floatingActionButton: tabIndex == 4
           ? FloatingActionButton(
               onPressed: () {
                 showModalBottomSheet(
                   enableDrag: false,
-                  backgroundColor: context.theme.scaffoldBackgroundColor,
                   context: context,
                   isScrollControlled: true,
                   builder: (BuildContext context) {
@@ -67,48 +58,39 @@ class _HomePageState extends State<HomePage> {
                   },
                 );
               },
-              backgroundColor: context.theme.primaryColor,
-              child: Icon(
-                Iconsax.add,
-                color: context.theme.iconTheme.color,
-              ),
+              child: const Icon(Iconsax.add),
             )
           : null,
-      bottomNavigationBar: Theme(
-        data: context.theme.copyWith(
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-        ),
-        child: CustomNavigationBar(
-          backgroundColor:
-              context.theme.bottomNavigationBarTheme.backgroundColor!,
-          onTap: (int index) {
-            changeTabIndex(index);
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
-          currentIndex: tabIndex,
-          strokeColor: const Color(0x300c18fb),
-          items: [
-            CustomNavigationBarItem(
-              icon: const Icon(Iconsax.calendar_1),
-            ),
-            CustomNavigationBarItem(
-              icon: const Icon(Iconsax.user_search),
-            ),
-            CustomNavigationBarItem(
-              icon: const Icon(Iconsax.people),
-            ),
-            CustomNavigationBarItem(
-              icon: const Icon(Iconsax.buliding),
-            ),
-            CustomNavigationBarItem(
-              icon: const Icon(Iconsax.task_square),
-            ),
-            CustomNavigationBarItem(
-              icon: const Icon(Iconsax.setting_2),
-            ),
-          ],
-        ),
+      bottomNavigationBar: NavigationBar(
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+        onDestinationSelected: (int index) => changeTabIndex(index),
+        selectedIndex: tabIndex,
+        destinations: [
+          NavigationDestination(
+            icon: const Icon(Iconsax.calendar_1),
+            label: 'schedule'.tr,
+          ),
+          NavigationDestination(
+            icon: const Icon(Iconsax.user_search),
+            label: 'professors'.tr,
+          ),
+          NavigationDestination(
+            icon: const Icon(Iconsax.people),
+            label: 'groups'.tr,
+          ),
+          NavigationDestination(
+            icon: const Icon(Iconsax.buliding),
+            label: 'audiences'.tr,
+          ),
+          NavigationDestination(
+            icon: const Icon(Iconsax.task_square),
+            label: 'todos'.tr,
+          ),
+          NavigationDestination(
+            icon: const Icon(Iconsax.setting_2),
+            label: 'settings'.tr,
+          ),
+        ],
       ),
     );
   }

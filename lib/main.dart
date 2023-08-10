@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -42,6 +43,9 @@ void main() async {
       isDeviceConnectedNotifier.value = Future(() => false);
     }
   });
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(systemNavigationBarColor: Colors.black),
+  );
   final String timeZoneName = await FlutterTimezone.getLocalTimezone();
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -101,36 +105,39 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      translations: Translation(),
-      locale: Get.deviceLocale,
-      fallbackLocale: const Locale('en', 'US'),
-      supportedLocales: const [
-        Locale('en', 'US'),
-        Locale('ru', 'RU'),
-      ],
-      localeResolutionCallback: (locale, supportedLocales) {
-        for (var supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == locale?.languageCode) {
-            return supportedLocale;
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: GetMaterialApp(
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        translations: Translation(),
+        locale: Get.deviceLocale,
+        fallbackLocale: const Locale('en', 'US'),
+        supportedLocales: const [
+          Locale('en', 'US'),
+          Locale('ru', 'RU'),
+        ],
+        localeResolutionCallback: (locale, supportedLocales) {
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale?.languageCode) {
+              return supportedLocale;
+            }
           }
-        }
-        return supportedLocales.first;
-      },
-      debugShowCheckedModeBanner: false,
-      themeMode: themeController.theme,
-      theme: IKMSTheme.lightTheme,
-      darkTheme: IKMSTheme.darkTheme,
-      home:
-          (settings.university.value == null) || (settings.group.value == null)
-              ? const OnBoardingScreen()
-              : const HomePage(),
-      builder: EasyLoading.init(),
+          return supportedLocales.first;
+        },
+        debugShowCheckedModeBanner: false,
+        themeMode: themeController.theme,
+        theme: lightTheme(lightColor, colorSchemeLight),
+        darkTheme: darkTheme(darkColor, colorSchemeDark),
+        home: (settings.university.value == null) ||
+                (settings.group.value == null)
+            ? const OnBoardingScreen()
+            : const HomePage(),
+        builder: EasyLoading.init(),
+      ),
     );
   }
 }

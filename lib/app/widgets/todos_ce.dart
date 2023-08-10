@@ -7,7 +7,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:ikms/app/api/donstu/caching.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/app/services/crud_isar.dart';
-import 'package:ikms/app/widgets/my_text_form.dart';
+import 'package:ikms/app/widgets/text_form.dart';
 import 'package:ikms/main.dart';
 
 class TodosCe extends StatefulWidget {
@@ -105,7 +105,7 @@ class _TodosCeState extends State<TodosCe> {
                           ),
                           Text(
                             widget.text,
-                            style: context.theme.textTheme.titleLarge?.copyWith(
+                            style: context.textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -128,8 +128,10 @@ class _TodosCeState extends State<TodosCe> {
                 ),
               ),
               MyTextForm(
-                textEditingController: service.titleEdit.value,
-                hintText: 'name'.tr,
+                elevation: 4,
+                margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                controller: service.titleEdit.value,
+                labelText: 'name'.tr,
                 type: TextInputType.text,
                 icon: const Icon(Iconsax.edit_2),
                 validator: (value) {
@@ -139,45 +141,29 @@ class _TodosCeState extends State<TodosCe> {
                   return null;
                 },
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+              Card(
+                elevation: 4,
+                margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                 child: DropdownButtonFormField(
-                  style: context.theme.textTheme.titleMedium,
+                  style: context.textTheme.titleMedium,
                   isExpanded: true,
                   decoration: InputDecoration(
                     label: Text(
-                      "discipline".tr,
-                    ),
-                    labelStyle: context.theme.textTheme.labelLarge?.copyWith(
-                      color: Colors.grey,
+                      'discipline'.tr,
                     ),
                     prefixIcon: const Icon(Iconsax.book),
-                    fillColor: context.theme.colorScheme.primaryContainer,
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(
-                        color: context.theme.disabledColor,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(
-                        color: context.theme.disabledColor,
-                      ),
-                    ),
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
                   ),
-                  focusColor: Colors.transparent,
-                  dropdownColor: context.theme.scaffoldBackgroundColor,
-                  icon: const Icon(
-                    Iconsax.arrow_down_1,
-                  ),
+                  icon: const Icon(Iconsax.arrow_down_1),
                   value: selectedDiscipline,
                   items: disciplineList?.map((e) {
                     return DropdownMenuItem(
                         value: e,
                         child: Text(
                           e.discipline,
-                          style: context.theme.textTheme.bodyMedium,
+                          style: context.textTheme.bodyMedium,
                           overflow: TextOverflow.visible,
                         ));
                   }).toList(),
@@ -200,9 +186,12 @@ class _TodosCeState extends State<TodosCe> {
                   Flexible(
                     flex: 5,
                     child: MyTextForm(
+                      elevation: 4,
+                      margin:
+                          const EdgeInsets.only(left: 10, right: 10, top: 10),
                       readOnly: true,
-                      textEditingController: service.timeEdit.value,
-                      hintText: 'timeComlete'.tr,
+                      controller: service.timeEdit.value,
+                      labelText: 'timeComlete'.tr,
                       type: TextInputType.datetime,
                       icon: const Icon(Iconsax.clock),
                       iconButton: IconButton(
@@ -218,10 +207,10 @@ class _TodosCeState extends State<TodosCe> {
                         BottomPicker.dateTime(
                           title: 'time'.tr,
                           description: 'timeDesc'.tr,
-                          titleStyle: context.theme.textTheme.titleMedium!,
-                          descriptionStyle: context.theme.textTheme.bodyLarge!
+                          titleStyle: context.textTheme.titleMedium!,
+                          descriptionStyle: context.textTheme.bodyLarge!
                               .copyWith(color: Colors.grey),
-                          pickerTextStyle: context.theme.textTheme.bodyLarge!,
+                          pickerTextStyle: context.textTheme.bodyLarge!,
                           iconColor: context.theme.iconTheme.color!,
                           closeIconColor: Colors.red,
                           backgroundColor:

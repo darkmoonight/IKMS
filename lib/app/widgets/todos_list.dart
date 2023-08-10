@@ -50,7 +50,7 @@ class _TodosListState extends State<TodosList> {
                           widget.isDone == true
                               ? 'copletedTodo'.tr
                               : 'addTodo'.tr,
-                          style: context.theme.textTheme.titleMedium,
+                          style: context.textTheme.titleMedium,
                         ),
                       ],
                     ),
@@ -138,7 +138,7 @@ class _TodosListState extends State<TodosList> {
                                       const SizedBox(height: 3),
                                       Text(
                                         todosList.discipline,
-                                        style: context.theme.textTheme.bodySmall
+                                        style: context.textTheme.bodySmall
                                             ?.copyWith(
                                           color: Colors.grey,
                                         ),

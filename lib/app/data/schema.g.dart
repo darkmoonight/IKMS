@@ -17,8 +17,18 @@ const SettingsSchema = CollectionSchema(
   name: r'Settings',
   id: -8656046621518759136,
   properties: {
-    r'theme': PropertySchema(
+    r'amoledTheme': PropertySchema(
       id: 0,
+      name: r'amoledTheme',
+      type: IsarType.bool,
+    ),
+    r'materialColor': PropertySchema(
+      id: 1,
+      name: r'materialColor',
+      type: IsarType.bool,
+    ),
+    r'theme': PropertySchema(
+      id: 2,
       name: r'theme',
       type: IsarType.bool,
     )
@@ -65,7 +75,9 @@ void _settingsSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeBool(offsets[0], object.theme);
+  writer.writeBool(offsets[0], object.amoledTheme);
+  writer.writeBool(offsets[1], object.materialColor);
+  writer.writeBool(offsets[2], object.theme);
 }
 
 Settings _settingsDeserialize(
@@ -75,8 +87,10 @@ Settings _settingsDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Settings();
+  object.amoledTheme = reader.readBool(offsets[0]);
   object.id = id;
-  object.theme = reader.readBoolOrNull(offsets[0]);
+  object.materialColor = reader.readBool(offsets[1]);
+  object.theme = reader.readBoolOrNull(offsets[2]);
   return object;
 }
 
@@ -88,6 +102,10 @@ P _settingsDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
+      return (reader.readBool(offset)) as P;
+    case 1:
+      return (reader.readBool(offset)) as P;
+    case 2:
       return (reader.readBoolOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -186,6 +204,16 @@ extension SettingsQueryWhere on QueryBuilder<Settings, Settings, QWhereClause> {
 
 extension SettingsQueryFilter
     on QueryBuilder<Settings, Settings, QFilterCondition> {
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> amoledThemeEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'amoledTheme',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<Settings, Settings, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -234,6 +262,16 @@ extension SettingsQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> materialColorEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'materialColor',
+        value: value,
       ));
     });
   }
@@ -298,6 +336,30 @@ extension SettingsQueryLinks
 }
 
 extension SettingsQuerySortBy on QueryBuilder<Settings, Settings, QSortBy> {
+  QueryBuilder<Settings, Settings, QAfterSortBy> sortByAmoledTheme() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'amoledTheme', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterSortBy> sortByAmoledThemeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'amoledTheme', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterSortBy> sortByMaterialColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'materialColor', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterSortBy> sortByMaterialColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'materialColor', Sort.desc);
+    });
+  }
+
   QueryBuilder<Settings, Settings, QAfterSortBy> sortByTheme() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'theme', Sort.asc);
@@ -313,6 +375,18 @@ extension SettingsQuerySortBy on QueryBuilder<Settings, Settings, QSortBy> {
 
 extension SettingsQuerySortThenBy
     on QueryBuilder<Settings, Settings, QSortThenBy> {
+  QueryBuilder<Settings, Settings, QAfterSortBy> thenByAmoledTheme() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'amoledTheme', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterSortBy> thenByAmoledThemeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'amoledTheme', Sort.desc);
+    });
+  }
+
   QueryBuilder<Settings, Settings, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -322,6 +396,18 @@ extension SettingsQuerySortThenBy
   QueryBuilder<Settings, Settings, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterSortBy> thenByMaterialColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'materialColor', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterSortBy> thenByMaterialColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'materialColor', Sort.desc);
     });
   }
 
@@ -340,6 +426,18 @@ extension SettingsQuerySortThenBy
 
 extension SettingsQueryWhereDistinct
     on QueryBuilder<Settings, Settings, QDistinct> {
+  QueryBuilder<Settings, Settings, QDistinct> distinctByAmoledTheme() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'amoledTheme');
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QDistinct> distinctByMaterialColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'materialColor');
+    });
+  }
+
   QueryBuilder<Settings, Settings, QDistinct> distinctByTheme() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'theme');
@@ -352,6 +450,18 @@ extension SettingsQueryProperty
   QueryBuilder<Settings, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<Settings, bool, QQueryOperations> amoledThemeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'amoledTheme');
+    });
+  }
+
+  QueryBuilder<Settings, bool, QQueryOperations> materialColorProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'materialColor');
     });
   }
 

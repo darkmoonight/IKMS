@@ -25,14 +25,13 @@ class _UniversityPageState extends State<UniversityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.theme.scaffoldBackgroundColor,
       body: SelectionList(
         headerText: 'universities'.tr,
         hintText: 'universitiesName'.tr,
         isLoaded: isLoaded,
         onEntrySelected: (University selectionData) =>
             Get.back(result: selectionData),
-        selectionTextStyle: context.theme.textTheme.bodyMedium,
+        selectionTextStyle: context.textTheme.bodyMedium,
         onBackPressed: isDialog ? null : Get.back,
         data: data,
       ),

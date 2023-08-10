@@ -104,7 +104,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                   padding: const EdgeInsets.only(top: 15),
                   child: Text(
                     'schedule'.tr,
-                    style: context.theme.textTheme.titleLarge?.copyWith(
+                    style: context.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
@@ -117,14 +117,8 @@ class _RaspWidgetState extends State<RaspWidget> {
                       IconButton(
                         onPressed: widget.onBackPressed,
                         icon: const Icon(Iconsax.arrow_left_1),
-                        iconSize: context.theme.iconTheme.size,
-                        color: context.theme.iconTheme.color,
-                        splashColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
                       ),
-                      const SizedBox(
-                        width: 5,
-                      ),
+                      const SizedBox(width: 5),
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(right: 15),
@@ -132,8 +126,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                             widget.headerText == null
                                 ? 'schedule'.tr
                                 : '${'schedule'.tr} - ${widget.headerText}',
-                            style:
-                                context.theme.textTheme.titleMedium?.copyWith(
+                            style: context.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                             overflow: TextOverflow.visible,
@@ -196,6 +189,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                                 style: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
+                                  fontSize: 12,
                                 ),
                               ),
                             ),
@@ -205,14 +199,14 @@ class _RaspWidgetState extends State<RaspWidget> {
                             style: TextStyle(
                               color: primaries[getCountEventsCalendar(day)],
                               fontWeight: FontWeight.bold,
+                              fontSize: 12,
                             ),
                           )
                     : null;
               },
             ),
           ),
-          Divider(
-            color: context.theme.dividerColor,
+          const Divider(
             height: 20,
             thickness: 2,
             indent: 10,
@@ -286,7 +280,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                           ),
                           Text(
                             'no_par'.tr,
-                            style: context.theme.textTheme.titleMedium,
+                            style: context.textTheme.titleMedium,
                           ),
                         ],
                       ),
@@ -304,70 +298,67 @@ class _RaspWidgetState extends State<RaspWidget> {
                             child: Text(
                               groupByValue,
                               style:
-                                  context.theme.textTheme.titleMedium?.copyWith(
+                                  context.textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                           ),
                       itemBuilder: (BuildContext context, Schedule element) {
                         final raspElementPage = element;
-                        return Container(
+                        return Card(
                           margin: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 5),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 15),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(15)),
-                            color: context.theme.colorScheme.primaryContainer,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                raspElementPage.discipline,
-                                style: context.theme.textTheme.titleMedium
-                                    ?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Flexible(
-                                child: Text(
-                                  raspElementPage.teacher,
-                                  style: context.theme.textTheme.bodyMedium
-                                      ?.copyWith(color: Colors.grey),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      raspElementPage.audience,
-                                      style: context.theme.textTheme.bodyMedium
-                                          ?.copyWith(color: Colors.grey),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  raspElementPage.discipline,
+                                  style:
+                                      context.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
                                   ),
-                                  Expanded(
-                                    child: Text(
-                                      raspElementPage.group,
-                                      style: context.theme.textTheme.bodyMedium
-                                          ?.copyWith(color: Colors.grey),
-                                      overflow: TextOverflow.ellipsis,
-                                      textAlign: TextAlign.right,
-                                    ),
+                                ),
+                                const SizedBox(height: 10),
+                                Flexible(
+                                  child: Text(
+                                    raspElementPage.teacher,
+                                    style: context.textTheme.bodyMedium
+                                        ?.copyWith(color: Colors.grey),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                ],
-                              ),
-                            ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        raspElementPage.audience,
+                                        style: context.textTheme.bodyMedium
+                                            ?.copyWith(color: Colors.grey),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        raspElementPage.group,
+                                        style: context.textTheme.bodyMedium
+                                            ?.copyWith(color: Colors.grey),
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       }),

@@ -5,7 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/app/modules/groups.dart';
 import 'package:ikms/app/modules/university.dart';
-import 'package:ikms/app/widgets/setting_links.dart';
+import 'package:ikms/app/widgets/setting_card.dart';
 import 'package:ikms/main.dart';
 import 'package:ikms/theme/theme_controller.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -49,18 +49,16 @@ class _SettingsPageState extends State<SettingsPage> {
               textAlign: TextAlign.center,
             ),
           ),
-          Divider(
-            color: context.theme.dividerColor,
+          const Divider(
             height: 25,
             thickness: 2,
             indent: 10,
             endIndent: 10,
           ),
-          SettingLinks(
+          SettingCard(
             icon: const Icon(Iconsax.moon),
             text: 'theme'.tr,
             switcher: true,
-            info: false,
             value: Get.isDarkMode,
             onChange: (_) {
               if (Get.isDarkMode) {
@@ -72,15 +70,12 @@ class _SettingsPageState extends State<SettingsPage> {
               }
             },
           ),
-          SettingLinks(
+          SettingCard(
             icon: const Icon(Iconsax.buildings),
             text: 'university'.tr,
-            switcher: false,
-            info: false,
-            description: Text(
-              settings.university.value?.name ?? 'no_select'.tr,
-              style: context.theme.textTheme.bodySmall,
-            ),
+            info: true,
+            infoSettings: true,
+            textInfo: settings.university.value?.name ?? 'no_select'.tr,
             onPressed: () async {
               University? selectionData = await Get.to(
                   () => const UniversityPage(),
@@ -95,15 +90,12 @@ class _SettingsPageState extends State<SettingsPage> {
               }
             },
           ),
-          SettingLinks(
+          SettingCard(
             icon: const Icon(Iconsax.people),
             text: 'group'.tr,
-            switcher: false,
-            info: false,
-            description: Text(
-              settings.group.value?.name ?? 'no_select'.tr,
-              style: context.theme.textTheme.bodySmall,
-            ),
+            info: true,
+            infoSettings: true,
+            textInfo: settings.group.value?.name ?? 'no_select'.tr,
             onPressed: settings.university.value != null
                 ? () async {
                     GroupSchedule? selectionData = await Get.to(
@@ -127,13 +119,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   }
                 : () => EasyLoading.showInfo('no_university'.tr),
           ),
-          SettingLinks(
-            icon: Icon(
-              Iconsax.code_circle,
-              color: context.theme.iconTheme.color,
-            ),
+          SettingCard(
+            icon: const Icon(Iconsax.code_circle),
             text: 'version'.tr,
-            switcher: false,
             info: true,
             textInfo: '$appVersion',
           ),

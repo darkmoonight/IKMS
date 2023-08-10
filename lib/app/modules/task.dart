@@ -21,7 +21,7 @@ class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
               padding: const EdgeInsets.only(top: 15),
               child: Text(
                 'todos'.tr,
-                style: context.theme.textTheme.titleLarge,
+                style: context.textTheme.titleLarge,
                 textAlign: TextAlign.center,
               ),
             ),
@@ -37,7 +37,7 @@ class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
                 Tab(text: 'unfulfilled'.tr),
                 Tab(text: 'completed'.tr),
               ],
-              labelStyle: context.theme.textTheme.titleSmall,
+              labelStyle: context.textTheme.titleSmall,
             ),
             const Flexible(
               child: TabBarView(

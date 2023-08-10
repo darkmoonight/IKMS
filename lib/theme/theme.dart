@@ -1,42 +1,119 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 
-final ThemeData baseLigth = ThemeData.light();
-final ThemeData baseDark = ThemeData.dark();
+final ThemeData baseLigth = ThemeData.light(useMaterial3: true);
+final ThemeData baseDark = ThemeData.dark(useMaterial3: true);
 
-class IKMSTheme {
-  static ThemeData get lightTheme {
-    return baseLigth.copyWith(
-      brightness: Brightness.light,
-      useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.blue,
-        brightness: Brightness.light,
-        primaryContainer: const Color.fromARGB(255, 245, 245, 245),
+const Color lightColor = Colors.white;
+const Color darkColor = Color.fromRGBO(30, 30, 30, 1);
+const Color oledColor = Colors.black;
+
+ColorScheme colorSchemeLight = ColorScheme.fromSeed(
+  seedColor: Colors.blue,
+  brightness: Brightness.light,
+);
+ColorScheme colorSchemeDark = ColorScheme.fromSeed(
+  seedColor: Colors.blue,
+  brightness: Brightness.dark,
+);
+
+ThemeData lightTheme(Color? color, ColorScheme? colorScheme) {
+  return baseLigth.copyWith(
+    brightness: Brightness.light,
+    colorScheme: colorScheme
+        ?.copyWith(
+          brightness: Brightness.light,
+          background: color,
+          surface: baseLigth.colorScheme.background,
+        )
+        .harmonized(),
+    textTheme: GoogleFonts.ubuntuTextTheme(baseLigth.textTheme),
+    appBarTheme: AppBarTheme(
+      backgroundColor: color,
+      foregroundColor: baseLigth.colorScheme.onSurface,
+      shadowColor: Colors.transparent,
+      surfaceTintColor: Colors.transparent,
+      elevation: 0,
+    ),
+    primaryColor: color,
+    canvasColor: color,
+    scaffoldBackgroundColor: color,
+    cardTheme: baseLigth.cardTheme.copyWith(
+      color: color,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
       ),
-      scaffoldBackgroundColor: Colors.white,
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Color.fromARGB(255, 240, 240, 240)),
-      unselectedWidgetColor: Colors.grey[350],
-      dividerColor: Colors.black,
-      primaryColor: const Color.fromARGB(255, 245, 245, 245),
-    );
-  }
-
-  static ThemeData get darkTheme {
-    return baseDark.copyWith(
-      brightness: Brightness.dark,
-      useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.blue,
-        brightness: Brightness.dark,
-        primaryContainer: const Color.fromARGB(255, 40, 40, 40),
+      shadowColor: Colors.transparent,
+    ),
+    bottomSheetTheme: baseLigth.bottomSheetTheme.copyWith(
+      backgroundColor: color,
+    ),
+    navigationRailTheme: baseLigth.navigationRailTheme.copyWith(
+      backgroundColor: color,
+    ),
+    navigationBarTheme: baseLigth.navigationBarTheme.copyWith(
+      backgroundColor: color,
+    ),
+    inputDecorationTheme: baseLigth.inputDecorationTheme.copyWith(
+      labelStyle: MaterialStateTextStyle.resolveWith(
+        (Set<MaterialState> states) {
+          return const TextStyle(fontSize: 14);
+        },
       ),
-      scaffoldBackgroundColor: const Color.fromARGB(255, 30, 30, 30),
-      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Color.fromARGB(255, 28, 28, 28)),
-      unselectedWidgetColor: Colors.grey[850],
-      dividerColor: Colors.white,
-      primaryColor: const Color.fromARGB(255, 40, 40, 40),
-    );
-  }
+      border: InputBorder.none,
+      focusedBorder: InputBorder.none,
+      enabledBorder: InputBorder.none,
+    ),
+  );
+}
+
+ThemeData darkTheme(Color? color, ColorScheme? colorScheme) {
+  return baseDark.copyWith(
+    brightness: Brightness.dark,
+    colorScheme: colorScheme
+        ?.copyWith(
+          brightness: Brightness.dark,
+          background: color,
+          surface: baseDark.colorScheme.background,
+        )
+        .harmonized(),
+    textTheme: GoogleFonts.ubuntuTextTheme(baseDark.textTheme),
+    appBarTheme: AppBarTheme(
+      backgroundColor: color,
+      foregroundColor: baseDark.colorScheme.onSurface,
+      shadowColor: Colors.transparent,
+      surfaceTintColor: Colors.transparent,
+      elevation: 0,
+    ),
+    primaryColor: color,
+    canvasColor: color,
+    scaffoldBackgroundColor: color,
+    cardTheme: baseDark.cardTheme.copyWith(
+      color: color,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      shadowColor: Colors.transparent,
+    ),
+    bottomSheetTheme: baseDark.bottomSheetTheme.copyWith(
+      backgroundColor: color,
+    ),
+    navigationRailTheme: baseDark.navigationRailTheme.copyWith(
+      backgroundColor: color,
+    ),
+    navigationBarTheme: baseDark.navigationBarTheme.copyWith(
+      backgroundColor: color,
+    ),
+    inputDecorationTheme: baseDark.inputDecorationTheme.copyWith(
+      labelStyle: MaterialStateTextStyle.resolveWith(
+        (Set<MaterialState> states) {
+          return const TextStyle(fontSize: 14);
+        },
+      ),
+      border: InputBorder.none,
+      focusedBorder: InputBorder.none,
+      enabledBorder: InputBorder.none,
+    ),
+  );
 }

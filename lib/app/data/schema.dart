@@ -24,6 +24,8 @@ class ScheduleData extends SelectionData {
 class Settings {
   Id id = Isar.autoIncrement;
   bool? theme;
+  bool materialColor = false;
+  bool amoledTheme = false;
 
   final university = IsarLink<University>();
   final group = IsarLink<GroupSchedule>();
