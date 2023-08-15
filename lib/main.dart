@@ -1,4 +1,6 @@
+import 'package:connecteo/connecteo.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
@@ -9,7 +11,6 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:flutter_yandex_mobile_ads/yandex.dart';
 import 'package:get/get.dart';
 import 'package:ikms/theme/theme.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ikms/app/data/schema.dart';
@@ -22,9 +23,13 @@ import 'package:timezone/timezone.dart' as tz;
 
 late Isar isar;
 late Settings settings;
+
+bool amoledTheme = false;
+bool materialColor = false;
+
 late University donstu;
 final ValueNotifier<Future<bool>> isDeviceConnectedNotifier =
-    ValueNotifier(InternetConnectionChecker().hasConnection);
+    ValueNotifier(ConnectionChecker().isConnected);
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -37,8 +42,7 @@ void main() async {
       .onConnectivityChanged
       .listen((ConnectivityResult result) async {
     if (result != ConnectivityResult.none) {
-      isDeviceConnectedNotifier.value =
-          InternetConnectionChecker().hasConnection;
+      isDeviceConnectedNotifier.value = ConnectionChecker().isConnected;
     } else {
       isDeviceConnectedNotifier.value = Future(() => false);
     }
@@ -55,23 +59,20 @@ void main() async {
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation(timeZoneName));
   Yandex.initialize();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 Future<void> setOptimalDisplayMode() async {
   final List<DisplayMode> supported = await FlutterDisplayMode.supported;
   final DisplayMode active = await FlutterDisplayMode.active;
-
   final List<DisplayMode> sameResolution = supported
       .where((DisplayMode m) =>
           m.width == active.width && m.height == active.height)
       .toList()
     ..sort((DisplayMode a, DisplayMode b) =>
         b.refreshRate.compareTo(a.refreshRate));
-
   final DisplayMode mostOptimalMode =
       sameResolution.isNotEmpty ? sameResolution.first : active;
-
   await FlutterDisplayMode.setPreferredMode(mostOptimalMode);
 }
 
@@ -99,45 +100,100 @@ Future<void> isarInit() async {
   }
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  static Future<void> updateAppState(
+    BuildContext context, {
+    bool? newAmoledTheme,
+    bool? newMaterialColor,
+    Locale? newLocale,
+  }) async {
+    final state = context.findAncestorStateOfType<_MyAppState>()!;
+
+    if (newAmoledTheme != null) {
+      state.changeAmoledTheme(newAmoledTheme);
+    }
+    if (newMaterialColor != null) {
+      state.changeMarerialTheme(newMaterialColor);
+    }
+  }
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final themeController = Get.put(ThemeController());
+
+  void changeAmoledTheme(bool newAmoledTheme) {
+    setState(() {
+      amoledTheme = newAmoledTheme;
+    });
+  }
+
+  void changeMarerialTheme(bool newMaterialColor) {
+    setState(() {
+      materialColor = newMaterialColor;
+    });
+  }
+
+  @override
+  void initState() {
+    amoledTheme = settings.amoledTheme;
+    materialColor = settings.materialColor;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: GetMaterialApp(
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        translations: Translation(),
-        locale: Get.deviceLocale,
-        fallbackLocale: const Locale('en', 'US'),
-        supportedLocales: const [
-          Locale('en', 'US'),
-          Locale('ru', 'RU'),
-        ],
-        localeResolutionCallback: (locale, supportedLocales) {
-          for (var supportedLocale in supportedLocales) {
-            if (supportedLocale.languageCode == locale?.languageCode) {
-              return supportedLocale;
-            }
-          }
-          return supportedLocales.first;
-        },
-        debugShowCheckedModeBanner: false,
-        themeMode: themeController.theme,
-        theme: lightTheme(lightColor, colorSchemeLight),
-        darkTheme: darkTheme(darkColor, colorSchemeDark),
-        home: (settings.university.value == null) ||
-                (settings.group.value == null)
-            ? const OnBoardingScreen()
-            : const HomePage(),
-        builder: EasyLoading.init(),
-      ),
+      child: DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
+        final lightMaterialTheme =
+            lightTheme(lightColorScheme?.surface, lightColorScheme);
+        final darkMaterialTheme =
+            darkTheme(darkColorScheme?.surface, darkColorScheme);
+        final darkMaterialThemeOled = darkTheme(oledColor, darkColorScheme);
+
+        return GetMaterialApp(
+          theme: materialColor
+              ? lightColorScheme != null
+                  ? lightMaterialTheme
+                  : lightTheme(lightColor, colorSchemeLight)
+              : lightTheme(lightColor, colorSchemeLight),
+          darkTheme: amoledTheme
+              ? materialColor
+                  ? darkColorScheme != null
+                      ? darkMaterialThemeOled
+                      : darkTheme(oledColor, colorSchemeDark)
+                  : darkTheme(oledColor, colorSchemeDark)
+              : materialColor
+                  ? darkColorScheme != null
+                      ? darkMaterialTheme
+                      : darkTheme(darkColor, colorSchemeDark)
+                  : darkTheme(darkColor, colorSchemeDark),
+          themeMode: themeController.theme,
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          translations: Translation(),
+          locale: Get.deviceLocale,
+          fallbackLocale: const Locale('en', 'US'),
+          supportedLocales: const [
+            Locale('en', 'US'),
+            Locale('ru', 'RU'),
+          ],
+          debugShowCheckedModeBanner: false,
+          home: (settings.university.value == null) ||
+                  (settings.group.value == null)
+              ? const OnBoardingScreen()
+              : const HomePage(),
+          builder: EasyLoading.init(),
+        );
+      }),
     );
   }
 }

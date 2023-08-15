@@ -65,14 +65,15 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
       },
       child: SelectionList(
         headerText: 'professors'.tr,
-        hintText: 'fio'.tr,
+        labelText: 'fio'.tr,
         onTextChanged: applyFilter,
         isLoaded: isLoaded,
-        selectionTextStyle: context.textTheme.bodyMedium,
         data: teachers,
         onEntrySelected: (TeacherSchedule selectionData) async {
-          await Get.to(() => RaspProfessorsPage(teacherSchedule: selectionData),
-              transition: Transition.downToUp);
+          await Get.to(
+            () => RaspProfessorsPage(teacherSchedule: selectionData),
+            transition: Transition.downToUp,
+          );
           applyFilter(filter);
         },
       ),

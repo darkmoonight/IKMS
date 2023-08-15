@@ -65,14 +65,15 @@ class _AudiencesPageState extends State<AudiencesPage> {
       },
       child: SelectionList(
         headerText: 'audiences'.tr,
-        hintText: 'number'.tr,
+        labelText: 'number'.tr,
         onTextChanged: applyFilter,
         isLoaded: isLoaded,
-        selectionTextStyle: context.textTheme.bodyMedium,
         data: audiences,
         onEntrySelected: (AudienceSchedule selectionData) async {
-          await Get.to(() => RaspAudiencesPage(audienceSchedule: selectionData),
-              transition: Transition.downToUp);
+          await Get.to(
+            () => RaspAudiencesPage(audienceSchedule: selectionData),
+            transition: Transition.downToUp,
+          );
           reApplyFilter();
         },
       ),

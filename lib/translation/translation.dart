@@ -49,6 +49,9 @@ class Translation extends Translations {
           'version': 'Application version',
           'time': 'Execution time',
           'timeDesc': 'Select the time to complete the task',
+          'materialColor': 'Dynamic colors',
+          'amoledTheme': 'AMOLED-theme',
+          'appearance': 'Appearance',
         },
         'ru_RU': {
           "timeComlete": "Время выполнения",
@@ -96,6 +99,9 @@ class Translation extends Translations {
           'version': 'Версия приложения',
           'time': 'Время выполнения',
           'timeDesc': 'Выберите время для выполнения задачи',
+          'materialColor': 'Динамические цвета',
+          'amoledTheme': 'AMOLED-тема',
+          'appearance': 'Внешний вид',
         }
       };
 }

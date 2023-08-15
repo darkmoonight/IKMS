@@ -68,26 +68,32 @@ class _HomePageState extends State<HomePage> {
         destinations: [
           NavigationDestination(
             icon: const Icon(Iconsax.calendar_1),
+            selectedIcon: const Icon(Iconsax.calendar5),
             label: 'schedule'.tr,
           ),
           NavigationDestination(
             icon: const Icon(Iconsax.user_search),
+            selectedIcon: const Icon(Iconsax.user_search),
             label: 'professors'.tr,
           ),
           NavigationDestination(
             icon: const Icon(Iconsax.people),
+            selectedIcon: const Icon(Iconsax.people5),
             label: 'groups'.tr,
           ),
           NavigationDestination(
             icon: const Icon(Iconsax.buliding),
+            selectedIcon: const Icon(Iconsax.buliding),
             label: 'audiences'.tr,
           ),
           NavigationDestination(
             icon: const Icon(Iconsax.task_square),
+            selectedIcon: const Icon(Iconsax.task_square5),
             label: 'todos'.tr,
           ),
           NavigationDestination(
-            icon: const Icon(Iconsax.setting_2),
+            icon: const Icon(Iconsax.category),
+            selectedIcon: const Icon(Iconsax.category5),
             label: 'settings'.tr,
           ),
         ],

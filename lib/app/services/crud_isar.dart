@@ -7,9 +7,6 @@ import 'package:isar/isar.dart';
 import 'notification.dart';
 
 class IsarServices {
-  final titleEdit = TextEditingController().obs;
-  final timeEdit = TextEditingController().obs;
-
   Stream<List<Todos>> getTodoNoDone() async* {
     yield* isar.todos.filter().doneEqualTo(false).watch(fireImmediately: true);
   }

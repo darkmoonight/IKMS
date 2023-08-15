@@ -18,12 +18,6 @@ class TodosList extends StatefulWidget {
 class _TodosListState extends State<TodosList> {
   final service = IsarServices();
   final locale = Get.locale;
-  Color getColor(Set<MaterialState> states) {
-    <MaterialState>{
-      MaterialState.pressed,
-    };
-    return widget.isDone == true ? Colors.green : Colors.red;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,9 +88,6 @@ class _TodosListState extends State<TodosList> {
                             child: Row(
                               children: [
                                 Checkbox(
-                                  checkColor: Colors.white,
-                                  fillColor: MaterialStateProperty.resolveWith(
-                                      getColor),
                                   value: todosList.done,
                                   shape: const CircleBorder(),
                                   onChanged: (val) {

@@ -69,20 +69,19 @@ class _GroupsPageState extends State<GroupsPage> {
         },
         child: SelectionList(
             headerText: 'groups'.tr,
-            hintText: 'groupsName'.tr,
+            labelText: 'groupsName'.tr,
             onTextChanged: applyFilter,
             isLoaded: isLoaded,
-            selectionTextStyle: widget.isSettings
-                ? context.textTheme.bodyMedium
-                : context.textTheme.bodyMedium,
             onBackPressed: widget.isSettings ? Get.back : null,
             data: groups,
             onEntrySelected: (GroupSchedule selectionData) async {
               if (widget.isSettings || isDialog) {
                 Get.back(result: selectionData);
               } else {
-                await Get.to(() => RaspGroupsPage(groupSchedule: selectionData),
-                    transition: Transition.downToUp);
+                await Get.to(
+                  () => RaspGroupsPage(groupSchedule: selectionData),
+                  transition: Transition.downToUp,
+                );
                 reApplyFilter();
               }
             }),

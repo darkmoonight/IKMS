@@ -43,7 +43,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   width: 300,
                   child: Text(
                     'sched_hint'.tr,
-                    style: context.textTheme.titleMedium,
+                    style: context.textTheme.bodyMedium,
                     textAlign: TextAlign.center,
                   ),
                 ),
