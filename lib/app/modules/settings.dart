@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:ficonsax/ficonsax.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/app/modules/groups.dart';
 import 'package:ikms/app/modules/university.dart';
@@ -51,7 +51,7 @@ class _SettingsPageState extends State<SettingsPage> {
           children: [
             SettingCard(
               icon: const Icon(
-                Iconsax.brush_1,
+                IconsaxOutline.brush_1,
               ),
               text: 'appearance'.tr,
               onPressed: () {
@@ -78,7 +78,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               SettingCard(
                                 elevation: 4,
                                 icon: const Icon(
-                                  Iconsax.moon,
+                                  IconsaxOutline.moon,
                                 ),
                                 text: 'theme'.tr,
                                 switcher: true,
@@ -98,7 +98,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               SettingCard(
                                 elevation: 4,
                                 icon: const Icon(
-                                  Iconsax.mobile,
+                                  IconsaxOutline.mobile,
                                 ),
                                 text: 'amoledTheme'.tr,
                                 switcher: true,
@@ -112,7 +112,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               SettingCard(
                                 elevation: 4,
                                 icon: const Icon(
-                                  Iconsax.colorfilter,
+                                  IconsaxOutline.colorfilter,
                                 ),
                                 text: 'materialColor'.tr,
                                 switcher: true,
@@ -134,7 +134,7 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
             SettingCard(
-              icon: const Icon(Iconsax.buildings),
+              icon: const Icon(IconsaxOutline.buildings),
               text: 'university'.tr,
               info: true,
               infoSettings: true,
@@ -154,7 +154,7 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
             SettingCard(
-              icon: const Icon(Iconsax.people),
+              icon: const Icon(IconsaxOutline.people),
               text: 'group'.tr,
               info: true,
               infoSettings: true,
@@ -183,7 +183,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   : () => EasyLoading.showInfo('no_university'.tr),
             ),
             SettingCard(
-              icon: const Icon(Iconsax.code_circle),
+              icon: const Icon(IconsaxOutline.code_circle),
               text: 'version'.tr,
               info: true,
               textInfo: '$appVersion',

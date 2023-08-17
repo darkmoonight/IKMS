@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_yandex_mobile_ads/banner.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:ficonsax/ficonsax.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:swipe/swipe.dart';
@@ -106,7 +106,7 @@ class _RaspWidgetState extends State<RaspWidget> {
             ? null
             : IconButton(
                 onPressed: widget.onBackPressed,
-                icon: const Icon(Iconsax.arrow_left_1),
+                icon: const Icon(IconsaxOutline.arrow_left_1),
               ),
         title: widget.onBackPressed == null
             ? Text(
@@ -348,6 +348,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                 ),
               ),
             ),
+            const SizedBox(height: 10),
             YandexBanner(
               adUnitId: 'R-M-2101511-1',
               size: YandexBannerSize.flexibleSize(320, 50),

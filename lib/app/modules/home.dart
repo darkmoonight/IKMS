@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:ficonsax/ficonsax.dart';
 import 'package:ikms/app/modules/audiences.dart';
 import 'package:ikms/app/modules/groups.dart';
 import 'package:ikms/app/modules/my_schedule.dart';
@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 );
               },
-              child: const Icon(Iconsax.add),
+              child: const Icon(IconsaxOutline.add),
             )
           : null,
       bottomNavigationBar: NavigationBar(
@@ -67,33 +67,33 @@ class _HomePageState extends State<HomePage> {
         selectedIndex: tabIndex,
         destinations: [
           NavigationDestination(
-            icon: const Icon(Iconsax.calendar_1),
-            selectedIcon: const Icon(Iconsax.calendar5),
+            icon: const Icon(IconsaxOutline.calendar_1),
+            selectedIcon: const Icon(IconsaxBold.calendar),
             label: 'schedule'.tr,
           ),
           NavigationDestination(
-            icon: const Icon(Iconsax.user_search),
-            selectedIcon: const Icon(Iconsax.user_search),
+            icon: const Icon(IconsaxOutline.user_search),
+            selectedIcon: const Icon(IconsaxBold.user_search),
             label: 'professors'.tr,
           ),
           NavigationDestination(
-            icon: const Icon(Iconsax.people),
-            selectedIcon: const Icon(Iconsax.people5),
+            icon: const Icon(IconsaxOutline.people),
+            selectedIcon: const Icon(IconsaxBold.people),
             label: 'groups'.tr,
           ),
           NavigationDestination(
-            icon: const Icon(Iconsax.buliding),
-            selectedIcon: const Icon(Iconsax.buliding),
+            icon: const Icon(IconsaxOutline.buildings_2),
+            selectedIcon: const Icon(IconsaxBold.buildings_2),
             label: 'audiences'.tr,
           ),
           NavigationDestination(
-            icon: const Icon(Iconsax.task_square),
-            selectedIcon: const Icon(Iconsax.task_square5),
+            icon: const Icon(IconsaxOutline.task_square),
+            selectedIcon: const Icon(IconsaxBold.task_square),
             label: 'todos'.tr,
           ),
           NavigationDestination(
-            icon: const Icon(Iconsax.category),
-            selectedIcon: const Icon(Iconsax.category5),
+            icon: const Icon(IconsaxOutline.category),
+            selectedIcon: const Icon(IconsaxBold.category),
             label: 'settings'.tr,
           ),
         ],

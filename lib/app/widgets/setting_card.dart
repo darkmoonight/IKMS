@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:ficonsax/ficonsax.dart';
 
 class SettingCard extends StatelessWidget {
   const SettingCard({
@@ -82,7 +82,7 @@ class SettingCard extends StatelessWidget {
                                 ),
                               ),
                               const Icon(
-                                Iconsax.arrow_right_3,
+                                IconsaxOutline.arrow_right_3,
                                 size: 18,
                               ),
                             ],
@@ -96,7 +96,7 @@ class SettingCard extends StatelessWidget {
                             ),
                           )
                     : const Icon(
-                        Iconsax.arrow_right_3,
+                        IconsaxOutline.arrow_right_3,
                         size: 18,
                       ),
       ),

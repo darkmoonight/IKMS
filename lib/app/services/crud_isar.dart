@@ -1,12 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/main.dart';
+import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
 import 'notification.dart';
 
 class IsarServices {
+  final locale = Get.locale;
+
   Stream<List<Todos>> getTodoNoDone() async* {
     yield* isar.todos.filter().doneEqualTo(false).watch(fireImmediately: true);
   }
@@ -16,31 +18,35 @@ class IsarServices {
   }
 
   Future<void> addTodo(
-    TextEditingController titleEdit,
-    Schedule disciplineEdit,
-    TextEditingController timeEdit,
+    String title,
+    Schedule discipline,
+    String time,
   ) async {
+    DateTime? date;
+    if (time.isNotEmpty) {
+      date = DateFormat.yMMMEd(locale?.languageCode).add_Hm().parse(time);
+    }
+
     final todosCreate = Todos(
-      name: titleEdit.text,
-      discipline: disciplineEdit.discipline,
-      todoCompletedTime: DateTime.tryParse(timeEdit.text),
+      name: title,
+      discipline: discipline.discipline,
+      todoCompletedTime: date,
     );
 
     final todosCollection = isar.todos;
     List<Todos> getTodos;
 
-    getTodos =
-        await todosCollection.filter().nameEqualTo(titleEdit.text).findAll();
+    getTodos = await todosCollection.filter().nameEqualTo(title).findAll();
 
     if (getTodos.isEmpty) {
       await isar.writeTxn(() async {
         await isar.todos.put(todosCreate);
-        if (timeEdit.text.isNotEmpty) {
+        if (time.isNotEmpty) {
           NotificationShow().showNotification(
             todosCreate.id,
             todosCreate.name,
             todosCreate.discipline,
-            DateTime.tryParse(timeEdit.text),
+            date,
           );
         }
       });
@@ -58,23 +64,28 @@ class IsarServices {
 
   Future<void> updateTodo(
     Todos todo,
-    TextEditingController titleEdit,
-    Schedule disciplineEdit,
-    TextEditingController timeEdit,
+    String title,
+    Schedule discipline,
+    String time,
   ) async {
+    DateTime? date;
+    if (time.isNotEmpty) {
+      date = DateFormat.yMMMEd(locale?.languageCode).add_Hm().parse(time);
+    }
+
     await isar.writeTxn(() async {
-      todo.name = titleEdit.text;
-      todo.discipline = disciplineEdit.discipline;
-      todo.todoCompletedTime = DateTime.tryParse(timeEdit.text);
+      todo.name = title;
+      todo.discipline = discipline.discipline;
+      todo.todoCompletedTime = date;
       await isar.todos.put(todo);
 
-      if (timeEdit.text.isNotEmpty) {
+      if (time.isNotEmpty) {
         await flutterLocalNotificationsPlugin.cancel(todo.id);
         NotificationShow().showNotification(
           todo.id,
           todo.name,
           todo.discipline,
-          DateTime.tryParse(timeEdit.text),
+          date,
         );
       } else {
         await flutterLocalNotificationsPlugin.cancel(todo.id);

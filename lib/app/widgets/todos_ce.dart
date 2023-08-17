@@ -3,12 +3,13 @@ import 'package:bottom_picker/resources/arrays.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:ficonsax/ficonsax.dart';
 import 'package:ikms/app/api/donstu/caching.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/app/services/crud_isar.dart';
 import 'package:ikms/app/widgets/text_form.dart';
 import 'package:ikms/main.dart';
+import 'package:intl/intl.dart';
 
 class TodosCe extends StatefulWidget {
   const TodosCe({
@@ -88,45 +89,95 @@ class _TodosCeState extends State<TodosCe> {
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 10, left: 5, right: 10),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Flexible(
-                      child: Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            icon: const Icon(
-                              Icons.close,
-                            ),
-                          ),
-                          Text(
-                            widget.text,
-                            style: context.textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                    IconButton(
+                      onPressed: () {
+                        titleEdit.clear();
+                        timeEdit.clear();
+                        Get.back();
+                      },
+                      icon: const Icon(
+                        IconsaxOutline.close_square,
+                        size: 20,
                       ),
                     ),
+                    Text(
+                      widget.text,
+                      style: context.textTheme.titleLarge?.copyWith(
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                     widget.todo != null
-                        ? IconButton(
+                        ? Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  service.deleteTodo(widget.todo!);
+                                  Get.back();
+                                },
+                                icon: const Icon(
+                                  IconsaxOutline.trash,
+                                  size: 20,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  if (formKey.currentState!.validate()) {
+                                    textTrim(titleEdit);
+                                    widget.edit == false
+                                        ? service.addTodo(
+                                            titleEdit.text,
+                                            selectedDiscipline!,
+                                            timeEdit.text,
+                                          )
+                                        : service.updateTodo(
+                                            widget.todo!,
+                                            titleEdit.text,
+                                            selectedDiscipline!,
+                                            timeEdit.text,
+                                          );
+                                    Get.back();
+                                  }
+                                },
+                                icon: const Icon(
+                                  IconsaxOutline.tick_square,
+                                  size: 20,
+                                ),
+                              ),
+                            ],
+                          )
+                        : IconButton(
                             onPressed: () {
-                              service.deleteTodo(widget.todo!);
-                              Get.back();
+                              if (formKey.currentState!.validate()) {
+                                textTrim(titleEdit);
+                                widget.edit == false
+                                    ? service.addTodo(
+                                        titleEdit.text,
+                                        selectedDiscipline!,
+                                        timeEdit.text,
+                                      )
+                                    : service.updateTodo(
+                                        widget.todo!,
+                                        titleEdit.text,
+                                        selectedDiscipline!,
+                                        timeEdit.text,
+                                      );
+                                Get.back();
+                              }
                             },
                             icon: const Icon(
-                              Iconsax.trash,
-                              color: Colors.red,
+                              IconsaxOutline.tick_square,
+                              size: 20,
                             ),
-                          )
-                        : Container(),
+                          ),
                   ],
                 ),
               ),
@@ -136,7 +187,7 @@ class _TodosCeState extends State<TodosCe> {
                 controller: titleEdit,
                 labelText: 'name'.tr,
                 type: TextInputType.text,
-                icon: const Icon(Iconsax.edit_2),
+                icon: const Icon(IconsaxOutline.edit_2),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'validateName'.tr;
@@ -154,12 +205,18 @@ class _TodosCeState extends State<TodosCe> {
                     label: Text(
                       'discipline'.tr,
                     ),
-                    prefixIcon: const Icon(Iconsax.book),
+                    prefixIcon: const Icon(IconsaxOutline.book),
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
                   ),
-                  icon: const Icon(Iconsax.arrow_down_1),
+                  icon: const Padding(
+                    padding: EdgeInsets.only(right: 15, bottom: 10),
+                    child: Icon(
+                      IconsaxOutline.arrow_down_1,
+                      size: 18,
+                    ),
+                  ),
                   value: selectedDiscipline,
                   items: disciplineList?.map((e) {
                     return DropdownMenuItem(
@@ -184,89 +241,54 @@ class _TodosCeState extends State<TodosCe> {
                   },
                 ),
               ),
-              Row(
-                children: [
-                  Flexible(
-                    flex: 5,
-                    child: MyTextForm(
-                      elevation: 4,
-                      margin:
-                          const EdgeInsets.only(left: 10, right: 10, top: 10),
-                      readOnly: true,
-                      controller: timeEdit,
-                      labelText: 'timeComlete'.tr,
-                      type: TextInputType.datetime,
-                      icon: const Icon(Iconsax.clock),
-                      iconButton: IconButton(
+              MyTextForm(
+                elevation: 4,
+                margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                onChanged: (value) => setState(() {}),
+                readOnly: true,
+                controller: timeEdit,
+                labelText: 'timeComlete'.tr,
+                type: TextInputType.datetime,
+                icon: const Icon(IconsaxOutline.clock),
+                iconButton: timeEdit.text.isNotEmpty
+                    ? IconButton(
                         icon: const Icon(
                           Icons.close,
                           size: 18,
                         ),
                         onPressed: () {
                           timeEdit.clear();
+                          setState(() {});
                         },
-                      ),
-                      onTap: () {
-                        BottomPicker.dateTime(
-                          title: 'time'.tr,
-                          description: 'timeDesc'.tr,
-                          titleStyle: context.textTheme.titleMedium!,
-                          descriptionStyle: context.textTheme.bodyLarge!
-                              .copyWith(color: Colors.grey),
-                          pickerTextStyle: context.textTheme.bodyLarge!,
-                          iconColor: context.theme.iconTheme.color!,
-                          closeIconColor: Colors.red,
-                          backgroundColor:
-                              context.theme.scaffoldBackgroundColor,
-                          onSubmit: (date) {
-                            timeEdit.text = date.toString();
-                          },
-                          bottomPickerTheme: BottomPickerTheme.plumPlate,
-                          minDateTime: DateTime.now(),
-                          maxDateTime:
-                              DateTime.now().add(const Duration(days: 1000)),
-                          initialDateTime: DateTime.now(),
-                          use24hFormat: true,
-                          dateOrder: DatePickerDateOrder.dmy,
-                        ).show(context);
-                      },
-                    ),
-                  ),
-                  Flexible(
-                    child: Container(
-                      margin:
-                          const EdgeInsets.only(right: 10, bottom: 5, top: 10),
-                      decoration: const BoxDecoration(
-                          color: Colors.blueAccent,
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: IconButton(
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            textTrim(titleEdit);
-                            widget.edit == false
-                                ? service.addTodo(
-                                    titleEdit,
-                                    selectedDiscipline!,
-                                    timeEdit,
-                                  )
-                                : service.updateTodo(
-                                    widget.todo!,
-                                    titleEdit,
-                                    selectedDiscipline!,
-                                    timeEdit,
-                                  );
-                            Get.back();
-                          }
-                        },
-                        icon: const Icon(
-                          Iconsax.send_1,
-                          color: Colors.white,
-                          size: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                      )
+                    : null,
+                onTap: () {
+                  BottomPicker.dateTime(
+                    title: 'time'.tr,
+                    description: 'timeDesc'.tr,
+                    titleStyle: context.textTheme.titleMedium!,
+                    descriptionStyle: context.textTheme.bodyLarge!
+                        .copyWith(color: Colors.grey),
+                    pickerTextStyle: context.textTheme.bodyLarge!,
+                    iconColor: context.theme.iconTheme.color!,
+                    closeIconColor: Colors.red,
+                    backgroundColor: context.theme.scaffoldBackgroundColor,
+                    onSubmit: (date) {
+                      String formattedDate =
+                          DateFormat.yMMMEd(locale?.languageCode)
+                              .add_Hm()
+                              .format(date);
+                      timeEdit.text = formattedDate;
+                      setState(() {});
+                    },
+                    bottomPickerTheme: BottomPickerTheme.plumPlate,
+                    minDateTime: DateTime.now(),
+                    maxDateTime: DateTime.now().add(const Duration(days: 1000)),
+                    initialDateTime: DateTime.now(),
+                    use24hFormat: true,
+                    dateOrder: DatePickerDateOrder.dmy,
+                  ).show(context);
+                },
               ),
               const SizedBox(height: 15),
             ],
