@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_yandex_mobile_ads/banner.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:ficonsax/ficonsax.dart';
@@ -7,6 +6,7 @@ import 'package:ikms/app/data/schema.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:swipe/swipe.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:yandex_mobileads/mobile_ads.dart';
 
 class RaspWidget extends StatefulWidget {
   final bool isLoaded;
@@ -30,18 +30,25 @@ class _RaspWidgetState extends State<RaspWidget> {
   late List<Schedule> raspElementsFiltered;
   final locale = Get.locale;
 
+  final banner = BannerAd(
+    adUnitId: 'R-M-2101511-1',
+    adSize: const AdSize.inline(width: 320, maxHeight: 50),
+    adRequest: const AdRequest(),
+    onAdLoaded: () {},
+    onAdFailedToLoad: (error) {},
+  );
+
   DateTime _selectedDay = normalizeDate(DateTime.now());
 
   DateTime get selectedDay =>
       _selectedDay.isAfter(lastDay) ? lastDay : _selectedDay;
   CalendarFormat calendarFormat = CalendarFormat.week;
 
-  DateTime get firstDay =>
-      // widget.raspElements.value.isNotEmpty
-      //     ? widget.raspElements.value
-      //         .reduce((a, b) => a.date.isBefore(b.date) ? a : b)
-      //         .date:
-      DateTime.now();
+  DateTime get firstDay => widget.raspElements.value.isNotEmpty
+      ? widget.raspElements.value
+          .reduce((a, b) => a.date.isBefore(b.date) ? a : b)
+          .date
+      : DateTime.now();
 
   DateTime get lastDay => widget.raspElements.value.isNotEmpty
       ? widget.raspElements.value
@@ -301,7 +308,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                                   Text(
                                     raspElementPage.discipline,
                                     style:
-                                        context.textTheme.labelLarge?.copyWith(
+                                        context.textTheme.titleLarge?.copyWith(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 16,
                                     ),
@@ -349,10 +356,7 @@ class _RaspWidgetState extends State<RaspWidget> {
               ),
             ),
             const SizedBox(height: 10),
-            YandexBanner(
-              adUnitId: 'R-M-2101511-1',
-              size: YandexBannerSize.flexibleSize(320, 50),
-            )
+            AdWidget(bannerAd: banner),
           ],
         ),
       ),

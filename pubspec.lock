@@ -413,14 +413,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_yandex_mobile_ads:
-    dependency: "direct main"
-    description:
-      name: flutter_yandex_mobile_ads
-      sha256: f6e1a6e55102cc4cceeb25b4b782b088d3812ec54c9b72548e7a08d80df95f10
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.12"
   frontend_server_client:
     dependency: transitive
     description:
@@ -986,6 +978,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+  yandex_mobileads:
+    dependency: "direct main"
+    description:
+      name: yandex_mobileads
+      sha256: afb72420e3b1fb4ae46039ff44cc62b3243fc7acf2d7817712045c2a4e2570d9
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.0"
 sdks:
   dart: ">=3.0.6 <4.0.0"
   flutter: ">=3.7.0"

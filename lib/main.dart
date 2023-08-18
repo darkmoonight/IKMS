@@ -8,7 +8,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:flutter_yandex_mobile_ads/yandex.dart';
 import 'package:get/get.dart';
 import 'package:ikms/theme/theme.dart';
 import 'package:isar/isar.dart';
@@ -20,6 +19,7 @@ import 'package:ikms/translation/translation.dart';
 import 'package:ikms/theme/theme_controller.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:yandex_mobileads/mobile_ads.dart';
 
 late Isar isar;
 late Settings settings;
@@ -58,7 +58,7 @@ void main() async {
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation(timeZoneName));
-  Yandex.initialize();
+  MobileAds.initialize();
   runApp(const MyApp());
 }
 

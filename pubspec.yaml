@@ -29,13 +29,13 @@ dependencies:
   dynamic_color: ^1.6.6
   table_calendar: ^3.0.9
   dio_smart_retry: ^5.0.0
+  yandex_mobileads: ^1.4.0
   flutter_timezone: ^1.0.7
   connectivity_plus: ^4.0.2
   package_info_plus: ^4.1.0
   isar_flutter_libs: ^3.1.0+1
   flutter_easyloading: ^3.0.5
   flutter_displaymode: ^0.6.0
-  flutter_yandex_mobile_ads: ^0.0.12
   flutter_local_notifications: ^15.1.0+1
 
 dev_dependencies:

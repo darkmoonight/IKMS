@@ -61,42 +61,45 @@ class _HomePageState extends State<HomePage> {
               child: const Icon(IconsaxOutline.add),
             )
           : null,
-      bottomNavigationBar: NavigationBar(
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-        onDestinationSelected: (int index) => changeTabIndex(index),
-        selectedIndex: tabIndex,
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(IconsaxOutline.calendar_1),
-            selectedIcon: const Icon(IconsaxBold.calendar),
-            label: 'schedule'.tr,
-          ),
-          NavigationDestination(
-            icon: const Icon(IconsaxOutline.user_search),
-            selectedIcon: const Icon(IconsaxBold.user_search),
-            label: 'professors'.tr,
-          ),
-          NavigationDestination(
-            icon: const Icon(IconsaxOutline.people),
-            selectedIcon: const Icon(IconsaxBold.people),
-            label: 'groups'.tr,
-          ),
-          NavigationDestination(
-            icon: const Icon(IconsaxOutline.buildings_2),
-            selectedIcon: const Icon(IconsaxBold.buildings_2),
-            label: 'audiences'.tr,
-          ),
-          NavigationDestination(
-            icon: const Icon(IconsaxOutline.task_square),
-            selectedIcon: const Icon(IconsaxBold.task_square),
-            label: 'todos'.tr,
-          ),
-          NavigationDestination(
-            icon: const Icon(IconsaxOutline.category),
-            selectedIcon: const Icon(IconsaxBold.category),
-            label: 'settings'.tr,
-          ),
-        ],
+      bottomNavigationBar: SizedBox(
+        height: 60,
+        child: NavigationBar(
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+          onDestinationSelected: (int index) => changeTabIndex(index),
+          selectedIndex: tabIndex,
+          destinations: [
+            NavigationDestination(
+              icon: const Icon(IconsaxOutline.calendar_1),
+              selectedIcon: const Icon(IconsaxBold.calendar),
+              label: 'schedule'.tr,
+            ),
+            NavigationDestination(
+              icon: const Icon(IconsaxOutline.user_search),
+              selectedIcon: const Icon(IconsaxBold.user_search),
+              label: 'professors'.tr,
+            ),
+            NavigationDestination(
+              icon: const Icon(IconsaxOutline.people),
+              selectedIcon: const Icon(IconsaxBold.people),
+              label: 'groups'.tr,
+            ),
+            NavigationDestination(
+              icon: const Icon(IconsaxOutline.buildings_2),
+              selectedIcon: const Icon(IconsaxBold.buildings_2),
+              label: 'audiences'.tr,
+            ),
+            NavigationDestination(
+              icon: const Icon(IconsaxOutline.task_square),
+              selectedIcon: const Icon(IconsaxBold.task_square),
+              label: 'todos'.tr,
+            ),
+            NavigationDestination(
+              icon: const Icon(IconsaxOutline.category),
+              selectedIcon: const Icon(IconsaxBold.category),
+              label: 'settings'.tr,
+            ),
+          ],
+        ),
       ),
     );
   }
