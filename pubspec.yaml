@@ -29,7 +29,7 @@ dependencies:
   dynamic_color: ^1.6.6
   table_calendar: ^3.0.9
   dio_smart_retry: ^5.0.0
-  yandex_mobileads: ^1.4.0
+  yandex_mobileads: ^6.0.0
   flutter_timezone: ^1.0.7
   connectivity_plus: ^4.0.2
   package_info_plus: ^4.1.0

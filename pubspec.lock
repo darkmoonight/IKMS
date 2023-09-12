@@ -990,10 +990,10 @@ packages:
     dependency: "direct main"
     description:
       name: yandex_mobileads
-      sha256: afb72420e3b1fb4ae46039ff44cc62b3243fc7acf2d7817712045c2a4e2570d9
+      sha256: "76635e5be4a0a502dca2a18dc25ed2318e91f51f1793f591f7a0743a1519425e"
       url: "https://pub.dev"
     source: hosted
-    version: "1.4.0"
+    version: "6.0.0"
 sdks:
   dart: ">=3.1.0 <4.0.0"
   flutter: ">=3.13.0"

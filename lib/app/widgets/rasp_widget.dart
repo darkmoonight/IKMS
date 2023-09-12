@@ -32,7 +32,7 @@ class _RaspWidgetState extends State<RaspWidget> {
 
   final banner = BannerAd(
     adUnitId: 'R-M-2101511-1',
-    adSize: const AdSize.inline(width: 320, maxHeight: 50),
+    adSize: const BannerAdSize.inline(width: 320, maxHeight: 50),
     adRequest: const AdRequest(),
     onAdLoaded: () {},
     onAdFailedToLoad: (error) {},
