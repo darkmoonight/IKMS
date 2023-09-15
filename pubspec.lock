@@ -21,10 +21,10 @@ packages:
     dependency: transitive
     description:
       name: archive
-      sha256: "49b1fad315e57ab0bbc15bcbb874e83116a1d78f77ebd500a4af6c9407d6b28e"
+      sha256: e0902a06f0e00414e4e3438a084580161279f137aeb862274710f29ec10cf01e
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.8"
+    version: "3.3.9"
   args:
     dependency: transitive
     description:
@@ -53,10 +53,10 @@ packages:
     dependency: "direct main"
     description:
       name: bottom_picker
-      sha256: "7538fa05755304fdad59236369e08c1485bf29e5aa8eda592e25f485b7f1665a"
+      sha256: "4a5bc9a0318cf2becb42e12765293b9aac958aa29512e8d63857def13aad33f0"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.4"
+    version: "2.1.0"
   build:
     dependency: transitive
     description:
@@ -995,5 +995,5 @@ packages:
     source: hosted
     version: "6.0.0"
 sdks:
-  dart: ">=3.1.0 <4.0.0"
+  dart: ">=3.1.2 <4.0.0"
   flutter: ">=3.13.0"

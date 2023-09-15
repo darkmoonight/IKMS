@@ -3,10 +3,10 @@ description: Schedule of classes.
 
 publish_to: "none"
 
-version: 1.1.1+12
+version: 1.1.2+13
 
 environment:
-  sdk: ">=3.1.0 <4.0.0"
+  sdk: ">=3.1.2 <4.0.0"
 
 dependencies:
   flutter:
@@ -24,7 +24,7 @@ dependencies:
   connecteo: ^1.1.1
   google_fonts: ^5.1.0
   grouped_list: ^5.1.2
-  bottom_picker: ^2.0.4
+  bottom_picker: ^2.1.0
   path_provider: ^2.1.1
   dynamic_color: ^1.6.6
   table_calendar: ^3.0.9

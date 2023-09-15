@@ -70,6 +70,7 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    namespace 'io.github.DarkMooNight.IKMS'
 }
 
 flutter {
