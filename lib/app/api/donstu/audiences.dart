@@ -18,15 +18,15 @@ class AudiencesData {
 
   factory AudiencesData.fromJson(Map<String, dynamic> json) => AudiencesData(
         data: List<Audiences>.from(
-            json["data"].map((x) => Audiences.fromJson(x))),
-        state: json["state"],
-        msg: json["msg"],
+            json['data'].map((x) => Audiences.fromJson(x))),
+        state: json['state'],
+        msg: json['msg'],
       );
 
   Map<String, dynamic> toJson() => {
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
-        "state": state,
-        "msg": msg,
+        'data': List<dynamic>.from(data.map((x) => x.toJson())),
+        'state': state,
+        'msg': msg,
       };
 }
 
@@ -40,12 +40,12 @@ class Audiences {
   int id;
 
   factory Audiences.fromJson(Map<String, dynamic> json) => Audiences(
-        name: json["name"] ?? '',
-        id: json["id"],
+        name: json['name'] ?? '',
+        id: json['id'],
       );
 
   Map<String, dynamic> toJson() => {
-        "name": name,
-        "id": id,
+        'name': name,
+        'id': id,
       };
 }

@@ -16,15 +16,15 @@ class Rasp {
   String msg;
 
   factory Rasp.fromJson(Map<String, dynamic> json) => Rasp(
-        data: DataRasp.fromJson(json["data"]),
-        state: json["state"],
-        msg: json["msg"],
+        data: DataRasp.fromJson(json['data']),
+        state: json['state'],
+        msg: json['msg'],
       );
 
   Map<String, dynamic> toJson() => {
-        "data": data.toJson(),
-        "state": state,
-        "msg": msg,
+        'data': data.toJson(),
+        'state': state,
+        'msg': msg,
       };
 }
 
@@ -40,16 +40,16 @@ class DataRasp {
   Info info;
 
   factory DataRasp.fromJson(Map<String, dynamic> json) => DataRasp(
-        isCyclicalSchedule: json["isCyclicalSchedule"],
+        isCyclicalSchedule: json['isCyclicalSchedule'],
         rasp: List<RaspElement>.from(
-            json["rasp"]?.map((x) => RaspElement.fromJson(x)) ?? []),
-        info: Info.fromJson(json["info"] ?? {}),
+            json['rasp']?.map((x) => RaspElement.fromJson(x)) ?? []),
+        info: Info.fromJson(json['info'] ?? {}),
       );
 
   Map<String, dynamic> toJson() => {
-        "isCyclicalSchedule": isCyclicalSchedule,
-        "rasp": List<dynamic>.from(rasp.map((x) => x.toJson())),
-        "info": info.toJson(),
+        'isCyclicalSchedule': isCyclicalSchedule,
+        'rasp': List<dynamic>.from(rasp.map((x) => x.toJson())),
+        'info': info.toJson(),
       };
 }
 
@@ -85,36 +85,36 @@ class Info {
   String dateUploadingRasp;
 
   factory Info.fromJson(Map<String, dynamic> json) => Info(
-        group: Group.fromJson(json["group"] ?? {}),
-        prepod: Aud.fromJson(json["prepod"] ?? {}),
-        aud: Aud.fromJson(json["aud"] ?? {}),
-        year: json["year"] ?? '',
-        curWeekNumber: json["curWeekNumber"],
-        curNumNed: json["curNumNed"],
-        selectedNumNed: json["selectedNumNed"],
-        curSem: json["curSem"],
+        group: Group.fromJson(json['group'] ?? {}),
+        prepod: Aud.fromJson(json['prepod'] ?? {}),
+        aud: Aud.fromJson(json['aud'] ?? {}),
+        year: json['year'] ?? '',
+        curWeekNumber: json['curWeekNumber'],
+        curNumNed: json['curNumNed'],
+        selectedNumNed: json['selectedNumNed'],
+        curSem: json['curSem'],
         typesWeek: List<TypesWeek>.from(
-            json["typesWeek"]?.map((x) => TypesWeek.fromJson(x)) ?? []),
-        fixedInCache: json["fixedInCache"],
-        date: json["date"] ?? '',
-        lastDate: json["lastDate"] ?? '',
-        dateUploadingRasp: json["dateUploadingRasp"] ?? '',
+            json['typesWeek']?.map((x) => TypesWeek.fromJson(x)) ?? []),
+        fixedInCache: json['fixedInCache'],
+        date: json['date'] ?? '',
+        lastDate: json['lastDate'] ?? '',
+        dateUploadingRasp: json['dateUploadingRasp'] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
-        "group": group.toJson(),
-        "prepod": prepod.toJson(),
-        "aud": aud.toJson(),
-        "year": year,
-        "curWeekNumber": curWeekNumber,
-        "curNumNed": curNumNed,
-        "selectedNumNed": selectedNumNed,
-        "curSem": curSem,
-        "typesWeek": List<dynamic>.from(typesWeek.map((x) => x.toJson())),
-        "fixedInCache": fixedInCache,
-        "date": date,
-        "lastDate": lastDate,
-        "dateUploadingRasp": dateUploadingRasp,
+        'group': group.toJson(),
+        'prepod': prepod.toJson(),
+        'aud': aud.toJson(),
+        'year': year,
+        'curWeekNumber': curWeekNumber,
+        'curNumNed': curNumNed,
+        'selectedNumNed': selectedNumNed,
+        'curSem': curSem,
+        'typesWeek': List<dynamic>.from(typesWeek.map((x) => x.toJson())),
+        'fixedInCache': fixedInCache,
+        'date': date,
+        'lastDate': lastDate,
+        'dateUploadingRasp': dateUploadingRasp,
       };
 }
 
@@ -126,11 +126,11 @@ class Aud {
   String name;
 
   factory Aud.fromJson(Map<String, dynamic> json) => Aud(
-        name: json["name"] ?? '',
+        name: json['name'] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
-        "name": name,
+        'name': name,
       };
 }
 
@@ -144,13 +144,13 @@ class Group {
   int? groupId;
 
   factory Group.fromJson(Map<String, dynamic> json) => Group(
-        name: json["name"] ?? 'Hi',
-        groupId: json["groupID"],
+        name: json['name'] ?? 'Hi',
+        groupId: json['groupID'],
       );
 
   Map<String, dynamic> toJson() => {
-        "name": name,
-        "groupID": groupId,
+        'name': name,
+        'groupID': groupId,
       };
 }
 
@@ -166,15 +166,15 @@ class TypesWeek {
   String shortName;
 
   factory TypesWeek.fromJson(Map<String, dynamic> json) => TypesWeek(
-        typeWeekId: json["typeWeekID"],
-        name: json["name"] ?? '',
-        shortName: json["shortName"] ?? '',
+        typeWeekId: json['typeWeekID'],
+        name: json['name'] ?? '',
+        shortName: json['shortName'] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
-        "typeWeekID": typeWeekId,
-        "name": name,
-        "shortName": shortName,
+        'typeWeekID': typeWeekId,
+        'name': name,
+        'shortName': shortName,
       };
 }
 
@@ -256,80 +256,80 @@ class RaspElement {
   List<int> codeStroke;
 
   factory RaspElement.fromJson(Map<String, dynamic> json) => RaspElement(
-        code: json["код"],
-        date: json["дата"] ?? '',
-        beginning: json["начало"] ?? '',
-        datanachala: json["датаНачала"] ?? '',
-        endDate: json["датаОкончания"] ?? '',
-        end: json["конец"] ?? '',
-        weekday: json["деньНедели"],
-        weekDay: json["день_недели"] ?? '',
-        mail: json["почта"] ?? '',
-        day: json["день"] ?? '',
-        codeSemester: json["код_Семестра"],
-        typeWeeks: json["типНедели"],
-        numberGroups: json["номерПодгруппы"],
-        discipline: json["дисциплина"] ?? '',
-        teacher: json["преподаватель"] ?? '',
-        position: json["должность"] ?? '',
-        audience: json["аудитория"] ?? '',
-        academicYear: json["учебныйГод"] ?? '',
-        group: json["группа"] ?? '',
-        custom1: json["custom1"] ?? '',
-        clock: json["часы"] ?? '',
-        nedelyanachala: json["неделяНачала"],
-        nedelyaokonchaniya: json["неделяОкончания"],
-        replacement: json["замена"],
-        codePreducer: json["кодПреподавателя"],
-        codeGroup: json["кодГруппы"],
-        fiopreducer: json["фиоПреподавателя"] ?? '',
-        userCode: json["кодПользователя"],
-        writingElement: json["элементЦиклРасписания"],
-        topic: json["тема"] ?? '',
-        numberOfJobs: json["номерЗанятия"],
-        link: json["ссылка"],
-        creatingWebinar: json["созданиеВебинара"],
-        codVebinara: json["кодВебинара"],
-        webIsRestarted: json["вебинарЗапущен"],
-        codeStroke: List<int>.from(json["кодыСтрок"].map((x) => x)),
+        code: json['код'],
+        date: json['дата'] ?? '',
+        beginning: json['начало'] ?? '',
+        datanachala: json['датаНачала'] ?? '',
+        endDate: json['датаОкончания'] ?? '',
+        end: json['конец'] ?? '',
+        weekday: json['деньНедели'],
+        weekDay: json['день_недели'] ?? '',
+        mail: json['почта'] ?? '',
+        day: json['день'] ?? '',
+        codeSemester: json['код_Семестра'],
+        typeWeeks: json['типНедели'],
+        numberGroups: json['номерПодгруппы'],
+        discipline: json['дисциплина'] ?? '',
+        teacher: json['преподаватель'] ?? '',
+        position: json['должность'] ?? '',
+        audience: json['аудитория'] ?? '',
+        academicYear: json['учебныйГод'] ?? '',
+        group: json['группа'] ?? '',
+        custom1: json['custom1'] ?? '',
+        clock: json['часы'] ?? '',
+        nedelyanachala: json['неделяНачала'],
+        nedelyaokonchaniya: json['неделяОкончания'],
+        replacement: json['замена'],
+        codePreducer: json['кодПреподавателя'],
+        codeGroup: json['кодГруппы'],
+        fiopreducer: json['фиоПреподавателя'] ?? '',
+        userCode: json['кодПользователя'],
+        writingElement: json['элементЦиклРасписания'],
+        topic: json['тема'] ?? '',
+        numberOfJobs: json['номерЗанятия'],
+        link: json['ссылка'],
+        creatingWebinar: json['созданиеВебинара'],
+        codVebinara: json['кодВебинара'],
+        webIsRestarted: json['вебинарЗапущен'],
+        codeStroke: List<int>.from(json['кодыСтрок'].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
-        "код": code,
-        "дата": date,
-        "начало": beginning,
-        "датаНачала": datanachala,
-        "датаОкончания": endDate,
-        "конец": end,
-        "деньНедели": weekday,
-        "день_недели": weekDay,
-        "почта": mail,
-        "день": day,
-        "код_Семестра": codeSemester,
-        "типНедели": typeWeeks,
-        "номерПодгруппы": numberGroups,
-        "дисциплина": discipline,
-        "преподаватель": teacher,
-        "должность": position,
-        "аудитория": audience,
-        "учебныйГод": academicYear,
-        "группа": group,
-        "custom1": custom1,
-        "часы": clock,
-        "неделяНачала": nedelyanachala,
-        "неделяОкончания": nedelyaokonchaniya,
-        "замена": replacement,
-        "кодПреподавателя": codePreducer,
-        "кодГруппы": codeGroup,
-        "фиоПреподавателя": fiopreducer,
-        "кодПользователя": userCode,
-        "элементЦиклРасписания": writingElement,
-        "тема": topic,
-        "номерЗанятия": numberOfJobs,
-        "ссылка": link,
-        "созданиеВебинара": creatingWebinar,
-        "кодВебинара": codVebinara,
-        "вебинарЗапущен": webIsRestarted,
-        "кодыСтрок": List<dynamic>.from(codeStroke.map((x) => x)),
+        'код': code,
+        'дата': date,
+        'начало': beginning,
+        'датаНачала': datanachala,
+        'датаОкончания': endDate,
+        'конец': end,
+        'деньНедели': weekday,
+        'день_недели': weekDay,
+        'почта': mail,
+        'день': day,
+        'код_Семестра': codeSemester,
+        'типНедели': typeWeeks,
+        'номерПодгруппы': numberGroups,
+        'дисциплина': discipline,
+        'преподаватель': teacher,
+        'должность': position,
+        'аудитория': audience,
+        'учебныйГод': academicYear,
+        'группа': group,
+        'custom1': custom1,
+        'часы': clock,
+        'неделяНачала': nedelyanachala,
+        'неделяОкончания': nedelyaokonchaniya,
+        'замена': replacement,
+        'кодПреподавателя': codePreducer,
+        'кодГруппы': codeGroup,
+        'фиоПреподавателя': fiopreducer,
+        'кодПользователя': userCode,
+        'элементЦиклРасписания': writingElement,
+        'тема': topic,
+        'номерЗанятия': numberOfJobs,
+        'ссылка': link,
+        'созданиеВебинара': creatingWebinar,
+        'кодВебинара': codVebinara,
+        'вебинарЗапущен': webIsRestarted,
+        'кодыСтрок': List<dynamic>.from(codeStroke.map((x) => x)),
       };
 }

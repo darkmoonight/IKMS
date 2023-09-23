@@ -38,8 +38,8 @@ class _TodosActionState extends State<TodosAction> {
 
   textTrim(value) {
     value.text = value.text.trim();
-    while (value.text.contains("  ")) {
-      value.text = value.text.replaceAll("  ", " ");
+    while (value.text.contains('  ')) {
+      value.text = value.text.replaceAll('  ', ' ');
     }
   }
 
@@ -211,7 +211,7 @@ class _TodosActionState extends State<TodosAction> {
                   },
                   validator: (value) {
                     if (value == null) {
-                      return "validateDiscipline".tr;
+                      return 'validateDiscipline'.tr;
                     }
                     return null;
                   },

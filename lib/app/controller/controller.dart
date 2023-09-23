@@ -15,11 +15,7 @@ class TodoController extends GetxController {
     todos.assignAll(isar.todos.where().findAllSync());
   }
 
-  Future<void> addTodo(
-    String title,
-    Schedule discipline,
-    String time,
-  ) async {
+  Future<void> addTodo(String title, Schedule discipline, String time) async {
     DateTime? date;
     if (time.isNotEmpty) {
       date = DateFormat.yMMMEd(locale.languageCode).add_Hm().parse(time);
@@ -64,11 +60,7 @@ class TodoController extends GetxController {
   }
 
   Future<void> updateTodo(
-    Todos todo,
-    String title,
-    Schedule discipline,
-    String time,
-  ) async {
+      Todos todo, String title, Schedule discipline, String time) async {
     DateTime? date;
     if (time.isNotEmpty) {
       date = DateFormat.yMMMEd(locale.languageCode).add_Hm().parse(time);

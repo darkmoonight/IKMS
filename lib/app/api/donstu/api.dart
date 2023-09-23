@@ -101,7 +101,7 @@ class DonstuAPI {
               group: element.group,
               pair: element.numberOfJobs,
               dateTime:
-                  DateFormat("yyyy-MM-ddThh:mm:ss").parseUTC(element.date),
+                  DateFormat('yyyy-MM-ddThh:mm:ss').parseUTC(element.date),
               begin: element.beginning,
               end: element.end))
           .toList();
@@ -126,7 +126,7 @@ class DonstuAPI {
               group: element.group,
               pair: element.numberOfJobs,
               dateTime:
-                  DateFormat("yyyy-MM-ddThh:mm:ss").parseUTC(element.date),
+                  DateFormat('yyyy-MM-ddThh:mm:ss').parseUTC(element.date),
               begin: element.beginning,
               end: element.end))
           .toList();
@@ -151,7 +151,7 @@ class DonstuAPI {
               group: element.group,
               pair: element.numberOfJobs,
               dateTime:
-                  DateFormat("yyyy-MM-ddThh:mm:ss").parseUTC(element.date),
+                  DateFormat('yyyy-MM-ddThh:mm:ss').parseUTC(element.date),
               begin: element.beginning,
               end: element.end))
           .toList();

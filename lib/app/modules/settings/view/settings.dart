@@ -58,9 +58,7 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Column(
           children: [
             SettingCard(
-              icon: const Icon(
-                IconsaxOutline.brush_1,
-              ),
+              icon: const Icon(IconsaxOutline.brush_1),
               text: 'appearance'.tr,
               onPressed: () {
                 showModalBottomSheet(
@@ -85,9 +83,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               ),
                               SettingCard(
                                 elevation: 4,
-                                icon: const Icon(
-                                  IconsaxOutline.moon,
-                                ),
+                                icon: const Icon(IconsaxOutline.moon),
                                 text: 'theme'.tr,
                                 switcher: true,
                                 value: Get.isDarkMode,
@@ -105,9 +101,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               ),
                               SettingCard(
                                 elevation: 4,
-                                icon: const Icon(
-                                  IconsaxOutline.mobile,
-                                ),
+                                icon: const Icon(IconsaxOutline.mobile),
                                 text: 'amoledTheme'.tr,
                                 switcher: true,
                                 value: settings.amoledTheme,
@@ -119,9 +113,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               ),
                               SettingCard(
                                 elevation: 4,
-                                icon: const Icon(
-                                  IconsaxOutline.colorfilter,
-                                ),
+                                icon: const Icon(IconsaxOutline.colorfilter),
                                 text: 'materialColor'.tr,
                                 switcher: true,
                                 value: settings.materialColor,
@@ -254,7 +246,7 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
             SettingCard(
-              icon: const Icon(IconsaxOutline.code_circle),
+              icon: const Icon(IconsaxOutline.hierarchy_square_2),
               text: 'version'.tr,
               info: true,
               textInfo: '$appVersion',

@@ -54,6 +54,7 @@ class Translation extends Translations {
           'appearance': 'Appearance',
           'project': 'Project on',
           'language': 'Language',
+          'ads': 'Disable ads',
         },
         'ru_RU': {
           'timeComlete': 'Время выполнения',
@@ -106,6 +107,7 @@ class Translation extends Translations {
           'appearance': 'Внешний вид',
           'project': 'Проект на',
           'language': 'Язык',
+          'ads': 'Отключить рекламу',
         }
       };
 }

@@ -38,7 +38,10 @@ class _TodosListState extends State<TodosList> {
                   children: [
                     ...todos
                         .map(
-                          (todosList) => TodosCard(todos: todosList),
+                          (todosList) => TodosCard(
+                            key: ValueKey(todosList),
+                            todos: todosList,
+                          ),
                         )
                         .toList(),
                   ],

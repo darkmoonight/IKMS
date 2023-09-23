@@ -16,15 +16,15 @@ class GroupsData {
   String msg;
 
   factory GroupsData.fromJson(Map<String, dynamic> json) => GroupsData(
-        data: List<Groups>.from(json["data"].map((x) => Groups.fromJson(x))),
-        state: json["state"],
-        msg: json["msg"],
+        data: List<Groups>.from(json['data'].map((x) => Groups.fromJson(x))),
+        state: json['state'],
+        msg: json['msg'],
       );
 
   Map<String, dynamic> toJson() => {
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
-        "state": state,
-        "msg": msg,
+        'data': List<dynamic>.from(data.map((x) => x.toJson())),
+        'state': state,
+        'msg': msg,
       };
 }
 
@@ -46,20 +46,20 @@ class Groups {
   int? facultyId;
 
   factory Groups.fromJson(Map<String, dynamic> json) => Groups(
-        name: json["name"] ?? '',
-        id: json["id"],
-        kurs: json["kurs"],
-        facul: json["facul"] ?? '',
-        yearName: json["yearName"] ?? '',
-        facultyId: json["facultyID"],
+        name: json['name'] ?? '',
+        id: json['id'],
+        kurs: json['kurs'],
+        facul: json['facul'] ?? '',
+        yearName: json['yearName'] ?? '',
+        facultyId: json['facultyID'],
       );
 
   Map<String, dynamic> toJson() => {
-        "name": name,
-        "id": id,
-        "kurs": kurs,
-        "facul": facul,
-        "yearName": yearName,
-        "facultyID": facultyId,
+        'name': name,
+        'id': id,
+        'kurs': kurs,
+        'facul': facul,
+        'yearName': yearName,
+        'facultyID': facultyId,
       };
 }
