@@ -3,7 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:ikms/app/api/donstu/caching.dart';
 import 'package:ikms/app/data/schema.dart';
-import 'package:ikms/app/widgets/rasp_widget.dart';
+import 'package:ikms/app/modules/rasps/widgets/rasp_widget.dart';
 
 class RaspGroupsPage extends StatefulWidget {
   final GroupSchedule groupSchedule;

@@ -22,13 +22,18 @@ const SettingsSchema = CollectionSchema(
       name: r'amoledTheme',
       type: IsarType.bool,
     ),
-    r'materialColor': PropertySchema(
+    r'language': PropertySchema(
       id: 1,
+      name: r'language',
+      type: IsarType.string,
+    ),
+    r'materialColor': PropertySchema(
+      id: 2,
       name: r'materialColor',
       type: IsarType.bool,
     ),
     r'theme': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'theme',
       type: IsarType.bool,
     )
@@ -66,6 +71,12 @@ int _settingsEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.language;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -76,8 +87,9 @@ void _settingsSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeBool(offsets[0], object.amoledTheme);
-  writer.writeBool(offsets[1], object.materialColor);
-  writer.writeBool(offsets[2], object.theme);
+  writer.writeString(offsets[1], object.language);
+  writer.writeBool(offsets[2], object.materialColor);
+  writer.writeBool(offsets[3], object.theme);
 }
 
 Settings _settingsDeserialize(
@@ -89,8 +101,9 @@ Settings _settingsDeserialize(
   final object = Settings();
   object.amoledTheme = reader.readBool(offsets[0]);
   object.id = id;
-  object.materialColor = reader.readBool(offsets[1]);
-  object.theme = reader.readBoolOrNull(offsets[2]);
+  object.language = reader.readStringOrNull(offsets[1]);
+  object.materialColor = reader.readBool(offsets[2]);
+  object.theme = reader.readBoolOrNull(offsets[3]);
   return object;
 }
 
@@ -104,8 +117,10 @@ P _settingsDeserializeProp<P>(
     case 0:
       return (reader.readBool(offset)) as P;
     case 1:
-      return (reader.readBool(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 2:
+      return (reader.readBool(offset)) as P;
+    case 3:
       return (reader.readBoolOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -266,6 +281,152 @@ extension SettingsQueryFilter
     });
   }
 
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> languageIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'language',
+      ));
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> languageIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'language',
+      ));
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> languageEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'language',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> languageGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'language',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> languageLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'language',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> languageBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'language',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> languageStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'language',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> languageEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'language',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> languageContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'language',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> languageMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'language',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> languageIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'language',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> languageIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'language',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<Settings, Settings, QAfterFilterCondition> materialColorEqualTo(
       bool value) {
     return QueryBuilder.apply(this, (query) {
@@ -348,6 +509,18 @@ extension SettingsQuerySortBy on QueryBuilder<Settings, Settings, QSortBy> {
     });
   }
 
+  QueryBuilder<Settings, Settings, QAfterSortBy> sortByLanguage() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'language', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterSortBy> sortByLanguageDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'language', Sort.desc);
+    });
+  }
+
   QueryBuilder<Settings, Settings, QAfterSortBy> sortByMaterialColor() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'materialColor', Sort.asc);
@@ -399,6 +572,18 @@ extension SettingsQuerySortThenBy
     });
   }
 
+  QueryBuilder<Settings, Settings, QAfterSortBy> thenByLanguage() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'language', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterSortBy> thenByLanguageDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'language', Sort.desc);
+    });
+  }
+
   QueryBuilder<Settings, Settings, QAfterSortBy> thenByMaterialColor() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'materialColor', Sort.asc);
@@ -432,6 +617,13 @@ extension SettingsQueryWhereDistinct
     });
   }
 
+  QueryBuilder<Settings, Settings, QDistinct> distinctByLanguage(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'language', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Settings, Settings, QDistinct> distinctByMaterialColor() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'materialColor');
@@ -456,6 +648,12 @@ extension SettingsQueryProperty
   QueryBuilder<Settings, bool, QQueryOperations> amoledThemeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'amoledTheme');
+    });
+  }
+
+  QueryBuilder<Settings, String?, QQueryOperations> languageProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'language');
     });
   }
 
@@ -4306,13 +4504,18 @@ const TodosSchema = CollectionSchema(
       name: r'done',
       type: IsarType.bool,
     ),
-    r'name': PropertySchema(
+    r'index': PropertySchema(
       id: 2,
+      name: r'index',
+      type: IsarType.long,
+    ),
+    r'name': PropertySchema(
+      id: 3,
       name: r'name',
       type: IsarType.string,
     ),
     r'todoCompletedTime': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'todoCompletedTime',
       type: IsarType.dateTime,
     )
@@ -4350,8 +4553,9 @@ void _todosSerialize(
 ) {
   writer.writeString(offsets[0], object.discipline);
   writer.writeBool(offsets[1], object.done);
-  writer.writeString(offsets[2], object.name);
-  writer.writeDateTime(offsets[3], object.todoCompletedTime);
+  writer.writeLong(offsets[2], object.index);
+  writer.writeString(offsets[3], object.name);
+  writer.writeDateTime(offsets[4], object.todoCompletedTime);
 }
 
 Todos _todosDeserialize(
@@ -4364,8 +4568,9 @@ Todos _todosDeserialize(
     discipline: reader.readString(offsets[0]),
     done: reader.readBoolOrNull(offsets[1]) ?? false,
     id: id,
-    name: reader.readString(offsets[2]),
-    todoCompletedTime: reader.readDateTimeOrNull(offsets[3]),
+    index: reader.readLongOrNull(offsets[2]),
+    name: reader.readString(offsets[3]),
+    todoCompletedTime: reader.readDateTimeOrNull(offsets[4]),
   );
   return object;
 }
@@ -4382,8 +4587,10 @@ P _todosDeserializeProp<P>(
     case 1:
       return (reader.readBoolOrNull(offset) ?? false) as P;
     case 2:
-      return (reader.readString(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 3:
+      return (reader.readString(offset)) as P;
+    case 4:
       return (reader.readDateTimeOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -4669,6 +4876,74 @@ extension TodosQueryFilter on QueryBuilder<Todos, Todos, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Todos, Todos, QAfterFilterCondition> indexIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'index',
+      ));
+    });
+  }
+
+  QueryBuilder<Todos, Todos, QAfterFilterCondition> indexIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'index',
+      ));
+    });
+  }
+
+  QueryBuilder<Todos, Todos, QAfterFilterCondition> indexEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'index',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Todos, Todos, QAfterFilterCondition> indexGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'index',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Todos, Todos, QAfterFilterCondition> indexLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'index',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Todos, Todos, QAfterFilterCondition> indexBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'index',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Todos, Todos, QAfterFilterCondition> nameEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -4898,6 +5173,18 @@ extension TodosQuerySortBy on QueryBuilder<Todos, Todos, QSortBy> {
     });
   }
 
+  QueryBuilder<Todos, Todos, QAfterSortBy> sortByIndex() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'index', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Todos, Todos, QAfterSortBy> sortByIndexDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'index', Sort.desc);
+    });
+  }
+
   QueryBuilder<Todos, Todos, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -4960,6 +5247,18 @@ extension TodosQuerySortThenBy on QueryBuilder<Todos, Todos, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Todos, Todos, QAfterSortBy> thenByIndex() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'index', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Todos, Todos, QAfterSortBy> thenByIndexDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'index', Sort.desc);
+    });
+  }
+
   QueryBuilder<Todos, Todos, QAfterSortBy> thenByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -4999,6 +5298,12 @@ extension TodosQueryWhereDistinct on QueryBuilder<Todos, Todos, QDistinct> {
     });
   }
 
+  QueryBuilder<Todos, Todos, QDistinct> distinctByIndex() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'index');
+    });
+  }
+
   QueryBuilder<Todos, Todos, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -5029,6 +5334,12 @@ extension TodosQueryProperty on QueryBuilder<Todos, Todos, QQueryProperty> {
   QueryBuilder<Todos, bool, QQueryOperations> doneProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'done');
+    });
+  }
+
+  QueryBuilder<Todos, int?, QQueryOperations> indexProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'index');
     });
   }
 

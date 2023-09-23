@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ikms/app/widgets/todos_list.dart';
+import 'package:ikms/app/modules/todos/widgets/todos_list.dart';
 
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
@@ -25,8 +25,11 @@ class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
           ),
         ),
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TabBar(
+              isScrollable: true,
+              dividerColor: Colors.transparent,
               splashFactory: NoSplash.splashFactory,
               overlayColor: MaterialStateProperty.resolveWith<Color?>(
                 (Set<MaterialState> states) {
@@ -34,15 +37,15 @@ class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
                 },
               ),
               tabs: [
-                Tab(text: 'unfulfilled'.tr),
-                Tab(text: 'completed'.tr),
+                Tab(text: 'doing'.tr),
+                Tab(text: 'done'.tr),
               ],
             ),
             const Flexible(
               child: TabBarView(
                 children: [
-                  TodosList(isDone: false),
-                  TodosList(isDone: true),
+                  TodosList(done: false),
+                  TodosList(done: true),
                 ],
               ),
             ),

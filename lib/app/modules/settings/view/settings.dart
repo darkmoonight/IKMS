@@ -3,12 +3,13 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:ikms/app/data/schema.dart';
-import 'package:ikms/app/modules/groups.dart';
-import 'package:ikms/app/modules/university.dart';
-import 'package:ikms/app/widgets/setting_card.dart';
+import 'package:ikms/app/modules/selection_list/view/groups.dart';
+import 'package:ikms/app/modules/selection_list/view/university.dart';
+import 'package:ikms/app/modules/settings/widgets/setting_card.dart';
 import 'package:ikms/main.dart';
 import 'package:ikms/theme/theme_controller.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -26,6 +27,13 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       appVersion = packageInfo.version;
     });
+  }
+
+  updateLanguage(Locale locale) {
+    settings.language = '$locale';
+    isar.writeTxnSync(() => isar.settings.putSync(settings));
+    Get.updateLocale(locale);
+    Get.back();
   }
 
   @override
@@ -183,10 +191,88 @@ class _SettingsPageState extends State<SettingsPage> {
                   : () => EasyLoading.showInfo('no_university'.tr),
             ),
             SettingCard(
+              icon: const Icon(IconsaxOutline.language_square),
+              text: 'language'.tr,
+              info: true,
+              infoSettings: true,
+              textInfo: appLanguages.firstWhere(
+                  (element) => (element['locale'] == locale),
+                  orElse: () => appLanguages.first)['name'],
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return StatefulBuilder(
+                      builder: (BuildContext context, setState) {
+                        return ListView(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 15),
+                              child: Text(
+                                'language'.tr,
+                                style: context.textTheme.titleLarge?.copyWith(
+                                  fontSize: 20,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: appLanguages.length,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                  elevation: 4,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 5),
+                                  child: ListTile(
+                                    title: Center(
+                                      child: Text(
+                                        appLanguages[index]['name'],
+                                        style: context.textTheme.labelLarge,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      MyApp.updateAppState(context,
+                                          newLocale: appLanguages[index]
+                                              ['locale']);
+                                      updateLanguage(
+                                          appLanguages[index]['locale']);
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+            SettingCard(
               icon: const Icon(IconsaxOutline.code_circle),
               text: 'version'.tr,
               info: true,
               textInfo: '$appVersion',
+            ),
+            SettingCard(
+              icon: Image.asset(
+                'assets/images/github.png',
+                scale: 20,
+              ),
+              text: '${'project'.tr} GitHub',
+              onPressed: () async {
+                final Uri url =
+                    Uri.parse('https://github.com/DarkMooNight/IKMS');
+                if (!await launchUrl(url,
+                    mode: LaunchMode.externalApplication)) {
+                  throw Exception('Could not launch $url');
+                }
+              },
             ),
           ],
         ),

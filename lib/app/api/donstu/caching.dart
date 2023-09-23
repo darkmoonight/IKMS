@@ -20,14 +20,13 @@ class DonstuCaching {
       final c = t.toList()..removeWhere((e) => !iv.contains(e.id)); // cached
       final o = v.toList()..removeWhere((e) => it.contains(e.id)); // old
 
-      await isar.writeTxn(() async {
-        await isar.audienceSchedules
-            .deleteAll((o + g).map((e) => e.id).toList());
-        await isar.audienceSchedules.putAll(c + g);
+      isar.writeTxnSync(() {
+        isar.audienceSchedules.deleteAllSync((o + g).map((e) => e.id).toList());
+        isar.audienceSchedules.putAllSync(c + g);
         donstu.audiences.addAll(c + g);
-        await donstu.audiences.save();
+        donstu.audiences.saveSync();
         donstu.lastUpdateAudiences = DateTime.now();
-        await isar.universitys.put(donstu);
+        isar.universitys.putSync(donstu);
       });
       return true;
     } catch (e) {
@@ -52,13 +51,13 @@ class DonstuCaching {
       final c = t.toList()..removeWhere((e) => !iv.contains(e.id)); // cached
       final o = v.toList()..removeWhere((e) => it.contains(e.id)); // old
 
-      await isar.writeTxn(() async {
-        await isar.groupSchedules.deleteAll((o + g).map((e) => e.id).toList());
-        await isar.groupSchedules.putAll(c + g);
+      isar.writeTxnSync(() {
+        isar.groupSchedules.deleteAllSync((o + g).map((e) => e.id).toList());
+        isar.groupSchedules.putAllSync(c + g);
         donstu.groups.addAll(c + g);
-        await donstu.groups.save();
+        donstu.groups.saveSync();
         donstu.lastUpdateGroups = DateTime.now();
-        await isar.universitys.put(donstu);
+        isar.universitys.putSync(donstu);
       });
       return true;
     } catch (e) {
@@ -83,14 +82,13 @@ class DonstuCaching {
       final c = t.toList()..removeWhere((e) => !iv.contains(e.id)); // cached
       final o = v.toList()..removeWhere((e) => it.contains(e.id)); // old
 
-      await isar.writeTxn(() async {
-        await isar.teacherSchedules
-            .deleteAll((o + g).map((e) => e.id).toList());
-        await isar.teacherSchedules.putAll(c + g);
+      isar.writeTxnSync(() {
+        isar.teacherSchedules.deleteAllSync((o + g).map((e) => e.id).toList());
+        isar.teacherSchedules.putAllSync(c + g);
         donstu.teachers.addAll(c + g);
-        await donstu.teachers.save();
+        donstu.teachers.saveSync();
         donstu.lastUpdateTeachers = DateTime.now();
-        await isar.universitys.put(donstu);
+        isar.universitys.putSync(donstu);
       });
       return true;
     } catch (e) {
@@ -109,10 +107,10 @@ class DonstuCaching {
       try {
         final l = await DonstuAPI().getRaspsAudElementData(t.id);
 
-        await isar.writeTxn(() async {
+        isar.writeTxnSync(() {
           t.lastUpdate = DateTime.now();
           t.schedules = l;
-          await isar.audienceSchedules.put(t);
+          isar.audienceSchedules.putSync(t);
         });
       } catch (e) {
         if (kDebugMode) {
@@ -131,10 +129,10 @@ class DonstuCaching {
       try {
         final l = await DonstuAPI().getRaspsGroupElementData(t.id);
 
-        await isar.writeTxn(() async {
+        isar.writeTxnSync(() {
           t.lastUpdate = DateTime.now();
           t.schedules = l;
-          await isar.groupSchedules.put(t);
+          isar.groupSchedules.putSync(t);
         });
       } catch (e) {
         if (kDebugMode) {
@@ -153,10 +151,10 @@ class DonstuCaching {
       try {
         final l = await DonstuAPI().getRaspsProfElementData(t.id);
 
-        await isar.writeTxn(() async {
+        isar.writeTxnSync(() {
           t.lastUpdate = DateTime.now();
           t.schedules = l;
-          await isar.teacherSchedules.put(t);
+          isar.teacherSchedules.putSync(t);
         });
       } catch (e) {
         if (kDebugMode) {

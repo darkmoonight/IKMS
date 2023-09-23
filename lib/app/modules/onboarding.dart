@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ikms/app/api/donstu/caching.dart';
 import 'package:ikms/app/data/schema.dart';
-import 'package:ikms/app/modules/groups.dart';
+import 'package:ikms/app/modules/selection_list/view/groups.dart';
 import 'package:ikms/app/modules/home.dart';
-import 'package:ikms/app/modules/university.dart';
+import 'package:ikms/app/modules/selection_list/view/university.dart';
 import 'package:ikms/app/widgets/button.dart';
 import 'package:ikms/main.dart';
 
@@ -83,12 +83,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 settings.university.value = university;
                 settings.group.value = group;
 
-                await isar.writeTxn(() async {
-                  await isar.groupSchedules.put(group!);
-                  await group.university.save();
-                  await isar.settings.put(settings);
-                  await settings.group.save();
-                  await settings.university.save();
+                isar.writeTxnSync(() {
+                  isar.groupSchedules.putSync(group!);
+                  group.university.saveSync();
+                  isar.settings.putSync(settings);
+                  settings.group.saveSync();
+                  settings.university.saveSync();
                 });
 
                 Get.offAll(() => const HomePage());

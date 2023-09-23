@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ficonsax/ficonsax.dart';
-import 'package:ikms/app/modules/audiences.dart';
-import 'package:ikms/app/modules/groups.dart';
-import 'package:ikms/app/modules/my_schedule.dart';
-import 'package:ikms/app/modules/professors.dart';
-import 'package:ikms/app/modules/settings.dart';
-import 'package:ikms/app/modules/task.dart';
-import 'package:ikms/app/widgets/todos_ce.dart';
+import 'package:ikms/app/modules/selection_list/view/audiences.dart';
+import 'package:ikms/app/modules/selection_list/view/groups.dart';
+import 'package:ikms/app/modules/rasps/view/my_schedule.dart';
+import 'package:ikms/app/modules/selection_list/view/professors.dart';
+import 'package:ikms/app/modules/settings/view/settings.dart';
+import 'package:ikms/app/modules/todos/view/todos.dart';
+import 'package:ikms/app/modules/todos/widgets/todos_action.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,9 +22,7 @@ class _HomePageState extends State<HomePage> {
   final pages = const [
     MySchedulePage(),
     ProfessorsPage(),
-    GroupsPage(
-      isSettings: false,
-    ),
+    GroupsPage(isSettings: false),
     AudiencesPage(),
     TaskPage(),
     SettingsPage(),
@@ -51,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                   context: context,
                   isScrollControlled: true,
                   builder: (BuildContext context) {
-                    return TodosCe(
+                    return TodosAction(
                       text: 'create'.tr,
                       edit: false,
                     );

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:ikms/app/data/schema.dart';
+import 'package:ikms/main.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:swipe/swipe.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -28,11 +29,10 @@ class RaspWidget extends StatefulWidget {
 
 class _RaspWidgetState extends State<RaspWidget> {
   late List<Schedule> raspElementsFiltered;
-  final locale = Get.locale;
 
   final banner = BannerAd(
     adUnitId: 'R-M-2101511-1',
-    adSize: const BannerAdSize.inline(width: 320, maxHeight: 50),
+    adSize: BannerAdSize.inline(width: Get.size.width.round(), maxHeight: 50),
     adRequest: const AdRequest(),
     onAdLoaded: () {},
     onAdFailedToLoad: (error) {},
@@ -113,7 +113,10 @@ class _RaspWidgetState extends State<RaspWidget> {
             ? null
             : IconButton(
                 onPressed: widget.onBackPressed,
-                icon: const Icon(IconsaxOutline.arrow_left_1),
+                icon: const Icon(
+                  IconsaxOutline.arrow_left_1,
+                  size: 20,
+                ),
               ),
         title: widget.onBackPressed == null
             ? Text(
@@ -141,7 +144,7 @@ class _RaspWidgetState extends State<RaspWidget> {
               lastDay: lastDay,
               focusedDay: selectedDay,
               weekendDays: const [DateTime.sunday],
-              locale: '${locale?.languageCode}',
+              locale: locale.languageCode,
               selectedDayPredicate: (day) {
                 return isSameDay(selectedDay, day);
               },

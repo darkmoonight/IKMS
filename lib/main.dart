@@ -26,6 +26,12 @@ late Settings settings;
 
 bool amoledTheme = false;
 bool materialColor = false;
+Locale locale = const Locale('en', 'US');
+
+final List appLanguages = [
+  {'name': 'English', 'locale': const Locale('en', 'US')},
+  {'name': 'Русский', 'locale': const Locale('ru', 'RU')},
+];
 
 late University donstu;
 final ValueNotifier<Future<bool>> isDeviceConnectedNotifier =
@@ -88,15 +94,20 @@ Future<void> isarInit() async {
       compactOnLaunch: const CompactCondition(minRatio: 2),
       directory: (await getApplicationSupportDirectory()).path);
 
-  settings = await isar.settings.where().findFirst() ?? Settings();
-  donstu = await isar.universitys.get(1) ?? University(id: 1, name: 'ДГТУ');
+  settings = isar.settings.where().findFirstSync() ?? Settings();
+  donstu = isar.universitys.getSync(1) ?? University(id: 1, name: 'ДГТУ');
 
-  if (await isar.settings.count() == 0) {
-    await isar.writeTxn(() async => await isar.settings.put(settings));
+  if (isar.settings.countSync() == 0) {
+    isar.writeTxnSync(() => isar.settings.putSync(settings));
   }
 
-  if (await isar.universitys.count() == 0) {
-    await isar.writeTxn(() async => await isar.universitys.put(donstu));
+  if (isar.universitys.countSync() == 0) {
+    isar.writeTxnSync(() => isar.universitys.putSync(donstu));
+  }
+
+  if (settings.language == null) {
+    settings.language = '${Get.deviceLocale}';
+    isar.writeTxnSync(() => isar.settings.putSync(settings));
   }
 }
 
@@ -116,6 +127,9 @@ class MyApp extends StatefulWidget {
     }
     if (newMaterialColor != null) {
       state.changeMarerialTheme(newMaterialColor);
+    }
+    if (newLocale != null) {
+      state.changeLocale(newLocale);
     }
   }
 
@@ -138,10 +152,18 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void changeLocale(Locale newLocale) {
+    setState(() {
+      locale = newLocale;
+    });
+  }
+
   @override
   void initState() {
     amoledTheme = settings.amoledTheme;
     materialColor = settings.materialColor;
+    locale = Locale(
+        settings.language!.substring(0, 2), settings.language!.substring(3));
     super.initState();
   }
 
@@ -180,12 +202,10 @@ class _MyAppState extends State<MyApp> {
             GlobalCupertinoLocalizations.delegate,
           ],
           translations: Translation(),
-          locale: Get.deviceLocale,
+          locale: locale,
           fallbackLocale: const Locale('en', 'US'),
-          supportedLocales: const [
-            Locale('en', 'US'),
-            Locale('ru', 'RU'),
-          ],
+          supportedLocales:
+              appLanguages.map((e) => e['locale'] as Locale).toList(),
           debugShowCheckedModeBanner: false,
           home: (settings.university.value == null) ||
                   (settings.group.value == null)

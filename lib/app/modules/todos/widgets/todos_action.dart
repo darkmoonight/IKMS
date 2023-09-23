@@ -6,13 +6,13 @@ import 'package:get/get.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:ikms/app/api/donstu/caching.dart';
 import 'package:ikms/app/data/schema.dart';
-import 'package:ikms/app/services/crud_isar.dart';
+import 'package:ikms/app/controller/controller.dart';
 import 'package:ikms/app/widgets/text_form.dart';
 import 'package:ikms/main.dart';
 import 'package:intl/intl.dart';
 
-class TodosCe extends StatefulWidget {
-  const TodosCe({
+class TodosAction extends StatefulWidget {
+  const TodosAction({
     super.key,
     required this.text,
     required this.edit,
@@ -24,16 +24,14 @@ class TodosCe extends StatefulWidget {
   final Todos? todo;
 
   @override
-  State<TodosCe> createState() => _TodosCeState();
+  State<TodosAction> createState() => _TodosActionState();
 }
 
-class _TodosCeState extends State<TodosCe> {
-  final service = IsarServices();
+class _TodosActionState extends State<TodosAction> {
   final formKey = GlobalKey<FormState>();
+  final todoController = Get.put(TodoController());
   TextEditingController titleEdit = TextEditingController();
   TextEditingController timeEdit = TextEditingController();
-
-  final locale = Get.locale;
 
   Schedule? selectedDiscipline;
   List<Schedule>? disciplineList;
@@ -52,7 +50,9 @@ class _TodosCeState extends State<TodosCe> {
       titleEdit = TextEditingController(text: widget.todo!.name);
       timeEdit = TextEditingController(
           text: widget.todo!.todoCompletedTime != null
-              ? widget.todo!.todoCompletedTime.toString()
+              ? DateFormat.yMMMEd(locale.languageCode)
+                  .add_Hm()
+                  .format(widget.todo!.todoCompletedTime!)
               : '');
     }
     super.initState();
@@ -115,69 +115,46 @@ class _TodosCeState extends State<TodosCe> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    widget.todo != null
-                        ? Row(
-                            children: [
-                              IconButton(
+                    Row(
+                      children: [
+                        widget.todo != null
+                            ? IconButton(
                                 onPressed: () {
-                                  service.deleteTodo(widget.todo!);
+                                  todoController.deleteTodo(widget.todo!);
                                   Get.back();
                                 },
                                 icon: const Icon(
                                   IconsaxOutline.trash,
                                   size: 20,
                                 ),
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  if (formKey.currentState!.validate()) {
-                                    textTrim(titleEdit);
-                                    widget.edit == false
-                                        ? service.addTodo(
-                                            titleEdit.text,
-                                            selectedDiscipline!,
-                                            timeEdit.text,
-                                          )
-                                        : service.updateTodo(
-                                            widget.todo!,
-                                            titleEdit.text,
-                                            selectedDiscipline!,
-                                            timeEdit.text,
-                                          );
-                                    Get.back();
-                                  }
-                                },
-                                icon: const Icon(
-                                  IconsaxOutline.tick_square,
-                                  size: 20,
-                                ),
-                              ),
-                            ],
-                          )
-                        : IconButton(
-                            onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                textTrim(titleEdit);
-                                widget.edit == false
-                                    ? service.addTodo(
-                                        titleEdit.text,
-                                        selectedDiscipline!,
-                                        timeEdit.text,
-                                      )
-                                    : service.updateTodo(
-                                        widget.todo!,
-                                        titleEdit.text,
-                                        selectedDiscipline!,
-                                        timeEdit.text,
-                                      );
-                                Get.back();
-                              }
-                            },
-                            icon: const Icon(
-                              IconsaxOutline.tick_square,
-                              size: 20,
-                            ),
+                              )
+                            : SizedBox.fromSize(),
+                        IconButton(
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              textTrim(titleEdit);
+                              widget.edit
+                                  ? todoController.updateTodo(
+                                      widget.todo!,
+                                      titleEdit.text,
+                                      selectedDiscipline!,
+                                      timeEdit.text,
+                                    )
+                                  : todoController.addTodo(
+                                      titleEdit.text,
+                                      selectedDiscipline!,
+                                      timeEdit.text,
+                                    );
+                              Get.back();
+                            }
+                          },
+                          icon: const Icon(
+                            IconsaxOutline.tick_square,
+                            size: 20,
                           ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -186,7 +163,7 @@ class _TodosCeState extends State<TodosCe> {
                 margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                 controller: titleEdit,
                 labelText: 'name'.tr,
-                type: TextInputType.text,
+                type: TextInputType.multiline,
                 icon: const Icon(IconsaxOutline.edit_2),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -194,6 +171,7 @@ class _TodosCeState extends State<TodosCe> {
                   }
                   return null;
                 },
+                maxLine: null,
               ),
               Card(
                 elevation: 4,
@@ -202,9 +180,7 @@ class _TodosCeState extends State<TodosCe> {
                   style: context.textTheme.titleMedium,
                   isExpanded: true,
                   decoration: InputDecoration(
-                    label: Text(
-                      'discipline'.tr,
-                    ),
+                    label: Text('discipline'.tr),
                     prefixIcon: const Icon(IconsaxOutline.book),
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
@@ -275,7 +251,7 @@ class _TodosCeState extends State<TodosCe> {
                     backgroundColor: context.theme.scaffoldBackgroundColor,
                     onSubmit: (date) {
                       String formattedDate =
-                          DateFormat.yMMMEd(locale?.languageCode)
+                          DateFormat.yMMMEd(locale.languageCode)
                               .add_Hm()
                               .format(date);
                       timeEdit.text = formattedDate;

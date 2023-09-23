@@ -3,19 +3,19 @@ import 'package:get/get.dart';
 import 'package:isar/isar.dart';
 import 'package:ikms/app/api/donstu/caching.dart';
 import 'package:ikms/app/data/schema.dart';
-import 'package:ikms/app/modules/rasp_audiences.dart';
-import 'package:ikms/app/widgets/selection_list.dart';
+import 'package:ikms/app/modules/rasps/view/rasp_professors.dart';
+import 'package:ikms/app/modules/selection_list/widgets/selection_list.dart';
 import 'package:ikms/main.dart';
 
-class AudiencesPage extends StatefulWidget {
-  const AudiencesPage({super.key});
+class ProfessorsPage extends StatefulWidget {
+  const ProfessorsPage({super.key});
 
   @override
-  State<AudiencesPage> createState() => _AudiencesPageState();
+  State<ProfessorsPage> createState() => _ProfessorsPageState();
 }
 
-class _AudiencesPageState extends State<AudiencesPage> {
-  List<AudienceSchedule> audiences = List.empty();
+class _ProfessorsPageState extends State<ProfessorsPage> {
+  List<TeacherSchedule> teachers = List.empty();
   String filter = '';
   var isLoaded = false;
 
@@ -32,22 +32,22 @@ class _AudiencesPageState extends State<AudiencesPage> {
     super.dispose();
   }
 
-  Future<List<AudienceSchedule>> get getData async {
+  Future<List<TeacherSchedule>> get getData async {
     return await isDeviceConnectedNotifier.value &&
-            await DonstuCaching.cacheAudiences()
-        ? await donstu.audiences.filter().sortByLastUpdateDesc().findAll()
-        : donstu.audiences.where((e) => e.schedules.isNotEmpty).toList();
+            await DonstuCaching.cacheTeachers()
+        ? await donstu.teachers.filter().sortByLastUpdateDesc().findAll()
+        : donstu.teachers.where((e) => e.schedules.isNotEmpty).toList();
   }
 
   applyFilter(String value) async {
     filter = value.toLowerCase();
     final data = (await getData).where((element) {
-      var audiencesTitle = element.name.toLowerCase();
-      return audiencesTitle.isNotEmpty && audiencesTitle.contains(filter);
+      var professorsTitle = element.name.toLowerCase();
+      return professorsTitle.isNotEmpty && professorsTitle.contains(filter);
     }).toList();
     setState(
       () {
-        audiences = data;
+        teachers = data;
         isLoaded = true;
       },
     );
@@ -64,17 +64,17 @@ class _AudiencesPageState extends State<AudiencesPage> {
         await applyFilter('');
       },
       child: SelectionList(
-        headerText: 'audiences'.tr,
-        labelText: 'number'.tr,
+        headerText: 'professors'.tr,
+        labelText: 'fio'.tr,
         onTextChanged: applyFilter,
         isLoaded: isLoaded,
-        data: audiences,
-        onEntrySelected: (AudienceSchedule selectionData) async {
+        data: teachers,
+        onEntrySelected: (TeacherSchedule selectionData) async {
           await Get.to(
-            () => RaspAudiencesPage(audienceSchedule: selectionData),
+            () => RaspProfessorsPage(teacherSchedule: selectionData),
             transition: Transition.downToUp,
           );
-          reApplyFilter();
+          applyFilter(filter);
         },
       ),
     );

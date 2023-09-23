@@ -44,7 +44,10 @@ class _SelectionListState<T extends SelectionData>
             ? null
             : IconButton(
                 onPressed: widget.onBackPressed,
-                icon: const Icon(IconsaxOutline.arrow_left_1),
+                icon: const Icon(
+                  IconsaxOutline.arrow_left_1,
+                  size: 20,
+                ),
               ),
         title: widget.onBackPressed == null
             ? Text(

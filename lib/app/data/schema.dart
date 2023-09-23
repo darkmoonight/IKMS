@@ -26,6 +26,7 @@ class Settings {
   bool? theme;
   bool materialColor = false;
   bool amoledTheme = false;
+  String? language;
 
   final university = IsarLink<University>();
   final group = IsarLink<GroupSchedule>();
@@ -117,7 +118,7 @@ class Todos {
   String name;
   String discipline;
   DateTime? todoCompletedTime;
-
+  int? index;
   bool done;
 
   Todos({
@@ -126,5 +127,6 @@ class Todos {
     required this.discipline,
     this.todoCompletedTime,
     this.done = false,
+    this.index,
   });
 }

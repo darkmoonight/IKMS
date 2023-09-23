@@ -3,18 +3,18 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:ikms/app/api/donstu/caching.dart';
 import 'package:ikms/app/data/schema.dart';
-import 'package:ikms/app/widgets/rasp_widget.dart';
+import 'package:ikms/app/modules/rasps/widgets/rasp_widget.dart';
 
-class RaspProfessorsPage extends StatefulWidget {
-  final TeacherSchedule teacherSchedule;
+class RaspAudiencesPage extends StatefulWidget {
+  final AudienceSchedule audienceSchedule;
 
-  const RaspProfessorsPage({super.key, required this.teacherSchedule});
+  const RaspAudiencesPage({super.key, required this.audienceSchedule});
 
   @override
-  State<RaspProfessorsPage> createState() => _RaspProfessorsPageState();
+  State<RaspAudiencesPage> createState() => _RaspAudiencesPageState();
 }
 
-class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
+class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
   var isLoaded = false;
   ValueNotifier<List<Schedule>> raspData = ValueNotifier(<Schedule>[]);
 
@@ -25,7 +25,8 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
   }
 
   getData() async {
-    final t = await DonstuCaching.cacheTeacherSchedule(widget.teacherSchedule);
+    final t =
+        await DonstuCaching.cacheAudienceSchedule(widget.audienceSchedule);
     if (t.schedules.isNotEmpty) {
       setState(() {
         raspData.value = t.schedules.toList();
@@ -49,7 +50,7 @@ class _RaspProfessorsPageState extends State<RaspProfessorsPage> {
           onBackPressed: () {
             Get.back();
           },
-          headerText: widget.teacherSchedule.name,
+          headerText: widget.audienceSchedule.name,
         ),
       ),
     );
