@@ -1,7 +1,7 @@
 import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ikms/app/controller/controller.dart';
+import 'package:ikms/app/controller/todo_controller.dart';
 import 'package:ikms/app/modules/todos/widgets/todos_list.dart';
 import 'package:ikms/app/widgets/text_form.dart';
 

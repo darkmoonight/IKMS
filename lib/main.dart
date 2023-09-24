@@ -54,8 +54,7 @@ void main() async {
     }
   });
   SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(systemNavigationBarColor: Colors.black),
-  );
+      const SystemUiOverlayStyle(systemNavigationBarColor: Colors.black));
   final String timeZoneName = await FlutterTimezone.getLocalTimezone();
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_launcher');

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ikms/app/controller/controller.dart';
+import 'package:ikms/app/controller/todo_controller.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/app/modules/todos/widgets/todos_action.dart';
 import 'package:ikms/app/services/notification.dart';
@@ -26,7 +26,7 @@ class _TodosCardState extends State<TodosCard> {
     return StatefulBuilder(
       builder: (context, innerState) {
         return Card(
-          margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: InkWell(

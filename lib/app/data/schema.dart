@@ -106,6 +106,7 @@ class Settings {
   bool? theme;
   bool materialColor = false;
   bool amoledTheme = false;
+  bool? ads = false;
   String? language;
 
   final university = IsarLink<University>();

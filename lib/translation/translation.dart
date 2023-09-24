@@ -55,7 +55,13 @@ class Translation extends Translations {
           'project': 'Project on',
           'language': 'Language',
           'ads': 'Disable ads',
-          'searchTodo': 'Search todo'
+          'searchTodo': 'Search todo',
+          'functions': 'Functions',
+          'adsDisaleTitle': 'Disable Ads',
+          'adsDisable':
+              'Are you sure you want to disable ads? Your support through ads helps us improve and maintain this application. Thank you for your support!',
+          'cancel': 'Cancel',
+          'disable': 'Disable',
         },
         'ru_RU': {
           'timeComlete': 'Время выполнения',
@@ -110,6 +116,12 @@ class Translation extends Translations {
           'language': 'Язык',
           'ads': 'Отключить рекламу',
           'searchTodo': 'Поиск задачи',
+          'functions': 'Функции',
+          'adsDisaleTitle': 'Отключение рекламы',
+          'adsDisable':
+              'Вы уверены, что хотите отключить рекламу? Ваша поддержка через рекламу помогает нам улучшать и поддерживать это приложение. Спасибо за вашу поддержку!',
+          'cancel': 'Отмена',
+          'disable': 'Отключить',
         }
       };
 }

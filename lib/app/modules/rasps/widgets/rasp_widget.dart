@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:ficonsax/ficonsax.dart';
+import 'package:ikms/app/controller/ads_controller.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/app/widgets/list_empty.dart';
 import 'package:ikms/app/widgets/shimmer.dart';
@@ -29,6 +30,7 @@ class RaspWidget extends StatefulWidget {
 
 class _RaspWidgetState extends State<RaspWidget> {
   late List<Schedule> raspElementsFiltered;
+  final adsController = Get.put(AdsController());
 
   final banner = BannerAd(
     adUnitId: 'R-M-2101511-1',
@@ -257,6 +259,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                       text: 'no_par'.tr,
                     ),
                     child: GroupedListView<Schedule, String>(
+                        physics: const AlwaysScrollableScrollPhysics(),
                         elements: raspElementsFiltered,
                         groupBy: (element) {
                           return '${element.begin}-${element.end}';
@@ -334,7 +337,12 @@ class _RaspWidgetState extends State<RaspWidget> {
                 ),
               ),
             ),
-            AdWidget(bannerAd: banner),
+            Obx(
+              () => Visibility(
+                visible: !adsController.ads.value,
+                child: AdWidget(bannerAd: banner),
+              ),
+            ),
           ],
         ),
       ),

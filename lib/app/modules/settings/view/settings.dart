@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:ficonsax/ficonsax.dart';
+import 'package:ikms/app/controller/ads_controller.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/app/modules/selection_list/view/groups.dart';
 import 'package:ikms/app/modules/selection_list/view/university.dart';
@@ -20,6 +21,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final themeController = Get.put(ThemeController());
+  final adsController = Get.put(AdsController());
   String? appVersion;
 
   Future<void> infoVersion() async {
@@ -121,6 +123,91 @@ class _SettingsPageState extends State<SettingsPage> {
                                   themeController.saveMaterialTheme(value);
                                   MyApp.updateAppState(context,
                                       newMaterialColor: value);
+                                },
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+            SettingCard(
+              icon: const Icon(IconsaxOutline.code),
+              text: 'functions'.tr,
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return StatefulBuilder(
+                      builder: (BuildContext context, setState) {
+                        return SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 15),
+                                child: Text(
+                                  'functions'.tr,
+                                  style: context.textTheme.titleLarge?.copyWith(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                              SettingCard(
+                                elevation: 4,
+                                icon: const Icon(IconsaxOutline.dollar_square),
+                                text: 'ads'.tr,
+                                switcher: true,
+                                value: adsController.ads.value,
+                                onChange: (value) async {
+                                  if (value) {
+                                    await showAdaptiveDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog.adaptive(
+                                          title: Text(
+                                            'adsDisaleTitle'.tr,
+                                            style: context.textTheme.titleLarge,
+                                          ),
+                                          content: Text('adsDisable'.tr,
+                                              style: context
+                                                  .textTheme.titleMedium),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () =>
+                                                    Get.back(result: false),
+                                                child: Text('cancel'.tr,
+                                                    style: context.theme
+                                                        .textTheme.titleMedium
+                                                        ?.copyWith(
+                                                            color: Colors
+                                                                .blueAccent))),
+                                            TextButton(
+                                                onPressed: () {
+                                                  adsController
+                                                      .toggleAds(value);
+                                                  Get.back(result: true);
+                                                },
+                                                child: Text('disable'.tr,
+                                                    style: context.theme
+                                                        .textTheme.titleMedium
+                                                        ?.copyWith(
+                                                            color:
+                                                                Colors.red))),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    adsController.toggleAds(value);
+                                  }
+                                  setState(() {});
                                 },
                               ),
                               const SizedBox(height: 10),

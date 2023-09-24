@@ -3830,23 +3830,28 @@ const SettingsSchema = CollectionSchema(
   name: r'Settings',
   id: -8656046621518759136,
   properties: {
-    r'amoledTheme': PropertySchema(
+    r'ads': PropertySchema(
       id: 0,
+      name: r'ads',
+      type: IsarType.bool,
+    ),
+    r'amoledTheme': PropertySchema(
+      id: 1,
       name: r'amoledTheme',
       type: IsarType.bool,
     ),
     r'language': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'language',
       type: IsarType.string,
     ),
     r'materialColor': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'materialColor',
       type: IsarType.bool,
     ),
     r'theme': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'theme',
       type: IsarType.bool,
     )
@@ -3899,10 +3904,11 @@ void _settingsSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeBool(offsets[0], object.amoledTheme);
-  writer.writeString(offsets[1], object.language);
-  writer.writeBool(offsets[2], object.materialColor);
-  writer.writeBool(offsets[3], object.theme);
+  writer.writeBool(offsets[0], object.ads);
+  writer.writeBool(offsets[1], object.amoledTheme);
+  writer.writeString(offsets[2], object.language);
+  writer.writeBool(offsets[3], object.materialColor);
+  writer.writeBool(offsets[4], object.theme);
 }
 
 Settings _settingsDeserialize(
@@ -3912,11 +3918,12 @@ Settings _settingsDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Settings();
-  object.amoledTheme = reader.readBool(offsets[0]);
+  object.ads = reader.readBoolOrNull(offsets[0]);
+  object.amoledTheme = reader.readBool(offsets[1]);
   object.id = id;
-  object.language = reader.readStringOrNull(offsets[1]);
-  object.materialColor = reader.readBool(offsets[2]);
-  object.theme = reader.readBoolOrNull(offsets[3]);
+  object.language = reader.readStringOrNull(offsets[2]);
+  object.materialColor = reader.readBool(offsets[3]);
+  object.theme = reader.readBoolOrNull(offsets[4]);
   return object;
 }
 
@@ -3928,12 +3935,14 @@ P _settingsDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readBool(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
-    case 2:
       return (reader.readBool(offset)) as P;
+    case 2:
+      return (reader.readStringOrNull(offset)) as P;
     case 3:
+      return (reader.readBool(offset)) as P;
+    case 4:
       return (reader.readBoolOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -4032,6 +4041,32 @@ extension SettingsQueryWhere on QueryBuilder<Settings, Settings, QWhereClause> {
 
 extension SettingsQueryFilter
     on QueryBuilder<Settings, Settings, QFilterCondition> {
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> adsIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'ads',
+      ));
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> adsIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'ads',
+      ));
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterFilterCondition> adsEqualTo(
+      bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'ads',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<Settings, Settings, QAfterFilterCondition> amoledThemeEqualTo(
       bool value) {
     return QueryBuilder.apply(this, (query) {
@@ -4310,6 +4345,18 @@ extension SettingsQueryLinks
 }
 
 extension SettingsQuerySortBy on QueryBuilder<Settings, Settings, QSortBy> {
+  QueryBuilder<Settings, Settings, QAfterSortBy> sortByAds() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'ads', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterSortBy> sortByAdsDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'ads', Sort.desc);
+    });
+  }
+
   QueryBuilder<Settings, Settings, QAfterSortBy> sortByAmoledTheme() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'amoledTheme', Sort.asc);
@@ -4361,6 +4408,18 @@ extension SettingsQuerySortBy on QueryBuilder<Settings, Settings, QSortBy> {
 
 extension SettingsQuerySortThenBy
     on QueryBuilder<Settings, Settings, QSortThenBy> {
+  QueryBuilder<Settings, Settings, QAfterSortBy> thenByAds() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'ads', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Settings, Settings, QAfterSortBy> thenByAdsDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'ads', Sort.desc);
+    });
+  }
+
   QueryBuilder<Settings, Settings, QAfterSortBy> thenByAmoledTheme() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'amoledTheme', Sort.asc);
@@ -4424,6 +4483,12 @@ extension SettingsQuerySortThenBy
 
 extension SettingsQueryWhereDistinct
     on QueryBuilder<Settings, Settings, QDistinct> {
+  QueryBuilder<Settings, Settings, QDistinct> distinctByAds() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'ads');
+    });
+  }
+
   QueryBuilder<Settings, Settings, QDistinct> distinctByAmoledTheme() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'amoledTheme');
@@ -4455,6 +4520,12 @@ extension SettingsQueryProperty
   QueryBuilder<Settings, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<Settings, bool?, QQueryOperations> adsProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'ads');
     });
   }
 
