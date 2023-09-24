@@ -46,7 +46,7 @@ class _TodosActionState extends State<TodosAction> {
   @override
   initState() {
     getListData();
-    if (widget.edit == true) {
+    if (widget.edit) {
       titleEdit = TextEditingController(text: widget.todo!.name);
       timeEdit = TextEditingController(
           text: widget.todo!.todoCompletedTime != null
@@ -188,10 +188,7 @@ class _TodosActionState extends State<TodosAction> {
                   ),
                   icon: const Padding(
                     padding: EdgeInsets.only(right: 15, bottom: 10),
-                    child: Icon(
-                      IconsaxOutline.arrow_down_1,
-                      size: 18,
-                    ),
+                    child: Icon(IconsaxOutline.arrow_down_1, size: 18),
                   ),
                   value: selectedDiscipline,
                   items: disciplineList?.map((e) {

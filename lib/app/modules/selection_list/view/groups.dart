@@ -8,9 +8,11 @@ import 'package:ikms/app/modules/selection_list/widgets/selection_list.dart';
 import 'package:ikms/main.dart';
 
 class GroupsPage extends StatefulWidget {
+  const GroupsPage({
+    super.key,
+    required this.isSettings,
+  });
   final bool isSettings;
-
-  const GroupsPage({super.key, required this.isSettings});
 
   @override
   State<GroupsPage> createState() => _GroupsPageState();

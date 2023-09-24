@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:ikms/app/data/schema.dart';
+import 'package:ikms/app/widgets/shimmer.dart';
 import 'package:ikms/app/widgets/text_form.dart';
-import 'package:shimmer/shimmer.dart';
 
 class SelectionList<T extends SelectionData> extends StatefulWidget {
   final String headerText;
@@ -93,31 +93,29 @@ class _SelectionListState<T extends SelectionData>
             Expanded(
               child: Visibility(
                 visible: widget.isLoaded,
-                replacement: Shimmer.fromColors(
-                  baseColor: context.theme.cardColor,
-                  highlightColor: context.theme.primaryColor,
-                  child: ListView.builder(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: 10,
-                    itemBuilder: (BuildContext context, int index) {
-                      return const Card(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      );
-                    },
-                  ),
+                replacement: ListView.builder(
+                  itemCount: 10,
+                  itemBuilder: (BuildContext context, int index) {
+                    return const MyShimmer(
+                      edgeInsetsMargin: EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 5,
+                      ),
+                      hight: 60,
+                    );
+                  },
                 ),
                 child: ListView.builder(
-                  physics: const AlwaysScrollableScrollPhysics(),
                   itemCount: widget.data.length,
                   itemBuilder: (BuildContext context, int index) {
                     final T data = widget.data[index];
                     return Card(
                       margin: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
-                      child: TextButton(
-                        onPressed: () => widget.onEntrySelected(data),
-                        child: Text(
+                      child: ListTile(
+                        splashColor: Colors.transparent,
+                        onTap: () => widget.onEntrySelected(data),
+                        title: Text(
                           data.name,
                           style: context.textTheme.labelLarge,
                           textAlign: TextAlign.center,

@@ -58,26 +58,16 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 University? university;
                 GroupSchedule? group;
                 do {
-                  university = await Get.dialog(
-                    const UniversityPage(),
-                  );
+                  university = await Get.dialog(const UniversityPage());
                 } while (university == null);
 
                 if (university.id == donstu.id) {
-                  Get.dialog(
-                    const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
+                  Get.dialog(const Center(child: CircularProgressIndicator()));
                   if (!await DonstuCaching.cacheGroups()) return;
                 }
 
                 do {
-                  group = await Get.dialog(
-                    const GroupsPage(
-                      isSettings: false,
-                    ),
-                  );
+                  group = await Get.dialog(const GroupsPage(isSettings: false));
                 } while (group == null);
 
                 settings.university.value = university;

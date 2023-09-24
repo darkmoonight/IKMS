@@ -5,15 +5,12 @@ import 'package:timezone/timezone.dart' as tz;
 class NotificationShow {
   Future showNotification(
       int id, String title, String body, DateTime? date) async {
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestPermission();
+    await requestNotificationPermission();
     AndroidNotificationDetails androidNotificationDetails =
         const AndroidNotificationDetails(
       'IKMS',
       'DARK NIGHT',
-      priority: Priority.max,
+      priority: Priority.high,
       importance: Importance.max,
     );
     NotificationDetails notificationDetails =
@@ -31,5 +28,14 @@ class NotificationShow {
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       payload: 'notlification-payload',
     );
+  }
+
+  Future<void> requestNotificationPermission() async {
+    final platform =
+        flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+    if (platform != null) {
+      await platform.requestPermission();
+    }
   }
 }

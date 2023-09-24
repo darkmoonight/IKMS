@@ -21,18 +21,6 @@ class ScheduleData extends SelectionData {
 }
 
 @collection
-class Settings {
-  Id id = Isar.autoIncrement;
-  bool? theme;
-  bool materialColor = false;
-  bool amoledTheme = false;
-  String? language;
-
-  final university = IsarLink<University>();
-  final group = IsarLink<GroupSchedule>();
-}
-
-@collection
 class University extends SelectionData {
   DateTime lastUpdateGroups =
       DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
@@ -110,6 +98,18 @@ class Schedule {
     this.audience = '',
     this.group = '',
   }) : date = dateTime ?? DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
+}
+
+@collection
+class Settings {
+  Id id = Isar.autoIncrement;
+  bool? theme;
+  bool materialColor = false;
+  bool amoledTheme = false;
+  String? language;
+
+  final university = IsarLink<University>();
+  final group = IsarLink<GroupSchedule>();
 }
 
 @collection

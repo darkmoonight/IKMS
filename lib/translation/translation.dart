@@ -55,6 +55,7 @@ class Translation extends Translations {
           'project': 'Project on',
           'language': 'Language',
           'ads': 'Disable ads',
+          'searchTodo': 'Search todo'
         },
         'ru_RU': {
           'timeComlete': 'Время выполнения',
@@ -108,6 +109,7 @@ class Translation extends Translations {
           'project': 'Проект на',
           'language': 'Язык',
           'ads': 'Отключить рекламу',
+          'searchTodo': 'Поиск задачи',
         }
       };
 }

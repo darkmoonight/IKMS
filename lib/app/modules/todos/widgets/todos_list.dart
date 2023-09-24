@@ -8,8 +8,10 @@ class TodosList extends StatefulWidget {
   const TodosList({
     super.key,
     required this.done,
+    required this.searchTodo,
   });
   final bool done;
+  final String searchTodo;
 
   @override
   State<TodosList> createState() => _TodosListState();
@@ -23,7 +25,10 @@ class _TodosListState extends State<TodosList> {
     return Obx(
       () {
         var todos = todoController.todos
-            .where((todo) => todo.done == widget.done)
+            .where((todo) =>
+                todo.done == widget.done &&
+                (widget.searchTodo.isEmpty ||
+                    todo.name.toLowerCase().contains(widget.searchTodo)))
             .toList()
             .obs;
 
@@ -32,20 +37,17 @@ class _TodosListState extends State<TodosList> {
                 img: 'assets/images/add.png',
                 text: widget.done ? 'copletedTodo'.tr : 'addTodo'.tr,
               )
-            : Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: ListView(
-                  children: [
-                    ...todos
-                        .map(
-                          (todosList) => TodosCard(
-                            key: ValueKey(todosList),
-                            todos: todosList,
-                          ),
-                        )
-                        .toList(),
-                  ],
-                ),
+            : ListView(
+                children: [
+                  ...todos
+                      .map(
+                        (todosList) => TodosCard(
+                          key: ValueKey(todosList),
+                          todos: todosList,
+                        ),
+                      )
+                      .toList(),
+                ],
               );
       },
     );

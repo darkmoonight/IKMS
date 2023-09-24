@@ -3,18 +3,14 @@ import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:ikms/app/data/schema.dart';
+import 'package:ikms/app/widgets/list_empty.dart';
+import 'package:ikms/app/widgets/shimmer.dart';
 import 'package:ikms/main.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:swipe/swipe.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:yandex_mobileads/mobile_ads.dart';
 
 class RaspWidget extends StatefulWidget {
-  final bool isLoaded;
-  final ValueNotifier<List<Schedule>> raspElements;
-  final Function()? onBackPressed;
-  final String? headerText;
-
   const RaspWidget({
     super.key,
     required this.isLoaded,
@@ -22,6 +18,10 @@ class RaspWidget extends StatefulWidget {
     this.onBackPressed,
     this.headerText,
   });
+  final bool isLoaded;
+  final ValueNotifier<List<Schedule>> raspElements;
+  final Function()? onBackPressed;
+  final String? headerText;
 
   @override
   State<RaspWidget> createState() => _RaspWidgetState();
@@ -211,40 +211,30 @@ class _RaspWidgetState extends State<RaspWidget> {
             Expanded(
               child: Visibility(
                 visible: widget.isLoaded,
-                replacement: Shimmer.fromColors(
-                  baseColor: context.theme.cardColor,
-                  highlightColor: context.theme.primaryColor,
-                  child: ListView.builder(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: 5,
-                    itemBuilder: (BuildContext context, int index) {
-                      return const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 10),
-                            child: Card(
-                              child: SizedBox(
-                                height: 20,
-                                width: 100,
-                              ),
-                            ),
+                replacement: ListView.builder(
+                  itemCount: 5,
+                  itemBuilder: (BuildContext context, int index) {
+                    return const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MyShimmer(
+                          edgeInsetsMargin: EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 10,
                           ),
-                          Card(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: Card(
-                              child: SizedBox(
-                                height: 100,
-                                width: double.infinity,
-                              ),
-                            ),
+                          hight: 20,
+                          width: 100,
+                        ),
+                        MyShimmer(
+                          edgeInsetsMargin: EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5,
                           ),
-                        ],
-                      );
-                    },
-                  ),
+                          hight: 100,
+                        ),
+                      ],
+                    );
+                  },
                 ),
                 child: Swipe(
                   horizontalMinDisplacement: 20,
@@ -262,25 +252,11 @@ class _RaspWidgetState extends State<RaspWidget> {
                   },
                   child: Visibility(
                     visible: raspElementsFiltered.isNotEmpty,
-                    replacement: Center(
-                      child: SingleChildScrollView(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              'assets/images/no.png',
-                              scale: 5,
-                            ),
-                            Text(
-                              'no_par'.tr,
-                              style: context.textTheme.titleMedium,
-                            ),
-                          ],
-                        ),
-                      ),
+                    replacement: ListEmpty(
+                      img: 'assets/images/no.png',
+                      text: 'no_par'.tr,
                     ),
                     child: GroupedListView<Schedule, String>(
-                        physics: const AlwaysScrollableScrollPhysics(),
                         elements: raspElementsFiltered,
                         groupBy: (element) {
                           return '${element.begin}-${element.end}';
@@ -358,7 +334,6 @@ class _RaspWidgetState extends State<RaspWidget> {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
             AdWidget(bannerAd: banner),
           ],
         ),

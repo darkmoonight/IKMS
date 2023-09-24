@@ -145,9 +145,9 @@ class _SettingsPageState extends State<SettingsPage> {
                     transition: Transition.downToUp);
                 if (selectionData != null) {
                   settings.university.value = selectionData;
-                  await isar.writeTxn(() async {
-                    await isar.settings.put(settings);
-                    await settings.university.save();
+                  isar.writeTxnSync(() {
+                    isar.settings.putSync(settings);
+                    settings.university.saveSync();
                   });
                   setState(() {});
                 }
@@ -162,20 +162,18 @@ class _SettingsPageState extends State<SettingsPage> {
               onPressed: settings.university.value != null
                   ? () async {
                       GroupSchedule? selectionData = await Get.to(
-                          () => const GroupsPage(
-                                isSettings: true,
-                              ),
+                          () => const GroupsPage(isSettings: true),
                           transition: Transition.downToUp);
                       if (selectionData != null) {
                         selectionData.university.value =
                             settings.university.value;
                         settings.group.value = selectionData;
 
-                        await isar.writeTxn(() async {
-                          await isar.groupSchedules.put(selectionData);
-                          await selectionData.university.save();
-                          await isar.settings.put(settings);
-                          await settings.group.save();
+                        isar.writeTxnSync(() {
+                          isar.groupSchedules.putSync(selectionData);
+                          selectionData.university.saveSync();
+                          isar.settings.putSync(settings);
+                          settings.group.saveSync();
                         });
                         setState(() {});
                       }
@@ -219,11 +217,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                   margin: const EdgeInsets.symmetric(
                                       horizontal: 15, vertical: 5),
                                   child: ListTile(
-                                    title: Center(
-                                      child: Text(
-                                        appLanguages[index]['name'],
-                                        style: context.textTheme.labelLarge,
-                                      ),
+                                    title: Text(
+                                      appLanguages[index]['name'],
+                                      style: context.textTheme.labelLarge,
+                                      textAlign: TextAlign.center,
                                     ),
                                     onTap: () {
                                       MyApp.updateAppState(context,

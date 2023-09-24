@@ -6,9 +6,11 @@ import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/app/modules/rasps/widgets/rasp_widget.dart';
 
 class RaspAudiencesPage extends StatefulWidget {
+  const RaspAudiencesPage({
+    super.key,
+    required this.audienceSchedule,
+  });
   final AudienceSchedule audienceSchedule;
-
-  const RaspAudiencesPage({super.key, required this.audienceSchedule});
 
   @override
   State<RaspAudiencesPage> createState() => _RaspAudiencesPageState();

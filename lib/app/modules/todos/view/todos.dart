@@ -1,6 +1,9 @@
+import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ikms/app/controller/controller.dart';
 import 'package:ikms/app/modules/todos/widgets/todos_list.dart';
+import 'package:ikms/app/widgets/text_form.dart';
 
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
@@ -9,7 +12,22 @@ class TaskPage extends StatefulWidget {
   State<TaskPage> createState() => _TaskPageState();
 }
 
-class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
+class _TaskPageState extends State<TaskPage> {
+  final todoController = Get.put(TodoController());
+  TextEditingController searchTodos = TextEditingController();
+  String filter = '';
+
+  applyFilter(String value) async {
+    filter = value.toLowerCase();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    applyFilter('');
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -27,6 +45,27 @@ class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            MyTextForm(
+              labelText: 'searchTodo'.tr,
+              type: TextInputType.text,
+              icon: const Icon(IconsaxOutline.search_normal_1, size: 18),
+              controller: searchTodos,
+              margin: const EdgeInsets.fromLTRB(10, 0, 10, 5),
+              onChanged: applyFilter,
+              iconButton: searchTodos.text.isNotEmpty
+                  ? IconButton(
+                      onPressed: () {
+                        searchTodos.clear();
+                        applyFilter('');
+                      },
+                      icon: const Icon(
+                        IconsaxOutline.close_circle,
+                        color: Colors.grey,
+                        size: 20,
+                      ),
+                    )
+                  : null,
+            ),
             TabBar(
               isScrollable: true,
               dividerColor: Colors.transparent,
@@ -41,12 +80,21 @@ class _TaskPageState extends State<TaskPage> with TickerProviderStateMixin {
                 Tab(text: 'done'.tr),
               ],
             ),
-            const Flexible(
-              child: TabBarView(
-                children: [
-                  TodosList(done: false),
-                  TodosList(done: true),
-                ],
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: TabBarView(
+                  children: [
+                    TodosList(
+                      done: false,
+                      searchTodo: filter,
+                    ),
+                    TodosList(
+                      done: true,
+                      searchTodo: filter,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
