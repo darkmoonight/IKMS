@@ -1,5 +1,5 @@
-<div align="center">
-<img src="/assets/icons/icon.png" width="150"/>
+<div align='center'>
+<img src='/assets/icons/icon.png' width='150'/>
 <h2>IKMS - Расписание занятий для студентов</h2>
 </div>
 
@@ -27,7 +27,12 @@
 
 ### Скриншоты:
 
-<img src="/readme/1.jpg" width="150"/> <img src="/readme/2.jpg" width="150"/> <img src="/readme/3.jpg" width="150"/> <img src="/readme/4.jpg" width="150"/> <img src="/readme/5.jpg" width="150"/>
+<img src='/readme/1.png' width='150'/> <img src='/readme/2.png' width='150'/> <img src='/readme/3.png' width='150'/> <img src='/readme/4.png' width='150'/> <img src='/readme/5.png' width='150'/> <img src='/readme/6.png' width='150'/> <img src='/readme/7.png' width='150'/> <img src='/readme/8.png' width='150'/>
+
+### Пожертвования:
+
+[![DonationAlerts](https://img.shields.io/badge/DonationAlerts-orange?style=for-the-badge)](https://www.donationalerts.com/r/yoshimok)
+[![ЮMoney](https://img.shields.io/badge/ЮMoney-violet?style=for-the-badge)](https://yoomoney.ru/to/4100117672775961)
 
 ### Ссылки для скачивания:
 
