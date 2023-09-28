@@ -103,7 +103,7 @@ class Schedule {
 @collection
 class Settings {
   Id id = Isar.autoIncrement;
-  bool? theme;
+  String? theme = 'system';
   bool materialColor = false;
   bool amoledTheme = false;
   bool? ads = false;

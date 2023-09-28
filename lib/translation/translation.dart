@@ -24,7 +24,7 @@ class Translation extends Translations {
           'sched_hint':
               'In our application, you can view your schedule, as well as the schedule of teachers, classrooms and other groups.',
           'schedule': 'Schedule',
-          'theme': 'Dark Theme',
+          'theme': 'Theme',
           'settings': 'Settings',
           'group': 'Group',
           'university': 'University',
@@ -62,6 +62,9 @@ class Translation extends Translations {
               'Are you sure you want to disable ads? Your support through ads helps us improve and maintain this application. Thank you for your support!',
           'cancel': 'Cancel',
           'disable': 'Disable',
+          'system': 'System',
+          'dark': 'Dark',
+          'light': 'Light',
         },
         'ru_RU': {
           'timeComlete': 'Время выполнения',
@@ -84,7 +87,7 @@ class Translation extends Translations {
           'sched_hint':
               'В нашем приложении вы сможете посмотреть свое расписание, а также расписание преподавателей, аудиторий и других групп.',
           'schedule': 'Расписание',
-          'theme': 'Темная тема',
+          'theme': 'Тема',
           'settings': 'Настройки',
           'group': 'Группа',
           'university': 'Университет',
@@ -122,6 +125,9 @@ class Translation extends Translations {
               'Вы уверены, что хотите отключить рекламу? Ваша поддержка через рекламу помогает нам улучшать и поддерживать это приложение. Спасибо за вашу поддержку!',
           'cancel': 'Отмена',
           'disable': 'Отключить',
+          'system': 'Системная',
+          'dark': 'Тёмная',
+          'light': 'Светлая',
         }
       };
 }

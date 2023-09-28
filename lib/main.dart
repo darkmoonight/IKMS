@@ -108,6 +108,11 @@ Future<void> isarInit() async {
     settings.language = '${Get.deviceLocale}';
     isar.writeTxnSync(() => isar.settings.putSync(settings));
   }
+
+  if (settings.theme == null) {
+    settings.theme = 'system';
+    isar.writeTxnSync(() => isar.settings.putSync(settings));
+  }
 }
 
 class MyApp extends StatefulWidget {
