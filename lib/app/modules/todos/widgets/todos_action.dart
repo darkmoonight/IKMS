@@ -93,7 +93,7 @@ class _TodosActionState extends State<TodosAction> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 10, left: 5, right: 10),
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -160,7 +160,7 @@ class _TodosActionState extends State<TodosAction> {
               ),
               MyTextForm(
                 elevation: 4,
-                margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 controller: titleEdit,
                 labelText: 'name'.tr,
                 type: TextInputType.multiline,
@@ -175,7 +175,7 @@ class _TodosActionState extends State<TodosAction> {
               ),
               Card(
                 elevation: 4,
-                margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: DropdownButtonFormField(
                   style: context.textTheme.titleMedium,
                   isExpanded: true,
@@ -216,7 +216,7 @@ class _TodosActionState extends State<TodosAction> {
               ),
               MyTextForm(
                 elevation: 4,
-                margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 onChanged: (value) => setState(() {}),
                 readOnly: true,
                 controller: timeEdit,
@@ -237,15 +237,16 @@ class _TodosActionState extends State<TodosAction> {
                     : null,
                 onTap: () {
                   BottomPicker.dateTime(
+                    titlePadding: const EdgeInsets.only(top: 10),
                     title: 'time'.tr,
                     description: 'timeDesc'.tr,
                     titleStyle: context.textTheme.titleMedium!,
-                    descriptionStyle: context.textTheme.bodyLarge!
+                    descriptionStyle: context.textTheme.labelLarge!
                         .copyWith(color: Colors.grey),
-                    pickerTextStyle: context.textTheme.bodyLarge!,
-                    iconColor: context.theme.iconTheme.color!,
+                    pickerTextStyle:
+                        context.textTheme.labelMedium!.copyWith(fontSize: 15),
                     closeIconColor: Colors.red,
-                    backgroundColor: context.theme.scaffoldBackgroundColor,
+                    backgroundColor: context.theme.primaryColor,
                     onSubmit: (date) {
                       String formattedDate =
                           DateFormat.yMMMEd(locale.languageCode)
@@ -263,7 +264,7 @@ class _TodosActionState extends State<TodosAction> {
                   ).show(context);
                 },
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 10),
             ],
           ),
         ),
