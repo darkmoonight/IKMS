@@ -22,19 +22,18 @@ class _AudiencesPageState extends State<AudiencesPage> {
   @override
   void initState() {
     super.initState();
-    isDeviceConnectedNotifier.addListener(reApplyFilter);
+    isOnline.addListener(reApplyFilter);
     applyFilter('');
   }
 
   @override
   void dispose() {
-    isDeviceConnectedNotifier.removeListener(reApplyFilter);
+    isOnline.removeListener(reApplyFilter);
     super.dispose();
   }
 
   Future<List<AudienceSchedule>> get getData async {
-    return await isDeviceConnectedNotifier.value &&
-            await DonstuCaching.cacheAudiences()
+    return await isOnline.value && await DonstuCaching.cacheAudiences()
         ? await donstu.audiences.filter().sortByLastUpdateDesc().findAll()
         : donstu.audiences.where((e) => e.schedules.isNotEmpty).toList();
   }

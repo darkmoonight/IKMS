@@ -27,19 +27,18 @@ class _GroupsPageState extends State<GroupsPage> {
   @override
   void initState() {
     super.initState();
-    isDeviceConnectedNotifier.addListener(reApplyFilter);
+    isOnline.addListener(reApplyFilter);
     applyFilter('');
   }
 
   @override
   void dispose() {
-    isDeviceConnectedNotifier.removeListener(reApplyFilter);
+    isOnline.removeListener(reApplyFilter);
     super.dispose();
   }
 
   Future<List<GroupSchedule>> get getData async {
-    return await isDeviceConnectedNotifier.value &&
-            await DonstuCaching.cacheGroups()
+    return await isOnline.value && await DonstuCaching.cacheGroups()
         ? await donstu.groups.filter().sortByLastUpdateDesc().findAll()
         : donstu.groups.where((e) => e.schedules.isNotEmpty).toList();
   }

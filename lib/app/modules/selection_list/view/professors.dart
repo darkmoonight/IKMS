@@ -22,19 +22,18 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
   @override
   void initState() {
     super.initState();
-    isDeviceConnectedNotifier.addListener(reApplyFilter);
+    isOnline.addListener(reApplyFilter);
     applyFilter('');
   }
 
   @override
   void dispose() {
-    isDeviceConnectedNotifier.removeListener(reApplyFilter);
+    isOnline.removeListener(reApplyFilter);
     super.dispose();
   }
 
   Future<List<TeacherSchedule>> get getData async {
-    return await isDeviceConnectedNotifier.value &&
-            await DonstuCaching.cacheTeachers()
+    return await isOnline.value && await DonstuCaching.cacheTeachers()
         ? await donstu.teachers.filter().sortByLastUpdateDesc().findAll()
         : donstu.teachers.where((e) => e.schedules.isNotEmpty).toList();
   }

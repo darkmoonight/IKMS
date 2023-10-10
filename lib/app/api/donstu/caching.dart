@@ -103,7 +103,7 @@ class DonstuCaching {
       AudienceSchedule t) async {
     if ((DateTime.now().difference(t.lastUpdate).inMinutes > 90 ||
             t.schedules.isEmpty) &&
-        await isDeviceConnectedNotifier.value) {
+        await isOnline.value) {
       try {
         final l = await DonstuAPI().getRaspsAudElementData(t.id);
 
@@ -125,7 +125,7 @@ class DonstuCaching {
   static Future<GroupSchedule> cacheGroupSchedule(GroupSchedule t) async {
     if ((DateTime.now().difference(t.lastUpdate).inMinutes > 90 ||
             t.schedules.isEmpty) &&
-        await isDeviceConnectedNotifier.value) {
+        await isOnline.value) {
       try {
         final l = await DonstuAPI().getRaspsGroupElementData(t.id);
 
@@ -147,7 +147,7 @@ class DonstuCaching {
   static Future<TeacherSchedule> cacheTeacherSchedule(TeacherSchedule t) async {
     if ((DateTime.now().difference(t.lastUpdate).inMinutes > 90 ||
             t.schedules.isEmpty) &&
-        await isDeviceConnectedNotifier.value) {
+        await isOnline.value) {
       try {
         final l = await DonstuAPI().getRaspsProfElementData(t.id);
 

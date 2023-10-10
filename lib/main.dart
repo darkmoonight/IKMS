@@ -1,4 +1,3 @@
-import 'package:connecteo/connecteo.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +33,7 @@ final List appLanguages = [
 ];
 
 late University donstu;
-final ValueNotifier<Future<bool>> isDeviceConnectedNotifier =
-    ValueNotifier(ConnectionChecker().isConnected);
+final ValueNotifier<Future<bool>> isOnline = ValueNotifier(Future.value(false));
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -44,14 +42,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await isarInit();
   await setOptimalDisplayMode();
-  Connectivity()
-      .onConnectivityChanged
-      .listen((ConnectivityResult result) async {
-    if (result != ConnectivityResult.none) {
-      isDeviceConnectedNotifier.value = ConnectionChecker().isConnected;
-    } else {
-      isDeviceConnectedNotifier.value = Future(() => false);
-    }
+  Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    result == ConnectivityResult.none
+        ? isOnline.value = Future.value(false)
+        : isOnline.value = Future.value(true);
   });
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(systemNavigationBarColor: Colors.black));
