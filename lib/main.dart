@@ -9,6 +9,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:get/get.dart';
 import 'package:ikms/theme/theme.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ikms/app/data/schema.dart';
@@ -33,7 +34,8 @@ final List appLanguages = [
 ];
 
 late University donstu;
-final ValueNotifier<Future<bool>> isOnline = ValueNotifier(Future.value(false));
+final ValueNotifier<Future<bool>> isOnline =
+    ValueNotifier(InternetConnectionChecker().hasConnection);
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -42,10 +44,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await isarInit();
   await setOptimalDisplayMode();
-  Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-    result == ConnectivityResult.none
-        ? isOnline.value = Future.value(false)
-        : isOnline.value = Future.value(true);
+  Connectivity()
+      .onConnectivityChanged
+      .listen((ConnectivityResult result) async {
+    if (result != ConnectivityResult.none) {
+      isOnline.value = InternetConnectionChecker().hasConnection;
+    } else {
+      isOnline.value = Future(() => false);
+    }
   });
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(systemNavigationBarColor: Colors.black));
