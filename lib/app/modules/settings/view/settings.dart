@@ -340,12 +340,6 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
             SettingCard(
-              icon: const Icon(IconsaxOutline.hierarchy_square_2),
-              text: 'version'.tr,
-              info: true,
-              textInfo: '$appVersion',
-            ),
-            SettingCard(
               icon: const Icon(IconsaxOutline.document),
               text: 'license'.tr,
               onPressed: () => Get.to(
@@ -364,6 +358,12 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 transition: Transition.downToUp,
               ),
+            ),
+            SettingCard(
+              icon: const Icon(IconsaxOutline.hierarchy_square_2),
+              text: 'version'.tr,
+              info: true,
+              textInfo: '$appVersion',
             ),
             SettingCard(
               icon: Image.asset(
