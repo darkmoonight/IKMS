@@ -39,14 +39,12 @@ class _TodosListState extends State<TodosList> {
               )
             : ListView(
                 children: [
-                  ...todos
-                      .map(
-                        (todosList) => TodosCard(
-                          key: ValueKey(todosList),
-                          todos: todosList,
-                        ),
-                      )
-                      .toList(),
+                  ...todos.map(
+                    (todosList) => TodosCard(
+                      key: ValueKey(todosList),
+                      todos: todosList,
+                    ),
+                  ),
                 ],
               );
       },
