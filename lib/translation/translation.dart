@@ -66,6 +66,9 @@ class Translation extends Translations {
           'dark': 'Тёмная',
           'light': 'Светлая',
           'license': 'Лицензии',
+          'deletedTodo': 'Удаление задачи',
+          'deletedTodoQuery': 'Вы уверены что хотите удалить задачу?',
+          'delete': 'Удалить',
         },
         'en_US': {
           'timeComlete': 'Execution time',
@@ -130,6 +133,9 @@ class Translation extends Translations {
           'dark': 'Dark',
           'light': 'Light',
           'license': 'Licenses',
+          'deletedTodo': 'Deleting a todo',
+          'deletedTodoQuery': 'Are you sure you want to delete the todo?',
+          'delete': 'Delete',
         },
       };
 }

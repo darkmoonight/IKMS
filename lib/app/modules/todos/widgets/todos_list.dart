@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ikms/app/controller/todo_controller.dart';
+import 'package:ikms/app/modules/todos/widgets/todos_action.dart';
 import 'package:ikms/app/modules/todos/widgets/todos_card.dart';
 import 'package:ikms/app/widgets/list_empty.dart';
 
@@ -40,9 +41,29 @@ class _TodosListState extends State<TodosList> {
             : ListView(
                 children: [
                   ...todos.map(
-                    (todosList) => TodosCard(
-                      key: ValueKey(todosList),
-                      todos: todosList,
+                    (todo) => TodosCard(
+                      key: ValueKey(todo),
+                      todo: todo,
+                      onTap: () {
+                        todoController.isMultiSelectionTodo.isTrue
+                            ? todoController.doMultiSelectionTodo(todo)
+                            : showModalBottomSheet(
+                                enableDrag: false,
+                                context: context,
+                                isScrollControlled: true,
+                                builder: (BuildContext context) {
+                                  return TodosAction(
+                                    text: 'editing'.tr,
+                                    edit: true,
+                                    todo: todo,
+                                  );
+                                },
+                              );
+                      },
+                      onLongPress: () {
+                        todoController.isMultiSelectionTodo.value = true;
+                        todoController.doMultiSelectionTodo(todo);
+                      },
                     ),
                   ),
                 ],

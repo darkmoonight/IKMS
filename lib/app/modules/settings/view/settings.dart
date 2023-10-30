@@ -373,7 +373,7 @@ class _SettingsPageState extends State<SettingsPage> {
               text: '${'project'.tr} GitHub',
               onPressed: () async {
                 final Uri url =
-                    Uri.parse('https://github.com/DarkMooNight/IKMS');
+                    Uri.parse('https://github.com/darkmoonight/IKMS');
                 if (!await launchUrl(url,
                     mode: LaunchMode.externalApplication)) {
                   throw Exception('Could not launch $url');

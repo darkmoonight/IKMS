@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ikms/app/controller/todo_controller.dart';
 import 'package:ikms/app/data/schema.dart';
-import 'package:ikms/app/modules/todos/widgets/todos_action.dart';
 import 'package:ikms/app/services/notification.dart';
+import 'package:ikms/main.dart';
 import 'package:intl/intl.dart';
-import '../../../../main.dart';
 
 class TodosCard extends StatefulWidget {
   const TodosCard({
     super.key,
-    required this.todos,
+    required this.todo,
+    required this.onLongPress,
+    required this.onTap,
   });
-  final Todos todos;
+  final Todos todo;
+  final Function() onLongPress;
+  final Function() onTap;
 
   @override
   State<TodosCard> createState() => _TodosCardState();
@@ -25,49 +28,43 @@ class _TodosCardState extends State<TodosCard> {
   Widget build(BuildContext context) {
     return StatefulBuilder(
       builder: (context, innerState) {
-        return Card(
-          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: InkWell(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              onTap: () {
-                showModalBottomSheet(
-                  enableDrag: false,
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (BuildContext context) {
-                    return TodosAction(
-                      text: 'editing'.tr,
-                      edit: true,
-                      todo: widget.todos,
-                    );
-                  },
-                );
-              },
+        return GestureDetector(
+          onTap: widget.onTap,
+          onLongPress: widget.onLongPress,
+          child: Card(
+            shape: todoController.isMultiSelectionTodo.isTrue &&
+                    todoController.selectedTodo.contains(widget.todo)
+                ? RoundedRectangleBorder(
+                    side: BorderSide(
+                        color: context.theme.colorScheme.onPrimaryContainer),
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  )
+                : null,
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
               child: Row(
                 children: [
                   Checkbox(
-                    value: widget.todos.done,
+                    value: widget.todo.done,
                     shape: const CircleBorder(),
                     onChanged: (val) {
                       innerState(() {
-                        widget.todos.done = val!;
+                        widget.todo.done = val!;
                       });
-                      widget.todos.done
+                      widget.todo.done
                           ? flutterLocalNotificationsPlugin
-                              .cancel(widget.todos.id)
-                          : widget.todos.todoCompletedTime != null
+                              .cancel(widget.todo.id)
+                          : widget.todo.todoCompletedTime != null
                               ? NotificationShow().showNotification(
-                                  widget.todos.id,
-                                  widget.todos.name,
-                                  widget.todos.discipline,
-                                  widget.todos.todoCompletedTime,
+                                  widget.todo.id,
+                                  widget.todo.name,
+                                  widget.todo.discipline,
+                                  widget.todo.todoCompletedTime,
                                 )
                               : null;
                       Future.delayed(const Duration(milliseconds: 300),
-                          () => todoController.updateTodoCheck(widget.todos));
+                          () => todoController.updateTodoCheck(widget.todo));
                     },
                   ),
                   Expanded(
@@ -75,7 +72,7 @@ class _TodosCardState extends State<TodosCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.todos.name,
+                          widget.todo.name,
                           style: context.theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -83,20 +80,20 @@ class _TodosCardState extends State<TodosCard> {
                         ),
                         const SizedBox(height: 3),
                         Text(
-                          widget.todos.discipline,
+                          widget.todo.discipline,
                           style: context.textTheme.bodySmall?.copyWith(
                             color: Colors.grey,
                           ),
                           overflow: TextOverflow.visible,
                         ),
                         const SizedBox(height: 3),
-                        widget.todos.todoCompletedTime != null
+                        widget.todo.todoCompletedTime != null
                             ? Text(
-                                widget.todos.todoCompletedTime != null
+                                widget.todo.todoCompletedTime != null
                                     ? DateFormat.yMMMEd(locale.languageCode)
                                         .add_Hm()
                                         .format(
-                                          widget.todos.todoCompletedTime!,
+                                          widget.todo.todoCompletedTime!,
                                         )
                                     : '',
                                 style:

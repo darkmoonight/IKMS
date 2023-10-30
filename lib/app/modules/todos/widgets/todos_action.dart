@@ -115,45 +115,29 @@ class _TodosActionState extends State<TodosAction> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    Row(
-                      children: [
-                        widget.todo != null
-                            ? IconButton(
-                                onPressed: () {
-                                  todoController.deleteTodo(widget.todo!);
-                                  Get.back();
-                                },
-                                icon: const Icon(
-                                  IconsaxOutline.trash,
-                                  size: 20,
-                                ),
-                              )
-                            : SizedBox.fromSize(),
-                        IconButton(
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              textTrim(titleEdit);
-                              widget.edit
-                                  ? todoController.updateTodo(
-                                      widget.todo!,
-                                      titleEdit.text,
-                                      selectedDiscipline!,
-                                      timeEdit.text,
-                                    )
-                                  : todoController.addTodo(
-                                      titleEdit.text,
-                                      selectedDiscipline!,
-                                      timeEdit.text,
-                                    );
-                              Get.back();
-                            }
-                          },
-                          icon: const Icon(
-                            IconsaxOutline.tick_square,
-                            size: 20,
-                          ),
-                        ),
-                      ],
+                    IconButton(
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          textTrim(titleEdit);
+                          widget.edit
+                              ? todoController.updateTodo(
+                                  widget.todo!,
+                                  titleEdit.text,
+                                  selectedDiscipline!,
+                                  timeEdit.text,
+                                )
+                              : todoController.addTodo(
+                                  titleEdit.text,
+                                  selectedDiscipline!,
+                                  timeEdit.text,
+                                );
+                          Get.back();
+                        }
+                      },
+                      icon: const Icon(
+                        IconsaxOutline.tick_square,
+                        size: 20,
+                      ),
                     )
                   ],
                 ),

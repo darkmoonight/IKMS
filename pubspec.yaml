@@ -3,7 +3,7 @@ description: Schedule of classes
 
 publish_to: "none"
 
-version: 1.1.4+15
+version: 1.1.5+16
 
 environment:
   sdk: ">=3.1.5 <4.0.0"
@@ -29,7 +29,7 @@ dependencies:
   dynamic_color: ^1.6.8
   table_calendar: ^3.0.9
   dio_smart_retry: ^6.0.0
-  yandex_mobileads: ^6.0.1
+  yandex_mobileads: ^6.1.0
   flutter_timezone: ^1.0.8
   connectivity_plus: ^5.0.1
   package_info_plus: ^4.2.0
@@ -46,7 +46,7 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   isar_generator: ^3.1.0+1
   dependency_validator: ^3.2.3
-  flutter_native_splash: ^2.3.4
+  flutter_native_splash: ^2.3.5
   flutter_launcher_icons: ^0.13.1
 
 flutter_icons:
