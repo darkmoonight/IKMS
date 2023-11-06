@@ -3,7 +3,15 @@
 <h2>📚 IKMS - Расписание занятий для студентов</h2>
 </div>
 
-Никогда не пропустите важные учебные моменты. 📱📅📚
+<p align='center'>
+ <p align='center'>
+    <a href='https://github.com/darkmoonight/IKMS/stargazers'><img alt='Stars' src='https://img.shields.io/github/stars/darkmoonight/IKMS?color=ABACD3'/></a>
+    <a href='https://github.com/darkmoonight/IKMS/forks'><img alt='Forks' src='https://img.shields.io/github/forks/darkmoonight/IKMS?color=ABACD3'/></a>
+    <a href='https://github.com/darkmoonight/IKMS/blob/main/LICENSE'><img alt='License' src='https://img.shields.io/github/license/darkmoonight/IKMS?color=ABACD3'/></a>
+ </p>
+</p>
+
+<p align='center'> Никогда не пропустите важные учебные моменты. 📱📅📚 </p>
 
 ### 🎓 Функции для вашего успеха
 
@@ -38,3 +46,13 @@ IKMS предлагает ряд функций, которые помогут �
 
 [![Play Store](https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=io.github.DarkMooNight.IKMS)
 [![RuStore](https://img.shields.io/badge/RuStore-blue?style=for-the-badge&logo=vk&logoColor=white)](https://apps.rustore.ru/app/io.github.DarkMooNight.IKMS)
+
+### 📃 Лицензия
+
+Этот проект лицензирован по лицензии [MIT](./LICENSE).
+
+### 👨‍💻 Наши участники
+
+<a href='https://github.com/darkmoonight/IKMS/graphs/contributors'>
+  <img src='https://contrib.rocks/image?repo=darkmoonight/IKMS' />
+</a>
