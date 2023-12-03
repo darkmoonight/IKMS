@@ -137,6 +137,7 @@ class _TaskPageState extends State<TaskPage> {
                       : null,
                 ),
                 TabBar(
+                  tabAlignment: TabAlignment.start,
                   isScrollable: true,
                   dividerColor: Colors.transparent,
                   splashFactory: NoSplash.splashFactory,
