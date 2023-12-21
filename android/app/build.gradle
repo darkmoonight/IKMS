@@ -85,6 +85,6 @@ flutter {
 }
 
 dependencies {
-    implementation 'com.yandex.android:mobileads:6.1.0'
+    implementation 'com.yandex.android:mobileads:6.3.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
