@@ -31,14 +31,15 @@ class _TaskPageState extends State<TaskPage> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => WillPopScope(
-        onWillPop: () async {
+      () => PopScope(
+        canPop: todoController.isPop.value,
+        onPopInvoked: (didPop) {
+          if (didPop) {
+            return;
+          }
+
           if (todoController.isMultiSelectionTodo.isTrue) {
-            todoController.selectedTodo.clear();
-            todoController.isMultiSelectionTodo.value = false;
-            return false;
-          } else {
-            return true;
+            todoController.doMultiSelectionTodoClear();
           }
         },
         child: Scaffold(
@@ -46,10 +47,7 @@ class _TaskPageState extends State<TaskPage> {
             centerTitle: true,
             leading: todoController.isMultiSelectionTodo.isTrue
                 ? IconButton(
-                    onPressed: () {
-                      todoController.selectedTodo.clear();
-                      todoController.isMultiSelectionTodo.value = false;
-                    },
+                    onPressed: () => todoController.doMultiSelectionTodoClear(),
                     icon: const Icon(
                       IconsaxOutline.close_square,
                       size: 20,
@@ -93,9 +91,7 @@ class _TaskPageState extends State<TaskPage> {
                                 onPressed: () {
                                   todoController
                                       .deleteTodo(todoController.selectedTodo);
-                                  todoController.selectedTodo.clear();
-                                  todoController.isMultiSelectionTodo.value =
-                                      false;
+                                  todoController.doMultiSelectionTodoClear();
                                   Get.back();
                                 },
                                 child: Text('delete'.tr,
