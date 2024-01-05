@@ -29,7 +29,8 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion flutter.compileSdkVersion
+    namespace "io.github.DarkMooNight.IKMS"
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -76,8 +77,6 @@ android {
     buildFeatures {
         viewBinding true
     }
-    
-    namespace 'io.github.DarkMooNight.IKMS'
 }
 
 flutter {
@@ -86,5 +85,4 @@ flutter {
 
 dependencies {
     implementation 'com.yandex.android:mobileads:6.3.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
