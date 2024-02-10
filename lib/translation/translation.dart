@@ -69,6 +69,7 @@ class Translation extends Translations {
           'deletedTodo': 'Удаление задачи',
           'deletedTodoQuery': 'Вы уверены что хотите удалить задачу?',
           'delete': 'Удалить',
+          'select': 'Выбрать',
         },
         'en_US': {
           'timeComlete': 'Execution time',
@@ -136,6 +137,7 @@ class Translation extends Translations {
           'deletedTodo': 'Deleting a todo',
           'deletedTodoQuery': 'Are you sure you want to delete the todo?',
           'delete': 'Delete',
+          'select': 'Select',
         },
       };
 }

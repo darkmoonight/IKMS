@@ -239,6 +239,10 @@ class _TodosActionState extends State<TodosAction> {
                       timeEdit.text = formattedDate;
                       setState(() {});
                     },
+                    buttonContent: Text(
+                      'select'.tr,
+                      textAlign: TextAlign.center,
+                    ),
                     bottomPickerTheme: BottomPickerTheme.plumPlate,
                     minDateTime: DateTime.now(),
                     maxDateTime: DateTime.now().add(const Duration(days: 1000)),
