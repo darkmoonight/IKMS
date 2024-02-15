@@ -6,7 +6,7 @@ publish_to: "none"
 version: 1.1.8+19
 
 environment:
-  sdk: ">=3.2.6 <4.0.0"
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -29,7 +29,7 @@ dependencies:
   dynamic_color: ^1.6.9
   table_calendar: ^3.0.9
   dio_smart_retry: ^6.0.0
-  yandex_mobileads: ^6.2.0
+  yandex_mobileads: ^6.3.0
   flutter_timezone: ^1.0.8
   connectivity_plus: ^5.0.2
   package_info_plus: ^5.0.1
