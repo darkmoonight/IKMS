@@ -46,11 +46,11 @@ void main() async {
   await setOptimalDisplayMode();
   Connectivity()
       .onConnectivityChanged
-      .listen((ConnectivityResult result) async {
-    if (result != ConnectivityResult.none) {
-      isOnline.value = InternetConnectionChecker().hasConnection;
-    } else {
+      .listen((List<ConnectivityResult> result) async {
+    if (result.contains(ConnectivityResult.none)) {
       isOnline.value = Future(() => false);
+    } else {
+      isOnline.value = InternetConnectionChecker().hasConnection;
     }
   });
   SystemChrome.setSystemUIOverlayStyle(
