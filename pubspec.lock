@@ -61,10 +61,10 @@ packages:
     dependency: "direct main"
     description:
       name: bottom_picker
-      sha256: af0b3de7b357bcdbf094200790e1902fdb83f469bb222bc4757d0589292178aa
+      sha256: eb43cd6afda954e1d6269b87a92f061d298b0beba1b8378e9a5a3af35c1657d5
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.0"
+    version: "2.6.0"
   build:
     dependency: transitive
     description:
@@ -1091,5 +1091,5 @@ packages:
     source: hosted
     version: "6.3.0"
 sdks:
-  dart: ">=3.3.1 <4.0.0"
+  dart: ">=3.3.2 <4.0.0"
   flutter: ">=3.19.2"
