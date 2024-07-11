@@ -226,12 +226,15 @@ class _TodosActionState extends State<TodosAction> {
                       'time'.tr,
                       style: context.textTheme.titleMedium!,
                     ),
-                    pickerDescription: Text(
-                      'timeDesc'.tr,
-                      style: context.textTheme.labelLarge!
-                          .copyWith(color: Colors.grey),
+                    pickerDescription: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'timeDesc'.tr,
+                        style: context.textTheme.labelLarge!
+                            .copyWith(color: Colors.grey),
+                      ),
                     ),
-                    titleAlignment: Alignment.center,
+                    titleAlignment: Alignment.centerLeft,
                     pickerTextStyle:
                         context.textTheme.labelMedium!.copyWith(fontSize: 15),
                     closeIconColor: Colors.red,

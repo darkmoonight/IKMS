@@ -84,5 +84,5 @@ flutter {
 }
 
 dependencies {
-    implementation 'com.yandex.android:mobileads:7.0.0'
+    implementation 'com.yandex.android:mobileads:7.1.0'
 }
