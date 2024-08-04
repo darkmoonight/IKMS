@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:ikms/app/controller/todo_controller.dart';
 import 'package:ikms/app/data/schema.dart';
@@ -78,7 +79,7 @@ class _TodosCardState extends State<TodosCard> {
                           ),
                           overflow: TextOverflow.visible,
                         ),
-                        const SizedBox(height: 3),
+                        const Gap(3),
                         Text(
                           widget.todo.discipline,
                           style: context.textTheme.bodySmall?.copyWith(
@@ -86,7 +87,7 @@ class _TodosCardState extends State<TodosCard> {
                           ),
                           overflow: TextOverflow.visible,
                         ),
-                        const SizedBox(height: 3),
+                        const Gap(3),
                         widget.todo.todoCompletedTime != null
                             ? Text(
                                 widget.todo.todoCompletedTime != null

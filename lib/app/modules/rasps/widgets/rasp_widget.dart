@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:ficonsax/ficonsax.dart';
@@ -295,7 +296,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                                       fontSize: 16,
                                     ),
                                   ),
-                                  const SizedBox(height: 10),
+                                  const Gap(10),
                                   Flexible(
                                     child: Text(
                                       raspElementPage.teacher,
@@ -304,7 +305,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                  const SizedBox(height: 10),
+                                  const Gap(10),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,

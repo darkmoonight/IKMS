@@ -2,6 +2,7 @@ import 'package:bottom_picker/bottom_picker.dart';
 import 'package:bottom_picker/resources/arrays.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:ikms/app/api/donstu/caching.dart';
@@ -81,187 +82,191 @@ class _TodosActionState extends State<TodosAction> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        titleEdit.clear();
-                        timeEdit.clear();
-                        Get.back();
-                      },
-                      icon: const Icon(
-                        IconsaxOutline.close_square,
-                        size: 20,
-                      ),
-                    ),
-                    Text(
-                      widget.text,
-                      style: context.textTheme.titleLarge?.copyWith(
-                        fontSize: 20,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          textTrim(titleEdit);
-                          widget.edit
-                              ? todoController.updateTodo(
-                                  widget.todo!,
-                                  titleEdit.text,
-                                  selectedDiscipline!,
-                                  timeEdit.text,
-                                )
-                              : todoController.addTodo(
-                                  titleEdit.text,
-                                  selectedDiscipline!,
-                                  timeEdit.text,
-                                );
+    return Padding(
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+      child: Form(
+        key: formKey,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          titleEdit.clear();
+                          timeEdit.clear();
                           Get.back();
-                        }
-                      },
-                      icon: const Icon(
-                        IconsaxOutline.tick_square,
-                        size: 20,
+                        },
+                        icon: const Icon(
+                          IconsaxOutline.close_square,
+                          size: 20,
+                        ),
                       ),
-                    )
-                  ],
+                      Text(
+                        widget.text,
+                        style: context.textTheme.titleLarge?.copyWith(
+                          fontSize: 20,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {
+                            textTrim(titleEdit);
+                            widget.edit
+                                ? todoController.updateTodo(
+                                    widget.todo!,
+                                    titleEdit.text,
+                                    selectedDiscipline!,
+                                    timeEdit.text,
+                                  )
+                                : todoController.addTodo(
+                                    titleEdit.text,
+                                    selectedDiscipline!,
+                                    timeEdit.text,
+                                  );
+                            Get.back();
+                          }
+                        },
+                        icon: const Icon(
+                          IconsaxOutline.tick_square,
+                          size: 20,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              MyTextForm(
-                elevation: 4,
-                margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                controller: titleEdit,
-                labelText: 'name'.tr,
-                type: TextInputType.multiline,
-                icon: const Icon(IconsaxOutline.edit_2),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'validateName'.tr;
-                  }
-                  return null;
-                },
-                maxLine: null,
-              ),
-              Card(
-                elevation: 4,
-                margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: DropdownButtonFormField(
-                  style: context.textTheme.titleMedium,
-                  isExpanded: true,
-                  decoration: InputDecoration(
-                    label: Text('discipline'.tr),
-                    prefixIcon: const Icon(IconsaxOutline.book),
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                  ),
-                  icon: const Padding(
-                    padding: EdgeInsets.only(right: 15, bottom: 10),
-                    child: Icon(IconsaxOutline.arrow_down_1, size: 18),
-                  ),
-                  value: selectedDiscipline,
-                  items: disciplineList?.map((e) {
-                    return DropdownMenuItem(
-                        value: e,
-                        child: Text(
-                          e.discipline,
-                          style: context.textTheme.bodyMedium,
-                          overflow: TextOverflow.visible,
-                        ));
-                  }).toList(),
-                  onChanged: (Schedule? newValue) {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    setState(() {
-                      selectedDiscipline = newValue!;
-                    });
-                  },
+                MyTextForm(
+                  elevation: 4,
+                  margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  controller: titleEdit,
+                  labelText: 'name'.tr,
+                  type: TextInputType.multiline,
+                  icon: const Icon(IconsaxOutline.edit_2),
                   validator: (value) {
-                    if (value == null) {
-                      return 'validateDiscipline'.tr;
+                    if (value == null || value.isEmpty) {
+                      return 'validateName'.tr;
                     }
                     return null;
                   },
+                  maxLine: null,
                 ),
-              ),
-              MyTextForm(
-                elevation: 4,
-                margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                onChanged: (value) => setState(() {}),
-                readOnly: true,
-                controller: timeEdit,
-                labelText: 'timeComlete'.tr,
-                type: TextInputType.datetime,
-                icon: const Icon(IconsaxOutline.clock),
-                iconButton: timeEdit.text.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(
-                          Icons.close,
-                          size: 18,
-                        ),
-                        onPressed: () {
-                          timeEdit.clear();
-                          setState(() {});
-                        },
-                      )
-                    : null,
-                onTap: () {
-                  BottomPicker.dateTime(
-                    titlePadding: const EdgeInsets.only(top: 10),
-                    pickerTitle: Text(
-                      'time'.tr,
-                      style: context.textTheme.titleMedium!,
+                Card(
+                  elevation: 4,
+                  margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: DropdownButtonFormField(
+                    style: context.textTheme.titleMedium,
+                    isExpanded: true,
+                    decoration: InputDecoration(
+                      label: Text('discipline'.tr),
+                      prefixIcon: const Icon(IconsaxOutline.book),
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
                     ),
-                    pickerDescription: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'timeDesc'.tr,
-                        style: context.textTheme.labelLarge!
-                            .copyWith(color: Colors.grey),
-                      ),
+                    icon: const Padding(
+                      padding: EdgeInsets.only(right: 15, bottom: 10),
+                      child: Icon(IconsaxOutline.arrow_down_1, size: 18),
                     ),
-                    titleAlignment: Alignment.centerLeft,
-                    pickerTextStyle:
-                        context.textTheme.labelMedium!.copyWith(fontSize: 15),
-                    closeIconColor: Colors.red,
-                    backgroundColor: context.theme.primaryColor,
-                    onSubmit: (date) {
-                      String formattedDate =
-                          DateFormat.yMMMEd(locale.languageCode)
-                              .add_Hm()
-                              .format(date);
-                      timeEdit.text = formattedDate;
-                      setState(() {});
+                    value: selectedDiscipline,
+                    items: disciplineList?.map((e) {
+                      return DropdownMenuItem(
+                          value: e,
+                          child: Text(
+                            e.discipline,
+                            style: context.textTheme.bodyMedium,
+                            overflow: TextOverflow.visible,
+                          ));
+                    }).toList(),
+                    onChanged: (Schedule? newValue) {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      setState(() {
+                        selectedDiscipline = newValue!;
+                      });
                     },
-                    buttonContent: Text(
-                      'select'.tr,
-                      textAlign: TextAlign.center,
-                    ),
-                    bottomPickerTheme: BottomPickerTheme.plumPlate,
-                    minDateTime: DateTime.now(),
-                    maxDateTime: DateTime.now().add(const Duration(days: 1000)),
-                    initialDateTime: DateTime.now(),
-                    use24hFormat: true,
-                    dateOrder: DatePickerDateOrder.dmy,
-                  ).show(context);
-                },
-              ),
-              const SizedBox(height: 10),
-            ],
+                    validator: (value) {
+                      if (value == null) {
+                        return 'validateDiscipline'.tr;
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                MyTextForm(
+                  elevation: 4,
+                  margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  onChanged: (value) => setState(() {}),
+                  readOnly: true,
+                  controller: timeEdit,
+                  labelText: 'timeComlete'.tr,
+                  type: TextInputType.datetime,
+                  icon: const Icon(IconsaxOutline.clock),
+                  iconButton: timeEdit.text.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(
+                            Icons.close,
+                            size: 18,
+                          ),
+                          onPressed: () {
+                            timeEdit.clear();
+                            setState(() {});
+                          },
+                        )
+                      : null,
+                  onTap: () {
+                    BottomPicker.dateTime(
+                      titlePadding: const EdgeInsets.only(top: 10),
+                      pickerTitle: Text(
+                        'time'.tr,
+                        style: context.textTheme.titleMedium!,
+                      ),
+                      pickerDescription: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'timeDesc'.tr,
+                          style: context.textTheme.labelLarge!
+                              .copyWith(color: Colors.grey),
+                        ),
+                      ),
+                      titleAlignment: Alignment.centerLeft,
+                      pickerTextStyle:
+                          context.textTheme.labelMedium!.copyWith(fontSize: 15),
+                      closeIconColor: Colors.red,
+                      backgroundColor: context.theme.primaryColor,
+                      onSubmit: (date) {
+                        String formattedDate =
+                            DateFormat.yMMMEd(locale.languageCode)
+                                .add_Hm()
+                                .format(date);
+                        timeEdit.text = formattedDate;
+                        setState(() {});
+                      },
+                      buttonContent: Text(
+                        'select'.tr,
+                        textAlign: TextAlign.center,
+                      ),
+                      bottomPickerTheme: BottomPickerTheme.plumPlate,
+                      minDateTime: DateTime.now(),
+                      maxDateTime:
+                          DateTime.now().add(const Duration(days: 1000)),
+                      initialDateTime: DateTime.now(),
+                      use24hFormat: true,
+                      dateOrder: DatePickerDateOrder.dmy,
+                    ).show(context);
+                  },
+                ),
+                const Gap(10),
+              ],
+            ),
           ),
         ),
       ),

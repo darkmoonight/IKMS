@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:ficonsax/ficonsax.dart';
 import 'package:ikms/app/controller/ads_controller.dart';
@@ -66,80 +67,85 @@ class _SettingsPageState extends State<SettingsPage> {
                 showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
-                    return StatefulBuilder(
-                      builder: (BuildContext context, setState) {
-                        return SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 15),
-                                child: Text(
-                                  'appearance'.tr,
-                                  style: context.textTheme.titleLarge?.copyWith(
-                                    fontSize: 20,
+                    return Padding(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).padding.bottom),
+                      child: StatefulBuilder(
+                        builder: (BuildContext context, setState) {
+                          return SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 15),
+                                  child: Text(
+                                    'appearance'.tr,
+                                    style:
+                                        context.textTheme.titleLarge?.copyWith(
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SettingCard(
-                                elevation: 4,
-                                icon: const Icon(IconsaxOutline.moon),
-                                text: 'theme'.tr,
-                                dropdown: true,
-                                dropdownName: settings.theme?.tr,
-                                dropdownList: <String>[
-                                  'system'.tr,
-                                  'dark'.tr,
-                                  'light'.tr
-                                ],
-                                dropdownCange: (String? newValue) {
-                                  ThemeMode themeMode =
-                                      newValue?.tr == 'system'.tr
-                                          ? ThemeMode.system
-                                          : newValue?.tr == 'dark'.tr
-                                              ? ThemeMode.dark
-                                              : ThemeMode.light;
-                                  String theme = newValue?.tr == 'system'.tr
-                                      ? 'system'
-                                      : newValue?.tr == 'dark'.tr
-                                          ? 'dark'
-                                          : 'light';
-                                  themeController.saveTheme(theme);
-                                  themeController.changeThemeMode(themeMode);
-                                  setState(() {});
-                                },
-                              ),
-                              SettingCard(
-                                elevation: 4,
-                                icon: const Icon(IconsaxOutline.mobile),
-                                text: 'amoledTheme'.tr,
-                                switcher: true,
-                                value: settings.amoledTheme,
-                                onChange: (value) {
-                                  themeController.saveOledTheme(value);
-                                  MyApp.updateAppState(context,
-                                      newAmoledTheme: value);
-                                },
-                              ),
-                              SettingCard(
-                                elevation: 4,
-                                icon: const Icon(IconsaxOutline.colorfilter),
-                                text: 'materialColor'.tr,
-                                switcher: true,
-                                value: settings.materialColor,
-                                onChange: (value) {
-                                  themeController.saveMaterialTheme(value);
-                                  MyApp.updateAppState(context,
-                                      newMaterialColor: value);
-                                },
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
-                        );
-                      },
+                                SettingCard(
+                                  elevation: 4,
+                                  icon: const Icon(IconsaxOutline.moon),
+                                  text: 'theme'.tr,
+                                  dropdown: true,
+                                  dropdownName: settings.theme?.tr,
+                                  dropdownList: <String>[
+                                    'system'.tr,
+                                    'dark'.tr,
+                                    'light'.tr
+                                  ],
+                                  dropdownCange: (String? newValue) {
+                                    ThemeMode themeMode =
+                                        newValue?.tr == 'system'.tr
+                                            ? ThemeMode.system
+                                            : newValue?.tr == 'dark'.tr
+                                                ? ThemeMode.dark
+                                                : ThemeMode.light;
+                                    String theme = newValue?.tr == 'system'.tr
+                                        ? 'system'
+                                        : newValue?.tr == 'dark'.tr
+                                            ? 'dark'
+                                            : 'light';
+                                    themeController.saveTheme(theme);
+                                    themeController.changeThemeMode(themeMode);
+                                    setState(() {});
+                                  },
+                                ),
+                                SettingCard(
+                                  elevation: 4,
+                                  icon: const Icon(IconsaxOutline.mobile),
+                                  text: 'amoledTheme'.tr,
+                                  switcher: true,
+                                  value: settings.amoledTheme,
+                                  onChange: (value) {
+                                    themeController.saveOledTheme(value);
+                                    MyApp.updateAppState(context,
+                                        newAmoledTheme: value);
+                                  },
+                                ),
+                                SettingCard(
+                                  elevation: 4,
+                                  icon: const Icon(IconsaxOutline.colorfilter),
+                                  text: 'materialColor'.tr,
+                                  switcher: true,
+                                  value: settings.materialColor,
+                                  onChange: (value) {
+                                    themeController.saveMaterialTheme(value);
+                                    MyApp.updateAppState(context,
+                                        newMaterialColor: value);
+                                  },
+                                ),
+                                const Gap(10),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     );
                   },
                 );
@@ -152,79 +158,86 @@ class _SettingsPageState extends State<SettingsPage> {
                 showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
-                    return StatefulBuilder(
-                      builder: (BuildContext context, setState) {
-                        return SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 15),
-                                child: Text(
-                                  'functions'.tr,
-                                  style: context.textTheme.titleLarge?.copyWith(
-                                    fontSize: 20,
+                    return Padding(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).padding.bottom),
+                      child: StatefulBuilder(
+                        builder: (BuildContext context, setState) {
+                          return SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 15),
+                                  child: Text(
+                                    'functions'.tr,
+                                    style:
+                                        context.textTheme.titleLarge?.copyWith(
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SettingCard(
-                                elevation: 4,
-                                icon: const Icon(IconsaxOutline.dollar_square),
-                                text: 'ads'.tr,
-                                switcher: true,
-                                value: adsController.ads.value,
-                                onChange: (value) async {
-                                  if (value) {
-                                    await showAdaptiveDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog.adaptive(
-                                          title: Text(
-                                            'adsDisaleTitle'.tr,
-                                            style: context.textTheme.titleLarge,
-                                          ),
-                                          content: Text('adsDisable'.tr,
-                                              style: context
-                                                  .textTheme.titleMedium),
-                                          actions: [
-                                            TextButton(
-                                                onPressed: () =>
-                                                    Get.back(result: false),
-                                                child: Text('cancel'.tr,
-                                                    style: context.theme
-                                                        .textTheme.titleMedium
-                                                        ?.copyWith(
-                                                            color: Colors
-                                                                .blueAccent))),
-                                            TextButton(
-                                                onPressed: () {
-                                                  adsController
-                                                      .toggleAds(value);
-                                                  Get.back(result: true);
-                                                },
-                                                child: Text('disable'.tr,
-                                                    style: context.theme
-                                                        .textTheme.titleMedium
-                                                        ?.copyWith(
-                                                            color:
-                                                                Colors.red))),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  } else {
-                                    adsController.toggleAds(value);
-                                  }
-                                  setState(() {});
-                                },
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
-                        );
-                      },
+                                SettingCard(
+                                  elevation: 4,
+                                  icon:
+                                      const Icon(IconsaxOutline.dollar_square),
+                                  text: 'ads'.tr,
+                                  switcher: true,
+                                  value: adsController.ads.value,
+                                  onChange: (value) async {
+                                    if (value) {
+                                      await showAdaptiveDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog.adaptive(
+                                            title: Text(
+                                              'adsDisaleTitle'.tr,
+                                              style:
+                                                  context.textTheme.titleLarge,
+                                            ),
+                                            content: Text('adsDisable'.tr,
+                                                style: context
+                                                    .textTheme.titleMedium),
+                                            actions: [
+                                              TextButton(
+                                                  onPressed: () =>
+                                                      Get.back(result: false),
+                                                  child: Text('cancel'.tr,
+                                                      style: context.theme
+                                                          .textTheme.titleMedium
+                                                          ?.copyWith(
+                                                              color: Colors
+                                                                  .blueAccent))),
+                                              TextButton(
+                                                  onPressed: () {
+                                                    adsController
+                                                        .toggleAds(value);
+                                                    Get.back(result: true);
+                                                  },
+                                                  child: Text('disable'.tr,
+                                                      style: context.theme
+                                                          .textTheme.titleMedium
+                                                          ?.copyWith(
+                                                              color:
+                                                                  Colors.red))),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      adsController.toggleAds(value);
+                                    }
+                                    setState(() {});
+                                  },
+                                ),
+                                const Gap(10),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     );
                   },
                 );
@@ -289,51 +302,55 @@ class _SettingsPageState extends State<SettingsPage> {
                 showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
-                    return StatefulBuilder(
-                      builder: (BuildContext context, setState) {
-                        return ListView(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 15),
-                              child: Text(
-                                'language'.tr,
-                                style: context.textTheme.titleLarge?.copyWith(
-                                  fontSize: 20,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: appLanguages.length,
-                              itemBuilder: (context, index) {
-                                return Card(
-                                  elevation: 4,
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 5),
-                                  child: ListTile(
-                                    title: Text(
-                                      appLanguages[index]['name'],
-                                      style: context.textTheme.labelLarge,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    onTap: () {
-                                      MyApp.updateAppState(context,
-                                          newLocale: appLanguages[index]
-                                              ['locale']);
-                                      updateLanguage(
-                                          appLanguages[index]['locale']);
-                                    },
+                    return Padding(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).padding.bottom),
+                      child: StatefulBuilder(
+                        builder: (BuildContext context, setState) {
+                          return ListView(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 15),
+                                child: Text(
+                                  'language'.tr,
+                                  style: context.textTheme.titleLarge?.copyWith(
+                                    fontSize: 20,
                                   ),
-                                );
-                              },
-                            ),
-                            const SizedBox(height: 10),
-                          ],
-                        );
-                      },
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: const BouncingScrollPhysics(),
+                                itemCount: appLanguages.length,
+                                itemBuilder: (context, index) {
+                                  return Card(
+                                    elevation: 4,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 5),
+                                    child: ListTile(
+                                      title: Text(
+                                        appLanguages[index]['name'],
+                                        style: context.textTheme.labelLarge,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      onTap: () {
+                                        MyApp.updateAppState(context,
+                                            newLocale: appLanguages[index]
+                                                ['locale']);
+                                        updateLanguage(
+                                            appLanguages[index]['locale']);
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                              const Gap(10),
+                            ],
+                          );
+                        },
+                      ),
                     );
                   },
                 );
