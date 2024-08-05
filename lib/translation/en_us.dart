@@ -36,6 +36,8 @@ class EnUs {
         'two_week': '2 weeks',
         'month': 'Month',
         'no_par': 'There are no lessons today',
+        'no_rasp': 'No scheduling information',
+        'error': 'There\'s been an error',
         'no_select': 'Not selected',
         'no_university': 'University not selected',
         'no_internet':

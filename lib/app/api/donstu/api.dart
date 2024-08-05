@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart' as tr;
 import 'package:intl/intl.dart';
 import 'package:ikms/app/api/donstu/audiences.dart';
 import 'package:ikms/app/api/donstu/groups.dart';
@@ -39,14 +40,21 @@ class DonstuAPI {
     try {
       Response response = await dio.get(url);
       AudiencesData audiencesData = AudiencesData.fromJson(response.data);
+      if (audiencesData.data.isEmpty) {
+        EasyLoading.showInfo('no_rasp'.tr);
+        return [];
+      }
       return audiencesData.data
           .map((Audiences audiences) =>
               AudienceSchedule(id: audiences.id, name: audiences.name)
                 ..university.value = donstu)
           .toList();
     } on DioException catch (e) {
-      if (kDebugMode) {
-        print(e);
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        EasyLoading.showError('no_internet'.tr);
+      } else {
+        EasyLoading.showError('error'.tr);
       }
       rethrow;
     }
@@ -57,14 +65,21 @@ class DonstuAPI {
     try {
       Response response = await dio.get(url);
       ProfessorsData professorsData = ProfessorsData.fromJson(response.data);
+      if (professorsData.data.isEmpty) {
+        EasyLoading.showInfo('no_rasp'.tr);
+        return [];
+      }
       return professorsData.data
           .map((Professors professors) =>
               TeacherSchedule(id: professors.id, name: professors.name)
                 ..university.value = donstu)
           .toList();
     } on DioException catch (e) {
-      if (kDebugMode) {
-        print(e);
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        EasyLoading.showError('no_internet'.tr);
+      } else {
+        EasyLoading.showError('error'.tr);
       }
       rethrow;
     }
@@ -75,14 +90,21 @@ class DonstuAPI {
     try {
       Response response = await dio.get(url);
       GroupsData groupsData = GroupsData.fromJson(response.data);
+      if (groupsData.data.isEmpty) {
+        EasyLoading.showInfo('no_rasp'.tr);
+        return [];
+      }
       return groupsData.data
           .map((Groups groups) =>
               GroupSchedule(id: groups.id, name: groups.name)
                 ..university.value = donstu)
           .toList();
     } on DioException catch (e) {
-      if (kDebugMode) {
-        print(e);
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        EasyLoading.showError('no_internet'.tr);
+      } else {
+        EasyLoading.showError('error'.tr);
       }
       rethrow;
     }
@@ -93,6 +115,10 @@ class DonstuAPI {
     try {
       Response response = await dio.get(url);
       Rasp rasp = Rasp.fromJson(response.data);
+      if (rasp.data.rasp.isEmpty) {
+        EasyLoading.showInfo('no_rasp'.tr);
+        return [];
+      }
       return rasp.data.rasp
           .map((RaspElement element) => Schedule(
               discipline: element.discipline,
@@ -106,8 +132,11 @@ class DonstuAPI {
               end: element.end))
           .toList();
     } on DioException catch (e) {
-      if (kDebugMode) {
-        print(e);
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        EasyLoading.showError('no_internet'.tr);
+      } else {
+        EasyLoading.showError('error'.tr);
       }
       rethrow;
     }
@@ -118,6 +147,10 @@ class DonstuAPI {
     try {
       Response response = await dio.get(url);
       Rasp rasp = Rasp.fromJson(response.data);
+      if (rasp.data.rasp.isEmpty) {
+        EasyLoading.showInfo('no_rasp'.tr);
+        return [];
+      }
       return rasp.data.rasp
           .map((RaspElement element) => Schedule(
               discipline: element.discipline,
@@ -131,8 +164,11 @@ class DonstuAPI {
               end: element.end))
           .toList();
     } on DioException catch (e) {
-      if (kDebugMode) {
-        print(e);
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        EasyLoading.showError('no_internet'.tr);
+      } else {
+        EasyLoading.showError('error'.tr);
       }
       rethrow;
     }
@@ -143,6 +179,10 @@ class DonstuAPI {
     try {
       Response response = await dio.get(url);
       Rasp rasp = Rasp.fromJson(response.data);
+      if (rasp.data.rasp.isEmpty) {
+        EasyLoading.showInfo('no_rasp'.tr);
+        return [];
+      }
       return rasp.data.rasp
           .map((RaspElement element) => Schedule(
               discipline: element.discipline,
@@ -156,8 +196,11 @@ class DonstuAPI {
               end: element.end))
           .toList();
     } on DioException catch (e) {
-      if (kDebugMode) {
-        print(e);
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        EasyLoading.showError('no_internet'.tr);
+      } else {
+        EasyLoading.showError('error'.tr);
       }
       rethrow;
     }

@@ -1,6 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:get/get.dart';
 import 'package:ikms/app/api/donstu/api.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/main.dart';
@@ -116,7 +114,6 @@ class DonstuCaching {
         if (kDebugMode) {
           print(e);
         }
-        EasyLoading.showInfo('no_internet'.tr);
       }
     }
     return t;
@@ -138,7 +135,6 @@ class DonstuCaching {
         if (kDebugMode) {
           print(e);
         }
-        EasyLoading.showInfo('no_internet'.tr);
       }
     }
     return t;
@@ -160,7 +156,6 @@ class DonstuCaching {
         if (kDebugMode) {
           print(e);
         }
-        EasyLoading.showInfo('no_internet'.tr);
       }
     }
     return t;

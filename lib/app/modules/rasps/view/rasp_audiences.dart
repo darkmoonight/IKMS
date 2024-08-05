@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:ikms/app/api/donstu/caching.dart';
 import 'package:ikms/app/data/schema.dart';
@@ -34,8 +33,6 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
         raspData.value = t.schedules.toList();
         isLoaded = true;
       });
-    } else {
-      EasyLoading.showInfo('no_internet'.tr);
     }
   }
 

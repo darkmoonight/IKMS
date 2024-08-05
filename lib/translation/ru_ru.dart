@@ -36,6 +36,8 @@ class RuRu {
         'two_week': '2 недели',
         'month': 'Месяц',
         'no_par': 'Сегодня пар нет',
+        'no_rasp': 'Нет данных о расписании',
+        'error': 'Произошла ошибка',
         'no_select': 'Не выбран',
         'no_university': 'Университет не выбран',
         'no_internet':
