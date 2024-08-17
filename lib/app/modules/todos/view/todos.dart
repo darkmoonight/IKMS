@@ -1,6 +1,6 @@
-import 'package:ficonsax/ficonsax.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:ikms/app/controller/todo_controller.dart';
 import 'package:ikms/app/modules/todos/widgets/todos_list.dart';
 import 'package:ikms/app/widgets/text_form.dart';
@@ -49,7 +49,7 @@ class _TaskPageState extends State<TaskPage> {
                 ? IconButton(
                     onPressed: () => todoController.doMultiSelectionTodoClear(),
                     icon: const Icon(
-                      IconsaxOutline.close_square,
+                      IconsaxPlusLinear.close_square,
                       size: 20,
                     ),
                   )
@@ -65,7 +65,7 @@ class _TaskPageState extends State<TaskPage> {
                 visible: todoController.selectedTodo.isNotEmpty,
                 child: IconButton(
                   icon: const Icon(
-                    IconsaxOutline.trush_square,
+                    IconsaxPlusLinear.trash_square,
                     size: 20,
                   ),
                   onPressed: () async {
@@ -114,7 +114,7 @@ class _TaskPageState extends State<TaskPage> {
                 MyTextForm(
                   labelText: 'searchTodo'.tr,
                   type: TextInputType.text,
-                  icon: const Icon(IconsaxOutline.search_normal_1, size: 18),
+                  icon: const Icon(IconsaxPlusLinear.search_normal_1, size: 18),
                   controller: searchTodos,
                   margin: const EdgeInsets.fromLTRB(10, 0, 10, 5),
                   onChanged: applyFilter,
@@ -125,7 +125,7 @@ class _TaskPageState extends State<TaskPage> {
                             applyFilter('');
                           },
                           icon: const Icon(
-                            IconsaxOutline.close_circle,
+                            IconsaxPlusLinear.close_circle,
                             color: Colors.grey,
                             size: 20,
                           ),

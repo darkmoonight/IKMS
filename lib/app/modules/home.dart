@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ficonsax/ficonsax.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:ikms/app/modules/selection_list/view/audiences.dart';
 import 'package:ikms/app/modules/selection_list/view/groups.dart';
 import 'package:ikms/app/modules/rasps/view/my_schedule.dart';
@@ -56,42 +56,42 @@ class _HomePageState extends State<HomePage> {
                   },
                 );
               },
-              child: const Icon(IconsaxOutline.add),
+              child: const Icon(IconsaxPlusLinear.add),
             )
           : null,
       bottomNavigationBar: NavigationBar(
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         onDestinationSelected: (int index) => changeTabIndex(index),
         selectedIndex: tabIndex,
         destinations: [
           NavigationDestination(
-            icon: const Icon(IconsaxOutline.calendar_1),
-            selectedIcon: const Icon(IconsaxBold.calendar),
+            icon: const Icon(IconsaxPlusLinear.calendar),
+            selectedIcon: const Icon(IconsaxPlusBold.calendar),
             label: 'schedule'.tr,
           ),
           NavigationDestination(
-            icon: const Icon(IconsaxOutline.user_search),
-            selectedIcon: const Icon(IconsaxBold.user_search),
+            icon: const Icon(IconsaxPlusLinear.user_search),
+            selectedIcon: const Icon(IconsaxPlusBold.user_search),
             label: 'professors'.tr,
           ),
           NavigationDestination(
-            icon: const Icon(IconsaxOutline.people),
-            selectedIcon: const Icon(IconsaxBold.people),
+            icon: const Icon(IconsaxPlusLinear.people),
+            selectedIcon: const Icon(IconsaxPlusBold.people),
             label: 'groups'.tr,
           ),
           NavigationDestination(
-            icon: const Icon(IconsaxOutline.buildings_2),
-            selectedIcon: const Icon(IconsaxBold.buildings_2),
+            icon: const Icon(IconsaxPlusLinear.buildings_2),
+            selectedIcon: const Icon(IconsaxPlusBold.buildings_2),
             label: 'audiences'.tr,
           ),
           NavigationDestination(
-            icon: const Icon(IconsaxOutline.task_square),
-            selectedIcon: const Icon(IconsaxBold.task_square),
+            icon: const Icon(IconsaxPlusLinear.task_square),
+            selectedIcon: const Icon(IconsaxPlusBold.task_square),
             label: 'todos'.tr,
           ),
           NavigationDestination(
-            icon: const Icon(IconsaxOutline.category),
-            selectedIcon: const Icon(IconsaxBold.category),
+            icon: const Icon(IconsaxPlusLinear.category),
+            selectedIcon: const Icon(IconsaxPlusBold.category),
             label: 'settings'.tr,
           ),
         ],

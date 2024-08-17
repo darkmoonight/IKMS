@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ficonsax/ficonsax.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/app/widgets/shimmer.dart';
 import 'package:ikms/app/widgets/text_form.dart';
@@ -45,7 +45,7 @@ class _SelectionListState<T extends SelectionData>
             : IconButton(
                 onPressed: widget.onBackPressed,
                 icon: const Icon(
-                  IconsaxOutline.arrow_left_1,
+                  IconsaxPlusLinear.arrow_left_3,
                   size: 20,
                 ),
               ),
@@ -70,7 +70,7 @@ class _SelectionListState<T extends SelectionData>
               onChanged: widget.onTextChanged,
               labelText: widget.labelText,
               type: TextInputType.text,
-              icon: const Icon(IconsaxOutline.search_normal_1, size: 18),
+              icon: const Icon(IconsaxPlusLinear.search_normal_1, size: 18),
               iconButton: textEditingController.text.isNotEmpty
                   ? IconButton(
                       onPressed: () {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:ficonsax/ficonsax.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:ikms/app/controller/ads_controller.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/app/modules/selection_list/view/groups.dart';
@@ -10,6 +10,7 @@ import 'package:ikms/app/modules/selection_list/view/university.dart';
 import 'package:ikms/app/modules/settings/widgets/setting_card.dart';
 import 'package:ikms/main.dart';
 import 'package:ikms/theme/theme_controller.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -30,6 +31,13 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       appVersion = packageInfo.version;
     });
+  }
+
+  void urlLauncher(String uri) async {
+    final Uri url = Uri.parse(uri);
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
   }
 
   updateLanguage(Locale locale) {
@@ -61,7 +69,7 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Column(
           children: [
             SettingCard(
-              icon: const Icon(IconsaxOutline.brush_1),
+              icon: const Icon(IconsaxPlusLinear.brush_1),
               text: 'appearance'.tr,
               onPressed: () {
                 showModalBottomSheet(
@@ -90,7 +98,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 ),
                                 SettingCard(
                                   elevation: 4,
-                                  icon: const Icon(IconsaxOutline.moon),
+                                  icon: const Icon(IconsaxPlusLinear.moon),
                                   text: 'theme'.tr,
                                   dropdown: true,
                                   dropdownName: settings.theme?.tr,
@@ -118,7 +126,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 ),
                                 SettingCard(
                                   elevation: 4,
-                                  icon: const Icon(IconsaxOutline.mobile),
+                                  icon: const Icon(IconsaxPlusLinear.mobile),
                                   text: 'amoledTheme'.tr,
                                   switcher: true,
                                   value: settings.amoledTheme,
@@ -130,7 +138,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                 ),
                                 SettingCard(
                                   elevation: 4,
-                                  icon: const Icon(IconsaxOutline.colorfilter),
+                                  icon:
+                                      const Icon(IconsaxPlusLinear.colorfilter),
                                   text: 'materialColor'.tr,
                                   switcher: true,
                                   value: settings.materialColor,
@@ -152,7 +161,7 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
             SettingCard(
-              icon: const Icon(IconsaxOutline.code),
+              icon: const Icon(IconsaxPlusLinear.code_1),
               text: 'functions'.tr,
               onPressed: () {
                 showModalBottomSheet(
@@ -181,8 +190,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                 ),
                                 SettingCard(
                                   elevation: 4,
-                                  icon:
-                                      const Icon(IconsaxOutline.dollar_square),
+                                  icon: const Icon(
+                                      IconsaxPlusLinear.dollar_square),
                                   text: 'ads'.tr,
                                   switcher: true,
                                   value: adsController.ads.value,
@@ -244,7 +253,7 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
             SettingCard(
-              icon: const Icon(IconsaxOutline.buildings),
+              icon: const Icon(IconsaxPlusLinear.buildings),
               text: 'university'.tr,
               info: true,
               infoSettings: true,
@@ -264,7 +273,7 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
             SettingCard(
-              icon: const Icon(IconsaxOutline.people),
+              icon: const Icon(IconsaxPlusLinear.people),
               text: 'group'.tr,
               info: true,
               infoSettings: true,
@@ -291,7 +300,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   : () => EasyLoading.showInfo('no_university'.tr),
             ),
             SettingCard(
-              icon: const Icon(IconsaxOutline.language_square),
+              icon: const Icon(IconsaxPlusLinear.language_square),
               text: 'language'.tr,
               info: true,
               infoSettings: true,
@@ -357,7 +366,60 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
             SettingCard(
-              icon: const Icon(IconsaxOutline.document),
+              icon: const Icon(IconsaxPlusLinear.link_square),
+              text: 'ourGroups'.tr,
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Padding(
+                      padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).padding.bottom),
+                      child: StatefulBuilder(
+                        builder: (BuildContext context, setState) {
+                          return SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 15),
+                                  child: Text(
+                                    'ourGroups'.tr,
+                                    style:
+                                        context.textTheme.titleLarge?.copyWith(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                                SettingCard(
+                                  elevation: 4,
+                                  icon: const Icon(LineAwesomeIcons.discord),
+                                  text: 'Discord',
+                                  onPressed: () => urlLauncher(
+                                      'https://discord.gg/JMMa9aHh8f'),
+                                ),
+                                SettingCard(
+                                  elevation: 4,
+                                  icon: const Icon(LineAwesomeIcons.telegram),
+                                  text: 'Telegram',
+                                  onPressed: () =>
+                                      urlLauncher('https://t.me/darkmoonightX'),
+                                ),
+                                const Gap(10),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+            SettingCard(
+              icon: const Icon(IconsaxPlusLinear.document),
               text: 'license'.tr,
               onPressed: () => Get.to(
                 LicensePage(
@@ -377,25 +439,16 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ),
             SettingCard(
-              icon: const Icon(IconsaxOutline.hierarchy_square_2),
+              icon: const Icon(IconsaxPlusLinear.hierarchy_square_2),
               text: 'version'.tr,
               info: true,
               textInfo: '$appVersion',
             ),
             SettingCard(
-              icon: Image.asset(
-                'assets/images/github.png',
-                scale: 20,
-              ),
+              icon: const Icon(LineAwesomeIcons.github),
               text: '${'project'.tr} GitHub',
-              onPressed: () async {
-                final Uri url =
-                    Uri.parse('https://github.com/darkmoonight/IKMS');
-                if (!await launchUrl(url,
-                    mode: LaunchMode.externalApplication)) {
-                  throw Exception('Could not launch $url');
-                }
-              },
+              onPressed: () =>
+                  urlLauncher('https://github.com/darkmoonight/IKMS'),
             ),
           ],
         ),

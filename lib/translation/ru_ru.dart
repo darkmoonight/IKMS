@@ -68,5 +68,6 @@ class RuRu {
         'deletedTodoQuery': 'Вы уверены что хотите удалить задачу?',
         'delete': 'Удалить',
         'select': 'Выбрать',
+        'ourGroups': 'Наши группы',
       };
 }

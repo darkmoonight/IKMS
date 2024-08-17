@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:ficonsax/ficonsax.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:ikms/app/api/donstu/caching.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/app/controller/todo_controller.dart';
@@ -107,7 +107,7 @@ class _TodosActionState extends State<TodosAction> {
                           Get.back();
                         },
                         icon: const Icon(
-                          IconsaxOutline.close_square,
+                          IconsaxPlusLinear.close_square,
                           size: 20,
                         ),
                       ),
@@ -138,7 +138,7 @@ class _TodosActionState extends State<TodosAction> {
                           }
                         },
                         icon: const Icon(
-                          IconsaxOutline.tick_square,
+                          IconsaxPlusLinear.tick_square,
                           size: 20,
                         ),
                       )
@@ -151,7 +151,7 @@ class _TodosActionState extends State<TodosAction> {
                   controller: titleEdit,
                   labelText: 'name'.tr,
                   type: TextInputType.multiline,
-                  icon: const Icon(IconsaxOutline.edit_2),
+                  icon: const Icon(IconsaxPlusLinear.edit),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'validateName'.tr;
@@ -168,14 +168,14 @@ class _TodosActionState extends State<TodosAction> {
                     isExpanded: true,
                     decoration: InputDecoration(
                       label: Text('discipline'.tr),
-                      prefixIcon: const Icon(IconsaxOutline.book),
+                      prefixIcon: const Icon(IconsaxPlusLinear.book_square),
                       border: InputBorder.none,
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
                     ),
                     icon: const Padding(
                       padding: EdgeInsets.only(right: 15, bottom: 10),
-                      child: Icon(IconsaxOutline.arrow_down_1, size: 18),
+                      child: Icon(IconsaxPlusLinear.arrow_down_1, size: 18),
                     ),
                     value: selectedDiscipline,
                     items: disciplineList?.map((e) {
@@ -209,7 +209,7 @@ class _TodosActionState extends State<TodosAction> {
                   controller: timeEdit,
                   labelText: 'timeComlete'.tr,
                   type: TextInputType.datetime,
-                  icon: const Icon(IconsaxOutline.clock),
+                  icon: const Icon(IconsaxPlusLinear.clock_1),
                   iconButton: timeEdit.text.isNotEmpty
                       ? IconButton(
                           icon: const Icon(

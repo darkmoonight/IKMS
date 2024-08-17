@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
-import 'package:ficonsax/ficonsax.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:ikms/app/controller/ads_controller.dart';
 import 'package:ikms/app/data/schema.dart';
 import 'package:ikms/app/widgets/list_empty.dart';
@@ -117,7 +117,7 @@ class _RaspWidgetState extends State<RaspWidget> {
             : IconButton(
                 onPressed: widget.onBackPressed,
                 icon: const Icon(
-                  IconsaxOutline.arrow_left_1,
+                  IconsaxPlusLinear.arrow_left_3,
                   size: 20,
                 ),
               ),

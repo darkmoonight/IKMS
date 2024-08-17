@@ -68,5 +68,6 @@ class EnUs {
         'deletedTodoQuery': 'Are you sure you want to delete the todo?',
         'delete': 'Delete',
         'select': 'Select',
+        'ourGroups': 'Our groups',
       };
 }
