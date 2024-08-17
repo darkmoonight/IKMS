@@ -69,5 +69,6 @@ class RuRu {
         'delete': 'Удалить',
         'select': 'Выбрать',
         'ourGroups': 'Наши группы',
+        'search': 'Поиск',
       };
 }

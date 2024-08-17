@@ -69,5 +69,6 @@ class EnUs {
         'delete': 'Delete',
         'select': 'Select',
         'ourGroups': 'Our groups',
+        'search': 'Search',
       };
 }
