@@ -71,6 +71,9 @@ ThemeData lightTheme(
       backgroundColor: color,
       surfaceTintColor:
           color == oledColor ? Colors.transparent : colorScheme?.surfaceTint,
+      labelTextStyle: WidgetStateProperty.all(
+        const TextStyle(overflow: TextOverflow.ellipsis, fontSize: 12),
+      ),
     ),
     inputDecorationTheme: baseLigth.inputDecorationTheme.copyWith(
       labelStyle: WidgetStateTextStyle.resolveWith(
@@ -137,6 +140,9 @@ ThemeData darkTheme(
       backgroundColor: color,
       surfaceTintColor:
           color == oledColor ? Colors.transparent : colorScheme?.surfaceTint,
+      labelTextStyle: WidgetStateProperty.all(
+        const TextStyle(overflow: TextOverflow.ellipsis, fontSize: 12),
+      ),
     ),
     inputDecorationTheme: baseDark.inputDecorationTheme.copyWith(
       labelStyle: WidgetStateTextStyle.resolveWith(

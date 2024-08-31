@@ -37,16 +37,11 @@ class _SelectionListState<T extends SelectionData>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         titleSpacing: 0,
         leading: widget.onBackPressed == null
-            ? IconButton(
-                onPressed: () => Get.back(),
-                icon: const Icon(
-                  IconsaxPlusLinear.arrow_left_3,
-                  size: 20,
-                ),
-              )
+            ? null
             : IconButton(
                 onPressed: widget.onBackPressed,
                 icon: const Icon(

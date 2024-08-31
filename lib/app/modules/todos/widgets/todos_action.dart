@@ -173,9 +173,10 @@ class _TodosActionState extends State<TodosAction> {
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
                     ),
+                    borderRadius: const BorderRadius.all(Radius.circular(15)),
                     icon: const Padding(
                       padding: EdgeInsets.only(right: 15, bottom: 10),
-                      child: Icon(IconsaxPlusLinear.arrow_down_1, size: 18),
+                      child: Icon(IconsaxPlusLinear.arrow_down, size: 18),
                     ),
                     value: selectedDiscipline,
                     items: disciplineList?.map((e) {

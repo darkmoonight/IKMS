@@ -3,10 +3,10 @@ description: Schedule of classes
 
 publish_to: "none"
 
-version: 1.2.1+22
+version: 1.2.2+23
 
 environment:
-  sdk: ">=3.5.0 <4.0.0"
+  sdk: ">=3.5.1 <4.0.0"
 
 dependencies:
   flutter:
@@ -29,8 +29,8 @@ dependencies:
   dynamic_color: ^1.7.0
   table_calendar: ^3.1.2
   dio_smart_retry: ^6.0.0
-  yandex_mobileads: ^7.2.0
-  flutter_timezone: ^2.1.0
+  yandex_mobileads: ^7.3.0
+  flutter_timezone: ^3.0.1
   connectivity_plus: ^6.0.5
   device_info_plus: ^10.1.2
   package_info_plus: ^8.0.2
