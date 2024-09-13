@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:ikms/app/api/donstu/api.dart';
-import 'package:ikms/app/data/schema.dart';
+import 'package:ikms/app/data/db.dart';
 import 'package:ikms/main.dart';
 
 class DonstuCaching {

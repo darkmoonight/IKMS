@@ -1,10 +1,10 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:ikms/app/data/schema.dart';
+import 'package:ikms/app/data/db.dart';
+import 'package:ikms/app/utils/notification.dart';
 import 'package:ikms/main.dart';
 import 'package:intl/intl.dart';
 import 'package:isar/isar.dart';
-import '../services/notification.dart';
 
 class TodoController extends GetxController {
   final todos = <Todos>[].obs;

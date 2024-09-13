@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:ikms/app/api/donstu/audiences.dart';
 import 'package:ikms/app/api/donstu/groups.dart';
 import 'package:ikms/app/api/donstu/professors.dart';
-import 'package:ikms/app/data/schema.dart';
+import 'package:ikms/app/data/db.dart';
 import 'package:ikms/app/api/donstu/shedule.dart';
 import 'package:ikms/main.dart';
 

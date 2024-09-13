@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:ikms/app/data/schema.dart';
+import 'package:ikms/app/data/db.dart';
 import 'package:ikms/main.dart';
 
 class ThemeController extends GetxController {
