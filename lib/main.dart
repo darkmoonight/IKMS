@@ -5,12 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:get/get.dart';
 import 'package:ikms/theme/theme.dart';
 import 'package:ikms/app/utils/device_info.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:ikms/app/data/db.dart';
@@ -36,7 +36,7 @@ final List appLanguages = [
 
 late University donstu;
 final ValueNotifier<Future<bool>> isOnline =
-    ValueNotifier(InternetConnectionChecker().hasConnection);
+    ValueNotifier(InternetConnection().hasInternetAccess);
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -47,12 +47,10 @@ void main() async {
   await setOptimalDisplayMode();
   Connectivity()
       .onConnectivityChanged
-      .listen((List<ConnectivityResult> result) async {
-    if (result.contains(ConnectivityResult.none)) {
-      isOnline.value = Future(() => false);
-    } else {
-      isOnline.value = InternetConnectionChecker().hasConnection;
-    }
+      .listen((List<ConnectivityResult> result) {
+    result.contains(ConnectivityResult.none)
+        ? isOnline.value = Future(() => false)
+        : isOnline.value = InternetConnection().hasInternetAccess;
   });
   DeviceFeature().init();
   final String timeZoneName = await FlutterTimezone.getLocalTimezone();
