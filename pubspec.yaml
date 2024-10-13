@@ -3,7 +3,7 @@ description: Schedule of classes
 
 publish_to: "none"
 
-version: 1.2.3+24
+version: 1.2.4+25
 
 environment:
   sdk: ">=3.5.3 <4.0.0"
@@ -23,7 +23,7 @@ dependencies:
   iconsax_plus: ^1.0.0
   google_fonts: ^6.2.1
   grouped_list: ^6.0.0
-  url_launcher: ^6.3.0
+  url_launcher: ^6.3.1
   bottom_picker: ^2.8.0
   path_provider: ^2.1.4
   dynamic_color: ^1.7.0
@@ -32,8 +32,8 @@ dependencies:
   yandex_mobileads: ^7.4.0
   flutter_timezone: ^3.0.1
   connectivity_plus: ^6.0.5
-  device_info_plus: ^10.1.2
-  package_info_plus: ^8.0.2
+  device_info_plus: ^11.0.0
+  package_info_plus: ^8.0.3
   flutter_easyloading: ^3.0.5
   flutter_displaymode: ^0.6.0
   line_awesome_flutter: ^3.0.1
