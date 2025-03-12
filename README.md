@@ -33,7 +33,7 @@ IKMS предлагает ряд функций, которые помогут �
 
 ### 📸 Скриншоты
 
-<img src='/readme/1.png' width='150'/> <img src='/readme/2.png' width='150'/> <img src='/readme/3.png' width='150'/> <img src='/readme/4.png' width='150'/> <img src='/readme/5.png' width='150'/> <img src='/readme/6.png' width='150'/> <img src='/readme/7.png' width='150'/> <img src='/readme/8.png' width='150'/>
+<img src='/readme/1.png' width='200'/> <img src='/readme/2.png' width='200'/> <img src='/readme/3.png' width='200'/> <img src='/readme/4.png' width='200'/> <img src='/readme/5.png' width='200'/> <img src='/readme/6.png' width='200'/> <img src='/readme/7.png' width='200'/> <img src='/readme/8.png' width='200'/>
 
 ### 💰 Поддержите нас
 
@@ -45,7 +45,6 @@ IKMS предлагает ряд функций, которые помогут �
 ### 📥 Скачайте IKMS
 
 [![Play Store](https://img.shields.io/badge/Google_Play-414141?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=io.github.DarkMooNight.IKMS)
-[![RuStore](https://img.shields.io/badge/RuStore-blue?style=for-the-badge&logo=vk&logoColor=white)](https://apps.rustore.ru/app/io.github.DarkMooNight.IKMS)
 
 ### 📃 Лицензия
 
