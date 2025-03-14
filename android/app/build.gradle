@@ -13,7 +13,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace = "io.github.DarkMooNight.IKMS"
     compileSdk = 35
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = '29.0.13113456'
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -75,5 +75,5 @@ flutter {
 
 dependencies {
     implementation("com.yandex.android:mobileads:7.11.0")
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 }

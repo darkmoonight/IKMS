@@ -1,14 +1,14 @@
 <div align='center'>
-<img src='/assets/icons/icon.png' width='150'/>
-<h2>📚 IKMS - Расписание занятий для студентов</h2>
+    <img src='/readme/icon.png' width='150'/>
+    <h2>📚 IKMS - Расписание занятий для студентов</h2>
 </div>
 
 <p align='center'>
- <p align='center'>
-    <a href='https://github.com/darkmoonight/IKMS/stargazers'><img alt='Stars' src='https://img.shields.io/github/stars/darkmoonight/IKMS?color=ABACD3'/></a>
-    <a href='https://github.com/darkmoonight/IKMS/forks'><img alt='Forks' src='https://img.shields.io/github/forks/darkmoonight/IKMS?color=ABACD3'/></a>
-    <a href='https://github.com/darkmoonight/IKMS/blob/main/LICENSE'><img alt='License' src='https://img.shields.io/github/license/darkmoonight/IKMS?color=ABACD3'/></a>
- </p>
+    <p align='center'>
+        <a href='https://github.com/darkmoonight/IKMS/stargazers'><img alt='Stars' src='https://img.shields.io/github/stars/darkmoonight/IKMS?color=ABACD3'/></a>
+        <a href='https://github.com/darkmoonight/IKMS/forks'><img alt='Forks' src='https://img.shields.io/github/forks/darkmoonight/IKMS?color=ABACD3'/></a>
+        <a href='https://github.com/darkmoonight/IKMS/blob/main/LICENSE'><img alt='License' src='https://img.shields.io/github/license/darkmoonight/IKMS?color=ABACD3'/></a>
+    </p>
 </p>
 
 <p align='center'> Никогда не пропустите важные учебные моменты. 📱📅📚 </p>
@@ -53,5 +53,5 @@ IKMS предлагает ряд функций, которые помогут �
 ### 👨‍💻 Наши участники
 
 <a href='https://github.com/darkmoonight/IKMS/graphs/contributors'>
-  <img src='https://contrib.rocks/image?repo=darkmoonight/IKMS' />
+  <img src='https://contrib.rocks/image?repo=darkmoonight/IKMS'/>
 </a>
