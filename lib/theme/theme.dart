@@ -20,7 +20,10 @@ ColorScheme colorSchemeDark = ColorScheme.fromSeed(
 );
 
 ThemeData lightTheme(
-    Color? color, ColorScheme? colorScheme, bool edgeToEdgeAvailable) {
+  Color? color,
+  ColorScheme? colorScheme,
+  bool edgeToEdgeAvailable,
+) {
   return baseLigth.copyWith(
     brightness: Brightness.light,
     colorScheme: colorScheme
@@ -43,8 +46,9 @@ ThemeData lightTheme(
         systemNavigationBarContrastEnforced: false,
         systemNavigationBarDividerColor: Colors.transparent,
         systemNavigationBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor:
-            edgeToEdgeAvailable ? Colors.transparent : colorScheme?.surface,
+        systemNavigationBarColor: edgeToEdgeAvailable
+            ? Colors.transparent
+            : colorScheme?.surface,
       ),
     ),
     primaryColor: color,
@@ -52,35 +56,34 @@ ThemeData lightTheme(
     scaffoldBackgroundColor: color,
     cardTheme: baseLigth.cardTheme.copyWith(
       color: color,
-      surfaceTintColor:
-          color == oledColor ? Colors.transparent : colorScheme?.surfaceTint,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+      surfaceTintColor: color == oledColor
+          ? Colors.transparent
+          : colorScheme?.surfaceTint,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       shadowColor: Colors.transparent,
     ),
     bottomSheetTheme: baseLigth.bottomSheetTheme.copyWith(
       backgroundColor: color,
-      surfaceTintColor:
-          color == oledColor ? Colors.transparent : colorScheme?.surfaceTint,
+      surfaceTintColor: color == oledColor
+          ? Colors.transparent
+          : colorScheme?.surfaceTint,
     ),
     navigationRailTheme: baseLigth.navigationRailTheme.copyWith(
       backgroundColor: color,
     ),
     navigationBarTheme: baseLigth.navigationBarTheme.copyWith(
       backgroundColor: color,
-      surfaceTintColor:
-          color == oledColor ? Colors.transparent : colorScheme?.surfaceTint,
+      surfaceTintColor: color == oledColor
+          ? Colors.transparent
+          : colorScheme?.surfaceTint,
       labelTextStyle: WidgetStateProperty.all(
         const TextStyle(overflow: TextOverflow.ellipsis, fontSize: 12),
       ),
     ),
     inputDecorationTheme: baseLigth.inputDecorationTheme.copyWith(
-      labelStyle: WidgetStateTextStyle.resolveWith(
-        (Set<WidgetState> states) {
-          return const TextStyle(fontSize: 14);
-        },
-      ),
+      labelStyle: WidgetStateTextStyle.resolveWith((Set<WidgetState> states) {
+        return const TextStyle(fontSize: 14);
+      }),
       border: InputBorder.none,
       focusedBorder: InputBorder.none,
       enabledBorder: InputBorder.none,
@@ -89,7 +92,10 @@ ThemeData lightTheme(
 }
 
 ThemeData darkTheme(
-    Color? color, ColorScheme? colorScheme, bool edgeToEdgeAvailable) {
+  Color? color,
+  ColorScheme? colorScheme,
+  bool edgeToEdgeAvailable,
+) {
   return baseDark.copyWith(
     brightness: Brightness.dark,
     colorScheme: colorScheme
@@ -112,8 +118,9 @@ ThemeData darkTheme(
         systemNavigationBarContrastEnforced: false,
         systemNavigationBarDividerColor: Colors.transparent,
         systemNavigationBarIconBrightness: Brightness.light,
-        systemNavigationBarColor:
-            edgeToEdgeAvailable ? Colors.transparent : colorScheme?.surface,
+        systemNavigationBarColor: edgeToEdgeAvailable
+            ? Colors.transparent
+            : colorScheme?.surface,
       ),
     ),
     primaryColor: color,
@@ -121,35 +128,34 @@ ThemeData darkTheme(
     scaffoldBackgroundColor: color,
     cardTheme: baseDark.cardTheme.copyWith(
       color: color,
-      surfaceTintColor:
-          color == oledColor ? Colors.transparent : colorScheme?.surfaceTint,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
+      surfaceTintColor: color == oledColor
+          ? Colors.transparent
+          : colorScheme?.surfaceTint,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       shadowColor: Colors.transparent,
     ),
     bottomSheetTheme: baseDark.bottomSheetTheme.copyWith(
       backgroundColor: color,
-      surfaceTintColor:
-          color == oledColor ? Colors.transparent : colorScheme?.surfaceTint,
+      surfaceTintColor: color == oledColor
+          ? Colors.transparent
+          : colorScheme?.surfaceTint,
     ),
     navigationRailTheme: baseDark.navigationRailTheme.copyWith(
       backgroundColor: color,
     ),
     navigationBarTheme: baseDark.navigationBarTheme.copyWith(
       backgroundColor: color,
-      surfaceTintColor:
-          color == oledColor ? Colors.transparent : colorScheme?.surfaceTint,
+      surfaceTintColor: color == oledColor
+          ? Colors.transparent
+          : colorScheme?.surfaceTint,
       labelTextStyle: WidgetStateProperty.all(
         const TextStyle(overflow: TextOverflow.ellipsis, fontSize: 12),
       ),
     ),
     inputDecorationTheme: baseDark.inputDecorationTheme.copyWith(
-      labelStyle: WidgetStateTextStyle.resolveWith(
-        (Set<WidgetState> states) {
-          return const TextStyle(fontSize: 14);
-        },
-      ),
+      labelStyle: WidgetStateTextStyle.resolveWith((Set<WidgetState> states) {
+        return const TextStyle(fontSize: 14);
+      }),
       border: InputBorder.none,
       focusedBorder: InputBorder.none,
       enabledBorder: InputBorder.none,

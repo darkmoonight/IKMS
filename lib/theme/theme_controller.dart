@@ -7,8 +7,8 @@ class ThemeController extends GetxController {
   ThemeMode get theme => settings.theme == 'system'
       ? ThemeMode.system
       : settings.theme == 'dark'
-          ? ThemeMode.dark
-          : ThemeMode.light;
+      ? ThemeMode.dark
+      : ThemeMode.light;
 
   void saveOledTheme(bool isOled) {
     settings.amoledTheme = isOled;
