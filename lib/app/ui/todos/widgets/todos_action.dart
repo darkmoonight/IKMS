@@ -50,11 +50,12 @@ class _TodosActionState extends State<TodosAction> {
     if (widget.edit) {
       titleEdit = TextEditingController(text: widget.todo!.name);
       timeEdit = TextEditingController(
-          text: widget.todo!.todoCompletedTime != null
-              ? DateFormat.yMMMEd(locale.languageCode)
-                  .add_Hm()
-                  .format(widget.todo!.todoCompletedTime!)
-              : '');
+        text: widget.todo!.todoCompletedTime != null
+            ? DateFormat.yMMMEd(
+                locale.languageCode,
+              ).add_Hm().format(widget.todo!.todoCompletedTime!)
+            : '',
+      );
     }
     super.initState();
   }
@@ -66,14 +67,19 @@ class _TodosActionState extends State<TodosAction> {
       final t = await DonstuCaching.cacheGroupSchedule(g);
       if (t.schedules.isNotEmpty) {
         setState(() {
-          List<Schedule> scheduleList =
-              t.schedules.where((list) => seen.add(list.discipline)).toList();
+          List<Schedule> scheduleList = t.schedules
+              .where((list) => seen.add(list.discipline))
+              .toList();
           disciplineList = scheduleList.toList();
-          disciplineList!.sort((a, b) =>
-              a.discipline.toLowerCase().compareTo(b.discipline.toLowerCase()));
+          disciplineList!.sort(
+            (a, b) => a.discipline.toLowerCase().compareTo(
+              b.discipline.toLowerCase(),
+            ),
+          );
           widget.todo != null
-              ? selectedDiscipline = disciplineList
-                  ?.firstWhere((e) => e.discipline == widget.todo!.discipline)
+              ? selectedDiscipline = disciplineList?.firstWhere(
+                  (e) => e.discipline == widget.todo!.discipline,
+                )
               : null;
         });
       }
@@ -141,7 +147,7 @@ class _TodosActionState extends State<TodosAction> {
                           IconsaxPlusLinear.tick_square,
                           size: 20,
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -181,12 +187,13 @@ class _TodosActionState extends State<TodosAction> {
                     value: selectedDiscipline,
                     items: disciplineList?.map((e) {
                       return DropdownMenuItem(
-                          value: e,
-                          child: Text(
-                            e.discipline,
-                            style: context.textTheme.bodyMedium,
-                            overflow: TextOverflow.visible,
-                          ));
+                        value: e,
+                        child: Text(
+                          e.discipline,
+                          style: context.textTheme.bodyMedium,
+                          overflow: TextOverflow.visible,
+                        ),
+                      );
                     }).toList(),
                     onChanged: (Schedule? newValue) {
                       FocusScope.of(context).requestFocus(FocusNode());
@@ -213,10 +220,7 @@ class _TodosActionState extends State<TodosAction> {
                   icon: const Icon(IconsaxPlusLinear.clock_1),
                   iconButton: timeEdit.text.isNotEmpty
                       ? IconButton(
-                          icon: const Icon(
-                            Icons.close,
-                            size: 18,
-                          ),
+                          icon: const Icon(Icons.close, size: 18),
                           onPressed: () {
                             timeEdit.clear();
                             setState(() {});
@@ -234,20 +238,21 @@ class _TodosActionState extends State<TodosAction> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           'timeDesc'.tr,
-                          style: context.textTheme.labelLarge!
-                              .copyWith(color: Colors.grey),
+                          style: context.textTheme.labelLarge!.copyWith(
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
                       titleAlignment: Alignment.centerLeft,
-                      pickerTextStyle:
-                          context.textTheme.labelMedium!.copyWith(fontSize: 15),
+                      pickerTextStyle: context.textTheme.labelMedium!.copyWith(
+                        fontSize: 15,
+                      ),
                       closeIconColor: Colors.red,
                       backgroundColor: context.theme.primaryColor,
                       onSubmit: (date) {
-                        String formattedDate =
-                            DateFormat.yMMMEd(locale.languageCode)
-                                .add_Hm()
-                                .format(date);
+                        String formattedDate = DateFormat.yMMMEd(
+                          locale.languageCode,
+                        ).add_Hm().format(date);
                         timeEdit.text = formattedDate;
                         setState(() {});
                       },
@@ -257,8 +262,9 @@ class _TodosActionState extends State<TodosAction> {
                       ),
                       bottomPickerTheme: BottomPickerTheme.plumPlate,
                       minDateTime: DateTime.now(),
-                      maxDateTime:
-                          DateTime.now().add(const Duration(days: 1000)),
+                      maxDateTime: DateTime.now().add(
+                        const Duration(days: 1000),
+                      ),
                       initialDateTime: DateTime.now(),
                       use24hFormat: true,
                       dateOrder: DatePickerDateOrder.dmy,

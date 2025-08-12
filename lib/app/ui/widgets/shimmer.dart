@@ -20,10 +20,7 @@ class MyShimmer extends StatelessWidget {
       highlightColor: context.theme.primaryColor,
       child: Card(
         margin: edgeInsetsMargin,
-        child: SizedBox(
-          height: hight,
-          width: width,
-        ),
+        child: SizedBox(height: hight, width: width),
       ),
     );
   }

@@ -44,10 +44,7 @@ class _SelectionListState<T extends SelectionData>
             ? null
             : IconButton(
                 onPressed: widget.onBackPressed,
-                icon: const Icon(
-                  IconsaxPlusLinear.arrow_left_3,
-                  size: 20,
-                ),
+                icon: const Icon(IconsaxPlusLinear.arrow_left_3, size: 20),
               ),
         title: widget.onBackPressed == null
             ? Text(
@@ -111,7 +108,9 @@ class _SelectionListState<T extends SelectionData>
                     final T data = widget.data[index];
                     return Card(
                       margin: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
+                        horizontal: 10,
+                        vertical: 5,
+                      ),
                       child: ListTile(
                         splashColor: Colors.transparent,
                         onTap: () => widget.onEntrySelected(data),

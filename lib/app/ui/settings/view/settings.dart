@@ -77,7 +77,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   builder: (BuildContext context) {
                     return Padding(
                       padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).padding.bottom),
+                        bottom: MediaQuery.of(context).padding.bottom,
+                      ),
                       child: StatefulBuilder(
                         builder: (BuildContext context, setState) {
                           return SingleChildScrollView(
@@ -87,13 +88,13 @@ class _SettingsPageState extends State<SettingsPage> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 15),
+                                    horizontal: 10,
+                                    vertical: 15,
+                                  ),
                                   child: Text(
                                     'appearance'.tr,
-                                    style:
-                                        context.textTheme.titleLarge?.copyWith(
-                                      fontSize: 20,
-                                    ),
+                                    style: context.textTheme.titleLarge
+                                        ?.copyWith(fontSize: 20),
                                   ),
                                 ),
                                 SettingCard(
@@ -105,20 +106,20 @@ class _SettingsPageState extends State<SettingsPage> {
                                   dropdownList: <String>[
                                     'system'.tr,
                                     'dark'.tr,
-                                    'light'.tr
+                                    'light'.tr,
                                   ],
                                   dropdownCange: (String? newValue) {
                                     ThemeMode themeMode =
                                         newValue?.tr == 'system'.tr
-                                            ? ThemeMode.system
-                                            : newValue?.tr == 'dark'.tr
-                                                ? ThemeMode.dark
-                                                : ThemeMode.light;
+                                        ? ThemeMode.system
+                                        : newValue?.tr == 'dark'.tr
+                                        ? ThemeMode.dark
+                                        : ThemeMode.light;
                                     String theme = newValue?.tr == 'system'.tr
                                         ? 'system'
                                         : newValue?.tr == 'dark'.tr
-                                            ? 'dark'
-                                            : 'light';
+                                        ? 'dark'
+                                        : 'light';
                                     themeController.saveTheme(theme);
                                     themeController.changeThemeMode(themeMode);
                                     setState(() {});
@@ -132,21 +133,26 @@ class _SettingsPageState extends State<SettingsPage> {
                                   value: settings.amoledTheme,
                                   onChange: (value) {
                                     themeController.saveOledTheme(value);
-                                    MyApp.updateAppState(context,
-                                        newAmoledTheme: value);
+                                    MyApp.updateAppState(
+                                      context,
+                                      newAmoledTheme: value,
+                                    );
                                   },
                                 ),
                                 SettingCard(
                                   elevation: 4,
-                                  icon:
-                                      const Icon(IconsaxPlusLinear.colorfilter),
+                                  icon: const Icon(
+                                    IconsaxPlusLinear.colorfilter,
+                                  ),
                                   text: 'materialColor'.tr,
                                   switcher: true,
                                   value: settings.materialColor,
                                   onChange: (value) {
                                     themeController.saveMaterialTheme(value);
-                                    MyApp.updateAppState(context,
-                                        newMaterialColor: value);
+                                    MyApp.updateAppState(
+                                      context,
+                                      newMaterialColor: value,
+                                    );
                                   },
                                 ),
                                 const Gap(10),
@@ -169,7 +175,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   builder: (BuildContext context) {
                     return Padding(
                       padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).padding.bottom),
+                        bottom: MediaQuery.of(context).padding.bottom,
+                      ),
                       child: StatefulBuilder(
                         builder: (BuildContext context, setState) {
                           return SingleChildScrollView(
@@ -179,19 +186,20 @@ class _SettingsPageState extends State<SettingsPage> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 15),
+                                    horizontal: 20,
+                                    vertical: 15,
+                                  ),
                                   child: Text(
                                     'functions'.tr,
-                                    style:
-                                        context.textTheme.titleLarge?.copyWith(
-                                      fontSize: 20,
-                                    ),
+                                    style: context.textTheme.titleLarge
+                                        ?.copyWith(fontSize: 20),
                                   ),
                                 ),
                                 SettingCard(
                                   elevation: 4,
                                   icon: const Icon(
-                                      IconsaxPlusLinear.dollar_square),
+                                    IconsaxPlusLinear.dollar_square,
+                                  ),
                                   text: 'ads'.tr,
                                   switcher: true,
                                   value: adsController.ads.value,
@@ -206,31 +214,45 @@ class _SettingsPageState extends State<SettingsPage> {
                                               style:
                                                   context.textTheme.titleLarge,
                                             ),
-                                            content: Text('adsDisable'.tr,
-                                                style: context
-                                                    .textTheme.titleMedium),
+                                            content: Text(
+                                              'adsDisable'.tr,
+                                              style:
+                                                  context.textTheme.titleMedium,
+                                            ),
                                             actions: [
                                               TextButton(
-                                                  onPressed: () =>
-                                                      Get.back(result: false),
-                                                  child: Text('cancel'.tr,
-                                                      style: context.theme
-                                                          .textTheme.titleMedium
-                                                          ?.copyWith(
-                                                              color: Colors
-                                                                  .blueAccent))),
+                                                onPressed: () =>
+                                                    Get.back(result: false),
+                                                child: Text(
+                                                  'cancel'.tr,
+                                                  style: context
+                                                      .theme
+                                                      .textTheme
+                                                      .titleMedium
+                                                      ?.copyWith(
+                                                        color:
+                                                            Colors.blueAccent,
+                                                      ),
+                                                ),
+                                              ),
                                               TextButton(
-                                                  onPressed: () {
-                                                    adsController
-                                                        .toggleAds(value);
-                                                    Get.back(result: true);
-                                                  },
-                                                  child: Text('disable'.tr,
-                                                      style: context.theme
-                                                          .textTheme.titleMedium
-                                                          ?.copyWith(
-                                                              color:
-                                                                  Colors.red))),
+                                                onPressed: () {
+                                                  adsController.toggleAds(
+                                                    value,
+                                                  );
+                                                  Get.back(result: true);
+                                                },
+                                                child: Text(
+                                                  'disable'.tr,
+                                                  style: context
+                                                      .theme
+                                                      .textTheme
+                                                      .titleMedium
+                                                      ?.copyWith(
+                                                        color: Colors.red,
+                                                      ),
+                                                ),
+                                              ),
                                             ],
                                           );
                                         },
@@ -260,8 +282,9 @@ class _SettingsPageState extends State<SettingsPage> {
               textInfo: settings.university.value?.name ?? 'no_select'.tr,
               onPressed: () async {
                 University? selectionData = await Get.to(
-                    () => const UniversityPage(),
-                    transition: Transition.downToUp);
+                  () => const UniversityPage(),
+                  transition: Transition.downToUp,
+                );
                 if (selectionData != null) {
                   settings.university.value = selectionData;
                   isar.writeTxnSync(() {
@@ -281,8 +304,9 @@ class _SettingsPageState extends State<SettingsPage> {
               onPressed: settings.university.value != null
                   ? () async {
                       GroupSchedule? selectionData = await Get.to(
-                          () => const GroupsPage(isSettings: true),
-                          transition: Transition.downToUp);
+                        () => const GroupsPage(isSettings: true),
+                        transition: Transition.downToUp,
+                      );
                       if (selectionData != null) {
                         selectionData.university.value =
                             settings.university.value;
@@ -305,22 +329,26 @@ class _SettingsPageState extends State<SettingsPage> {
               info: true,
               infoSettings: true,
               textInfo: appLanguages.firstWhere(
-                  (element) => (element['locale'] == locale),
-                  orElse: () => appLanguages.first)['name'],
+                (element) => (element['locale'] == locale),
+                orElse: () => appLanguages.first,
+              )['name'],
               onPressed: () {
                 showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
                     return Padding(
                       padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).padding.bottom),
+                        bottom: MediaQuery.of(context).padding.bottom,
+                      ),
                       child: StatefulBuilder(
                         builder: (BuildContext context, setState) {
                           return ListView(
                             children: [
                               Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 15),
+                                  horizontal: 20,
+                                  vertical: 15,
+                                ),
                                 child: Text(
                                   'language'.tr,
                                   style: context.textTheme.titleLarge?.copyWith(
@@ -337,7 +365,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                   return Card(
                                     elevation: 4,
                                     margin: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 5),
+                                      horizontal: 15,
+                                      vertical: 5,
+                                    ),
                                     child: ListTile(
                                       title: Text(
                                         appLanguages[index]['name'],
@@ -345,11 +375,14 @@ class _SettingsPageState extends State<SettingsPage> {
                                         textAlign: TextAlign.center,
                                       ),
                                       onTap: () {
-                                        MyApp.updateAppState(context,
-                                            newLocale: appLanguages[index]
-                                                ['locale']);
+                                        MyApp.updateAppState(
+                                          context,
+                                          newLocale:
+                                              appLanguages[index]['locale'],
+                                        );
                                         updateLanguage(
-                                            appLanguages[index]['locale']);
+                                          appLanguages[index]['locale'],
+                                        );
                                       },
                                     ),
                                   );
@@ -374,7 +407,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   builder: (BuildContext context) {
                     return Padding(
                       padding: EdgeInsets.only(
-                          bottom: MediaQuery.of(context).padding.bottom),
+                        bottom: MediaQuery.of(context).padding.bottom,
+                      ),
                       child: StatefulBuilder(
                         builder: (BuildContext context, setState) {
                           return SingleChildScrollView(
@@ -384,13 +418,13 @@ class _SettingsPageState extends State<SettingsPage> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 15),
+                                    horizontal: 20,
+                                    vertical: 15,
+                                  ),
                                   child: Text(
                                     'ourGroups'.tr,
-                                    style:
-                                        context.textTheme.titleLarge?.copyWith(
-                                      fontSize: 20,
-                                    ),
+                                    style: context.textTheme.titleLarge
+                                        ?.copyWith(fontSize: 20),
                                   ),
                                 ),
                                 SettingCard(
@@ -398,7 +432,8 @@ class _SettingsPageState extends State<SettingsPage> {
                                   icon: const Icon(LineAwesomeIcons.discord),
                                   text: 'Discord',
                                   onPressed: () => urlLauncher(
-                                      'https://discord.gg/JMMa9aHh8f'),
+                                    'https://discord.gg/JMMa9aHh8f',
+                                  ),
                                 ),
                                 SettingCard(
                                   elevation: 4,
@@ -428,9 +463,11 @@ class _SettingsPageState extends State<SettingsPage> {
                     height: 100,
                     margin: const EdgeInsets.symmetric(vertical: 5),
                     decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        image: DecorationImage(
-                            image: AssetImage('assets/icons/icon.png'))),
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      image: DecorationImage(
+                        image: AssetImage('assets/icons/icon.png'),
+                      ),
+                    ),
                   ),
                   applicationName: 'IKMS',
                   applicationVersion: appVersion,

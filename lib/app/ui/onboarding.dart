@@ -28,10 +28,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'assets/images/onboard.png',
-                    scale: 5,
-                  ),
+                  Image.asset('assets/images/onboard.png', scale: 5),
                   Text(
                     'timetable'.tr,
                     style: context.textTheme.headlineSmall?.copyWith(

@@ -48,10 +48,7 @@ class _TaskPageState extends State<TaskPage> {
             leading: todoController.isMultiSelectionTodo.isTrue
                 ? IconButton(
                     onPressed: () => todoController.doMultiSelectionTodoClear(),
-                    icon: const Icon(
-                      IconsaxPlusLinear.close_square,
-                      size: 20,
-                    ),
+                    icon: const Icon(IconsaxPlusLinear.close_square, size: 20),
                   )
                 : null,
             title: Text(
@@ -64,10 +61,7 @@ class _TaskPageState extends State<TaskPage> {
               Visibility(
                 visible: todoController.selectedTodo.isNotEmpty,
                 child: IconButton(
-                  icon: const Icon(
-                    IconsaxPlusLinear.trash_square,
-                    size: 20,
-                  ),
+                  icon: const Icon(IconsaxPlusLinear.trash_square, size: 20),
                   onPressed: () async {
                     await showAdaptiveDialog(
                       context: context,
@@ -83,20 +77,29 @@ class _TaskPageState extends State<TaskPage> {
                           ),
                           actions: [
                             TextButton(
-                                onPressed: () => Get.back(),
-                                child: Text('cancel'.tr,
-                                    style: context.textTheme.titleMedium
-                                        ?.copyWith(color: Colors.blueAccent))),
+                              onPressed: () => Get.back(),
+                              child: Text(
+                                'cancel'.tr,
+                                style: context.textTheme.titleMedium?.copyWith(
+                                  color: Colors.blueAccent,
+                                ),
+                              ),
+                            ),
                             TextButton(
-                                onPressed: () {
-                                  todoController
-                                      .deleteTodo(todoController.selectedTodo);
-                                  todoController.doMultiSelectionTodoClear();
-                                  Get.back();
-                                },
-                                child: Text('delete'.tr,
-                                    style: context.textTheme.titleMedium
-                                        ?.copyWith(color: Colors.red))),
+                              onPressed: () {
+                                todoController.deleteTodo(
+                                  todoController.selectedTodo,
+                                );
+                                todoController.doMultiSelectionTodoClear();
+                                Get.back();
+                              },
+                              child: Text(
+                                'delete'.tr,
+                                style: context.textTheme.titleMedium?.copyWith(
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
                           ],
                         );
                       },
@@ -137,11 +140,11 @@ class _TaskPageState extends State<TaskPage> {
                   isScrollable: true,
                   dividerColor: Colors.transparent,
                   splashFactory: NoSplash.splashFactory,
-                  overlayColor: WidgetStateProperty.resolveWith<Color?>(
-                    (Set<WidgetState> states) {
-                      return Colors.transparent;
-                    },
-                  ),
+                  overlayColor: WidgetStateProperty.resolveWith<Color?>((
+                    Set<WidgetState> states,
+                  ) {
+                    return Colors.transparent;
+                  }),
                   tabs: [
                     Tab(text: 'doing'.tr),
                     Tab(text: 'done'.tr),
@@ -152,14 +155,8 @@ class _TaskPageState extends State<TaskPage> {
                     padding: const EdgeInsets.only(top: 5),
                     child: TabBarView(
                       children: [
-                        TodosList(
-                          done: false,
-                          searchTodo: filter,
-                        ),
-                        TodosList(
-                          done: true,
-                          searchTodo: filter,
-                        ),
+                        TodosList(done: false, searchTodo: filter),
+                        TodosList(done: true, searchTodo: filter),
                       ],
                     ),
                   ),

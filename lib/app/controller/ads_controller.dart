@@ -11,7 +11,7 @@ class AdsController extends GetxController {
     settings.ads != null ? ads.value = settings.ads! : ads.value = false;
   }
 
-  void toggleAds(value) {
+  void toggleAds(bool value) {
     ads.value = value;
     settings.ads = value;
     isar.writeTxnSync(() => isar.settings.putSync(settings));

@@ -5,10 +5,7 @@ import 'package:ikms/app/data/db.dart';
 import 'package:ikms/app/ui/rasps/widgets/rasp_widget.dart';
 
 class RaspAudiencesPage extends StatefulWidget {
-  const RaspAudiencesPage({
-    super.key,
-    required this.audienceSchedule,
-  });
+  const RaspAudiencesPage({super.key, required this.audienceSchedule});
   final AudienceSchedule audienceSchedule;
 
   @override
@@ -26,8 +23,9 @@ class _RaspAudiencesPageState extends State<RaspAudiencesPage> {
   }
 
   getData() async {
-    final t =
-        await DonstuCaching.cacheAudienceSchedule(widget.audienceSchedule);
+    final t = await DonstuCaching.cacheAudienceSchedule(
+      widget.audienceSchedule,
+    );
     if (t.schedules.isNotEmpty) {
       setState(() {
         raspData.value = t.schedules.toList();

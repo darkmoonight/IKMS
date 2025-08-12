@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'package:ikms/app/api/donstu/caching.dart';
 import 'package:ikms/app/data/db.dart';
 import 'package:ikms/app/ui/rasps/view/rasp_professors.dart';
@@ -44,12 +44,10 @@ class _ProfessorsPageState extends State<ProfessorsPage> {
       var professorsTitle = element.name.toLowerCase();
       return professorsTitle.isNotEmpty && professorsTitle.contains(filter);
     }).toList();
-    setState(
-      () {
-        teachers = data;
-        isLoaded = true;
-      },
-    );
+    setState(() {
+      teachers = data;
+      isLoaded = true;
+    });
   }
 
   reApplyFilter() {

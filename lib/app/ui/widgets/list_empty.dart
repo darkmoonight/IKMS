@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ListEmpty extends StatelessWidget {
-  const ListEmpty({
-    super.key,
-    required this.img,
-    required this.text,
-  });
+  const ListEmpty({super.key, required this.img, required this.text});
   final String img;
   final String text;
 
@@ -16,10 +12,7 @@ class ListEmpty extends StatelessWidget {
       child: ListView(
         shrinkWrap: true,
         children: [
-          Image.asset(
-            img,
-            scale: 5,
-          ),
+          Image.asset(img, scale: 5),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Text(

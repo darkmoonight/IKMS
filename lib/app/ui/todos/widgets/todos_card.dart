@@ -33,11 +33,13 @@ class _TodosCardState extends State<TodosCard> {
           onTap: widget.onTap,
           onLongPress: widget.onLongPress,
           child: Card(
-            shape: todoController.isMultiSelectionTodo.isTrue &&
+            shape:
+                todoController.isMultiSelectionTodo.isTrue &&
                     todoController.selectedTodo.contains(widget.todo)
                 ? RoundedRectangleBorder(
                     side: BorderSide(
-                        color: context.theme.colorScheme.onPrimaryContainer),
+                      color: context.theme.colorScheme.onPrimaryContainer,
+                    ),
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
                   )
                 : null,
@@ -54,18 +56,21 @@ class _TodosCardState extends State<TodosCard> {
                         widget.todo.done = val!;
                       });
                       widget.todo.done
-                          ? flutterLocalNotificationsPlugin
-                              .cancel(widget.todo.id)
+                          ? flutterLocalNotificationsPlugin.cancel(
+                              widget.todo.id,
+                            )
                           : widget.todo.todoCompletedTime != null
-                              ? NotificationShow().showNotification(
-                                  widget.todo.id,
-                                  widget.todo.name,
-                                  widget.todo.discipline,
-                                  widget.todo.todoCompletedTime,
-                                )
-                              : null;
-                      Future.delayed(const Duration(milliseconds: 300),
-                          () => todoController.updateTodoCheck(widget.todo));
+                          ? NotificationShow().showNotification(
+                              widget.todo.id,
+                              widget.todo.name,
+                              widget.todo.discipline,
+                              widget.todo.todoCompletedTime,
+                            )
+                          : null;
+                      Future.delayed(
+                        const Duration(milliseconds: 300),
+                        () => todoController.updateTodoCheck(widget.todo),
+                      );
                     },
                   ),
                   Expanded(
@@ -91,21 +96,19 @@ class _TodosCardState extends State<TodosCard> {
                         widget.todo.todoCompletedTime != null
                             ? Text(
                                 widget.todo.todoCompletedTime != null
-                                    ? DateFormat.yMMMEd(locale.languageCode)
-                                        .add_Hm()
-                                        .format(
-                                          widget.todo.todoCompletedTime!,
-                                        )
+                                    ? DateFormat.yMMMEd(
+                                        locale.languageCode,
+                                      ).add_Hm().format(
+                                        widget.todo.todoCompletedTime!,
+                                      )
                                     : '',
-                                style:
-                                    context.theme.textTheme.bodySmall?.copyWith(
-                                  color: Colors.grey,
-                                ),
+                                style: context.theme.textTheme.bodySmall
+                                    ?.copyWith(color: Colors.grey),
                               )
                             : const SizedBox.shrink(),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

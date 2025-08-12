@@ -45,9 +45,11 @@ class DonstuAPI {
         return [];
       }
       return audiencesData.data
-          .map((Audiences audiences) =>
-              AudienceSchedule(id: audiences.id, name: audiences.name)
-                ..university.value = donstu)
+          .map(
+            (Audiences audiences) =>
+                AudienceSchedule(id: audiences.id, name: audiences.name)
+                  ..university.value = donstu,
+          )
           .toList();
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||
@@ -70,9 +72,11 @@ class DonstuAPI {
         return [];
       }
       return professorsData.data
-          .map((Professors professors) =>
-              TeacherSchedule(id: professors.id, name: professors.name)
-                ..university.value = donstu)
+          .map(
+            (Professors professors) =>
+                TeacherSchedule(id: professors.id, name: professors.name)
+                  ..university.value = donstu,
+          )
           .toList();
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||
@@ -95,9 +99,11 @@ class DonstuAPI {
         return [];
       }
       return groupsData.data
-          .map((Groups groups) =>
-              GroupSchedule(id: groups.id, name: groups.name)
-                ..university.value = donstu)
+          .map(
+            (Groups groups) =>
+                GroupSchedule(id: groups.id, name: groups.name)
+                  ..university.value = donstu,
+          )
           .toList();
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||
@@ -120,16 +126,20 @@ class DonstuAPI {
         return [];
       }
       return rasp.data.rasp
-          .map((RaspElement element) => Schedule(
+          .map(
+            (RaspElement element) => Schedule(
               discipline: element.discipline,
               teacher: element.teacher,
               audience: element.audience,
               group: element.group,
               pair: element.numberOfJobs,
-              dateTime:
-                  DateFormat('yyyy-MM-ddThh:mm:ss').parseUTC(element.date),
+              dateTime: DateFormat(
+                'yyyy-MM-ddThh:mm:ss',
+              ).parseUTC(element.date),
               begin: element.beginning,
-              end: element.end))
+              end: element.end,
+            ),
+          )
           .toList();
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||
@@ -152,16 +162,20 @@ class DonstuAPI {
         return [];
       }
       return rasp.data.rasp
-          .map((RaspElement element) => Schedule(
+          .map(
+            (RaspElement element) => Schedule(
               discipline: element.discipline,
               teacher: element.teacher,
               audience: element.audience,
               group: element.group,
               pair: element.numberOfJobs,
-              dateTime:
-                  DateFormat('yyyy-MM-ddThh:mm:ss').parseUTC(element.date),
+              dateTime: DateFormat(
+                'yyyy-MM-ddThh:mm:ss',
+              ).parseUTC(element.date),
               begin: element.beginning,
-              end: element.end))
+              end: element.end,
+            ),
+          )
           .toList();
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||
@@ -184,16 +198,20 @@ class DonstuAPI {
         return [];
       }
       return rasp.data.rasp
-          .map((RaspElement element) => Schedule(
+          .map(
+            (RaspElement element) => Schedule(
               discipline: element.discipline,
               teacher: element.teacher,
               audience: element.audience,
               group: element.group,
               pair: element.numberOfJobs,
-              dateTime:
-                  DateFormat('yyyy-MM-ddThh:mm:ss').parseUTC(element.date),
+              dateTime: DateFormat(
+                'yyyy-MM-ddThh:mm:ss',
+              ).parseUTC(element.date),
               begin: element.beginning,
-              end: element.end))
+              end: element.end,
+            ),
+          )
           .toList();
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||

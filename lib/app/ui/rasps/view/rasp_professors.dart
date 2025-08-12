@@ -5,10 +5,7 @@ import 'package:ikms/app/data/db.dart';
 import 'package:ikms/app/ui/rasps/widgets/rasp_widget.dart';
 
 class RaspProfessorsPage extends StatefulWidget {
-  const RaspProfessorsPage({
-    super.key,
-    required this.teacherSchedule,
-  });
+  const RaspProfessorsPage({super.key, required this.teacherSchedule});
   final TeacherSchedule teacherSchedule;
 
   @override

@@ -52,10 +52,7 @@ class _MySchedulePageState extends State<MySchedulePage> {
       onRefresh: () async {
         await getData();
       },
-      child: RaspWidget(
-        isLoaded: isLoaded,
-        raspElements: raspData,
-      ),
+      child: RaspWidget(isLoaded: isLoaded, raspElements: raspData),
     );
   }
 }

@@ -4,7 +4,7 @@ import 'package:ikms/app/data/db.dart';
 import 'package:ikms/app/utils/notification.dart';
 import 'package:ikms/main.dart';
 import 'package:intl/intl.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 
 class TodoController extends GetxController {
   final todos = <Todos>[].obs;
@@ -46,7 +46,11 @@ class TodoController extends GetxController {
       isar.writeTxnSync(() => isar.todos.putSync(todosCreate));
       if (time.isNotEmpty) {
         NotificationShow().showNotification(
-            todosCreate.id, todosCreate.name, todosCreate.discipline, date);
+          todosCreate.id,
+          todosCreate.name,
+          todosCreate.discipline,
+          date,
+        );
       }
       EasyLoading.showSuccess('todoCreate'.tr, duration: duration);
     } else {
@@ -60,7 +64,11 @@ class TodoController extends GetxController {
   }
 
   Future<void> updateTodo(
-      Todos todo, String title, Schedule discipline, String time) async {
+    Todos todo,
+    String title,
+    Schedule discipline,
+    String time,
+  ) async {
     DateTime? date;
     if (time.isNotEmpty) {
       date = DateFormat.yMMMEd(locale.languageCode).add_Hm().parse(time);
@@ -80,8 +88,12 @@ class TodoController extends GetxController {
 
     if (time.isNotEmpty) {
       await flutterLocalNotificationsPlugin.cancel(todo.id);
-      NotificationShow()
-          .showNotification(todo.id, todo.name, todo.discipline, date);
+      NotificationShow().showNotification(
+        todo.id,
+        todo.name,
+        todo.discipline,
+        date,
+      );
     } else {
       await flutterLocalNotificationsPlugin.cancel(todo.id);
     }

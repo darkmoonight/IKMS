@@ -98,7 +98,8 @@ class DonstuCaching {
   }
 
   static Future<AudienceSchedule> cacheAudienceSchedule(
-      AudienceSchedule t) async {
+    AudienceSchedule t,
+  ) async {
     if ((DateTime.now().difference(t.lastUpdate).inMinutes > 90 ||
             t.schedules.isEmpty) &&
         await isOnline.value) {

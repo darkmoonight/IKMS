@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'package:ikms/app/api/donstu/caching.dart';
 import 'package:ikms/app/data/db.dart';
 import 'package:ikms/app/ui/rasps/view/rasp_groups.dart';
@@ -8,10 +8,7 @@ import 'package:ikms/app/ui/selection_list/widgets/selection_list.dart';
 import 'package:ikms/main.dart';
 
 class GroupsPage extends StatefulWidget {
-  const GroupsPage({
-    super.key,
-    required this.isSettings,
-  });
+  const GroupsPage({super.key, required this.isSettings});
   final bool isSettings;
 
   @override
@@ -49,12 +46,10 @@ class _GroupsPageState extends State<GroupsPage> {
       var groupsTitle = element.name.toLowerCase();
       return groupsTitle.isNotEmpty && groupsTitle.contains(filter);
     }).toList();
-    setState(
-      () {
-        groups = data;
-        isLoaded = true;
-      },
-    );
+    setState(() {
+      groups = data;
+      isLoaded = true;
+    });
   }
 
   reApplyFilter() {
@@ -69,23 +64,24 @@ class _GroupsPageState extends State<GroupsPage> {
           await applyFilter('');
         },
         child: SelectionList(
-            headerText: 'groups'.tr,
-            labelText: 'groupsName'.tr,
-            onTextChanged: applyFilter,
-            isLoaded: isLoaded,
-            onBackPressed: widget.isSettings ? Get.back : null,
-            data: groups,
-            onEntrySelected: (GroupSchedule selectionData) async {
-              if (widget.isSettings || isDialog) {
-                Get.back(result: selectionData);
-              } else {
-                await Get.to(
-                  () => RaspGroupsPage(groupSchedule: selectionData),
-                  transition: Transition.downToUp,
-                );
-                reApplyFilter();
-              }
-            }),
+          headerText: 'groups'.tr,
+          labelText: 'groupsName'.tr,
+          onTextChanged: applyFilter,
+          isLoaded: isLoaded,
+          onBackPressed: widget.isSettings ? Get.back : null,
+          data: groups,
+          onEntrySelected: (GroupSchedule selectionData) async {
+            if (widget.isSettings || isDialog) {
+              Get.back(result: selectionData);
+            } else {
+              await Get.to(
+                () => RaspGroupsPage(groupSchedule: selectionData),
+                transition: Transition.downToUp,
+              );
+              reApplyFilter();
+            }
+          },
+        ),
       ),
     );
   }

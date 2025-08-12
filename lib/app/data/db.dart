@@ -1,4 +1,4 @@
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 
 part 'db.g.dart';
 
@@ -20,21 +20,23 @@ class ScheduleData extends SelectionData {
 
   List<Schedule> schedules = <Schedule>[];
 
-  ScheduleData({
-    super.id,
-    super.name,
-    super.description,
-  });
+  ScheduleData({super.id, super.name, super.description});
 }
 
 @collection
 class University extends SelectionData {
-  DateTime lastUpdateGroups =
-      DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
-  DateTime lastUpdateTeachers =
-      DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
-  DateTime lastUpdateAudiences =
-      DateTime.fromMillisecondsSinceEpoch(0, isUtc: true);
+  DateTime lastUpdateGroups = DateTime.fromMillisecondsSinceEpoch(
+    0,
+    isUtc: true,
+  );
+  DateTime lastUpdateTeachers = DateTime.fromMillisecondsSinceEpoch(
+    0,
+    isUtc: true,
+  );
+  DateTime lastUpdateAudiences = DateTime.fromMillisecondsSinceEpoch(
+    0,
+    isUtc: true,
+  );
 
   @Backlink(to: 'university')
   final groups = IsarLinks<GroupSchedule>();
@@ -43,59 +45,31 @@ class University extends SelectionData {
   @Backlink(to: 'university')
   final audiences = IsarLinks<AudienceSchedule>();
 
-  University({
-    super.id,
-    super.name,
-    super.description,
-  });
+  University({super.id, super.name, super.description});
 }
 
 @collection
 class GroupSchedule extends ScheduleData {
-  GroupSchedule({
-    super.id,
-    super.name,
-    super.description,
-  });
+  GroupSchedule({super.id, super.name, super.description});
 
   GroupSchedule.fromSelectionData(SelectionData data)
-      : super(
-          id: data.id,
-          name: data.name,
-          description: data.description,
-        );
+    : super(id: data.id, name: data.name, description: data.description);
 }
 
 @collection
 class TeacherSchedule extends ScheduleData {
-  TeacherSchedule({
-    super.id,
-    super.name,
-    super.description,
-  });
+  TeacherSchedule({super.id, super.name, super.description});
 
   TeacherSchedule.fromSelectionData(SelectionData data)
-      : super(
-          id: data.id,
-          name: data.name,
-          description: data.description,
-        );
+    : super(id: data.id, name: data.name, description: data.description);
 }
 
 @collection
 class AudienceSchedule extends ScheduleData {
-  AudienceSchedule({
-    super.id,
-    super.name,
-    super.description,
-  });
+  AudienceSchedule({super.id, super.name, super.description});
 
   AudienceSchedule.fromSelectionData(SelectionData data)
-      : super(
-          id: data.id,
-          name: data.name,
-          description: data.description,
-        );
+    : super(id: data.id, name: data.name, description: data.description);
 }
 
 @embedded

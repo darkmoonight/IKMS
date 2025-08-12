@@ -5,10 +5,7 @@ import 'package:ikms/app/data/db.dart';
 import 'package:ikms/app/ui/rasps/widgets/rasp_widget.dart';
 
 class RaspGroupsPage extends StatefulWidget {
-  const RaspGroupsPage({
-    super.key,
-    required this.groupSchedule,
-  });
+  const RaspGroupsPage({super.key, required this.groupSchedule});
   final GroupSchedule groupSchedule;
 
   @override

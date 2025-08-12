@@ -37,10 +37,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: tabIndex,
-        children: pages,
-      ),
+      body: IndexedStack(index: tabIndex, children: pages),
       floatingActionButton: tabIndex == 4
           ? FloatingActionButton(
               onPressed: () {
@@ -49,10 +46,7 @@ class _HomePageState extends State<HomePage> {
                   context: context,
                   isScrollControlled: true,
                   builder: (BuildContext context) {
-                    return TodosAction(
-                      text: 'create'.tr,
-                      edit: false,
-                    );
+                    return TodosAction(text: 'create'.tr, edit: false);
                   },
                 );
               },

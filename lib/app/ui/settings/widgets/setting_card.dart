@@ -41,9 +41,7 @@ class SettingCard extends StatelessWidget {
       elevation: elevation ?? 1,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: ListTile(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         onTap: onPressed,
         leading: icon,
         title: Text(
@@ -54,61 +52,53 @@ class SettingCard extends StatelessWidget {
         trailing: switcher
             ? Transform.scale(
                 scale: 0.8,
-                child: Switch(
-                  value: value!,
-                  onChanged: onChange,
-                ),
+                child: Switch(value: value!, onChanged: onChange),
               )
             : dropdown
-                ? DropdownButton<String>(
-                    icon: const Padding(
-                      padding: EdgeInsets.only(left: 7),
-                      child: Icon(IconsaxPlusLinear.arrow_down),
-                    ),
-                    iconSize: 15,
-                    alignment: AlignmentDirectional.centerEnd,
-                    borderRadius: const BorderRadius.all(Radius.circular(15)),
-                    underline: Container(),
-                    value: dropdownName,
-                    items: dropdownList!
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: dropdownCange,
-                  )
-                : info
-                    ? infoSettings
-                        ? Wrap(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 5),
-                                child: Text(
-                                  textInfo!,
-                                  style: context.textTheme.bodyMedium,
-                                  overflow: TextOverflow.visible,
-                                ),
-                              ),
-                              const Icon(
-                                IconsaxPlusLinear.arrow_right_3,
-                                size: 18,
-                              ),
-                            ],
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.only(right: 5),
-                            child: Text(
-                              textInfo!,
-                              style: context.textTheme.titleMedium,
-                              overflow: TextOverflow.visible,
-                            ),
-                          )
-                    : const Icon(
-                        IconsaxPlusLinear.arrow_right_3,
-                        size: 18,
+            ? DropdownButton<String>(
+                icon: const Padding(
+                  padding: EdgeInsets.only(left: 7),
+                  child: Icon(IconsaxPlusLinear.arrow_down),
+                ),
+                iconSize: 15,
+                alignment: AlignmentDirectional.centerEnd,
+                borderRadius: const BorderRadius.all(Radius.circular(15)),
+                underline: Container(),
+                value: dropdownName,
+                items: dropdownList!.map<DropdownMenuItem<String>>((
+                  String value,
+                ) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: dropdownCange,
+              )
+            : info
+            ? infoSettings
+                  ? Wrap(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 5),
+                          child: Text(
+                            textInfo!,
+                            style: context.textTheme.bodyMedium,
+                            overflow: TextOverflow.visible,
+                          ),
+                        ),
+                        const Icon(IconsaxPlusLinear.arrow_right_3, size: 18),
+                      ],
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: Text(
+                        textInfo!,
+                        style: context.textTheme.titleMedium,
+                        overflow: TextOverflow.visible,
                       ),
+                    )
+            : const Icon(IconsaxPlusLinear.arrow_right_3, size: 18),
       ),
     );
   }

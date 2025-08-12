@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'package:ikms/app/api/donstu/caching.dart';
 import 'package:ikms/app/data/db.dart';
 import 'package:ikms/app/ui/rasps/view/rasp_audiences.dart';
@@ -44,12 +44,10 @@ class _AudiencesPageState extends State<AudiencesPage> {
       var audiencesTitle = element.name.toLowerCase();
       return audiencesTitle.isNotEmpty && audiencesTitle.contains(filter);
     }).toList();
-    setState(
-      () {
-        audiences = data;
-        isLoaded = true;
-      },
-    );
+    setState(() {
+      audiences = data;
+      isLoaded = true;
+    });
   }
 
   reApplyFilter() {
