@@ -13,7 +13,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace = "io.github.DarkMooNight.IKMS"
     compileSdk = 36
-    ndkVersion = '29.0.13113456'
+    ndkVersion = '29.0.14033849'
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -38,7 +38,7 @@ android {
 
     defaultConfig {
         applicationId = "io.github.DarkMooNight.IKMS"
-        minSdk = 23
+        minSdkVersion = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -74,6 +74,6 @@ flutter {
 }
 
 dependencies {
-    implementation("com.yandex.android:mobileads:7.15.0")
+    implementation("com.yandex.android:mobileads:7.15.2")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 }

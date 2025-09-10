@@ -74,7 +74,7 @@ const UniversitySchema = CollectionSchema(
   getId: _universityGetId,
   getLinks: _universityGetLinks,
   attach: _universityAttach,
-  version: '3.2.0-dev.1',
+  version: '3.3.0-dev.2',
 );
 
 int _universityEstimateSize(
@@ -1231,7 +1231,7 @@ const GroupScheduleSchema = CollectionSchema(
   getId: _groupScheduleGetId,
   getLinks: _groupScheduleGetLinks,
   attach: _groupScheduleAttach,
-  version: '3.2.0-dev.1',
+  version: '3.3.0-dev.2',
 );
 
 int _groupScheduleEstimateSize(
@@ -2110,7 +2110,7 @@ const TeacherScheduleSchema = CollectionSchema(
   getId: _teacherScheduleGetId,
   getLinks: _teacherScheduleGetLinks,
   attach: _teacherScheduleAttach,
-  version: '3.2.0-dev.1',
+  version: '3.3.0-dev.2',
 );
 
 int _teacherScheduleEstimateSize(
@@ -2988,7 +2988,7 @@ const AudienceScheduleSchema = CollectionSchema(
   getId: _audienceScheduleGetId,
   getLinks: _audienceScheduleGetLinks,
   attach: _audienceScheduleAttach,
-  version: '3.2.0-dev.1',
+  version: '3.3.0-dev.2',
 );
 
 int _audienceScheduleEstimateSize(
@@ -3870,7 +3870,7 @@ const SettingsSchema = CollectionSchema(
   getId: _settingsGetId,
   getLinks: _settingsGetLinks,
   attach: _settingsAttach,
-  version: '3.2.0-dev.1',
+  version: '3.3.0-dev.2',
 );
 
 int _settingsEstimateSize(
@@ -4757,7 +4757,7 @@ const TodosSchema = CollectionSchema(
   getId: _todosGetId,
   getLinks: _todosGetLinks,
   attach: _todosAttach,
-  version: '3.2.0-dev.1',
+  version: '3.3.0-dev.2',
 );
 
 int _todosEstimateSize(
