@@ -8,9 +8,9 @@ String professorsDataToJson(ProfessorsData data) => json.encode(data.toJson());
 class ProfessorsData {
   ProfessorsData({required this.data, required this.state, required this.msg});
 
-  List<Professors> data;
-  int state;
-  String msg;
+  final List<Professors> data;
+  final int state;
+  final String msg;
 
   factory ProfessorsData.fromJson(Map<String, dynamic> json) => ProfessorsData(
     data: List<Professors>.from(
@@ -35,10 +35,10 @@ class Professors {
     required this.idFromRasp,
   });
 
-  String name;
-  String kaf;
-  int id;
-  bool? idFromRasp;
+  final String name;
+  final String kaf;
+  final int id;
+  final bool? idFromRasp;
 
   factory Professors.fromJson(Map<String, dynamic> json) => Professors(
     name: json['name'] ?? '',

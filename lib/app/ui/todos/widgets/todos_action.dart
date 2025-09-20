@@ -1,18 +1,20 @@
-import 'package:bottom_picker/bottom_picker.dart';
-import 'package:bottom_picker/resources/arrays.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import 'package:ikms/app/api/donstu/caching.dart';
+import 'package:ikms/app/api/caching.dart';
 import 'package:ikms/app/data/db.dart';
 import 'package:ikms/app/controller/todo_controller.dart';
 import 'package:ikms/app/ui/widgets/text_form.dart';
 import 'package:ikms/main.dart';
 import 'package:intl/intl.dart';
+import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 class TodosAction extends StatefulWidget {
+  final String text;
+  final bool edit;
+  final Todos? todo;
+
   const TodosAction({
     super.key,
     required this.text,
@@ -20,70 +22,128 @@ class TodosAction extends StatefulWidget {
     this.todo,
   });
 
-  final String text;
-  final bool edit;
-  final Todos? todo;
-
   @override
   State<TodosAction> createState() => _TodosActionState();
 }
 
 class _TodosActionState extends State<TodosAction> {
-  final formKey = GlobalKey<FormState>();
-  final todoController = Get.put(TodoController());
-  TextEditingController titleEdit = TextEditingController();
-  TextEditingController timeEdit = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _todoController = Get.find<TodoController>();
+  final _titleController = TextEditingController();
+  final _timeController = TextEditingController();
+  Schedule? _selectedDiscipline;
+  List<Schedule> _disciplineList = [];
+  bool _isLoading = true;
+  final _dateFormatter = DateFormat.yMMMEd(locale.languageCode).add_Hm();
 
-  Schedule? selectedDiscipline;
-  List<Schedule>? disciplineList;
+  @override
+  void initState() {
+    super.initState();
+    _initializeControllers();
+    _loadDisciplineData();
+  }
 
-  textTrim(value) {
-    value.text = value.text.trim();
-    while (value.text.contains('  ')) {
-      value.text = value.text.replaceAll('  ', ' ');
+  void _initializeControllers() {
+    if (widget.edit && widget.todo != null) {
+      _titleController.text = widget.todo!.name;
+      _timeController.text = widget.todo!.todoCompletedTime != null
+          ? _dateFormatter.format(widget.todo!.todoCompletedTime!)
+          : '';
+    }
+  }
+
+  Future<void> _loadDisciplineData() async {
+    try {
+      final group = settings.group.value;
+      final university = settings.university.value;
+
+      if (group != null && university != null) {
+        final scheduleData = await UniversityCaching.cacheGroupSchedule(
+          university,
+          group,
+        );
+        final seen = <String>{};
+
+        setState(() {
+          _disciplineList =
+              scheduleData.schedules
+                  .where((schedule) => seen.add(schedule.discipline))
+                  .toList()
+                ..sort(
+                  (a, b) => a.discipline.toLowerCase().compareTo(
+                    b.discipline.toLowerCase(),
+                  ),
+                );
+
+          if (widget.todo != null) {
+            _selectedDiscipline = _disciplineList.firstWhereOrNull(
+              (e) => e.discipline == widget.todo!.discipline,
+            );
+          }
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error loading discipline data: $e');
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _trimText(TextEditingController controller) {
+    controller.text = controller.text.trim();
+    while (controller.text.contains('  ')) {
+      controller.text = controller.text.replaceAll('  ', ' ');
+    }
+  }
+
+  Future<void> _selectDateTime() async {
+    final dateTime = await showOmniDateTimePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 1000)),
+      minutesInterval: 1,
+      is24HourMode: true,
+      borderRadius: const BorderRadius.all(Radius.circular(20)),
+      transitionDuration: const Duration(milliseconds: 200),
+    );
+
+    if (dateTime != null) {
+      _timeController.text = _dateFormatter.format(dateTime);
+    }
+  }
+
+  void _submitForm() {
+    if (_formKey.currentState!.validate()) {
+      _trimText(_titleController);
+
+      if (_selectedDiscipline != null) {
+        if (widget.edit && widget.todo != null) {
+          _todoController.updateTodo(
+            widget.todo!,
+            _titleController.text,
+            _selectedDiscipline!,
+            _timeController.text,
+          );
+        } else {
+          _todoController.addTodo(
+            _titleController.text,
+            _selectedDiscipline!,
+            _timeController.text,
+          );
+        }
+        Get.back();
+      }
     }
   }
 
   @override
-  initState() {
-    getListData();
-    if (widget.edit) {
-      titleEdit = TextEditingController(text: widget.todo!.name);
-      timeEdit = TextEditingController(
-        text: widget.todo!.todoCompletedTime != null
-            ? DateFormat.yMMMEd(
-                locale.languageCode,
-              ).add_Hm().format(widget.todo!.todoCompletedTime!)
-            : '',
-      );
-    }
-    super.initState();
-  }
-
-  getListData() async {
-    final g = settings.group.value;
-    var seen = <String>{};
-    if (g != null) {
-      final t = await DonstuCaching.cacheGroupSchedule(g);
-      if (t.schedules.isNotEmpty) {
-        setState(() {
-          List<Schedule> scheduleList = t.schedules
-              .where((list) => seen.add(list.discipline))
-              .toList();
-          disciplineList = scheduleList.toList();
-          disciplineList!.sort(
-            (a, b) => a.discipline.toLowerCase().compareTo(
-              b.discipline.toLowerCase(),
-            ),
-          );
-          widget.todo != null
-              ? selectedDiscipline = disciplineList?.firstWhere(
-                  (e) => e.discipline == widget.todo!.discipline,
-                )
-              : null;
-        });
-      }
-    }
+  void dispose() {
+    _titleController.dispose();
+    _timeController.dispose();
+    super.dispose();
   }
 
   @override
@@ -91,7 +151,7 @@ class _TodosActionState extends State<TodosAction> {
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
       child: Form(
-        key: formKey,
+        key: _formKey,
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.only(
@@ -101,182 +161,146 @@ class _TodosActionState extends State<TodosAction> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          titleEdit.clear();
-                          timeEdit.clear();
-                          Get.back();
-                        },
-                        icon: const Icon(
-                          IconsaxPlusLinear.close_square,
-                          size: 20,
-                        ),
-                      ),
-                      Text(
-                        widget.text,
-                        style: context.textTheme.titleLarge?.copyWith(
-                          fontSize: 20,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {
-                            textTrim(titleEdit);
-                            widget.edit
-                                ? todoController.updateTodo(
-                                    widget.todo!,
-                                    titleEdit.text,
-                                    selectedDiscipline!,
-                                    timeEdit.text,
-                                  )
-                                : todoController.addTodo(
-                                    titleEdit.text,
-                                    selectedDiscipline!,
-                                    timeEdit.text,
-                                  );
-                            Get.back();
-                          }
-                        },
-                        icon: const Icon(
-                          IconsaxPlusLinear.tick_square,
-                          size: 20,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                MyTextForm(
-                  elevation: 4,
-                  margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  controller: titleEdit,
-                  labelText: 'name'.tr,
-                  type: TextInputType.multiline,
-                  icon: const Icon(IconsaxPlusLinear.edit),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'validateName'.tr;
-                    }
-                    return null;
-                  },
-                  maxLine: null,
-                ),
-                Card(
-                  elevation: 4,
-                  margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: DropdownButtonFormField(
-                    style: context.textTheme.titleMedium,
-                    isExpanded: true,
-                    decoration: InputDecoration(
-                      label: Text('discipline'.tr),
-                      prefixIcon: const Icon(IconsaxPlusLinear.book_square),
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                    ),
-                    borderRadius: const BorderRadius.all(Radius.circular(15)),
-                    icon: const Padding(
-                      padding: EdgeInsets.only(right: 15, bottom: 10),
-                      child: Icon(IconsaxPlusLinear.arrow_down, size: 18),
-                    ),
-                    value: selectedDiscipline,
-                    items: disciplineList?.map((e) {
-                      return DropdownMenuItem(
-                        value: e,
-                        child: Text(
-                          e.discipline,
-                          style: context.textTheme.bodyMedium,
-                          overflow: TextOverflow.visible,
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (Schedule? newValue) {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      setState(() {
-                        selectedDiscipline = newValue!;
-                      });
-                    },
-                    validator: (value) {
-                      if (value == null) {
-                        return 'validateDiscipline'.tr;
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                MyTextForm(
-                  elevation: 4,
-                  margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  onChanged: (value) => setState(() {}),
-                  readOnly: true,
-                  controller: timeEdit,
-                  labelText: 'timeComlete'.tr,
-                  type: TextInputType.datetime,
-                  icon: const Icon(IconsaxPlusLinear.clock_1),
-                  iconButton: timeEdit.text.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.close, size: 18),
-                          onPressed: () {
-                            timeEdit.clear();
-                            setState(() {});
-                          },
-                        )
-                      : null,
-                  onTap: () {
-                    BottomPicker.dateTime(
-                      titlePadding: const EdgeInsets.only(top: 10),
-                      pickerTitle: Text(
-                        'time'.tr,
-                        style: context.textTheme.titleMedium!,
-                      ),
-                      pickerDescription: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'timeDesc'.tr,
-                          style: context.textTheme.labelLarge!.copyWith(
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
-                      titleAlignment: Alignment.centerLeft,
-                      pickerTextStyle: context.textTheme.labelMedium!.copyWith(
-                        fontSize: 15,
-                      ),
-                      closeIconColor: Colors.red,
-                      backgroundColor: context.theme.primaryColor,
-                      onSubmit: (date) {
-                        String formattedDate = DateFormat.yMMMEd(
-                          locale.languageCode,
-                        ).add_Hm().format(date);
-                        timeEdit.text = formattedDate;
-                        setState(() {});
-                      },
-                      buttonContent: Text(
-                        'select'.tr,
-                        textAlign: TextAlign.center,
-                      ),
-                      bottomPickerTheme: BottomPickerTheme.plumPlate,
-                      minDateTime: DateTime.now(),
-                      maxDateTime: DateTime.now().add(
-                        const Duration(days: 1000),
-                      ),
-                      initialDateTime: DateTime.now(),
-                      use24hFormat: true,
-                      dateOrder: DatePickerDateOrder.dmy,
-                    ).show(context);
-                  },
-                ),
+                _buildHeader(),
+                _buildTitleField(),
+                _buildDisciplineDropdown(),
+                _buildTimeField(),
                 const Gap(10),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildCloseButton(),
+          _buildTitleText(),
+          _buildSubmitButton(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCloseButton() {
+    return IconButton(
+      onPressed: () {
+        _titleController.clear();
+        _timeController.clear();
+        Get.back();
+      },
+      icon: const Icon(IconsaxPlusLinear.close_square, size: 20),
+    );
+  }
+
+  Widget _buildTitleText() {
+    return Text(
+      widget.text,
+      style: context.textTheme.titleLarge?.copyWith(fontSize: 20),
+      textAlign: TextAlign.center,
+    );
+  }
+
+  Widget _buildSubmitButton() {
+    return IconButton(
+      onPressed: _submitForm,
+      icon: const Icon(IconsaxPlusLinear.tick_square, size: 20),
+    );
+  }
+
+  Widget _buildTitleField() {
+    return MyTextForm(
+      elevation: 4,
+      margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+      controller: _titleController,
+      labelText: 'name'.tr,
+      type: TextInputType.multiline,
+      icon: const Icon(IconsaxPlusLinear.edit),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'validateName'.tr;
+        }
+        return null;
+      },
+      maxLine: null,
+    );
+  }
+
+  Widget _buildDisciplineDropdown() {
+    return Card(
+      elevation: 4,
+      margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+      child: DropdownButtonFormField<Schedule>(
+        style: context.textTheme.titleMedium,
+        isExpanded: true,
+        initialValue: _isLoading ? null : _selectedDiscipline,
+        decoration: InputDecoration(
+          labelText: _isLoading ? 'loading'.tr : 'discipline'.tr,
+          prefixIcon: const Icon(IconsaxPlusLinear.book_square),
+          border: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          enabledBorder: InputBorder.none,
+        ),
+        borderRadius: BorderRadius.circular(15),
+        icon: _isLoading
+            ? const SizedBox(width: 24, height: 24)
+            : const Padding(
+                padding: EdgeInsets.only(right: 15, bottom: 10),
+                child: Icon(IconsaxPlusLinear.arrow_down, size: 18),
+              ),
+        items: _isLoading
+            ? []
+            : _disciplineList.map((schedule) {
+                return DropdownMenuItem<Schedule>(
+                  value: schedule,
+                  child: Text(
+                    schedule.discipline,
+                    style: context.textTheme.bodyMedium,
+                    overflow: TextOverflow.visible,
+                  ),
+                );
+              }).toList(),
+        onChanged: _isLoading
+            ? null
+            : (Schedule? newValue) {
+                FocusScope.of(context).unfocus();
+                setState(() {
+                  _selectedDiscipline = newValue;
+                });
+              },
+        validator: (value) {
+          if (_isLoading) return null;
+          if (value == null) {
+            return 'validateDiscipline'.tr;
+          }
+          return null;
+        },
+      ),
+    );
+  }
+
+  Widget _buildTimeField() {
+    return MyTextForm(
+      elevation: 4,
+      margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+      readOnly: true,
+      controller: _timeController,
+      labelText: 'timeComplete'.tr,
+      type: TextInputType.datetime,
+      icon: const Icon(IconsaxPlusLinear.clock_1),
+      iconButton: _timeController.text.isNotEmpty
+          ? IconButton(
+              icon: const Icon(Icons.close, size: 18),
+              onPressed: () => _timeController.clear(),
+            )
+          : null,
+      onTap: _selectDateTime,
     );
   }
 }

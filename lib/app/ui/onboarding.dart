@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:ikms/app/api/donstu/caching.dart';
+import 'package:ikms/app/api/caching.dart';
 import 'package:ikms/app/data/db.dart';
-import 'package:ikms/app/ui/selection_list/view/groups.dart';
 import 'package:ikms/app/ui/home.dart';
-import 'package:ikms/app/ui/selection_list/view/university.dart';
+import 'package:ikms/app/ui/selection_list/view/selection_pages.dart';
 import 'package:ikms/app/ui/widgets/button.dart';
 import 'package:ikms/main.dart';
 
@@ -51,44 +50,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             Padding(
               padding: const EdgeInsets.all(10),
               child: MyTextButton(
-                buttonName: 'get_started'.tr,
+                text: 'get_started'.tr,
                 onPressed: () async {
-                  University? university;
-                  GroupSchedule? group;
-                  do {
-                    university = await Get.dialog(
-                      const UniversityPage(),
-                      useSafeArea: false,
-                    );
-                  } while (university == null);
-
-                  if (university.id == donstu.id) {
-                    Get.dialog(
-                      const Center(child: CircularProgressIndicator()),
-                      useSafeArea: false,
-                    );
-                    if (!await DonstuCaching.cacheGroups()) return;
-                  }
-
-                  do {
-                    group = await Get.dialog(
-                      const GroupsPage(isSettings: false),
-                      useSafeArea: false,
-                    );
-                  } while (group == null);
-
-                  settings.university.value = university;
-                  settings.group.value = group;
-
-                  isar.writeTxnSync(() {
-                    isar.groupSchedules.putSync(group!);
-                    group.university.saveSync();
-                    isar.settings.putSync(settings);
-                    settings.group.saveSync();
-                    settings.university.saveSync();
-                  });
-
-                  Get.offAll(() => const HomePage());
+                  await _handleGetStarted(context);
                 },
               ),
             ),
@@ -96,5 +60,61 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleGetStarted(BuildContext context) async {
+    University? university;
+    GroupSchedule? group;
+
+    do {
+      university = await Get.dialog(const UniversityPage(), useSafeArea: false);
+    } while (university == null);
+
+    Get.dialog(
+      const Center(child: CircularProgressIndicator()),
+      barrierDismissible: false,
+      useSafeArea: false,
+    );
+
+    if (!await UniversityCaching.cacheGroups(university)) {
+      Get.back();
+      Get.snackbar('error'.tr, 'failed_to_load_groups'.tr);
+      return;
+    }
+    Get.back();
+
+    do {
+      group = await Get.dialog(
+        const GroupsPage(isSettings: false),
+        useSafeArea: false,
+      );
+    } while (group == null);
+
+    Get.dialog(
+      const Center(child: CircularProgressIndicator()),
+      barrierDismissible: false,
+      useSafeArea: false,
+    );
+
+    group = await UniversityCaching.cacheGroupSchedule(university, group);
+    Get.back();
+
+    await _saveSettingsAndNavigate(group, university);
+  }
+
+  Future<void> _saveSettingsAndNavigate(
+    GroupSchedule? group,
+    University? university,
+  ) async {
+    settings.university.value = university;
+    settings.group.value = group;
+    isar.writeTxnSync(() {
+      isar.groupSchedules.putSync(group!);
+      group.university.saveSync();
+      isar.settings.putSync(settings);
+      settings.group.saveSync();
+      settings.university.saveSync();
+    });
+    Get.offAll(() => const HomePage());
   }
 }

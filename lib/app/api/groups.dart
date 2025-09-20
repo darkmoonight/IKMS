@@ -7,9 +7,9 @@ String groupsDataToJson(GroupsData data) => json.encode(data.toJson());
 class GroupsData {
   GroupsData({required this.data, required this.state, required this.msg});
 
-  List<Groups> data;
-  int state;
-  String msg;
+  final List<Groups> data;
+  final int state;
+  final String msg;
 
   factory GroupsData.fromJson(Map<String, dynamic> json) => GroupsData(
     data: List<Groups>.from(json['data'].map((x) => Groups.fromJson(x))),
@@ -34,12 +34,12 @@ class Groups {
     required this.facultyId,
   });
 
-  String name;
-  int id;
-  int? kurs;
-  String facul;
-  String yearName;
-  int? facultyId;
+  final String name;
+  final int id;
+  final int? kurs;
+  final String facul;
+  final String yearName;
+  final int? facultyId;
 
   factory Groups.fromJson(Map<String, dynamic> json) => Groups(
     name: json['name'] ?? '',

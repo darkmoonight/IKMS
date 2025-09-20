@@ -20,6 +20,7 @@ class RaspWidget extends StatefulWidget {
     this.onBackPressed,
     this.headerText,
   });
+
   final bool isLoaded;
   final ValueNotifier<List<Schedule>> raspElements;
   final Function()? onBackPressed;
@@ -30,10 +31,9 @@ class RaspWidget extends StatefulWidget {
 }
 
 class _RaspWidgetState extends State<RaspWidget> {
-  late List<Schedule> raspElementsFiltered;
-  final adsController = Get.put(AdsController());
-
-  final banner = BannerAd(
+  late List<Schedule> _filteredSchedule;
+  final _adsController = Get.put(AdsController());
+  final _bannerAd = BannerAd(
     adUnitId: 'R-M-2101511-1',
     adSize: BannerAdSize.inline(width: Get.size.width.round(), maxHeight: 50),
     adRequest: const AdRequest(),
@@ -42,24 +42,9 @@ class _RaspWidgetState extends State<RaspWidget> {
   );
 
   DateTime _selectedDay = normalizeDate(DateTime.now());
+  CalendarFormat _calendarFormat = CalendarFormat.week;
 
-  DateTime get selectedDay =>
-      _selectedDay.isAfter(lastDay) ? lastDay : _selectedDay;
-  CalendarFormat calendarFormat = CalendarFormat.week;
-
-  DateTime get firstDay => widget.raspElements.value.isNotEmpty
-      ? widget.raspElements.value
-            .reduce((a, b) => a.date.isBefore(b.date) ? a : b)
-            .date
-      : DateTime.now();
-
-  DateTime get lastDay => widget.raspElements.value.isNotEmpty
-      ? widget.raspElements.value
-            .reduce((a, b) => a.date.isAfter(b.date) ? a : b)
-            .date
-      : DateTime.now();
-
-  static const List<MaterialColor> primaries = <MaterialColor>[
+  static const List<MaterialColor> _eventColors = <MaterialColor>[
     Colors.lightGreen,
     Colors.green,
     Colors.teal,
@@ -74,25 +59,43 @@ class _RaspWidgetState extends State<RaspWidget> {
   @override
   void initState() {
     super.initState();
-    getRasp();
-    widget.raspElements.addListener(getRasp);
+    _initializeSchedule();
+    widget.raspElements.addListener(_initializeSchedule);
   }
 
   @override
   void dispose() {
-    widget.raspElements.removeListener(getRasp);
+    widget.raspElements.removeListener(_initializeSchedule);
     super.dispose();
   }
 
-  void getRasp() {
+  void _initializeSchedule() {
     setState(() {
-      raspElementsFiltered = widget.raspElements.value.where((element) {
-        return element.date.isAtSameMomentAs(selectedDay);
+      _filteredSchedule = widget.raspElements.value.where((element) {
+        return element.date.isAtSameMomentAs(_selectedDay);
       }).toList();
     });
   }
 
-  int getCountEventsCalendar(DateTime date) {
+  DateTime get _firstDay => widget.raspElements.value.isNotEmpty
+      ? widget.raspElements.value
+            .reduce((a, b) => a.date.isBefore(b.date) ? a : b)
+            .date
+      : DateTime.now();
+
+  DateTime get _lastDay => widget.raspElements.value.isNotEmpty
+      ? widget.raspElements.value
+            .reduce((a, b) => a.date.isAfter(b.date) ? a : b)
+            .date
+      : DateTime.now();
+
+  DateTime get _normalizedSelectedDay {
+    if (_selectedDay.isAfter(_lastDay)) return _lastDay;
+    if (_selectedDay.isBefore(_firstDay)) return _firstDay;
+    return _selectedDay;
+  }
+
+  int _getEventCountForDay(DateTime date) {
     final seen = <String>{};
     return widget.raspElements.value
         .where(
@@ -103,246 +106,268 @@ class _RaspWidgetState extends State<RaspWidget> {
         .length;
   }
 
+  void _onDaySelected(DateTime selected, DateTime focused) {
+    setState(() {
+      _selectedDay = selected;
+    });
+    _initializeSchedule();
+  }
+
+  void _onPageChanged(DateTime focused) {
+    setState(() {
+      _selectedDay = focused;
+    });
+    _initializeSchedule();
+  }
+
+  void _onFormatChanged(CalendarFormat format) {
+    setState(() {
+      _calendarFormat = format;
+    });
+  }
+
+  Widget _buildEventMarker(
+    BuildContext context,
+    DateTime day,
+    List<dynamic> events,
+  ) {
+    final count = _getEventCountForDay(day);
+    if (count == 0) return const SizedBox();
+
+    final color = _eventColors[count % _eventColors.length];
+    return isSameDay(_normalizedSelectedDay, day)
+        ? Container(
+            width: 15,
+            height: 15,
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+            child: Center(
+              child: Text(
+                count.toString(),
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+          )
+        : Text(
+            count.toString(),
+            style: TextStyle(
+              color: color,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          );
+  }
+
+  Widget _buildScheduleItem(BuildContext context, Schedule element) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              element.discipline,
+              style: context.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
+            ),
+            const Gap(10),
+            Flexible(
+              child: Text(
+                element.teacher,
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: Colors.grey,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const Gap(10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    element.audience,
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: Colors.grey,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    element.group,
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      color: Colors.grey,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoadingIndicator() {
+    return ListView.builder(
+      itemCount: 5,
+      itemBuilder: (BuildContext context, int index) {
+        return const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            MyShimmer(
+              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              height: 20,
+              width: 100,
+            ),
+            MyShimmer(
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              height: 100,
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildEmptySchedule() {
+    return ListEmpty(img: 'assets/images/no.png', text: 'no_par'.tr);
+  }
+
+  Widget _buildScheduleList() {
+    return GroupedListView<Schedule, String>(
+      physics: const AlwaysScrollableScrollPhysics(),
+      elements: _filteredSchedule,
+      groupBy: (element) => '${element.begin}-${element.end}',
+      groupSeparatorBuilder: (String groupByValue) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        child: Text(
+          groupByValue,
+          style: context.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+      itemBuilder: _buildScheduleItem,
+    );
+  }
+
+  Widget _buildCalendar() {
+    return TableCalendar(
+      key: ValueKey(widget.raspElements.value),
+      startingDayOfWeek: StartingDayOfWeek.monday,
+      firstDay: _firstDay,
+      lastDay: _lastDay,
+      focusedDay: _normalizedSelectedDay,
+      weekendDays: const [DateTime.sunday],
+      locale: locale.languageCode,
+      selectedDayPredicate: (day) => isSameDay(_normalizedSelectedDay, day),
+      onDaySelected: _onDaySelected,
+      onPageChanged: _onPageChanged,
+      availableCalendarFormats: {
+        CalendarFormat.month: 'month'.tr,
+        CalendarFormat.twoWeeks: 'two_week'.tr,
+        CalendarFormat.week: 'week'.tr,
+      },
+      calendarFormat: _calendarFormat,
+      onFormatChanged: _onFormatChanged,
+      calendarBuilders: CalendarBuilders(markerBuilder: _buildEventMarker),
+    );
+  }
+
+  Widget _buildAdBanner() {
+    return Obx(
+      () => Visibility(
+        visible: !_adsController.ads.value,
+        child: AdWidget(bannerAd: _bannerAd),
+      ),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      centerTitle: widget.onBackPressed == null,
+      titleSpacing: 0,
+      leading: widget.onBackPressed == null
+          ? null
+          : IconButton(
+              onPressed: widget.onBackPressed,
+              icon: const Icon(IconsaxPlusLinear.arrow_left_3, size: 20),
+            ),
+      title: widget.onBackPressed == null
+          ? Text(
+              'schedule'.tr,
+              style: context.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            )
+          : Text(
+              widget.headerText == null
+                  ? 'schedule'.tr
+                  : '${'schedule'.tr} - ${widget.headerText}',
+              style: context.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+    );
+  }
+
+  void _onSwipeLeft() {
+    if (_normalizedSelectedDay.isBefore(_lastDay)) {
+      setState(() {
+        _selectedDay = _normalizedSelectedDay.add(const Duration(days: 1));
+      });
+      _initializeSchedule();
+    }
+  }
+
+  void _onSwipeRight() {
+    if (_normalizedSelectedDay.isAfter(_firstDay)) {
+      setState(() {
+        _selectedDay = _normalizedSelectedDay.add(const Duration(days: -1));
+      });
+      _initializeSchedule();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: widget.onBackPressed == null ? true : false,
-        titleSpacing: 0,
-        leading: widget.onBackPressed == null
-            ? null
-            : IconButton(
-                onPressed: widget.onBackPressed,
-                icon: const Icon(IconsaxPlusLinear.arrow_left_3, size: 20),
-              ),
-        title: widget.onBackPressed == null
-            ? Text(
-                'schedule'.tr,
-                style: context.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              )
-            : Text(
-                widget.headerText == null
-                    ? 'schedule'.tr
-                    : '${'schedule'.tr} - ${widget.headerText}',
-                style: context.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-      ),
+      appBar: _buildAppBar(),
       body: SafeArea(
         child: Column(
           children: [
-            TableCalendar(
-              key: ValueKey(widget.raspElements.value),
-              startingDayOfWeek: StartingDayOfWeek.monday,
-              firstDay: firstDay,
-              lastDay: lastDay,
-              focusedDay: selectedDay,
-              weekendDays: const [DateTime.sunday],
-              locale: locale.languageCode,
-              selectedDayPredicate: (day) {
-                return isSameDay(selectedDay, day);
-              },
-              onDaySelected: (selected, focused) {
-                setState(() {
-                  _selectedDay = selected;
-                });
-                getRasp();
-              },
-              onPageChanged: (focused) {
-                setState(() {
-                  _selectedDay = focused;
-                });
-                getRasp();
-              },
-              availableCalendarFormats: {
-                CalendarFormat.month: 'month'.tr,
-                CalendarFormat.twoWeeks: 'two_week'.tr,
-                CalendarFormat.week: 'week'.tr,
-              },
-              calendarFormat: calendarFormat,
-              onFormatChanged: (format) {
-                setState(() {
-                  calendarFormat = format;
-                });
-              },
-              calendarBuilders: CalendarBuilders(
-                markerBuilder: (context, day, events) {
-                  return getCountEventsCalendar(day) != 0
-                      ? selectedDay.isAtSameMomentAs(day)
-                            ? Container(
-                                width: 15,
-                                height: 15,
-                                decoration: BoxDecoration(
-                                  color: primaries[getCountEventsCalendar(day)],
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    getCountEventsCalendar(day).toString(),
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : Text(
-                                getCountEventsCalendar(day).toString(),
-                                style: TextStyle(
-                                  color: primaries[getCountEventsCalendar(day)],
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                ),
-                              )
-                      : null;
-                },
-              ),
-            ),
+            _buildCalendar(),
             const Divider(),
             Expanded(
               child: Visibility(
                 visible: widget.isLoaded,
-                replacement: ListView.builder(
-                  itemCount: 5,
-                  itemBuilder: (BuildContext context, int index) {
-                    return const Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        MyShimmer(
-                          edgeInsetsMargin: EdgeInsets.symmetric(
-                            horizontal: 15,
-                            vertical: 10,
-                          ),
-                          hight: 20,
-                          width: 100,
-                        ),
-                        MyShimmer(
-                          edgeInsetsMargin: EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 5,
-                          ),
-                          hight: 100,
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                replacement: _buildLoadingIndicator(),
                 child: Swipe(
                   horizontalMinDisplacement: 20,
-                  onSwipeLeft: () {
-                    if (selectedDay.isBefore(lastDay)) {
-                      _selectedDay = selectedDay.add(const Duration(days: 1));
-                      getRasp();
-                    }
-                  },
-                  onSwipeRight: () {
-                    if (selectedDay.isAfter(firstDay)) {
-                      _selectedDay = selectedDay.add(const Duration(days: -1));
-                      getRasp();
-                    }
-                  },
+                  onSwipeLeft: _onSwipeLeft,
+                  onSwipeRight: _onSwipeRight,
                   child: Visibility(
-                    visible: raspElementsFiltered.isNotEmpty,
-                    replacement: ListEmpty(
-                      img: 'assets/images/no.png',
-                      text: 'no_par'.tr,
-                    ),
-                    child: GroupedListView<Schedule, String>(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      elements: raspElementsFiltered,
-                      groupBy: (element) {
-                        return '${element.begin}-${element.end}';
-                      },
-                      groupSeparatorBuilder: (String groupByValue) => Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 10,
-                        ),
-                        child: Text(
-                          groupByValue,
-                          style: context.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      itemBuilder: (BuildContext context, Schedule element) {
-                        final raspElementPage = element;
-                        return Card(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 5,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 15,
-                              vertical: 15,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  raspElementPage.discipline,
-                                  style: context.textTheme.titleLarge?.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                const Gap(10),
-                                Flexible(
-                                  child: Text(
-                                    raspElementPage.teacher,
-                                    style: context.textTheme.bodyMedium
-                                        ?.copyWith(color: Colors.grey),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                const Gap(10),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        raspElementPage.audience,
-                                        style: context.textTheme.bodyMedium
-                                            ?.copyWith(color: Colors.grey),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        raspElementPage.group,
-                                        style: context.textTheme.bodyMedium
-                                            ?.copyWith(color: Colors.grey),
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.right,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                    visible: _filteredSchedule.isNotEmpty,
+                    replacement: _buildEmptySchedule(),
+                    child: _buildScheduleList(),
                   ),
                 ),
               ),
             ),
-            Obx(
-              () => Visibility(
-                visible: !adsController.ads.value,
-                child: AdWidget(bannerAd: banner),
-              ),
-            ),
+            _buildAdBanner(),
           ],
         ),
       ),

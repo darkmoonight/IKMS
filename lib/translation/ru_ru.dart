@@ -1,11 +1,11 @@
 class RuRu {
   Map<String, String> get messages => {
-    'timeComlete': 'Время выполнения',
+    'timeComplete': 'Время выполнения',
     'done': 'Выполненные',
     'doing': 'В процессе',
     'update': 'Задача изменена',
     'addTodo': 'Добавьте задачу',
-    'copletedTodo': 'Выполните задачу',
+    'completedTodo': 'Выполните задачу',
     'todoDelete': 'Задача удалена',
     'todoCreate': 'Задача создана',
     'duplicateTodo': 'Задача уже существует',
@@ -55,7 +55,7 @@ class RuRu {
     'ads': 'Отключить рекламу',
     'searchTodo': 'Поиск задачи',
     'functions': 'Функции',
-    'adsDisaleTitle': 'Отключение рекламы',
+    'adsDisableTitle': 'Отключение рекламы',
     'adsDisable':
         'Вы уверены, что хотите отключить рекламу? Ваша поддержка через рекламу помогает нам улучшать и поддерживать это приложение. Спасибо за вашу поддержку!',
     'cancel': 'Отмена',
@@ -70,5 +70,10 @@ class RuRu {
     'select': 'Выбрать',
     'ourGroups': 'Наши группы',
     'search': 'Поиск',
+    'failed_to_load_groups': 'Не удалось загрузить группы',
+    'no_items_found': 'Ничего не найдено',
+    'error_loading_data': 'Ошибка при загрузке данных',
+    'try_again': 'Попробуйте снова',
+    'loading': 'Загрузка',
   };
 }

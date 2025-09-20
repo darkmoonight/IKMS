@@ -2,7 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_displaymode/flutter_displaymode.dart';
+import 'package:display_mode/display_mode.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
@@ -25,63 +25,62 @@ import 'package:yandex_mobileads/mobile_ads.dart';
 late Isar isar;
 late Settings settings;
 
+late List<University> universities;
+late University selectedUniversity;
+
 bool amoledTheme = false;
 bool materialColor = false;
 Locale locale = const Locale('en', 'US');
 
-final List appLanguages = [
+final List<Map<String, dynamic>> appLanguages = [
   {'name': 'English', 'locale': const Locale('en', 'US')},
   {'name': 'Русский', 'locale': const Locale('ru', 'RU')},
 ];
 
-late University donstu;
 final ValueNotifier<Future<bool>> isOnline = ValueNotifier(
   InternetConnection().hasInternetAccess,
 );
-
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+Future<void> initializeApp() async {
   await isarInit();
   await setOptimalDisplayMode();
-  Connectivity().onConnectivityChanged.listen((
-    List<ConnectivityResult> result,
-  ) {
-    result.contains(ConnectivityResult.none)
-        ? isOnline.value = Future(() => false)
-        : isOnline.value = InternetConnection().hasInternetAccess;
-  });
+  await initializeNotifications();
+  await initializeTimeZone();
   DeviceFeature().init();
+}
+
+Future<void> initializeTimeZone() async {
   final String timeZoneName = await FlutterTimezone.getLocalTimezone();
+  tz.initializeTimeZones();
+  tz.setLocalLocation(tz.getLocation(timeZoneName));
+}
+
+Future<void> initializeNotifications() async {
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_launcher');
   const InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
   );
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  tz.initializeTimeZones();
-  tz.setLocalLocation(tz.getLocation(timeZoneName));
-  MobileAds.initialize();
-  runApp(const MyApp());
 }
 
 Future<void> setOptimalDisplayMode() async {
-  final List<DisplayMode> supported = await FlutterDisplayMode.supported;
-  final DisplayMode active = await FlutterDisplayMode.active;
-  final List<DisplayMode> sameResolution =
+  final List<DisplayModeJson> supported = await FlutterDisplayMode.supported;
+  final DisplayModeJson active = await FlutterDisplayMode.active;
+  final List<DisplayModeJson> sameResolution =
       supported
           .where(
-            (DisplayMode m) =>
+            (DisplayModeJson m) =>
                 m.width == active.width && m.height == active.height,
           )
           .toList()
         ..sort(
-          (DisplayMode a, DisplayMode b) =>
+          (DisplayModeJson a, DisplayModeJson b) =>
               b.refreshRate.compareTo(a.refreshRate),
         );
-  final DisplayMode mostOptimalMode = sameResolution.isNotEmpty
+  final DisplayModeJson mostOptimalMode = sameResolution.isNotEmpty
       ? sameResolution.first
       : active;
   await FlutterDisplayMode.setPreferredMode(mostOptimalMode);
@@ -100,32 +99,40 @@ Future<void> isarInit() async {
     compactOnLaunch: const CompactCondition(minRatio: 2),
     directory: (await getApplicationSupportDirectory()).path,
   );
-
   settings = isar.settings.where().findFirstSync() ?? Settings();
-  donstu = isar.universitys.getSync(1) ?? University(id: 1, name: 'ДГТУ');
-
-  if (isar.settings.countSync() == 0) {
-    isar.writeTxnSync(() => isar.settings.putSync(settings));
-  }
-
-  if (isar.universitys.countSync() == 0) {
+  universities = isar.universitys.where().findAllSync();
+  if (universities.isEmpty) {
+    final donstu = University(id: 1, name: 'ДГТУ');
     isar.writeTxnSync(() => isar.universitys.putSync(donstu));
+    universities = [donstu];
   }
-
+  selectedUniversity = settings.university.value ?? universities.first;
   if (settings.language == null) {
     settings.language = '${Get.deviceLocale}';
     isar.writeTxnSync(() => isar.settings.putSync(settings));
   }
-
   if (settings.theme == null) {
     settings.theme = 'system';
     isar.writeTxnSync(() => isar.settings.putSync(settings));
   }
 }
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeApp();
+  Connectivity().onConnectivityChanged.listen((
+    List<ConnectivityResult> result,
+  ) {
+    result.contains(ConnectivityResult.none)
+        ? isOnline.value = Future(() => false)
+        : isOnline.value = InternetConnection().hasInternetAccess;
+  });
+  MobileAds.initialize();
+  runApp(const MyApp());
+}
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
-
   static Future<void> updateAppState(
     BuildContext context, {
     bool? newAmoledTheme,
@@ -133,16 +140,9 @@ class MyApp extends StatefulWidget {
     Locale? newLocale,
   }) async {
     final state = context.findAncestorStateOfType<_MyAppState>()!;
-
-    if (newAmoledTheme != null) {
-      state.changeAmoledTheme(newAmoledTheme);
-    }
-    if (newMaterialColor != null) {
-      state.changeMarerialTheme(newMaterialColor);
-    }
-    if (newLocale != null) {
-      state.changeLocale(newLocale);
-    }
+    if (newAmoledTheme != null) state.changeAmoledTheme(newAmoledTheme);
+    if (newMaterialColor != null) state.changeMaterialTheme(newMaterialColor);
+    if (newLocale != null) state.changeLocale(newLocale);
   }
 
   @override
@@ -151,24 +151,11 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final themeController = Get.put(ThemeController());
-
-  void changeAmoledTheme(bool newAmoledTheme) {
-    setState(() {
-      amoledTheme = newAmoledTheme;
-    });
-  }
-
-  void changeMarerialTheme(bool newMaterialColor) {
-    setState(() {
-      materialColor = newMaterialColor;
-    });
-  }
-
-  void changeLocale(Locale newLocale) {
-    setState(() {
-      locale = newLocale;
-    });
-  }
+  void changeAmoledTheme(bool newAmoledTheme) =>
+      setState(() => amoledTheme = newAmoledTheme);
+  void changeMaterialTheme(bool newMaterialColor) =>
+      setState(() => materialColor = newMaterialColor);
+  void changeLocale(Locale newLocale) => setState(() => locale = newLocale);
 
   @override
   void initState() {
@@ -185,7 +172,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     final edgeToEdgeAvailable = DeviceFeature().isEdgeToEdgeAvailable();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: DynamicColorBuilder(
@@ -205,7 +191,6 @@ class _MyAppState extends State<MyApp> {
             darkColorScheme,
             edgeToEdgeAvailable,
           );
-
           return GetMaterialApp(
             theme: materialColor
                 ? lightColorScheme != null
@@ -258,6 +243,7 @@ class _MyAppState extends State<MyApp> {
                 ? const OnBoardingScreen()
                 : const HomePage(),
             builder: EasyLoading.init(),
+            title: 'IKMS',
           );
         },
       ),

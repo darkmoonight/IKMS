@@ -1,11 +1,11 @@
 class EnUs {
   Map<String, String> get messages => {
-    'timeComlete': 'Execution time',
+    'timeComplete': 'Execution time',
     'done': 'Done',
     'doing': 'Doing',
     'update': 'Todo changed',
     'addTodo': 'Add a todo',
-    'copletedTodo': 'Complete the todo',
+    'completedTodo': 'Complete the todo',
     'todoDelete': 'Todo deleted',
     'todoCreate': 'Todo created',
     'duplicateTodo': 'The todo already exists',
@@ -55,7 +55,7 @@ class EnUs {
     'ads': 'Disable ads',
     'searchTodo': 'Search todo',
     'functions': 'Functions',
-    'adsDisaleTitle': 'Disable Ads',
+    'adsDisableTitle': 'Disable Ads',
     'adsDisable':
         'Are you sure you want to disable ads? Your support through ads helps us improve and maintain this application. Thank you for your support!',
     'cancel': 'Cancel',
@@ -70,5 +70,10 @@ class EnUs {
     'select': 'Select',
     'ourGroups': 'Our groups',
     'search': 'Search',
+    'failed_to_load_groups': 'Failed to load groups',
+    'no_items_found': 'No items found',
+    'error_loading_data': 'Error loading data',
+    'try_again': 'Try again',
+    'loading': 'Loading',
   };
 }
