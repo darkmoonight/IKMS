@@ -10,11 +10,7 @@ class TodosList extends StatefulWidget {
   final bool done;
   final String searchTodo;
 
-  const TodosList({
-    super.key,
-    required this.done,
-    required this.searchTodo,
-  });
+  const TodosList({super.key, required this.done, required this.searchTodo});
 
   @override
   State<TodosList> createState() => _TodosListState();
@@ -38,10 +34,14 @@ class _TodosListState extends State<TodosList> {
 
   List<Todos> _filterTodos() {
     return _todoController.todos
-        .where((todo) =>
-    todo.done == widget.done &&
-        (widget.searchTodo.isEmpty ||
-            todo.name.toLowerCase().contains(widget.searchTodo.toLowerCase())))
+        .where(
+          (todo) =>
+              todo.done == widget.done &&
+              (widget.searchTodo.isEmpty ||
+                  todo.name.toLowerCase().contains(
+                    widget.searchTodo.toLowerCase(),
+                  )),
+        )
         .toList();
   }
 
@@ -89,11 +89,7 @@ class _TodosListState extends State<TodosList> {
       context: context,
       isScrollControlled: true,
       builder: (BuildContext context) {
-        return TodosAction(
-          text: 'editing'.tr,
-          edit: true,
-          todo: todo,
-        );
+        return TodosAction(text: 'editing'.tr, edit: true, todo: todo);
       },
     );
   }

@@ -70,6 +70,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       university = await Get.dialog(const UniversityPage(), useSafeArea: false);
     } while (university == null);
 
+    settings.university.value = university;
+    isar.writeTxnSync(() {
+      isar.settings.putSync(settings);
+      settings.university.saveSync();
+    });
+
     Get.dialog(
       const Center(child: CircularProgressIndicator()),
       barrierDismissible: false,
@@ -106,14 +112,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     GroupSchedule? group,
     University? university,
   ) async {
-    settings.university.value = university;
     settings.group.value = group;
     isar.writeTxnSync(() {
       isar.groupSchedules.putSync(group!);
       group.university.saveSync();
       isar.settings.putSync(settings);
       settings.group.saveSync();
-      settings.university.saveSync();
     });
     Get.offAll(() => const HomePage());
   }

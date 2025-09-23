@@ -12,7 +12,8 @@ class TaskPage extends StatefulWidget {
   State<TaskPage> createState() => _TaskPageState();
 }
 
-class _TaskPageState extends State<TaskPage> with SingleTickerProviderStateMixin {
+class _TaskPageState extends State<TaskPage>
+    with SingleTickerProviderStateMixin {
   final _todoController = Get.put(TodoController());
   final _searchController = TextEditingController();
   String _searchFilter = '';
@@ -52,10 +53,7 @@ class _TaskPageState extends State<TaskPage> with SingleTickerProviderStateMixin
       context: context,
       builder: (BuildContext context) {
         return AlertDialog.adaptive(
-          title: Text(
-            'deletedTodo'.tr,
-            style: context.textTheme.titleLarge,
-          ),
+          title: Text('deletedTodo'.tr, style: context.textTheme.titleLarge),
           content: Text(
             'deletedTodoQuery'.tr,
             style: context.textTheme.titleMedium,
@@ -94,9 +92,9 @@ class _TaskPageState extends State<TaskPage> with SingleTickerProviderStateMixin
       centerTitle: true,
       leading: _todoController.isMultiSelectionTodo.isTrue
           ? IconButton(
-        onPressed: _todoController.doMultiSelectionTodoClear,
-        icon: const Icon(IconsaxPlusLinear.close_square, size: 20),
-      )
+              onPressed: _todoController.doMultiSelectionTodoClear,
+              icon: const Icon(IconsaxPlusLinear.close_square, size: 20),
+            )
           : null,
       title: Text(
         'todos'.tr,
@@ -126,13 +124,13 @@ class _TaskPageState extends State<TaskPage> with SingleTickerProviderStateMixin
       onChanged: _applyFilter,
       iconButton: _searchController.text.isNotEmpty
           ? IconButton(
-        onPressed: _clearSearch,
-        icon: const Icon(
-          IconsaxPlusLinear.close_circle,
-          color: Colors.grey,
-          size: 20,
-        ),
-      )
+              onPressed: _clearSearch,
+              icon: const Icon(
+                IconsaxPlusLinear.close_circle,
+                color: Colors.grey,
+                size: 20,
+              ),
+            )
           : null,
     );
   }
@@ -169,25 +167,23 @@ class _TaskPageState extends State<TaskPage> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => PopScope(
-      canPop: _todoController.isPop.value,
-      onPopInvokedWithResult: (didPop, _) {
-        if (didPop) return;
-        if (_todoController.isMultiSelectionTodo.isTrue) {
-          _todoController.doMultiSelectionTodoClear();
-        }
-      },
-      child: Scaffold(
-        appBar: _buildAppBar(),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildSearchField(),
-            _buildTabBar(),
-            _buildTabContent(),
-          ],
+    return Obx(
+      () => PopScope(
+        canPop: _todoController.isPop.value,
+        onPopInvokedWithResult: (didPop, _) {
+          if (didPop) return;
+          if (_todoController.isMultiSelectionTodo.isTrue) {
+            _todoController.doMultiSelectionTodoClear();
+          }
+        },
+        child: Scaffold(
+          appBar: _buildAppBar(),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [_buildSearchField(), _buildTabBar(), _buildTabContent()],
+          ),
         ),
       ),
-    ));
+    );
   }
 }

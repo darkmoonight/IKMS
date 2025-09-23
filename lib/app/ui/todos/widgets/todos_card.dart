@@ -29,7 +29,8 @@ class _TodosCardState extends State<TodosCard> {
 
   @override
   Widget build(BuildContext context) {
-    final isSelected = _todoController.isMultiSelectionTodo.isTrue &&
+    final isSelected =
+        _todoController.isMultiSelectionTodo.isTrue &&
         _todoController.selectedTodo.contains(widget.todo);
 
     return GestureDetector(
@@ -38,21 +39,17 @@ class _TodosCardState extends State<TodosCard> {
       child: Card(
         shape: isSelected
             ? RoundedRectangleBorder(
-          side: BorderSide(
-            color: context.theme.colorScheme.onPrimaryContainer,
-          ),
-          borderRadius: BorderRadius.circular(20),
-        )
+                side: BorderSide(
+                  color: context.theme.colorScheme.onPrimaryContainer,
+                ),
+                borderRadius: BorderRadius.circular(20),
+              )
             : null,
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Row(
-            children: [
-              _buildCheckbox(),
-              const Gap(8),
-              _buildTodoContent(),
-            ],
+            children: [_buildCheckbox(), const Gap(8), _buildTodoContent()],
           ),
         ),
       ),
@@ -95,9 +92,7 @@ class _TodosCardState extends State<TodosCard> {
   Widget _buildTodoDiscipline() {
     return Text(
       widget.todo.discipline,
-      style: context.theme.textTheme.bodySmall?.copyWith(
-        color: Colors.grey,
-      ),
+      style: context.theme.textTheme.bodySmall?.copyWith(color: Colors.grey),
       overflow: TextOverflow.visible,
     );
   }
@@ -109,9 +104,7 @@ class _TodosCardState extends State<TodosCard> {
 
     return Text(
       _dateFormatter.format(widget.todo.todoCompletedTime!),
-      style: context.theme.textTheme.bodySmall?.copyWith(
-        color: Colors.grey,
-      ),
+      style: context.theme.textTheme.bodySmall?.copyWith(color: Colors.grey),
     );
   }
 
@@ -135,7 +128,7 @@ class _TodosCardState extends State<TodosCard> {
 
     Future.delayed(
       const Duration(milliseconds: 300),
-          () => _todoController.updateTodoCheck(widget.todo),
+      () => _todoController.updateTodoCheck(widget.todo),
     );
   }
 }

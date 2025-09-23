@@ -19,9 +19,7 @@ class UniversityCaching {
     required void Function(University, DateTime) lastUpdateSetter,
     int cacheHours = 12,
   }) async {
-    final dif = DateTime.now()
-        .difference(lastUpdateGetter(university))
-        .inHours;
+    final dif = DateTime.now().difference(lastUpdateGetter(university)).inHours;
     final links = linksGetter(university);
     if (links.isNotEmpty && dif < cacheHours) {
       return true;
