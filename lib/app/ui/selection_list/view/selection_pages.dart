@@ -74,6 +74,16 @@ abstract class BaseSelectionPageState<
   }
 
   Future<List<T>> _getFilteredData(University? university) async {
+    if (university == null) return [];
+
+    if (await isOnline.value) {
+      try {
+        await cacheData(university);
+      } catch (e) {
+        debugPrint('Error caching data: $e');
+      }
+    }
+
     final data = await fetchData(university);
     return data.where((element) {
       return element.name.toLowerCase().contains(filter.toLowerCase());
@@ -137,11 +147,9 @@ class _AudiencesPageState
     extends BaseSelectionPageState<AudienceSchedule, AudiencesPage> {
   @override
   Future<List<AudienceSchedule>> fetchData(University? university) async {
-    if (university == null) return [];
-
     return await isar.audienceSchedules
         .filter()
-        .university((q) => q.idEqualTo(university.id))
+        .university((q) => q.idEqualTo(university!.id))
         .optional(
           !(await isOnline.value),
           (q) => q.schedulesLengthGreaterThan(0),
@@ -184,11 +192,9 @@ class _GroupsPageState
     extends BaseSelectionPageState<GroupSchedule, GroupsPage> {
   @override
   Future<List<GroupSchedule>> fetchData(University? university) async {
-    if (university == null) return [];
-
     return await isar.groupSchedules
         .filter()
-        .university((q) => q.idEqualTo(university.id))
+        .university((q) => q.idEqualTo(university!.id))
         .optional(
           !(await isOnline.value),
           (q) => q.schedulesLengthGreaterThan(0),
@@ -236,11 +242,9 @@ class _ProfessorsPageState
     extends BaseSelectionPageState<TeacherSchedule, ProfessorsPage> {
   @override
   Future<List<TeacherSchedule>> fetchData(University? university) async {
-    if (university == null) return [];
-
     return await isar.teacherSchedules
         .filter()
-        .university((q) => q.idEqualTo(university.id))
+        .university((q) => q.idEqualTo(university!.id))
         .optional(
           !(await isOnline.value),
           (q) => q.schedulesLengthGreaterThan(0),
