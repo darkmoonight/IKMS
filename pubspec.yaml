@@ -30,7 +30,7 @@ dependencies:
   table_calendar: ^3.2.0
   dio_smart_retry: ^7.0.1
   yandex_mobileads: ^7.16.0
-  flutter_timezone: ^4.1.1
+  flutter_timezone: ^5.0.0
   connectivity_plus: ^7.0.0
   device_info_plus: ^12.1.0
   package_info_plus: ^9.0.0
