@@ -6,7 +6,7 @@ publish_to: "none"
 version: 1.2.6+27
 
 environment:
-  sdk: ">=3.9.2 <4.0.0"
+  sdk: ">=3.10.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -30,26 +30,26 @@ dependencies:
   table_calendar: ^3.2.0
   dio_smart_retry: ^7.0.1
   yandex_mobileads: ^7.16.0
-  flutter_timezone: ^5.0.0
+  flutter_timezone: ^5.0.1
   connectivity_plus: ^7.0.0
-  device_info_plus: ^12.1.0
+  device_info_plus: ^12.2.0
   package_info_plus: ^9.0.0
   flutter_easyloading: ^3.0.5
   line_awesome_flutter: ^3.0.1
   omni_datetime_picker: ^2.3.1
-  flutter_local_notifications: ^19.4.2
-  internet_connection_checker_plus: ^2.9.0
-  isar_community: ^3.3.0-dev.3
-  isar_community_flutter_libs: ^3.3.0-dev.3
+  flutter_local_notifications: ^19.5.0
+  internet_connection_checker_plus: ^2.9.1
+  isar_community: ^3.3.0
+  isar_community_flutter_libs: ^3.3.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner: ^2.7.1
   flutter_lints: ^6.0.0
-  flutter_native_splash: ^2.4.6
+  flutter_native_splash: ^2.4.7
   flutter_launcher_icons: ^0.14.4
-  isar_community_generator: ^3.3.0-dev.3
+  isar_community_generator: ^3.3.0
 
 flutter_launcher_icons:
   android: true
