@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
@@ -69,13 +68,11 @@ class _RaspWidgetState extends State<RaspWidget> {
     super.dispose();
   }
 
-  void _initializeSchedule() {
-    setState(() {
-      _filteredSchedule = widget.raspElements.value.where((element) {
-        return element.date.isAtSameMomentAs(_selectedDay);
-      }).toList();
-    });
-  }
+  void _initializeSchedule() => setState(
+    () => _filteredSchedule = widget.raspElements.value
+        .where((element) => element.date.isAtSameMomentAs(_selectedDay))
+        .toList(),
+  );
 
   DateTime get _firstDay => widget.raspElements.value.isNotEmpty
       ? widget.raspElements.value
@@ -107,23 +104,17 @@ class _RaspWidgetState extends State<RaspWidget> {
   }
 
   void _onDaySelected(DateTime selected, DateTime focused) {
-    setState(() {
-      _selectedDay = selected;
-    });
+    setState(() => _selectedDay = selected);
     _initializeSchedule();
   }
 
   void _onPageChanged(DateTime focused) {
-    setState(() {
-      _selectedDay = focused;
-    });
+    setState(() => _selectedDay = focused);
     _initializeSchedule();
   }
 
   void _onFormatChanged(CalendarFormat format) {
-    setState(() {
-      _calendarFormat = format;
-    });
+    setState(() => _calendarFormat = format);
   }
 
   Widget _buildEventMarker(
@@ -161,216 +152,198 @@ class _RaspWidgetState extends State<RaspWidget> {
           );
   }
 
-  Widget _buildScheduleItem(BuildContext context, Schedule element) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              element.discipline,
-              style: context.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
+  Widget _buildScheduleItem(BuildContext context, Schedule element) => Card(
+    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        spacing: 6,
+        children: [
+          Text(
+            element.discipline,
+            style: context.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
             ),
-            const Gap(10),
-            Flexible(
-              child: Text(
-                element.teacher,
-                style: context.textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const Gap(10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    element.audience,
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    element.group,
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.right,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLoadingIndicator() {
-    return ListView.builder(
-      itemCount: 5,
-      itemBuilder: (BuildContext context, int index) {
-        return const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            MyShimmer(
-              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              height: 20,
-              width: 100,
-            ),
-            MyShimmer(
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              height: 100,
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildEmptySchedule() {
-    return ListEmpty(img: 'assets/images/no.png', text: 'no_par'.tr);
-  }
-
-  Widget _buildScheduleList() {
-    return GroupedListView<Schedule, String>(
-      physics: const AlwaysScrollableScrollPhysics(),
-      elements: _filteredSchedule,
-      groupBy: (element) => '${element.begin}-${element.end}',
-      groupSeparatorBuilder: (String groupByValue) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        child: Text(
-          groupByValue,
-          style: context.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w600,
           ),
+          Flexible(
+            child: Text(
+              element.teacher,
+              style: context.textTheme.bodyMedium?.copyWith(color: Colors.grey),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  element.audience,
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: Colors.grey,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  element.group,
+                  style: context.textTheme.bodyMedium?.copyWith(
+                    color: Colors.grey,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.right,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+
+  Widget _buildLoadingIndicator() => ListView.builder(
+    itemCount: 5,
+    itemBuilder: (BuildContext context, int index) => const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        MyShimmer(
+          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          height: 20,
+          width: 100,
+        ),
+        MyShimmer(
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          height: 100,
+        ),
+      ],
+    ),
+  );
+
+  Widget _buildEmptySchedule() =>
+      ListEmpty(img: 'assets/images/no.png', text: 'no_par'.tr);
+
+  Widget _buildScheduleList() => GroupedListView<Schedule, String>(
+    physics: const AlwaysScrollableScrollPhysics(),
+    elements: _filteredSchedule,
+    groupBy: (element) => '${element.begin}-${element.end}',
+    groupSeparatorBuilder: (String groupByValue) => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      child: Text(
+        groupByValue,
+        style: context.textTheme.titleMedium?.copyWith(
+          fontWeight: FontWeight.w600,
         ),
       ),
-      itemBuilder: _buildScheduleItem,
-    );
-  }
+    ),
+    itemBuilder: _buildScheduleItem,
+  );
 
-  Widget _buildCalendar() {
-    return TableCalendar(
-      key: ValueKey(widget.raspElements.value),
-      startingDayOfWeek: StartingDayOfWeek.monday,
-      firstDay: _firstDay,
-      lastDay: _lastDay,
-      focusedDay: _normalizedSelectedDay,
-      weekendDays: const [DateTime.sunday],
-      locale: locale.languageCode,
-      selectedDayPredicate: (day) => isSameDay(_normalizedSelectedDay, day),
-      onDaySelected: _onDaySelected,
-      onPageChanged: _onPageChanged,
-      availableCalendarFormats: {
-        CalendarFormat.month: 'month'.tr,
-        CalendarFormat.twoWeeks: 'two_week'.tr,
-        CalendarFormat.week: 'week'.tr,
-      },
-      calendarFormat: _calendarFormat,
-      onFormatChanged: _onFormatChanged,
-      calendarBuilders: CalendarBuilders(markerBuilder: _buildEventMarker),
-    );
-  }
+  Widget _buildCalendar() => TableCalendar(
+    key: ValueKey(widget.raspElements.value),
+    startingDayOfWeek: StartingDayOfWeek.monday,
+    firstDay: _firstDay,
+    lastDay: _lastDay,
+    focusedDay: _normalizedSelectedDay,
+    weekendDays: const [DateTime.sunday],
+    locale: locale.languageCode,
+    selectedDayPredicate: (day) => isSameDay(_normalizedSelectedDay, day),
+    onDaySelected: _onDaySelected,
+    onPageChanged: _onPageChanged,
+    availableCalendarFormats: {
+      CalendarFormat.month: 'month'.tr,
+      CalendarFormat.twoWeeks: 'two_week'.tr,
+      CalendarFormat.week: 'week'.tr,
+    },
+    calendarFormat: _calendarFormat,
+    onFormatChanged: _onFormatChanged,
+    calendarBuilders: CalendarBuilders(markerBuilder: _buildEventMarker),
+  );
 
-  Widget _buildAdBanner() {
-    return Obx(
-      () => Visibility(
-        visible: !_adsController.ads.value,
-        child: AdWidget(bannerAd: _bannerAd),
-      ),
-    );
-  }
+  Widget _buildAdBanner() => Obx(
+    () => Visibility(
+      visible: !_adsController.ads.value,
+      child: AdWidget(bannerAd: _bannerAd),
+    ),
+  );
 
-  PreferredSizeWidget _buildAppBar() {
-    return AppBar(
-      automaticallyImplyLeading: false,
-      centerTitle: widget.onBackPressed == null,
-      titleSpacing: 0,
-      leading: widget.onBackPressed == null
-          ? null
-          : IconButton(
-              onPressed: widget.onBackPressed,
-              icon: const Icon(IconsaxPlusLinear.arrow_left_3, size: 20),
+  PreferredSizeWidget _buildAppBar() => AppBar(
+    automaticallyImplyLeading: false,
+    centerTitle: widget.onBackPressed == null,
+    titleSpacing: 0,
+    leading: widget.onBackPressed == null
+        ? null
+        : IconButton(
+            onPressed: widget.onBackPressed,
+            icon: const Icon(IconsaxPlusLinear.arrow_left_3, size: 20),
+          ),
+    title: widget.onBackPressed == null
+        ? Text(
+            'schedule'.tr,
+            style: context.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
             ),
-      title: widget.onBackPressed == null
-          ? Text(
-              'schedule'.tr,
-              style: context.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            )
-          : Text(
-              widget.headerText == null
-                  ? 'schedule'.tr
-                  : '${'schedule'.tr} - ${widget.headerText}',
-              style: context.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          )
+        : Text(
+            widget.headerText == null
+                ? 'schedule'.tr
+                : '${'schedule'.tr} - ${widget.headerText}',
+            style: context.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
             ),
-    );
-  }
+          ),
+  );
 
   void _onSwipeLeft() {
     if (_normalizedSelectedDay.isBefore(_lastDay)) {
-      setState(() {
-        _selectedDay = _normalizedSelectedDay.add(const Duration(days: 1));
-      });
+      setState(
+        () =>
+            _selectedDay = _normalizedSelectedDay.add(const Duration(days: 1)),
+      );
       _initializeSchedule();
     }
   }
 
   void _onSwipeRight() {
     if (_normalizedSelectedDay.isAfter(_firstDay)) {
-      setState(() {
-        _selectedDay = _normalizedSelectedDay.add(const Duration(days: -1));
-      });
+      setState(
+        () =>
+            _selectedDay = _normalizedSelectedDay.add(const Duration(days: -1)),
+      );
       _initializeSchedule();
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildCalendar(),
-            const Divider(),
-            Expanded(
-              child: Visibility(
-                visible: widget.isLoaded,
-                replacement: _buildLoadingIndicator(),
-                child: Swipe(
-                  horizontalMinDisplacement: 20,
-                  onSwipeLeft: _onSwipeLeft,
-                  onSwipeRight: _onSwipeRight,
-                  child: Visibility(
-                    visible: _filteredSchedule.isNotEmpty,
-                    replacement: _buildEmptySchedule(),
-                    child: _buildScheduleList(),
-                  ),
+  Widget build(BuildContext context) => Scaffold(
+    appBar: _buildAppBar(),
+    body: SafeArea(
+      child: Column(
+        children: [
+          _buildCalendar(),
+          const Divider(),
+          Expanded(
+            child: Visibility(
+              visible: widget.isLoaded,
+              replacement: _buildLoadingIndicator(),
+              child: Swipe(
+                horizontalMinDisplacement: 20,
+                onSwipeLeft: _onSwipeLeft,
+                onSwipeRight: _onSwipeRight,
+                child: Visibility(
+                  visible: _filteredSchedule.isNotEmpty,
+                  replacement: _buildEmptySchedule(),
+                  child: _buildScheduleList(),
                 ),
               ),
             ),
-            _buildAdBanner(),
-          ],
-        ),
+          ),
+          _buildAdBanner(),
+        ],
       ),
-    );
-  }
+    ),
+  );
 }

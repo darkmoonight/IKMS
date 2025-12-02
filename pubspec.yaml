@@ -3,10 +3,11 @@ description: Schedule of classes
 
 publish_to: "none"
 
-version: 1.2.6+27
+version: 1.2.7+28
 
 environment:
-  sdk: ">=3.10.0 <4.0.0"
+  sdk: ">=3.10.1 <4.0.0"
+  flutter: "^3.38.3"
 
 dependencies:
   flutter:
@@ -14,7 +15,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   dio: ^5.9.0
-  get: ^4.7.2
+  get: ^4.7.3
   gap: ^3.0.1
   intl: ^0.20.2
   swipe: ^0.0.1
@@ -22,17 +23,17 @@ dependencies:
   timezone: ^0.10.1
   display_mode: ^0.0.2
   iconsax_plus: ^1.0.0
-  google_fonts: ^6.3.2
+  google_fonts: ^6.3.3
   grouped_list: ^6.0.0
   url_launcher: ^6.3.2
   path_provider: ^2.1.5
   dynamic_color: ^1.8.1
   table_calendar: ^3.2.0
   dio_smart_retry: ^7.0.1
-  yandex_mobileads: ^7.16.0
+  yandex_mobileads: ^7.17.0
   flutter_timezone: ^5.0.1
   connectivity_plus: ^7.0.0
-  device_info_plus: ^12.2.0
+  device_info_plus: ^12.3.0
   package_info_plus: ^9.0.0
   flutter_easyloading: ^3.0.5
   line_awesome_flutter: ^3.0.1

@@ -17,50 +17,46 @@ class OnBoardingScreen extends StatefulWidget {
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Flexible(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/images/onboard.png', scale: 5),
-                  Text(
-                    'timetable'.tr,
-                    style: context.textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(),
+    body: SafeArea(
+      child: Column(
+        children: [
+          Flexible(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('assets/images/onboard.png', scale: 5),
+                Text(
+                  'timetable'.tr,
+                  style: context.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const Gap(10),
+                SizedBox(
+                  width: 300,
+                  child: Text(
+                    'sched_hint'.tr,
+                    style: context.textTheme.bodyMedium,
                     textAlign: TextAlign.center,
                   ),
-                  const Gap(10),
-                  SizedBox(
-                    width: 300,
-                    child: Text(
-                      'sched_hint'.tr,
-                      style: context.textTheme.bodyMedium,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: MyTextButton(
-                text: 'get_started'.tr,
-                onPressed: () async {
-                  await _handleGetStarted(context);
-                },
-              ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: MyTextButton(
+              text: 'get_started'.tr,
+              onPressed: () async => await _handleGetStarted(context),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
 
   Future<void> _handleGetStarted(BuildContext context) async {
     University? university;

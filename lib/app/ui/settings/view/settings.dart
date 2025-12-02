@@ -33,9 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Future<void> infoVersion() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    setState(() {
-      appVersion = packageInfo.version;
-    });
+    setState(() => appVersion = packageInfo.version);
   }
 
   void urlLauncher(String uri) async {
@@ -53,99 +51,81 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'settings'.tr,
-          style: context.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      centerTitle: true,
+      title: Text(
+        'settings'.tr,
+        style: context.textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.w600,
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildAppearanceCard(context),
-            _buildFunctionsCard(context),
-            _buildUniversityCard(context),
-            _buildGroupCard(context),
-            _buildLanguageCard(context),
-            _buildGroupsCard(context),
-            _buildLicenseCard(context),
-            _buildVersionCard(context),
-            _buildGitHubCard(context),
-          ],
-        ),
+    ),
+    body: SingleChildScrollView(
+      child: Column(
+        children: [
+          _buildAppearanceCard(context),
+          _buildFunctionsCard(context),
+          _buildUniversityCard(context),
+          _buildGroupCard(context),
+          _buildLanguageCard(context),
+          _buildGroupsCard(context),
+          _buildLicenseCard(context),
+          _buildVersionCard(context),
+          _buildGitHubCard(context),
+        ],
       ),
-    );
-  }
+    ),
+  );
 
-  Widget _buildAppearanceCard(BuildContext context) {
-    return SettingCard(
-      icon: const Icon(IconsaxPlusLinear.brush_1),
-      text: 'appearance'.tr,
-      onPressed: () {
-        _showAppearanceBottomSheet(context);
-      },
-    );
-  }
+  Widget _buildAppearanceCard(BuildContext context) => SettingCard(
+    icon: const Icon(IconsaxPlusLinear.brush_1),
+    text: 'appearance'.tr,
+    onPressed: () => _showAppearanceBottomSheet(context),
+  );
 
-  void _showAppearanceBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).padding.bottom,
-          ),
-          child: StatefulBuilder(
-            builder: (BuildContext context, setState) {
-              return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 15,
-                      ),
-                      child: Text(
-                        'appearance'.tr,
-                        style: context.textTheme.titleLarge?.copyWith(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                    _buildThemeSettingCard(context, setState),
-                    _buildAmoledThemeSettingCard(context, setState),
-                    _buildMaterialColorSettingCard(context, setState),
-                    const Gap(10),
-                  ],
+  void _showAppearanceBottomSheet(BuildContext context) => showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) => Padding(
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+      child: StatefulBuilder(
+        builder: (BuildContext context, setState) => SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 15,
                 ),
-              );
-            },
+                child: Text(
+                  'appearance'.tr,
+                  style: context.textTheme.titleLarge?.copyWith(fontSize: 20),
+                ),
+              ),
+              _buildThemeSettingCard(context, setState),
+              _buildAmoledThemeSettingCard(context, setState),
+              _buildMaterialColorSettingCard(context, setState),
+              const Gap(10),
+            ],
           ),
-        );
-      },
-    );
-  }
+        ),
+      ),
+    ),
+  );
 
-  Widget _buildThemeSettingCard(BuildContext context, StateSetter setState) {
-    return SettingCard(
-      elevation: 4,
-      icon: const Icon(IconsaxPlusLinear.moon),
-      text: 'theme'.tr,
-      dropdown: true,
-      dropdownName: settings.theme?.tr,
-      dropdownList: <String>['system'.tr, 'dark'.tr, 'light'.tr],
-      dropdownChange: (String? newValue) {
-        _updateTheme(newValue, context, setState);
-      },
-    );
-  }
+  Widget _buildThemeSettingCard(BuildContext context, StateSetter setState) =>
+      SettingCard(
+        elevation: 4,
+        icon: const Icon(IconsaxPlusLinear.moon),
+        text: 'theme'.tr,
+        dropdown: true,
+        dropdownName: settings.theme?.tr,
+        dropdownList: <String>['system'.tr, 'dark'.tr, 'light'.tr],
+        dropdownChange: (String? newValue) =>
+            _updateTheme(newValue, context, setState),
+      );
 
   void _updateTheme(
     String? newValue,
@@ -164,105 +144,85 @@ class _SettingsPageState extends State<SettingsPage> {
         : 'light';
     themeController.saveTheme(theme);
     themeController.changeThemeMode(themeMode);
-    setState(() {});
   }
 
   Widget _buildAmoledThemeSettingCard(
     BuildContext context,
     StateSetter setState,
-  ) {
-    return SettingCard(
-      elevation: 4,
-      icon: const Icon(IconsaxPlusLinear.mobile),
-      text: 'amoledTheme'.tr,
-      switcher: true,
-      value: settings.amoledTheme,
-      onChange: (value) {
-        themeController.saveOledTheme(value);
-        MyApp.updateAppState(context, newAmoledTheme: value);
-      },
-    );
-  }
+  ) => SettingCard(
+    elevation: 4,
+    icon: const Icon(IconsaxPlusLinear.mobile),
+    text: 'amoledTheme'.tr,
+    switcher: true,
+    value: settings.amoledTheme,
+    onChange: (value) {
+      themeController.saveOledTheme(value);
+      MyApp.updateAppState(context, newAmoledTheme: value);
+    },
+  );
 
   Widget _buildMaterialColorSettingCard(
     BuildContext context,
     StateSetter setState,
-  ) {
-    return SettingCard(
-      elevation: 4,
-      icon: const Icon(IconsaxPlusLinear.colorfilter),
-      text: 'materialColor'.tr,
-      switcher: true,
-      value: settings.materialColor,
-      onChange: (value) {
-        themeController.saveMaterialTheme(value);
-        MyApp.updateAppState(context, newMaterialColor: value);
-      },
-    );
-  }
+  ) => SettingCard(
+    elevation: 4,
+    icon: const Icon(IconsaxPlusLinear.colorfilter),
+    text: 'materialColor'.tr,
+    switcher: true,
+    value: settings.materialColor,
+    onChange: (value) {
+      themeController.saveMaterialTheme(value);
+      MyApp.updateAppState(context, newMaterialColor: value);
+    },
+  );
 
-  Widget _buildFunctionsCard(BuildContext context) {
-    return SettingCard(
-      icon: const Icon(IconsaxPlusLinear.code_1),
-      text: 'functions'.tr,
-      onPressed: () {
-        _showFunctionsBottomSheet(context);
-      },
-    );
-  }
+  Widget _buildFunctionsCard(BuildContext context) => SettingCard(
+    icon: const Icon(IconsaxPlusLinear.code_1),
+    text: 'functions'.tr,
+    onPressed: () => _showFunctionsBottomSheet(context),
+  );
 
-  void _showFunctionsBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).padding.bottom,
-          ),
-          child: StatefulBuilder(
-            builder: (BuildContext context, setState) {
-              return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
-                      child: Text(
-                        'functions'.tr,
-                        style: context.textTheme.titleLarge?.copyWith(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                    _buildAdsSettingCard(context, setState),
-                    const Gap(10),
-                  ],
+  void _showFunctionsBottomSheet(BuildContext context) => showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) => Padding(
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+      child: StatefulBuilder(
+        builder: (BuildContext context, setState) => SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 15,
                 ),
-              );
-            },
+                child: Text(
+                  'functions'.tr,
+                  style: context.textTheme.titleLarge?.copyWith(fontSize: 20),
+                ),
+              ),
+              _buildAdsSettingCard(context, setState),
+              const Gap(10),
+            ],
           ),
-        );
-      },
-    );
-  }
+        ),
+      ),
+    ),
+  );
 
-  Widget _buildAdsSettingCard(BuildContext context, StateSetter setState) {
-    return SettingCard(
-      elevation: 4,
-      icon: const Icon(IconsaxPlusLinear.dollar_square),
-      text: 'ads'.tr,
-      switcher: true,
-      value: adsController.ads.value,
-      onChange: (value) async {
-        if (value) {
-          await showAdaptiveDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog.adaptive(
+  Widget _buildAdsSettingCard(BuildContext context, StateSetter setState) =>
+      SettingCard(
+        elevation: 4,
+        icon: const Icon(IconsaxPlusLinear.dollar_square),
+        text: 'ads'.tr,
+        switcher: true,
+        value: adsController.ads.value,
+        onChange: (value) async {
+          if (value) {
+            await showAdaptiveDialog(
+              context: context,
+              builder: (BuildContext context) => AlertDialog.adaptive(
                 title: Text(
                   'adsDisableTitle'.tr,
                   style: context.textTheme.titleLarge,
@@ -294,250 +254,198 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                 ],
-              );
-            },
-          );
-        } else {
-          adsController.toggleAds(value);
-        }
-        setState(() {});
-      },
-    );
-  }
-
-  Widget _buildUniversityCard(BuildContext context) {
-    return SettingCard(
-      icon: const Icon(IconsaxPlusLinear.buildings),
-      text: 'university'.tr,
-      info: true,
-      infoSettings: true,
-      textInfo: settings.university.value?.name ?? 'no_select'.tr,
-      onPressed: () async {
-        University? selectionData = await Get.to(
-          () => const UniversityPage(),
-          transition: Transition.downToUp,
-        );
-        if (selectionData != null) {
-          settings.university.value = selectionData;
-          isar.writeTxnSync(() {
-            isar.settings.putSync(settings);
-            settings.university.saveSync();
-          });
+              ),
+            );
+          } else {
+            adsController.toggleAds(value);
+          }
           setState(() {});
-        }
-      },
-    );
-  }
+        },
+      );
 
-  Widget _buildGroupCard(BuildContext context) {
-    return SettingCard(
-      icon: const Icon(IconsaxPlusLinear.people),
-      text: 'group'.tr,
-      info: true,
-      infoSettings: true,
-      textInfo: settings.group.value?.name ?? 'no_select'.tr,
-      onPressed: settings.university.value != null
-          ? () async {
-              GroupSchedule? selectionData = await Get.to(
-                () => const GroupsPage(isSettings: true),
-                transition: Transition.downToUp,
-              );
-              if (selectionData != null) {
-                selectionData.university.value = settings.university.value;
-                settings.group.value = selectionData;
-                isar.writeTxnSync(() {
-                  isar.groupSchedules.putSync(selectionData);
-                  selectionData.university.saveSync();
-                  isar.settings.putSync(settings);
-                  settings.group.saveSync();
-                });
-                setState(() {});
-              }
+  Widget _buildUniversityCard(BuildContext context) => SettingCard(
+    icon: const Icon(IconsaxPlusLinear.buildings),
+    text: 'university'.tr,
+    info: true,
+    infoSettings: true,
+    textInfo: settings.university.value?.name ?? 'no_select'.tr,
+    onPressed: () async {
+      University? selectionData = await Get.to(
+        () => const UniversityPage(),
+        transition: Transition.downToUp,
+      );
+      if (selectionData != null) {
+        settings.university.value = selectionData;
+        isar.writeTxnSync(() {
+          isar.settings.putSync(settings);
+          settings.university.saveSync();
+        });
+        setState(() {});
+      }
+    },
+  );
+
+  Widget _buildGroupCard(BuildContext context) => SettingCard(
+    icon: const Icon(IconsaxPlusLinear.people),
+    text: 'group'.tr,
+    info: true,
+    infoSettings: true,
+    textInfo: settings.group.value?.name ?? 'no_select'.tr,
+    onPressed: settings.university.value != null
+        ? () async {
+            GroupSchedule? selectionData = await Get.to(
+              () => const GroupsPage(isSettings: true),
+              transition: Transition.downToUp,
+            );
+            if (selectionData != null) {
+              selectionData.university.value = settings.university.value;
+              settings.group.value = selectionData;
+              isar.writeTxnSync(() {
+                isar.groupSchedules.putSync(selectionData);
+                selectionData.university.saveSync();
+                isar.settings.putSync(settings);
+                settings.group.saveSync();
+              });
+              setState(() {});
             }
-          : () => EasyLoading.showInfo('no_university'.tr),
-    );
-  }
+          }
+        : () => EasyLoading.showInfo('no_university'.tr),
+  );
 
-  Widget _buildLanguageCard(BuildContext context) {
-    return SettingCard(
-      icon: const Icon(IconsaxPlusLinear.language_square),
-      text: 'language'.tr,
-      info: true,
-      infoSettings: true,
-      textInfo: appLanguages.firstWhere(
-        (element) => (element['locale'] == locale),
-        orElse: () => appLanguages.first,
-      )['name'],
-      onPressed: () {
-        _showLanguageBottomSheet(context);
-      },
-    );
-  }
+  Widget _buildLanguageCard(BuildContext context) => SettingCard(
+    icon: const Icon(IconsaxPlusLinear.language_square),
+    text: 'language'.tr,
+    info: true,
+    infoSettings: true,
+    textInfo: appLanguages.firstWhere(
+      (element) => (element['locale'] == locale),
+      orElse: () => appLanguages.first,
+    )['name'],
+    onPressed: () => _showLanguageBottomSheet(context),
+  );
 
-  void _showLanguageBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).padding.bottom,
-          ),
-          child: StatefulBuilder(
-            builder: (BuildContext context, setState) {
-              return ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 15,
-                    ),
-                    child: Text(
-                      'language'.tr,
-                      style: context.textTheme.titleLarge?.copyWith(
-                        fontSize: 20,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: appLanguages.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        elevation: 4,
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 5,
-                        ),
-                        child: ListTile(
-                          title: Text(
-                            appLanguages[index]['name'],
-                            style: context.textTheme.labelLarge,
-                            textAlign: TextAlign.center,
-                          ),
-                          onTap: () {
-                            MyApp.updateAppState(
-                              context,
-                              newLocale: appLanguages[index]['locale'],
-                            );
-                            updateLanguage(appLanguages[index]['locale']);
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                  const Gap(10),
-                ],
-              );
-            },
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildGroupsCard(BuildContext context) {
-    return SettingCard(
-      icon: const Icon(IconsaxPlusLinear.link_square),
-      text: 'ourGroups'.tr,
-      onPressed: () {
-        _showGroupsBottomSheet(context);
-      },
-    );
-  }
-
-  void _showGroupsBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).padding.bottom,
-          ),
-          child: StatefulBuilder(
-            builder: (BuildContext context, setState) {
-              return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
-                      child: Text(
-                        'ourGroups'.tr,
-                        style: context.textTheme.titleLarge?.copyWith(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                    SettingCard(
-                      elevation: 4,
-                      icon: const Icon(LineAwesomeIcons.discord),
-                      text: 'Discord',
-                      onPressed: () =>
-                          urlLauncher('https://discord.gg/JMMa9aHh8f'),
-                    ),
-                    SettingCard(
-                      elevation: 4,
-                      icon: const Icon(LineAwesomeIcons.telegram),
-                      text: 'Telegram',
-                      onPressed: () =>
-                          urlLauncher('https://t.me/darkmoonightX'),
-                    ),
-                    const Gap(10),
-                  ],
-                ),
-              );
-            },
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildLicenseCard(BuildContext context) {
-    return SettingCard(
-      icon: const Icon(IconsaxPlusLinear.document),
-      text: 'license'.tr,
-      onPressed: () => Get.to(
-        () => LicensePage(
-          applicationIcon: Container(
-            width: 100,
-            height: 100,
-            margin: const EdgeInsets.symmetric(vertical: 5),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              image: DecorationImage(
-                image: AssetImage('assets/icons/icon.png'),
+  void _showLanguageBottomSheet(BuildContext context) => showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) => Padding(
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+      child: StatefulBuilder(
+        builder: (BuildContext context, setState) => ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              child: Text(
+                'language'.tr,
+                style: context.textTheme.titleLarge?.copyWith(fontSize: 20),
+                textAlign: TextAlign.center,
               ),
             ),
-          ),
-          applicationName: 'IKMS',
-          applicationVersion: appVersion,
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              itemCount: appLanguages.length,
+              itemBuilder: (context, index) => Card(
+                elevation: 4,
+                margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                child: ListTile(
+                  title: Text(
+                    appLanguages[index]['name'],
+                    style: context.textTheme.labelLarge,
+                    textAlign: TextAlign.center,
+                  ),
+                  onTap: () {
+                    MyApp.updateAppState(
+                      context,
+                      newLocale: appLanguages[index]['locale'],
+                    );
+                    updateLanguage(appLanguages[index]['locale']);
+                  },
+                ),
+              ),
+            ),
+            const Gap(10),
+          ],
         ),
-        transition: Transition.downToUp,
       ),
-    );
-  }
+    ),
+  );
 
-  Widget _buildVersionCard(BuildContext context) {
-    return SettingCard(
-      icon: const Icon(IconsaxPlusLinear.hierarchy_square_2),
-      text: 'version'.tr,
-      info: true,
-      textInfo: '$appVersion',
-    );
-  }
+  Widget _buildGroupsCard(BuildContext context) => SettingCard(
+    icon: const Icon(IconsaxPlusLinear.link_square),
+    text: 'ourGroups'.tr,
+    onPressed: () => _showGroupsBottomSheet(context),
+  );
 
-  Widget _buildGitHubCard(BuildContext context) {
-    return SettingCard(
-      icon: const Icon(LineAwesomeIcons.github),
-      text: '${'project'.tr} GitHub',
-      onPressed: () => urlLauncher('https://github.com/darkmoonight/IKMS'),
-    );
-  }
+  void _showGroupsBottomSheet(BuildContext context) => showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) => Padding(
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+      child: StatefulBuilder(
+        builder: (BuildContext context, setState) => SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 15,
+                ),
+                child: Text(
+                  'ourGroups'.tr,
+                  style: context.textTheme.titleLarge?.copyWith(fontSize: 20),
+                ),
+              ),
+              SettingCard(
+                elevation: 4,
+                icon: const Icon(LineAwesomeIcons.discord),
+                text: 'Discord',
+                onPressed: () => urlLauncher('https://discord.gg/JMMa9aHh8f'),
+              ),
+              SettingCard(
+                elevation: 4,
+                icon: const Icon(LineAwesomeIcons.telegram),
+                text: 'Telegram',
+                onPressed: () => urlLauncher('https://t.me/darkmoonightX'),
+              ),
+              const Gap(10),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+
+  Widget _buildLicenseCard(BuildContext context) => SettingCard(
+    icon: const Icon(IconsaxPlusLinear.document),
+    text: 'license'.tr,
+    onPressed: () => Get.to(
+      () => LicensePage(
+        applicationIcon: Container(
+          width: 100,
+          height: 100,
+          margin: const EdgeInsets.symmetric(vertical: 5),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            image: DecorationImage(image: AssetImage('assets/icons/icon.png')),
+          ),
+        ),
+        applicationName: 'IKMS',
+        applicationVersion: appVersion,
+      ),
+      transition: Transition.downToUp,
+    ),
+  );
+
+  Widget _buildVersionCard(BuildContext context) => SettingCard(
+    icon: const Icon(IconsaxPlusLinear.hierarchy_square_2),
+    text: 'version'.tr,
+    info: true,
+    textInfo: '$appVersion',
+  );
+
+  Widget _buildGitHubCard(BuildContext context) => SettingCard(
+    icon: const Icon(LineAwesomeIcons.github),
+    text: '${'project'.tr} GitHub',
+    onPressed: () => urlLauncher('https://github.com/darkmoonight/IKMS'),
+  );
 }

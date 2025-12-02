@@ -20,55 +20,43 @@ class _TodosListState extends State<TodosList> {
   final _todoController = Get.find<TodoController>();
 
   @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      final filteredTodos = _filterTodos();
+  Widget build(BuildContext context) => Obx(() {
+    final filteredTodos = _filterTodos();
 
-      if (filteredTodos.isEmpty) {
-        return _buildEmptyState();
-      }
+    if (filteredTodos.isEmpty) {
+      return _buildEmptyState();
+    }
 
-      return _buildTodoList(filteredTodos);
-    });
-  }
+    return _buildTodoList(filteredTodos);
+  });
 
-  List<Todos> _filterTodos() {
-    return _todoController.todos
-        .where(
-          (todo) =>
-              todo.done == widget.done &&
-              (widget.searchTodo.isEmpty ||
-                  todo.name.toLowerCase().contains(
-                    widget.searchTodo.toLowerCase(),
-                  )),
-        )
-        .toList();
-  }
+  List<Todos> _filterTodos() => _todoController.todos
+      .where(
+        (todo) =>
+            todo.done == widget.done &&
+            (widget.searchTodo.isEmpty ||
+                todo.name.toLowerCase().contains(
+                  widget.searchTodo.toLowerCase(),
+                )),
+      )
+      .toList();
 
-  Widget _buildEmptyState() {
-    return ListEmpty(
-      img: 'assets/images/add.png',
-      text: widget.done ? 'completedTodo'.tr : 'addTodo'.tr,
-    );
-  }
+  Widget _buildEmptyState() => ListEmpty(
+    img: 'assets/images/add.png',
+    text: widget.done ? 'completedTodo'.tr : 'addTodo'.tr,
+  );
 
-  Widget _buildTodoList(List<Todos> todos) {
-    return ListView.builder(
-      itemCount: todos.length,
-      itemBuilder: (context, index) {
-        return _buildTodoItem(todos[index]);
-      },
-    );
-  }
+  Widget _buildTodoList(List<Todos> todos) => ListView.builder(
+    itemCount: todos.length,
+    itemBuilder: (context, index) => _buildTodoItem(todos[index]),
+  );
 
-  Widget _buildTodoItem(Todos todo) {
-    return TodosCard(
-      key: ValueKey(todo.id),
-      todo: todo,
-      onTap: () => _handleTodoTap(todo),
-      onLongPress: () => _handleTodoLongPress(todo),
-    );
-  }
+  Widget _buildTodoItem(Todos todo) => TodosCard(
+    key: ValueKey(todo.id),
+    todo: todo,
+    onTap: () => _handleTodoTap(todo),
+    onLongPress: () => _handleTodoLongPress(todo),
+  );
 
   void _handleTodoTap(Todos todo) {
     if (_todoController.isMultiSelectionTodo.isTrue) {
@@ -83,14 +71,11 @@ class _TodosListState extends State<TodosList> {
     _todoController.doMultiSelectionTodo(todo);
   }
 
-  void _showTodoActions(Todos todo) {
-    showModalBottomSheet(
-      enableDrag: false,
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return TodosAction(text: 'editing'.tr, edit: true, todo: todo);
-      },
-    );
-  }
+  void _showTodoActions(Todos todo) => showModalBottomSheet(
+    enableDrag: false,
+    context: context,
+    isScrollControlled: true,
+    builder: (BuildContext context) =>
+        TodosAction(text: 'editing'.tr, edit: true, todo: todo),
+  );
 }

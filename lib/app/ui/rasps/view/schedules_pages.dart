@@ -23,17 +23,15 @@ abstract class BaseSchedulePageState<T extends StatefulWidget>
     BuildContext context, {
     Function()? onBackPressed,
     String? headerText,
-  }) {
-    return RefreshIndicator(
-      onRefresh: loadData,
-      child: RaspWidget(
-        isLoaded: isLoaded,
-        raspElements: raspData,
-        onBackPressed: onBackPressed,
-        headerText: headerText,
-      ),
-    );
-  }
+  }) => RefreshIndicator(
+    onRefresh: loadData,
+    child: RaspWidget(
+      isLoaded: isLoaded,
+      raspElements: raspData,
+      onBackPressed: onBackPressed,
+      headerText: headerText,
+    ),
+  );
 }
 
 class MySchedulePage extends StatefulWidget {
@@ -75,17 +73,13 @@ class _MySchedulePageState extends BaseSchedulePageState<MySchedulePage> {
       debugPrint('Error loading schedule: $e');
     } finally {
       if (mounted) {
-        setState(() {
-          isLoaded = true;
-        });
+        setState(() => isLoaded = true);
       }
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    return buildRefreshIndicator(context);
-  }
+  Widget build(BuildContext context) => buildRefreshIndicator(context);
 }
 
 class RaspDetailPage extends StatefulWidget {
@@ -116,9 +110,7 @@ class _RaspDetailPageState extends BaseSchedulePageState<RaspDetailPage> {
     } catch (e) {
       debugPrint('Error loading schedule: $e');
       if (mounted) {
-        setState(() {
-          isLoaded = true;
-        });
+        setState(() => isLoaded = true);
       }
     }
   }
@@ -145,13 +137,11 @@ class _RaspDetailPageState extends BaseSchedulePageState<RaspDetailPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: buildRefreshIndicator(
-        context,
-        onBackPressed: () => Get.back(),
-        headerText: widget.entity.name,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+    body: buildRefreshIndicator(
+      context,
+      onBackPressed: () => Get.back(),
+      headerText: widget.entity.name,
+    ),
+  );
 }

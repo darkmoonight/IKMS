@@ -25,76 +25,64 @@ class _HomePageState extends State<HomePage> {
     SettingsPage(),
   ];
 
-  void changeTabIndex(int index) {
-    setState(() {
-      tabIndex = index;
-    });
-  }
+  void changeTabIndex(int index) => setState(() => tabIndex = index);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(index: tabIndex, children: pages),
-      floatingActionButton: _buildFloatingActionButton(),
-      bottomNavigationBar: _buildBottomNavigationBar(),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+    body: IndexedStack(index: tabIndex, children: pages),
+    floatingActionButton: _buildFloatingActionButton(),
+    bottomNavigationBar: _buildBottomNavigationBar(),
+  );
 
-  Widget _buildBottomNavigationBar() {
-    return NavigationBar(
-      labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-      onDestinationSelected: changeTabIndex,
-      selectedIndex: tabIndex,
-      destinations: _buildNavigationDestinations(),
-    );
-  }
+  Widget _buildBottomNavigationBar() => NavigationBar(
+    labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+    onDestinationSelected: changeTabIndex,
+    selectedIndex: tabIndex,
+    destinations: _buildNavigationDestinations(),
+  );
 
-  List<NavigationDestination> _buildNavigationDestinations() {
-    return [
-      _buildNavigationDestination(
-        icon: IconsaxPlusLinear.calendar,
-        selectedIcon: IconsaxPlusBold.calendar,
-        label: 'schedule'.tr,
-      ),
-      _buildNavigationDestination(
-        icon: IconsaxPlusLinear.user_search,
-        selectedIcon: IconsaxPlusBold.user_search,
-        label: 'professors'.tr,
-      ),
-      _buildNavigationDestination(
-        icon: IconsaxPlusLinear.people,
-        selectedIcon: IconsaxPlusBold.people,
-        label: 'groups'.tr,
-      ),
-      _buildNavigationDestination(
-        icon: IconsaxPlusLinear.buildings_2,
-        selectedIcon: IconsaxPlusBold.buildings_2,
-        label: 'audiences'.tr,
-      ),
-      _buildNavigationDestination(
-        icon: IconsaxPlusLinear.task_square,
-        selectedIcon: IconsaxPlusBold.task_square,
-        label: 'todos'.tr,
-      ),
-      _buildNavigationDestination(
-        icon: IconsaxPlusLinear.category,
-        selectedIcon: IconsaxPlusBold.category,
-        label: 'settings'.tr,
-      ),
-    ];
-  }
+  List<NavigationDestination> _buildNavigationDestinations() => [
+    _buildNavigationDestination(
+      icon: IconsaxPlusLinear.calendar,
+      selectedIcon: IconsaxPlusBold.calendar,
+      label: 'schedule'.tr,
+    ),
+    _buildNavigationDestination(
+      icon: IconsaxPlusLinear.user_search,
+      selectedIcon: IconsaxPlusBold.user_search,
+      label: 'professors'.tr,
+    ),
+    _buildNavigationDestination(
+      icon: IconsaxPlusLinear.people,
+      selectedIcon: IconsaxPlusBold.people,
+      label: 'groups'.tr,
+    ),
+    _buildNavigationDestination(
+      icon: IconsaxPlusLinear.buildings_2,
+      selectedIcon: IconsaxPlusBold.buildings_2,
+      label: 'audiences'.tr,
+    ),
+    _buildNavigationDestination(
+      icon: IconsaxPlusLinear.task_square,
+      selectedIcon: IconsaxPlusBold.task_square,
+      label: 'todos'.tr,
+    ),
+    _buildNavigationDestination(
+      icon: IconsaxPlusLinear.category,
+      selectedIcon: IconsaxPlusBold.category,
+      label: 'settings'.tr,
+    ),
+  ];
 
   NavigationDestination _buildNavigationDestination({
     required IconData icon,
     required IconData selectedIcon,
     required String label,
-  }) {
-    return NavigationDestination(
-      icon: Icon(icon),
-      selectedIcon: Icon(selectedIcon),
-      label: label,
-    );
-  }
+  }) => NavigationDestination(
+    icon: Icon(icon),
+    selectedIcon: Icon(selectedIcon),
+    label: label,
+  );
 
   Widget? _buildFloatingActionButton() {
     if (tabIndex == 4) {
@@ -104,9 +92,8 @@ class _HomePageState extends State<HomePage> {
             enableDrag: false,
             context: context,
             isScrollControlled: true,
-            builder: (BuildContext context) {
-              return TodosAction(text: 'create'.tr, edit: false);
-            },
+            builder: (BuildContext context) =>
+                TodosAction(text: 'create'.tr, edit: false),
           );
         },
         child: const Icon(IconsaxPlusLinear.add),

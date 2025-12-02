@@ -40,6 +40,7 @@ final List<Map<String, dynamic>> appLanguages = [
 final ValueNotifier<Future<bool>> isOnline = ValueNotifier(
   InternetConnection().hasInternetAccess,
 );
+
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
@@ -120,13 +121,12 @@ Future<void> isarInit() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeApp();
-  Connectivity().onConnectivityChanged.listen((
-    List<ConnectivityResult> result,
-  ) {
-    result.contains(ConnectivityResult.none)
+  Connectivity().onConnectivityChanged.listen(
+    (List<ConnectivityResult> result) =>
+        result.contains(ConnectivityResult.none)
         ? isOnline.value = Future(() => false)
-        : isOnline.value = InternetConnection().hasInternetAccess;
-  });
+        : isOnline.value = InternetConnection().hasInternetAccess,
+  );
   MobileAds.initialize();
   runApp(const MyApp());
 }

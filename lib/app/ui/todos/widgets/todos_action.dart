@@ -85,9 +85,7 @@ class _TodosActionState extends State<TodosAction> {
       }
     } catch (e) {
       debugPrint('Error loading discipline data: $e');
-      setState(() {
-        _isLoading = false;
-      });
+      setState(() => _isLoading = false);
     }
   }
 
@@ -147,160 +145,140 @@ class _TodosActionState extends State<TodosAction> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-      child: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildHeader(),
-                _buildTitleField(),
-                _buildDisciplineDropdown(),
-                _buildTimeField(),
-                const Gap(10),
-              ],
-            ),
+  Widget build(BuildContext context) => Padding(
+    padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+    child: Form(
+      key: _formKey,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildHeader(),
+              _buildTitleField(),
+              _buildDisciplineDropdown(),
+              _buildTimeField(),
+              const Gap(10),
+            ],
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 
-  Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _buildCloseButton(),
-          _buildTitleText(),
-          _buildSubmitButton(),
-        ],
+  Widget _buildHeader() => Padding(
+    padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [_buildCloseButton(), _buildTitleText(), _buildSubmitButton()],
+    ),
+  );
+
+  Widget _buildCloseButton() => IconButton(
+    onPressed: () {
+      _titleController.clear();
+      _timeController.clear();
+      Get.back();
+    },
+    icon: const Icon(IconsaxPlusLinear.close_square, size: 20),
+  );
+
+  Widget _buildTitleText() => Text(
+    widget.text,
+    style: context.textTheme.titleLarge?.copyWith(fontSize: 20),
+    textAlign: TextAlign.center,
+  );
+
+  Widget _buildSubmitButton() => IconButton(
+    onPressed: _submitForm,
+    icon: const Icon(IconsaxPlusLinear.tick_square, size: 20),
+  );
+
+  Widget _buildTitleField() => MyTextForm(
+    elevation: 4,
+    margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+    controller: _titleController,
+    labelText: 'name'.tr,
+    type: TextInputType.multiline,
+    icon: const Icon(IconsaxPlusLinear.edit),
+    validator: (value) {
+      if (value == null || value.isEmpty) {
+        return 'validateName'.tr;
+      }
+      return null;
+    },
+    maxLine: null,
+  );
+
+  Widget _buildDisciplineDropdown() => Card(
+    elevation: 4,
+    margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+    child: DropdownButtonFormField<Schedule>(
+      style: context.textTheme.titleMedium,
+      isExpanded: true,
+      initialValue: _isLoading ? null : _selectedDiscipline,
+      decoration: InputDecoration(
+        labelText: _isLoading ? 'loading'.tr : 'discipline'.tr,
+        prefixIcon: const Icon(IconsaxPlusLinear.book_square),
+        border: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        enabledBorder: InputBorder.none,
       ),
-    );
-  }
-
-  Widget _buildCloseButton() {
-    return IconButton(
-      onPressed: () {
-        _titleController.clear();
-        _timeController.clear();
-        Get.back();
-      },
-      icon: const Icon(IconsaxPlusLinear.close_square, size: 20),
-    );
-  }
-
-  Widget _buildTitleText() {
-    return Text(
-      widget.text,
-      style: context.textTheme.titleLarge?.copyWith(fontSize: 20),
-      textAlign: TextAlign.center,
-    );
-  }
-
-  Widget _buildSubmitButton() {
-    return IconButton(
-      onPressed: _submitForm,
-      icon: const Icon(IconsaxPlusLinear.tick_square, size: 20),
-    );
-  }
-
-  Widget _buildTitleField() {
-    return MyTextForm(
-      elevation: 4,
-      margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-      controller: _titleController,
-      labelText: 'name'.tr,
-      type: TextInputType.multiline,
-      icon: const Icon(IconsaxPlusLinear.edit),
+      borderRadius: BorderRadius.circular(15),
+      icon: _isLoading
+          ? const SizedBox(width: 24, height: 24)
+          : const Padding(
+              padding: EdgeInsets.only(right: 15, bottom: 10),
+              child: Icon(IconsaxPlusLinear.arrow_down, size: 18),
+            ),
+      items: _isLoading
+          ? []
+          : _disciplineList
+                .map(
+                  (schedule) => DropdownMenuItem<Schedule>(
+                    value: schedule,
+                    child: Text(
+                      schedule.discipline,
+                      style: context.textTheme.bodyMedium,
+                      overflow: TextOverflow.visible,
+                    ),
+                  ),
+                )
+                .toList(),
+      onChanged: _isLoading
+          ? null
+          : (Schedule? newValue) {
+              FocusScope.of(context).unfocus();
+              setState(() => _selectedDiscipline = newValue);
+            },
       validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'validateName'.tr;
+        if (_isLoading) return null;
+        if (value == null) {
+          return 'validateDiscipline'.tr;
         }
         return null;
       },
-      maxLine: null,
-    );
-  }
+    ),
+  );
 
-  Widget _buildDisciplineDropdown() {
-    return Card(
-      elevation: 4,
-      margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-      child: DropdownButtonFormField<Schedule>(
-        style: context.textTheme.titleMedium,
-        isExpanded: true,
-        initialValue: _isLoading ? null : _selectedDiscipline,
-        decoration: InputDecoration(
-          labelText: _isLoading ? 'loading'.tr : 'discipline'.tr,
-          prefixIcon: const Icon(IconsaxPlusLinear.book_square),
-          border: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          enabledBorder: InputBorder.none,
-        ),
-        borderRadius: BorderRadius.circular(15),
-        icon: _isLoading
-            ? const SizedBox(width: 24, height: 24)
-            : const Padding(
-                padding: EdgeInsets.only(right: 15, bottom: 10),
-                child: Icon(IconsaxPlusLinear.arrow_down, size: 18),
-              ),
-        items: _isLoading
-            ? []
-            : _disciplineList.map((schedule) {
-                return DropdownMenuItem<Schedule>(
-                  value: schedule,
-                  child: Text(
-                    schedule.discipline,
-                    style: context.textTheme.bodyMedium,
-                    overflow: TextOverflow.visible,
-                  ),
-                );
-              }).toList(),
-        onChanged: _isLoading
-            ? null
-            : (Schedule? newValue) {
-                FocusScope.of(context).unfocus();
-                setState(() {
-                  _selectedDiscipline = newValue;
-                });
-              },
-        validator: (value) {
-          if (_isLoading) return null;
-          if (value == null) {
-            return 'validateDiscipline'.tr;
-          }
-          return null;
-        },
-      ),
-    );
-  }
-
-  Widget _buildTimeField() {
-    return MyTextForm(
-      elevation: 4,
-      margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-      readOnly: true,
-      controller: _timeController,
-      labelText: 'timeComplete'.tr,
-      type: TextInputType.datetime,
-      icon: const Icon(IconsaxPlusLinear.clock_1),
-      iconButton: _timeController.text.isNotEmpty
-          ? IconButton(
-              icon: const Icon(Icons.close, size: 18),
-              onPressed: () => _timeController.clear(),
-            )
-          : null,
-      onTap: _selectDateTime,
-    );
-  }
+  Widget _buildTimeField() => MyTextForm(
+    elevation: 4,
+    margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+    readOnly: true,
+    controller: _timeController,
+    labelText: 'timeComplete'.tr,
+    type: TextInputType.datetime,
+    icon: const Icon(IconsaxPlusLinear.clock_1),
+    iconButton: _timeController.text.isNotEmpty
+        ? IconButton(
+            icon: const Icon(Icons.close, size: 18),
+            onPressed: () => _timeController.clear(),
+          )
+        : null,
+    onTap: _selectDateTime,
+  );
 }

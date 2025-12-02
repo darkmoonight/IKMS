@@ -10,18 +10,14 @@ class MyShimmer extends StatelessWidget {
   final EdgeInsets? margin;
 
   @override
-  Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: context.theme.cardColor,
-      highlightColor: context.theme.primaryColor,
-      child: _buildShimmerCard(),
-    );
-  }
+  Widget build(BuildContext context) => Shimmer.fromColors(
+    baseColor: context.theme.cardColor,
+    highlightColor: context.theme.primaryColor,
+    child: _buildShimmerCard(),
+  );
 
-  Widget _buildShimmerCard() {
-    return Card(
-      margin: margin,
-      child: SizedBox(height: height, width: width),
-    );
-  }
+  Widget _buildShimmerCard() => Card(
+    margin: margin,
+    child: SizedBox(height: height, width: width),
+  );
 }

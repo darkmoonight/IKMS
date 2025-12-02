@@ -60,9 +60,7 @@ abstract class BaseSelectionPageState<
     try {
       await applyFilter('');
     } catch (e) {
-      setState(() {
-        isError = true;
-      });
+      setState(() => isError = true);
       debugPrint('Error loading data: $e');
     }
   }
@@ -85,9 +83,12 @@ abstract class BaseSelectionPageState<
     }
 
     final data = await fetchData(university);
-    return data.where((element) {
-      return element.name.toLowerCase().contains(filter.toLowerCase());
-    }).toList();
+    return data
+        .where(
+          (element) =>
+              element.name.toLowerCase().contains(filter.toLowerCase()),
+        )
+        .toList();
   }
 
   Future<void> applyFilter(String value) async {
@@ -146,22 +147,20 @@ class AudiencesPage extends BaseSelectionPage<AudienceSchedule> {
 class _AudiencesPageState
     extends BaseSelectionPageState<AudienceSchedule, AudiencesPage> {
   @override
-  Future<List<AudienceSchedule>> fetchData(University? university) async {
-    return await isar.audienceSchedules
-        .filter()
-        .university((q) => q.idEqualTo(university!.id))
-        .optional(
-          !(await isOnline.value),
-          (q) => q.schedulesLengthGreaterThan(0),
-        )
-        .sortByLastUpdateDesc()
-        .findAll();
-  }
+  Future<List<AudienceSchedule>> fetchData(University? university) async =>
+      await isar.audienceSchedules
+          .filter()
+          .university((q) => q.idEqualTo(university!.id))
+          .optional(
+            !(await isOnline.value),
+            (q) => q.schedulesLengthGreaterThan(0),
+          )
+          .sortByLastUpdateDesc()
+          .findAll();
 
   @override
-  Future<bool> cacheData(University university) {
-    return UniversityCaching.cacheAudiences(university);
-  }
+  Future<bool> cacheData(University university) =>
+      UniversityCaching.cacheAudiences(university);
 
   @override
   void onEntrySelected(AudienceSchedule selectionData) async {
@@ -175,9 +174,7 @@ class _AudiencesPageState
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: buildContent());
-  }
+  Widget build(BuildContext context) => Scaffold(body: buildContent());
 }
 
 class GroupsPage extends BaseSelectionPage<GroupSchedule> {
@@ -191,22 +188,20 @@ class GroupsPage extends BaseSelectionPage<GroupSchedule> {
 class _GroupsPageState
     extends BaseSelectionPageState<GroupSchedule, GroupsPage> {
   @override
-  Future<List<GroupSchedule>> fetchData(University? university) async {
-    return await isar.groupSchedules
-        .filter()
-        .university((q) => q.idEqualTo(university!.id))
-        .optional(
-          !(await isOnline.value),
-          (q) => q.schedulesLengthGreaterThan(0),
-        )
-        .sortByLastUpdateDesc()
-        .findAll();
-  }
+  Future<List<GroupSchedule>> fetchData(University? university) async =>
+      await isar.groupSchedules
+          .filter()
+          .university((q) => q.idEqualTo(university!.id))
+          .optional(
+            !(await isOnline.value),
+            (q) => q.schedulesLengthGreaterThan(0),
+          )
+          .sortByLastUpdateDesc()
+          .findAll();
 
   @override
-  Future<bool> cacheData(University university) {
-    return UniversityCaching.cacheGroups(university);
-  }
+  Future<bool> cacheData(University university) =>
+      UniversityCaching.cacheGroups(university);
 
   @override
   void onEntrySelected(GroupSchedule selectionData) async {
@@ -225,9 +220,7 @@ class _GroupsPageState
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: buildContent());
-  }
+  Widget build(BuildContext context) => Scaffold(body: buildContent());
 }
 
 class ProfessorsPage extends BaseSelectionPage<TeacherSchedule> {
@@ -241,22 +234,20 @@ class ProfessorsPage extends BaseSelectionPage<TeacherSchedule> {
 class _ProfessorsPageState
     extends BaseSelectionPageState<TeacherSchedule, ProfessorsPage> {
   @override
-  Future<List<TeacherSchedule>> fetchData(University? university) async {
-    return await isar.teacherSchedules
-        .filter()
-        .university((q) => q.idEqualTo(university!.id))
-        .optional(
-          !(await isOnline.value),
-          (q) => q.schedulesLengthGreaterThan(0),
-        )
-        .sortByLastUpdateDesc()
-        .findAll();
-  }
+  Future<List<TeacherSchedule>> fetchData(University? university) async =>
+      await isar.teacherSchedules
+          .filter()
+          .university((q) => q.idEqualTo(university!.id))
+          .optional(
+            !(await isOnline.value),
+            (q) => q.schedulesLengthGreaterThan(0),
+          )
+          .sortByLastUpdateDesc()
+          .findAll();
 
   @override
-  Future<bool> cacheData(University university) {
-    return UniversityCaching.cacheTeachers(university);
-  }
+  Future<bool> cacheData(University university) =>
+      UniversityCaching.cacheTeachers(university);
 
   @override
   void onEntrySelected(TeacherSchedule selectionData) async {
@@ -270,9 +261,7 @@ class _ProfessorsPageState
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: buildContent());
-  }
+  Widget build(BuildContext context) => Scaffold(body: buildContent());
 }
 
 class UniversityPage extends StatefulWidget {
@@ -299,9 +288,7 @@ class _UniversityPageState extends State<UniversityPage> {
     try {
       await applyFilter('');
     } catch (e) {
-      setState(() {
-        isError = true;
-      });
+      setState(() => isError = true);
       debugPrint('Error loading universities: $e');
     }
   }
@@ -335,25 +322,26 @@ class _UniversityPageState extends State<UniversityPage> {
 
   Future<List<University>> _getFilteredData() async {
     final allUniversities = await isar.universitys.where().findAll();
-    return allUniversities.where((element) {
-      return element.name.toLowerCase().contains(filter.toLowerCase());
-    }).toList();
+    return allUniversities
+        .where(
+          (element) =>
+              element.name.toLowerCase().contains(filter.toLowerCase()),
+        )
+        .toList();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SelectionList<University>(
-        headerText: 'universities'.tr,
-        labelText: 'universitiesName'.tr,
-        isLoaded: isLoaded,
-        isError: isError,
-        onTextChanged: applyFilter,
-        onEntrySelected: (University selectionData) =>
-            Get.back(result: selectionData),
-        onBackPressed: isDialog ? null : Get.back,
-        data: items,
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+    body: SelectionList<University>(
+      headerText: 'universities'.tr,
+      labelText: 'universitiesName'.tr,
+      isLoaded: isLoaded,
+      isError: isError,
+      onTextChanged: applyFilter,
+      onEntrySelected: (University selectionData) =>
+          Get.back(result: selectionData),
+      onBackPressed: isDialog ? null : Get.back,
+      data: items,
+    ),
+  );
 }

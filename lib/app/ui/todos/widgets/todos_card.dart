@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:ikms/app/controller/todo_controller.dart';
 import 'package:ikms/app/data/db.dart';
@@ -49,53 +48,45 @@ class _TodosCardState extends State<TodosCard> {
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Row(
-            children: [_buildCheckbox(), const Gap(8), _buildTodoContent()],
+            spacing: 8,
+            children: [_buildCheckbox(), _buildTodoContent()],
           ),
         ),
       ),
     );
   }
 
-  Widget _buildCheckbox() {
-    return Checkbox(
-      value: widget.todo.done,
-      shape: const CircleBorder(),
-      onChanged: _handleCheckboxChanged,
-    );
-  }
+  Widget _buildCheckbox() => Checkbox(
+    value: widget.todo.done,
+    shape: const CircleBorder(),
+    onChanged: _handleCheckboxChanged,
+  );
 
-  Widget _buildTodoContent() {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildTodoTitle(),
-          const Gap(3),
-          _buildTodoDiscipline(),
-          const Gap(3),
-          _buildTodoDeadline(),
-        ],
-      ),
-    );
-  }
+  Widget _buildTodoContent() => Expanded(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 3,
+      children: [
+        _buildTodoTitle(),
+        _buildTodoDiscipline(),
+        _buildTodoDeadline(),
+      ],
+    ),
+  );
 
-  Widget _buildTodoTitle() {
-    return Text(
-      widget.todo.name,
-      style: context.theme.textTheme.titleMedium?.copyWith(
-        fontWeight: FontWeight.bold,
-      ),
-      overflow: TextOverflow.visible,
-    );
-  }
+  Widget _buildTodoTitle() => Text(
+    widget.todo.name,
+    style: context.theme.textTheme.titleMedium?.copyWith(
+      fontWeight: FontWeight.bold,
+    ),
+    overflow: TextOverflow.visible,
+  );
 
-  Widget _buildTodoDiscipline() {
-    return Text(
-      widget.todo.discipline,
-      style: context.theme.textTheme.bodySmall?.copyWith(color: Colors.grey),
-      overflow: TextOverflow.visible,
-    );
-  }
+  Widget _buildTodoDiscipline() => Text(
+    widget.todo.discipline,
+    style: context.theme.textTheme.bodySmall?.copyWith(color: Colors.grey),
+    overflow: TextOverflow.visible,
+  );
 
   Widget _buildTodoDeadline() {
     if (widget.todo.todoCompletedTime == null) {
@@ -111,9 +102,7 @@ class _TodosCardState extends State<TodosCard> {
   Future<void> _handleCheckboxChanged(bool? value) async {
     if (value == null) return;
 
-    setState(() {
-      widget.todo.done = value;
-    });
+    setState(() => widget.todo.done = value);
 
     if (value) {
       await flutterLocalNotificationsPlugin.cancel(widget.todo.id);

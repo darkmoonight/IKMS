@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:ikms/app/data/db.dart';
@@ -46,25 +47,23 @@ class _SelectionListState<T extends SelectionData>
     super.dispose();
   }
 
-  PreferredSizeWidget _buildAppBar() {
-    return AppBar(
-      automaticallyImplyLeading: false,
-      centerTitle: true,
-      titleSpacing: 0,
-      leading: widget.onBackPressed == null
-          ? null
-          : IconButton(
-              onPressed: widget.onBackPressed,
-              icon: const Icon(IconsaxPlusLinear.arrow_left_3, size: 20),
-            ),
-      title: Text(
-        widget.headerText,
-        style: context.textTheme.titleLarge?.copyWith(
-          fontWeight: FontWeight.bold,
-        ),
+  PreferredSizeWidget _buildAppBar() => AppBar(
+    automaticallyImplyLeading: false,
+    centerTitle: true,
+    titleSpacing: 0,
+    leading: widget.onBackPressed == null
+        ? null
+        : IconButton(
+            onPressed: widget.onBackPressed,
+            icon: const Icon(IconsaxPlusLinear.arrow_left_3, size: 20),
+          ),
+    title: Text(
+      widget.headerText,
+      style: context.textTheme.titleLarge?.copyWith(
+        fontWeight: FontWeight.bold,
       ),
-    );
-  }
+    ),
+  );
 
   Widget _buildSearchField() {
     if (widget.onTextChanged == null) return const SizedBox();
@@ -90,40 +89,34 @@ class _SelectionListState<T extends SelectionData>
     );
   }
 
-  Widget _buildShimmerLoader() {
-    return ListView.builder(
-      itemCount: 10,
-      itemBuilder: (BuildContext context, int index) {
-        return const MyShimmer(
-          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          height: 60,
-        );
-      },
-    );
-  }
+  Widget _buildShimmerLoader() => ListView.builder(
+    itemCount: 10,
+    itemBuilder: (BuildContext context, int index) => const MyShimmer(
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      height: 60,
+    ),
+  );
 
-  Widget _buildErrorState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.error_outline,
-            size: 60,
-            color: context.theme.colorScheme.error,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'error_loading_data'.tr,
-            style: context.textTheme.titleMedium,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 8),
-          ElevatedButton(onPressed: () {}, child: Text('try_again'.tr)),
-        ],
-      ),
-    );
-  }
+  Widget _buildErrorState() => Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.error_outline,
+          size: 60,
+          color: context.theme.colorScheme.error,
+        ),
+        const Gap(16),
+        Text(
+          'error_loading_data'.tr,
+          style: context.textTheme.titleMedium,
+          textAlign: TextAlign.center,
+        ),
+        const Gap(8),
+        ElevatedButton(onPressed: () {}, child: Text('try_again'.tr)),
+      ],
+    ),
+  );
 
   Widget _buildEmptyState() {
     if (widget.emptyStateWidget != null) {
@@ -136,20 +129,18 @@ class _SelectionListState<T extends SelectionData>
     );
   }
 
-  Widget _buildListItem(T item, int index) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: ListTile(
-        splashColor: Colors.transparent,
-        onTap: () => widget.onEntrySelected(item),
-        title: Text(
-          item.name,
-          style: context.textTheme.labelLarge,
-          textAlign: TextAlign.center,
-        ),
+  Widget _buildListItem(T item, int index) => Card(
+    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    child: ListTile(
+      splashColor: Colors.transparent,
+      onTap: () => widget.onEntrySelected(item),
+      title: Text(
+        item.name,
+        style: context.textTheme.labelLarge,
+        textAlign: TextAlign.center,
       ),
-    );
-  }
+    ),
+  );
 
   Widget _buildContent() {
     if (!widget.isLoaded) {
@@ -173,18 +164,16 @@ class _SelectionListState<T extends SelectionData>
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildSearchField(),
-            if (_buildSearchField() != const SizedBox()) const Divider(),
-            Expanded(child: _buildContent()),
-          ],
-        ),
+  Widget build(BuildContext context) => Scaffold(
+    appBar: _buildAppBar(),
+    body: SafeArea(
+      child: Column(
+        children: [
+          _buildSearchField(),
+          if (_buildSearchField() != const SizedBox()) const Divider(),
+          Expanded(child: _buildContent()),
+        ],
       ),
-    );
-  }
+    ),
+  );
 }

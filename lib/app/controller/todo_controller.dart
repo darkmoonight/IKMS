@@ -20,9 +20,7 @@ class TodoController extends GetxController {
     loadTodos();
   }
 
-  void loadTodos() {
-    todos.assignAll(isar.todos.where().findAllSync());
-  }
+  void loadTodos() => todos.assignAll(isar.todos.where().findAllSync());
 
   Future<void> addTodo(String title, Schedule discipline, String time) async {
     DateTime? date;
