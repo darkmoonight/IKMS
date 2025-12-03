@@ -157,9 +157,8 @@ class _SelectionListState<T extends SelectionData>
 
     return ListView.builder(
       itemCount: widget.data.length,
-      itemBuilder: (BuildContext context, int index) {
-        return _buildListItem(widget.data[index], index);
-      },
+      itemBuilder: (BuildContext context, int index) =>
+          _buildListItem(widget.data[index], index),
     );
   }
 

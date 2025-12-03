@@ -87,15 +87,13 @@ class _HomePageState extends State<HomePage> {
   Widget? _buildFloatingActionButton() {
     if (tabIndex == 4) {
       return FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
-            enableDrag: false,
-            context: context,
-            isScrollControlled: true,
-            builder: (BuildContext context) =>
-                TodosAction(text: 'create'.tr, edit: false),
-          );
-        },
+        onPressed: () => showModalBottomSheet(
+          enableDrag: false,
+          context: context,
+          isScrollControlled: true,
+          builder: (BuildContext context) =>
+              TodosAction(text: 'create'.tr, edit: false),
+        ),
         child: const Icon(IconsaxPlusLinear.add),
       );
     }
