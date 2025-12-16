@@ -39,7 +39,6 @@ IKMS предлагает ряд функций, которые помогут �
 
 Если IKMS стал неотъемлемой частью вашей студенческой жизни, рассмотрите возможность поддержки через пожертвования:
 
-[![DonationAlerts](https://img.shields.io/badge/DonationAlerts-orange?style=for-the-badge)](https://www.donationalerts.com/r/darkmoonight)
 [![ЮMoney](https://img.shields.io/badge/ЮMoney-violet?style=for-the-badge)](https://yoomoney.ru/to/4100117672775961)
 
 ### 📥 Скачайте IKMS
