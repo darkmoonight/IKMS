@@ -3,11 +3,11 @@ description: Schedule of classes
 
 publish_to: "none"
 
-version: 1.2.7+28
+version: 1.2.8+29
 
 environment:
-  sdk: ">=3.10.1 <4.0.0"
-  flutter: "^3.38.3"
+  sdk: ">=3.10.4 <4.0.0"
+  flutter: "^3.38.5"
 
 dependencies:
   flutter:
@@ -30,7 +30,7 @@ dependencies:
   dynamic_color: ^1.8.1
   table_calendar: ^3.2.0
   dio_smart_retry: ^7.0.1
-  yandex_mobileads: ^7.17.0
+  yandex_mobileads: ^7.18.0
   flutter_timezone: ^5.0.1
   connectivity_plus: ^7.0.0
   device_info_plus: ^12.3.0
@@ -39,7 +39,7 @@ dependencies:
   line_awesome_flutter: ^3.0.1
   omni_datetime_picker: ^2.3.1
   flutter_local_notifications: ^19.5.0
-  internet_connection_checker_plus: ^2.9.1
+  internet_connection_checker_plus: ^2.9.1+2
   isar_community: ^3.3.0
   isar_community_flutter_libs: ^3.3.0
 

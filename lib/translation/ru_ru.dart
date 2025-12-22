@@ -75,5 +75,8 @@ class RuRu {
     'error_loading_data': 'Ошибка при загрузке данных',
     'try_again': 'Попробуйте снова',
     'loading': 'Загрузка',
+    'aboutApp': 'О приложении',
+    'appPreferences': 'Настройки приложения',
+    'scheduleSettings': 'Настройки расписания',
   };
 }

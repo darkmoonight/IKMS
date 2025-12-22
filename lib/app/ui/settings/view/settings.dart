@@ -65,14 +65,10 @@ class _SettingsPageState extends State<SettingsPage> {
       child: Column(
         children: [
           _buildAppearanceCard(context),
-          _buildFunctionsCard(context),
-          _buildUniversityCard(context),
-          _buildGroupCard(context),
-          _buildLanguageCard(context),
-          _buildGroupsCard(context),
-          _buildLicenseCard(context),
-          _buildVersionCard(context),
-          _buildGitHubCard(context),
+          _buildScheduleCard(context),
+          _buildAppPreferencesCard(context),
+          _buildCommunityCard(context),
+          _buildAboutAppCard(context),
         ],
       ),
     ),
@@ -176,13 +172,13 @@ class _SettingsPageState extends State<SettingsPage> {
     },
   );
 
-  Widget _buildFunctionsCard(BuildContext context) => SettingCard(
-    icon: const Icon(IconsaxPlusLinear.code_1),
-    text: 'functions'.tr,
-    onPressed: () => _showFunctionsBottomSheet(context),
+  Widget _buildScheduleCard(BuildContext context) => SettingCard(
+    icon: const Icon(IconsaxPlusLinear.buildings),
+    text: 'scheduleSettings'.tr,
+    onPressed: () => _showScheduleBottomSheet(context),
   );
 
-  void _showFunctionsBottomSheet(BuildContext context) => showModalBottomSheet(
+  void _showScheduleBottomSheet(BuildContext context) => showModalBottomSheet(
     context: context,
     builder: (BuildContext context) => Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
@@ -198,11 +194,105 @@ class _SettingsPageState extends State<SettingsPage> {
                   vertical: 15,
                 ),
                 child: Text(
-                  'functions'.tr,
+                  'scheduleSettings'.tr,
+                  style: context.textTheme.titleLarge?.copyWith(fontSize: 20),
+                ),
+              ),
+              _buildUniversitySettingCard(context, setState),
+              _buildGroupSettingCard(context, setState),
+              const Gap(10),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+
+  Widget _buildUniversitySettingCard(
+    BuildContext context,
+    StateSetter setState,
+  ) => SettingCard(
+    elevation: 4,
+    icon: const Icon(IconsaxPlusLinear.buildings),
+    text: 'university'.tr,
+    info: true,
+    infoSettings: true,
+    textInfo: settings.university.value?.name ?? 'no_select'.tr,
+    onPressed: () async {
+      University? selectionData = await Get.to(
+        () => const UniversityPage(),
+        transition: Transition.downToUp,
+      );
+      if (selectionData != null) {
+        settings.university.value = selectionData;
+        isar.writeTxnSync(() {
+          isar.settings.putSync(settings);
+          settings.university.saveSync();
+        });
+        setState(() {});
+      }
+    },
+  );
+
+  Widget _buildGroupSettingCard(BuildContext context, StateSetter setState) =>
+      SettingCard(
+        elevation: 4,
+        icon: const Icon(IconsaxPlusLinear.people),
+        text: 'group'.tr,
+        info: true,
+        infoSettings: true,
+        textInfo: settings.group.value?.name ?? 'no_select'.tr,
+        onPressed: settings.university.value != null
+            ? () async {
+                GroupSchedule? selectionData = await Get.to(
+                  () => const GroupsPage(isSettings: true),
+                  transition: Transition.downToUp,
+                );
+                if (selectionData != null) {
+                  selectionData.university.value = settings.university.value;
+                  settings.group.value = selectionData;
+                  isar.writeTxnSync(() {
+                    isar.groupSchedules.putSync(selectionData);
+                    selectionData.university.saveSync();
+                    isar.settings.putSync(settings);
+                    settings.group.saveSync();
+                  });
+                  setState(() {});
+                }
+              }
+            : () => EasyLoading.showInfo('no_university'.tr),
+      );
+
+  Widget _buildAppPreferencesCard(BuildContext context) => SettingCard(
+    icon: const Icon(IconsaxPlusLinear.mobile),
+    text: 'appPreferences'.tr,
+    onPressed: () => _showAppPreferencesBottomSheet(context),
+  );
+
+  void _showAppPreferencesBottomSheet(
+    BuildContext context,
+  ) => showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) => Padding(
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+      child: StatefulBuilder(
+        builder: (BuildContext context, setState) => SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 15,
+                ),
+                child: Text(
+                  'appPreferences'.tr,
                   style: context.textTheme.titleLarge?.copyWith(fontSize: 20),
                 ),
               ),
               _buildAdsSettingCard(context, setState),
+              _buildLanguageSettingCard(context, setState),
               const Gap(10),
             ],
           ),
@@ -263,119 +353,37 @@ class _SettingsPageState extends State<SettingsPage> {
         },
       );
 
-  Widget _buildUniversityCard(BuildContext context) => SettingCard(
-    icon: const Icon(IconsaxPlusLinear.buildings),
-    text: 'university'.tr,
-    info: true,
-    infoSettings: true,
-    textInfo: settings.university.value?.name ?? 'no_select'.tr,
-    onPressed: () async {
-      University? selectionData = await Get.to(
-        () => const UniversityPage(),
-        transition: Transition.downToUp,
+  Widget _buildLanguageSettingCard(
+    BuildContext context,
+    StateSetter setState,
+  ) => SettingCard(
+    elevation: 4,
+    icon: const Icon(IconsaxPlusLinear.language_square),
+    text: 'language'.tr,
+    dropdown: true,
+    dropdownName: appLanguages.firstWhere(
+      (element) => (element['locale'] == locale),
+      orElse: () => {'name': ''},
+    )['name'],
+    dropdownList: appLanguages.map((lang) => lang['name'] as String).toList(),
+    dropdownChange: (String? newValue) {
+      if (newValue == null) return;
+      final selectedLang = appLanguages.firstWhere(
+        (lang) => lang['name'] == newValue,
       );
-      if (selectionData != null) {
-        settings.university.value = selectionData;
-        isar.writeTxnSync(() {
-          isar.settings.putSync(settings);
-          settings.university.saveSync();
-        });
-        setState(() {});
-      }
+      MyApp.updateAppState(context, newLocale: selectedLang['locale']);
+      updateLanguage(selectedLang['locale']);
+      setState(() {});
     },
   );
 
-  Widget _buildGroupCard(BuildContext context) => SettingCard(
-    icon: const Icon(IconsaxPlusLinear.people),
-    text: 'group'.tr,
-    info: true,
-    infoSettings: true,
-    textInfo: settings.group.value?.name ?? 'no_select'.tr,
-    onPressed: settings.university.value != null
-        ? () async {
-            GroupSchedule? selectionData = await Get.to(
-              () => const GroupsPage(isSettings: true),
-              transition: Transition.downToUp,
-            );
-            if (selectionData != null) {
-              selectionData.university.value = settings.university.value;
-              settings.group.value = selectionData;
-              isar.writeTxnSync(() {
-                isar.groupSchedules.putSync(selectionData);
-                selectionData.university.saveSync();
-                isar.settings.putSync(settings);
-                settings.group.saveSync();
-              });
-              setState(() {});
-            }
-          }
-        : () => EasyLoading.showInfo('no_university'.tr),
-  );
-
-  Widget _buildLanguageCard(BuildContext context) => SettingCard(
-    icon: const Icon(IconsaxPlusLinear.language_square),
-    text: 'language'.tr,
-    info: true,
-    infoSettings: true,
-    textInfo: appLanguages.firstWhere(
-      (element) => (element['locale'] == locale),
-      orElse: () => appLanguages.first,
-    )['name'],
-    onPressed: () => _showLanguageBottomSheet(context),
-  );
-
-  void _showLanguageBottomSheet(BuildContext context) => showModalBottomSheet(
-    context: context,
-    builder: (BuildContext context) => Padding(
-      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-      child: StatefulBuilder(
-        builder: (BuildContext context, setState) => ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              child: Text(
-                'language'.tr,
-                style: context.textTheme.titleLarge?.copyWith(fontSize: 20),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const BouncingScrollPhysics(),
-              itemCount: appLanguages.length,
-              itemBuilder: (context, index) => Card(
-                elevation: 4,
-                margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                child: ListTile(
-                  title: Text(
-                    appLanguages[index]['name'],
-                    style: context.textTheme.labelLarge,
-                    textAlign: TextAlign.center,
-                  ),
-                  onTap: () {
-                    MyApp.updateAppState(
-                      context,
-                      newLocale: appLanguages[index]['locale'],
-                    );
-                    updateLanguage(appLanguages[index]['locale']);
-                  },
-                ),
-              ),
-            ),
-            const Gap(10),
-          ],
-        ),
-      ),
-    ),
-  );
-
-  Widget _buildGroupsCard(BuildContext context) => SettingCard(
+  Widget _buildCommunityCard(BuildContext context) => SettingCard(
     icon: const Icon(IconsaxPlusLinear.link_square),
     text: 'ourGroups'.tr,
-    onPressed: () => _showGroupsBottomSheet(context),
+    onPressed: () => _showCommunityBottomSheet(context),
   );
 
-  void _showGroupsBottomSheet(BuildContext context) => showModalBottomSheet(
+  void _showCommunityBottomSheet(BuildContext context) => showModalBottomSheet(
     context: context,
     builder: (BuildContext context) => Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
@@ -415,7 +423,45 @@ class _SettingsPageState extends State<SettingsPage> {
     ),
   );
 
-  Widget _buildLicenseCard(BuildContext context) => SettingCard(
+  Widget _buildAboutAppCard(BuildContext context) => SettingCard(
+    icon: const Icon(IconsaxPlusLinear.info_circle),
+    text: 'aboutApp'.tr,
+    onPressed: () => _showAboutAppBottomSheet(context),
+  );
+
+  void _showAboutAppBottomSheet(BuildContext context) => showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) => Padding(
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+      child: StatefulBuilder(
+        builder: (BuildContext context, setState) => SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 15,
+                ),
+                child: Text(
+                  'aboutApp'.tr,
+                  style: context.textTheme.titleLarge?.copyWith(fontSize: 20),
+                ),
+              ),
+              _buildLicenseSettingCard(context),
+              _buildVersionSettingCard(context),
+              _buildGitHubSettingCard(context),
+              const Gap(10),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+
+  Widget _buildLicenseSettingCard(BuildContext context) => SettingCard(
+    elevation: 4,
     icon: const Icon(IconsaxPlusLinear.document),
     text: 'license'.tr,
     onPressed: () => Get.to(
@@ -436,14 +482,16 @@ class _SettingsPageState extends State<SettingsPage> {
     ),
   );
 
-  Widget _buildVersionCard(BuildContext context) => SettingCard(
+  Widget _buildVersionSettingCard(BuildContext context) => SettingCard(
+    elevation: 4,
     icon: const Icon(IconsaxPlusLinear.hierarchy_square_2),
     text: 'version'.tr,
     info: true,
     textInfo: '$appVersion',
   );
 
-  Widget _buildGitHubCard(BuildContext context) => SettingCard(
+  Widget _buildGitHubSettingCard(BuildContext context) => SettingCard(
+    elevation: 4,
     icon: const Icon(LineAwesomeIcons.github),
     text: '${'project'.tr} GitHub',
     onPressed: () => urlLauncher('https://github.com/darkmoonight/IKMS'),

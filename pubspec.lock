@@ -545,18 +545,18 @@ packages:
     dependency: transitive
     description:
       name: image
-      sha256: "4e973fcf4caae1a4be2fa0a13157aa38a8f9cb049db6529aa00b4d71abc4d928"
+      sha256: "492bd52f6c4fbb6ee41f781ff27765ce5f627910e1e0cbecfa3d9add5562604c"
       url: "https://pub.dev"
     source: hosted
-    version: "4.5.4"
+    version: "4.7.2"
   internet_connection_checker_plus:
     dependency: "direct main"
     description:
       name: internet_connection_checker_plus
-      sha256: "66dc124f9b58a630844f61c1ae6f01f100f5fe63d9410506218d81d93d86ead3"
+      sha256: ef43530f24de6309f99802358f8a543ea1f2babc153effc84a75133751716892
       url: "https://pub.dev"
     source: hosted
-    version: "2.9.1"
+    version: "2.9.1+2"
   intl:
     dependency: "direct main"
     description:
@@ -990,10 +990,10 @@ packages:
     dependency: transitive
     description:
       name: time
-      sha256: "370572cf5d1e58adcb3e354c47515da3f7469dac3a95b447117e728e7be6f461"
+      sha256: "46187cf30bffdab28c56be9a63861b36e4ab7347bf403297595d6a97e10c789f"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.5"
+    version: "2.1.6"
   timezone:
     dependency: "direct main"
     description:
@@ -1110,10 +1110,10 @@ packages:
     dependency: transitive
     description:
       name: watcher
-      sha256: "592ab6e2892f67760543fb712ff0177f4ec76c031f02f5b4ff8d3fc5eb9fb61a"
+      sha256: f52385d4f73589977c80797e60fe51014f7f2b957b5e9a62c3f6ada439889249
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.4"
+    version: "1.2.0"
   web:
     dependency: transitive
     description:
@@ -1190,10 +1190,10 @@ packages:
     dependency: "direct main"
     description:
       name: yandex_mobileads
-      sha256: "3d9ffaecd15fd363956220c46484b9fdfbbf6ee31505bb0a72e774fb97e18383"
+      sha256: "126bfdd971f4b846faa1955f3ed024ea0f557e7effc06e5825d480ee21e9b55d"
       url: "https://pub.dev"
     source: hosted
-    version: "7.17.0"
+    version: "7.18.0"
 sdks:
-  dart: ">=3.10.1 <4.0.0"
-  flutter: ">=3.38.3 <4.0.0"
+  dart: ">=3.10.4 <4.0.0"
+  flutter: ">=3.38.5 <4.0.0"

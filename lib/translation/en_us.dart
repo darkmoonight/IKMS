@@ -75,5 +75,8 @@ class EnUs {
     'error_loading_data': 'Error loading data',
     'try_again': 'Try again',
     'loading': 'Loading',
+    'aboutApp': 'About App',
+    'appPreferences': 'App Preferences',
+    'scheduleSettings': 'Schedule Settings',
   };
 }
