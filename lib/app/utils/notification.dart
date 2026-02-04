@@ -18,11 +18,11 @@ class NotificationShow {
     final scheduledTime = _getScheduledTime(date!);
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      id,
-      title,
-      body,
-      scheduledTime,
-      notificationDetails,
+      id: id,
+      title: title,
+      body: body,
+      scheduledDate: scheduledTime,
+      notificationDetails: notificationDetails,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       payload: _payload,
     );

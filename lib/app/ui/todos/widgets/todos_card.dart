@@ -105,7 +105,7 @@ class _TodosCardState extends State<TodosCard> {
     setState(() => widget.todo.done = value);
 
     if (value) {
-      await flutterLocalNotificationsPlugin.cancel(widget.todo.id);
+      await flutterLocalNotificationsPlugin.cancel(id: widget.todo.id);
     } else if (widget.todo.todoCompletedTime != null) {
       await NotificationShow().showNotification(
         widget.todo.id,

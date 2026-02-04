@@ -64,7 +64,9 @@ Future<void> initializeNotifications() async {
   const InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
   );
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  await flutterLocalNotificationsPlugin.initialize(
+    settings: initializationSettings,
+  );
 }
 
 Future<void> setOptimalDisplayMode() async {
