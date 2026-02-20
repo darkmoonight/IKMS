@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:ikms/app/controller/todo_controller.dart';
 import 'package:ikms/app/ui/todos/widgets/todos_list.dart';
+import 'package:ikms/app/ui/widgets/confirmation_dialog.dart';
 import 'package:ikms/app/ui/widgets/text_form.dart';
-import 'package:ikms/app/utils/navigation_helper.dart';
 import 'package:ikms/app/utils/responsive_utils.dart';
 
 class TaskPage extends StatefulWidget {
@@ -45,41 +45,17 @@ class _TaskPageState extends State<TaskPage>
     _applyFilter('');
   }
 
-  Future<void> _showDeleteConfirmationDialog() async =>
-      await showAdaptiveDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog.adaptive(
-          title: Text('deletedTodo'.tr, style: context.textTheme.titleLarge),
-          content: Text(
-            'deletedTodoQuery'.tr,
-            style: context.textTheme.titleMedium,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => NavigationHelper.back(),
-              child: Text(
-                'cancel'.tr,
-                style: context.textTheme.titleMedium?.copyWith(
-                  color: Colors.blueAccent,
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () async {
-                await _todoController.deleteTodo(_todoController.selectedTodo);
-                _todoController.doMultiSelectionTodoClear();
-                NavigationHelper.back();
-              },
-              child: Text(
-                'delete'.tr,
-                style: context.textTheme.titleMedium?.copyWith(
-                  color: Colors.red,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
+  Future<void> _showDeleteConfirmationDialog() async {
+    await showDeleteConfirmation(
+      context: context,
+      title: 'deletedTodo',
+      message: 'deletedTodoQuery',
+      onConfirm: () async {
+        await _todoController.deleteTodo(_todoController.selectedTodo);
+        _todoController.doMultiSelectionTodoClear();
+      },
+    );
+  }
 
   PreferredSizeWidget _buildAppBar() => AppBar(
     centerTitle: true,

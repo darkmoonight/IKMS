@@ -7,6 +7,7 @@ import 'package:ikms/app/ui/selection_list/view/selection_pages.dart';
 import 'package:ikms/app/ui/settings/widgets/selection_dialog.dart';
 import 'package:ikms/app/ui/settings/widgets/settings_section.dart';
 import 'package:ikms/app/ui/settings/widgets/settings_tile.dart';
+import 'package:ikms/app/ui/widgets/confirmation_dialog.dart';
 import 'package:ikms/app/utils/navigation_helper.dart';
 import 'package:ikms/app/utils/responsive_utils.dart';
 import 'package:ikms/app/utils/show_snack_bar.dart';
@@ -203,39 +204,15 @@ class _SettingsPageState extends State<SettingsPage> {
               value: adsController.ads.value,
               onChanged: (value) async {
                 if (value) {
-                  await showAdaptiveDialog(
+                  await showConfirmationDialog(
                     context: context,
-                    builder: (BuildContext context) => AlertDialog.adaptive(
-                      title: Text(
-                        'adsDisableTitle'.tr,
-                        style: context.textTheme.titleLarge,
-                      ),
-                      content: Text(
-                        'adsDisable'.tr,
-                        style: context.textTheme.titleMedium,
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => NavigationHelper.back(result: false),
-                          child: Text(
-                            'cancel'.tr,
-                            style: context.theme.textTheme.titleMedium
-                                ?.copyWith(color: Colors.blueAccent),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            await adsController.toggleAds(value);
-                            NavigationHelper.back(result: true);
-                          },
-                          child: Text(
-                            'disable'.tr,
-                            style: context.theme.textTheme.titleMedium
-                                ?.copyWith(color: Colors.red),
-                          ),
-                        ),
-                      ],
-                    ),
+                    title: 'adsDisableTitle',
+                    message: 'adsDisable',
+                    confirmText: 'disable',
+                    isDestructive: true,
+                    onConfirm: () async {
+                      await adsController.toggleAds(value);
+                    },
                   );
                 } else {
                   await adsController.toggleAds(value);
