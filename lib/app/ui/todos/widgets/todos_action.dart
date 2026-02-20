@@ -158,13 +158,11 @@ class _TodosActionState extends State<TodosAction>
   Future<void> _onPopInvokedWithResult(bool didPop, dynamic result) async {
     if (didPop) return;
 
-    // Если нет изменений, просто закрываем
     if (!_editingController.hasChanges.value) {
       NavigationHelper.back();
       return;
     }
 
-    // Если есть изменения, показываем диалог подтверждения
     final shouldPop = await showClearTextConfirmation(
       context: context,
       onConfirm: () {
@@ -486,7 +484,7 @@ class _TodosActionState extends State<TodosAction>
               padding: const EdgeInsets.only(left: 8, right: 6),
               child: IconTheme(
                 data: IconThemeData(
-                  color: colorScheme.onSurfaceVariant,
+                  color: colorScheme.primary,
                   size: isMobile ? 18 : 20,
                 ),
                 child: const Icon(IconsaxPlusLinear.book_square),
@@ -620,10 +618,10 @@ class _TodosActionState extends State<TodosAction>
 
 class _EditingController extends ChangeNotifier {
   _EditingController(
-      this._initialTitle,
-      this._initialTime,
-      this._initialDiscipline,
-      ) {
+    this._initialTitle,
+    this._initialTime,
+    this._initialDiscipline,
+  ) {
     _initializeListeners();
   }
 
@@ -658,8 +656,8 @@ class _EditingController extends ChangeNotifier {
   void _updateCanCompose() {
     _hasChanges.value =
         title.value != _initialTitle ||
-            time.value != _initialTime ||
-            discipline.value?.discipline != _initialDiscipline?.discipline;
+        time.value != _initialTime ||
+        discipline.value?.discipline != _initialDiscipline?.discipline;
 
     final hasContent =
         title.value.trim().isNotEmpty && discipline.value != null;
