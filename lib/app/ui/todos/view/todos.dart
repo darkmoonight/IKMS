@@ -4,6 +4,7 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:ikms/app/controller/todo_controller.dart';
 import 'package:ikms/app/ui/todos/widgets/todos_list.dart';
 import 'package:ikms/app/ui/widgets/text_form.dart';
+import 'package:ikms/app/utils/responsive_utils.dart';
 
 class TaskPage extends StatefulWidget {
   const TaskPage({super.key});
@@ -63,8 +64,8 @@ class _TaskPageState extends State<TaskPage>
               ),
             ),
             TextButton(
-              onPressed: () {
-                _todoController.deleteTodo(_todoController.selectedTodo);
+              onPressed: () async {
+                await _todoController.deleteTodo(_todoController.selectedTodo);
                 _todoController.doMultiSelectionTodoClear();
                 Get.back();
               },
@@ -104,24 +105,37 @@ class _TaskPageState extends State<TaskPage>
     ],
   );
 
-  Widget _buildSearchField() => MyTextForm(
-    labelText: 'searchTodo'.tr,
-    type: TextInputType.text,
-    icon: const Icon(IconsaxPlusLinear.search_normal_1, size: 18),
-    controller: _searchController,
-    margin: const EdgeInsets.fromLTRB(10, 0, 10, 5),
-    onChanged: _applyFilter,
-    iconButton: _searchController.text.isNotEmpty
-        ? IconButton(
-            onPressed: _clearSearch,
-            icon: const Icon(
-              IconsaxPlusLinear.close_circle,
-              color: Colors.grey,
-              size: 20,
-            ),
-          )
-        : null,
-  );
+  Widget _buildSearchField(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isMobile = ResponsiveUtils.isMobile(context);
+
+    return MyTextForm(
+      labelText: 'searchTodo'.tr,
+      variant: TextFieldVariant.card,
+      type: TextInputType.text,
+      icon: Icon(
+        IconsaxPlusLinear.search_normal_1,
+        size: 20,
+        color: colorScheme.onSurfaceVariant,
+      ),
+      controller: _searchController,
+      margin: EdgeInsets.symmetric(
+        horizontal: isMobile ? 12 : 16,
+        vertical: isMobile ? 5 : 8,
+      ),
+      onChanged: _applyFilter,
+      iconButton: _searchController.text.isNotEmpty
+          ? IconButton(
+              onPressed: _clearSearch,
+              icon: Icon(
+                IconsaxPlusLinear.close_circle,
+                color: colorScheme.onSurfaceVariant,
+                size: 20,
+              ),
+            )
+          : null,
+    );
+  }
 
   Widget _buildTabBar() => TabBar(
     controller: _tabController,
@@ -163,7 +177,11 @@ class _TaskPageState extends State<TaskPage>
         appBar: _buildAppBar(),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [_buildSearchField(), _buildTabBar(), _buildTabContent()],
+          children: [
+            _buildSearchField(context),
+            _buildTabBar(),
+            _buildTabContent(),
+          ],
         ),
       ),
     ),

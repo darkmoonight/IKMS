@@ -113,20 +113,20 @@ class _TodosActionState extends State<TodosAction> {
     }
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _trimText(_titleController);
 
       if (_selectedDiscipline != null) {
         if (widget.edit && widget.todo != null) {
-          _todoController.updateTodo(
+          await _todoController.updateTodo(
             widget.todo!,
             _titleController.text,
             _selectedDiscipline!,
             _timeController.text,
           );
         } else {
-          _todoController.addTodo(
+          await _todoController.addTodo(
             _titleController.text,
             _selectedDiscipline!,
             _timeController.text,

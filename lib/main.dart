@@ -102,21 +102,21 @@ Future<void> isarInit() async {
     compactOnLaunch: const CompactCondition(minRatio: 2),
     directory: (await getApplicationSupportDirectory()).path,
   );
-  settings = isar.settings.where().findFirstSync() ?? Settings();
-  universities = isar.universitys.where().findAllSync();
+  settings = await isar.settings.where().findFirst() ?? Settings();
+  universities = await isar.universitys.where().findAll();
   if (universities.isEmpty) {
     final donstu = University(id: 1, name: 'ДГТУ');
-    isar.writeTxnSync(() => isar.universitys.putSync(donstu));
+    await isar.writeTxn(() async => await isar.universitys.put(donstu));
     universities = [donstu];
   }
   selectedUniversity = settings.university.value ?? universities.first;
   if (settings.language == null) {
     settings.language = '${Get.deviceLocale}';
-    isar.writeTxnSync(() => isar.settings.putSync(settings));
+    await isar.writeTxn(() async => await isar.settings.put(settings));
   }
   if (settings.theme == null) {
     settings.theme = 'system';
-    isar.writeTxnSync(() => isar.settings.putSync(settings));
+    await isar.writeTxn(() async => await isar.settings.put(settings));
   }
 }
 

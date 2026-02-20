@@ -67,9 +67,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     } while (university == null);
 
     settings.university.value = university;
-    isar.writeTxnSync(() {
-      isar.settings.putSync(settings);
-      settings.university.saveSync();
+    await isar.writeTxn(() async {
+      await isar.settings.put(settings);
+      await settings.university.save();
     });
 
     Get.dialog(
@@ -109,11 +109,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     University? university,
   ) async {
     settings.group.value = group;
-    isar.writeTxnSync(() {
-      isar.groupSchedules.putSync(group!);
-      group.university.saveSync();
-      isar.settings.putSync(settings);
-      settings.group.saveSync();
+    await isar.writeTxn(() async {
+      await isar.groupSchedules.put(group!);
+      await group.university.save();
+      await isar.settings.put(settings);
+      await settings.group.save();
     });
     Get.offAll(() => const HomePage());
   }

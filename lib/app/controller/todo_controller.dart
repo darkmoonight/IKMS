@@ -20,7 +20,7 @@ class TodoController extends GetxController {
     loadTodos();
   }
 
-  void loadTodos() => todos.assignAll(isar.todos.where().findAllSync());
+  Future<void> loadTodos() async => todos.assignAll(await isar.todos.where().findAll());
 
   Future<void> addTodo(String title, Schedule discipline, String time) async {
     DateTime? date;
@@ -37,7 +37,7 @@ class TodoController extends GetxController {
       todoCompletedTime: date,
     );
     todos.add(todosCreate);
-    isar.writeTxnSync(() => isar.todos.putSync(todosCreate));
+    await isar.writeTxn(() async => await isar.todos.put(todosCreate));
     if (date != null && now.isBefore(date)) {
       NotificationShow().showNotification(
         todosCreate.id,
@@ -59,16 +59,16 @@ class TodoController extends GetxController {
     Schedule discipline,
     DateTime? date,
   ) async {
-    final getTodos = isar.todos
+    final getTodos = await isar.todos
         .filter()
         .nameEqualTo(title)
         .disciplineEqualTo(discipline.discipline)
-        .findAllSync();
+        .findAll();
     return getTodos.isNotEmpty;
   }
 
   Future<void> updateTodoCheck(Todos todo) async {
-    isar.writeTxnSync(() => isar.todos.putSync(todo));
+    await isar.writeTxn(() async => await isar.todos.put(todo));
     todos.refresh();
   }
 
@@ -82,11 +82,11 @@ class TodoController extends GetxController {
     if (time.isNotEmpty) {
       date = parseDate(time);
     }
-    isar.writeTxnSync(() {
+    await isar.writeTxn(() async {
       todo.name = title;
       todo.discipline = discipline.discipline;
       todo.todoCompletedTime = date;
-      isar.todos.putSync(todo);
+      await isar.todos.put(todo);
     });
     refreshTodo(todo);
     if (date != null && now.isBefore(date)) {
@@ -113,7 +113,7 @@ class TodoController extends GetxController {
     List<Todos> todoListCopy = List.from(todoList);
     for (var todo in todoListCopy) {
       await cancelNotificationForTodo(todo);
-      deleteTodoFromDB(todo);
+      await deleteTodoFromDB(todo);
     }
     EasyLoading.showSuccess(
       'todoDelete'.tr,
@@ -128,9 +128,9 @@ class TodoController extends GetxController {
     }
   }
 
-  void deleteTodoFromDB(Todos todo) {
+  Future<void> deleteTodoFromDB(Todos todo) async {
     todos.remove(todo);
-    isar.writeTxnSync(() => isar.todos.deleteSync(todo.id));
+    await isar.writeTxn(() async => await isar.todos.delete(todo.id));
   }
 
   void doMultiSelectionTodo(Todos todo) {

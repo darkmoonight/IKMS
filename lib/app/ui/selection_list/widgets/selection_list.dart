@@ -6,6 +6,7 @@ import 'package:ikms/app/data/db.dart';
 import 'package:ikms/app/ui/widgets/list_empty.dart';
 import 'package:ikms/app/ui/widgets/shimmer.dart';
 import 'package:ikms/app/ui/widgets/text_form.dart';
+import 'package:ikms/app/utils/responsive_utils.dart';
 
 class SelectionList<T extends SelectionData> extends StatefulWidget {
   final String headerText;
@@ -65,14 +66,22 @@ class _SelectionListState<T extends SelectionData>
     ),
   );
 
-  Widget _buildSearchField() {
+  Widget _buildSearchField(BuildContext context) {
     if (widget.onTextChanged == null) return const SizedBox();
+
+    final colorScheme = Theme.of(context).colorScheme;
+    final isMobile = ResponsiveUtils.isMobile(context);
 
     return MyTextForm(
       onChanged: widget.onTextChanged,
       labelText: widget.labelText,
+      variant: TextFieldVariant.card,
       type: TextInputType.text,
-      icon: const Icon(IconsaxPlusLinear.search_normal_1, size: 18),
+      icon: Icon(
+        IconsaxPlusLinear.search_normal_1,
+        size: 20,
+        color: colorScheme.onSurfaceVariant,
+      ),
       iconButton: _searchController.text.isNotEmpty
           ? IconButton(
               onPressed: () {
@@ -80,12 +89,19 @@ class _SelectionListState<T extends SelectionData>
                 widget.onTextChanged?.call('');
                 _searchFocusNode.requestFocus();
               },
-              icon: const Icon(Icons.close, color: Colors.grey, size: 20),
+              icon: Icon(
+                IconsaxPlusLinear.close_circle,
+                color: colorScheme.onSurfaceVariant,
+                size: 20,
+              ),
             )
           : null,
       controller: _searchController,
       focusNode: _searchFocusNode,
-      margin: const EdgeInsets.fromLTRB(10, 0, 10, 5),
+      margin: EdgeInsets.symmetric(
+        horizontal: isMobile ? 12 : 16,
+        vertical: isMobile ? 5 : 8,
+      ),
     );
   }
 
@@ -168,8 +184,8 @@ class _SelectionListState<T extends SelectionData>
     body: SafeArea(
       child: Column(
         children: [
-          _buildSearchField(),
-          if (_buildSearchField() != const SizedBox()) const Divider(),
+          _buildSearchField(context),
+          if (_buildSearchField(context) != const SizedBox()) const Divider(),
           Expanded(child: _buildContent()),
         ],
       ),

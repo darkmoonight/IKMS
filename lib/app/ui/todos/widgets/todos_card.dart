@@ -117,7 +117,7 @@ class _TodosCardState extends State<TodosCard> {
 
     Future.delayed(
       const Duration(milliseconds: 300),
-      () => _todoController.updateTodoCheck(widget.todo),
+      () async => await _todoController.updateTodoCheck(widget.todo),
     );
   }
 }

@@ -11,11 +11,11 @@ class AdsController extends GetxController {
     ads.value = settings.ads ?? false;
   }
 
-  void toggleAds(bool value) {
+  Future<void> toggleAds(bool value) async {
     ads.value = value;
     settings.ads = value;
     try {
-      isar.writeTxnSync(() => isar.settings.putSync(settings));
+      await isar.writeTxn(() async => await isar.settings.put(settings));
     } catch (e) {
       Get.snackbar('Error', 'Failed to save settings: $e');
     }

@@ -11,12 +11,12 @@ const Color darkColor = Color.fromRGBO(30, 30, 30, 1);
 const Color oledColor = Colors.black;
 
 ColorScheme colorSchemeLight = ColorScheme.fromSeed(
-  seedColor: Colors.blue,
+  seedColor: Colors.indigo,
   brightness: Brightness.light,
 );
 
 ColorScheme colorSchemeDark = ColorScheme.fromSeed(
-  seedColor: Colors.blue,
+  seedColor: Colors.indigo,
   brightness: Brightness.dark,
 );
 
@@ -54,6 +54,7 @@ ThemeData _buildTheme({
   final harmonizedColorScheme = colorScheme
       ?.copyWith(brightness: brightness, surface: baseTheme.colorScheme.surface)
       .harmonized();
+
   return baseTheme.copyWith(
     brightness: brightness,
     colorScheme: harmonizedColorScheme,
@@ -155,7 +156,12 @@ InputDecorationTheme _buildInputDecorationTheme(ThemeData baseTheme) =>
       labelStyle: WidgetStateTextStyle.resolveWith(
         (Set<WidgetState> states) => const TextStyle(fontSize: 14),
       ),
-      border: InputBorder.none,
-      focusedBorder: InputBorder.none,
-      enabledBorder: InputBorder.none,
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(20),
+        borderSide: BorderSide(color: baseTheme.disabledColor),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(20),
+        borderSide: BorderSide(color: baseTheme.disabledColor),
+      ),
     );

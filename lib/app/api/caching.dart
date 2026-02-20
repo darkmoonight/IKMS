@@ -45,18 +45,18 @@ class UniversityCaching {
           .where((e) => !fetchedIds.contains((e as dynamic).id))
           .toList();
 
-      isar.writeTxnSync(() {
-        collection.deleteAllSync(
+      await isar.writeTxn(() async {
+        await collection.deleteAll(
           oldItems.map((e) => (e as dynamic).id as int).toList(),
         );
 
-        collection.putAllSync([...updatedItems, ...newItems]);
+        await collection.putAll([...updatedItems, ...newItems]);
 
-        links.loadSync();
+        await links.load();
         links.addAll([...updatedItems, ...newItems]);
-        links.saveSync();
+        await links.save();
         lastUpdateSetter(university, DateTime.now());
-        isar.universitys.putSync(university);
+        await isar.universitys.put(university);
       });
       return true;
     } catch (e) {
@@ -117,10 +117,10 @@ class UniversityCaching {
         await isOnline.value) {
       try {
         final schedules = await api.getRaspsAudElementData(entity.id);
-        isar.writeTxnSync(() {
+        await isar.writeTxn(() async {
           entity.lastUpdate = DateTime.now();
           entity.schedules = schedules;
-          isar.audienceSchedules.putSync(entity);
+          await isar.audienceSchedules.put(entity);
         });
       } catch (e) {
         if (kDebugMode) {
@@ -142,10 +142,10 @@ class UniversityCaching {
         await isOnline.value) {
       try {
         final schedules = await api.getRaspsGroupElementData(entity.id);
-        isar.writeTxnSync(() {
+        await isar.writeTxn(() async {
           entity.lastUpdate = DateTime.now();
           entity.schedules = schedules;
-          isar.groupSchedules.putSync(entity);
+          await isar.groupSchedules.put(entity);
         });
       } catch (e) {
         if (kDebugMode) {
@@ -167,10 +167,10 @@ class UniversityCaching {
         await isOnline.value) {
       try {
         final schedules = await api.getRaspsProfElementData(entity.id);
-        isar.writeTxnSync(() {
+        await isar.writeTxn(() async {
           entity.lastUpdate = DateTime.now();
           entity.schedules = schedules;
-          isar.teacherSchedules.putSync(entity);
+          await isar.teacherSchedules.put(entity);
         });
       } catch (e) {
         if (kDebugMode) {
