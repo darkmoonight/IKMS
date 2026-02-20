@@ -78,5 +78,12 @@ class EnUs {
     'aboutApp': 'About App',
     'appPreferences': 'App Preferences',
     'scheduleSettings': 'Schedule Settings',
+    'editTodoHint': 'Modify task details',
+    'createTodoHint': 'Fill in task information',
+    'ready': 'Ready',
+    'details': 'Details',
+    'confirm': 'Confirm',
+    'clearText': 'Clear changes',
+    'clearTextWarning': 'Are you sure you want to discard changes? All unsaved data will be lost.',
   };
 }
