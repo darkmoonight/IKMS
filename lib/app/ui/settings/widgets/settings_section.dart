@@ -48,12 +48,12 @@ class SettingsSection extends StatelessWidget {
           margin: EdgeInsets.zero,
           shape: settings.amoledTheme
               ? RoundedRectangleBorder(
-            side: BorderSide(
-              color: colorScheme.outlineVariant.withValues(alpha: 0.3),
-              width: 1,
-            ),
-            borderRadius: BorderRadius.circular(20),
-          )
+                  side: BorderSide(
+                    color: colorScheme.outlineVariant.withValues(alpha: 0.3),
+                    width: 1,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                )
               : null,
           child: Column(
             children: [

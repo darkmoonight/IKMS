@@ -1,7 +1,7 @@
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:ikms/app/data/db.dart';
 import 'package:ikms/app/utils/notification.dart';
+import 'package:ikms/app/utils/show_snack_bar.dart';
 import 'package:ikms/main.dart';
 import 'package:intl/intl.dart';
 import 'package:isar_community/isar.dart';
@@ -20,7 +20,8 @@ class TodoController extends GetxController {
     loadTodos();
   }
 
-  Future<void> loadTodos() async => todos.assignAll(await isar.todos.where().findAll());
+  Future<void> loadTodos() async =>
+      todos.assignAll(await isar.todos.where().findAll());
 
   Future<void> addTodo(String title, Schedule discipline, String time) async {
     DateTime? date;
@@ -28,7 +29,7 @@ class TodoController extends GetxController {
       date = parseDate(time);
     }
     if (await isTodoDuplicate(title, discipline, date)) {
-      EasyLoading.showError('duplicateTodo'.tr, duration: duration);
+      showSnackBar('duplicateTodo'.tr, isError: true);
       return;
     }
     final todosCreate = Todos(
@@ -46,7 +47,7 @@ class TodoController extends GetxController {
         date,
       );
     }
-    EasyLoading.showSuccess('todoCreate'.tr, duration: duration);
+    showSnackBar('todoCreate'.tr);
   }
 
   DateTime? parseDate(String time) {
@@ -100,7 +101,7 @@ class TodoController extends GetxController {
     } else {
       await flutterLocalNotificationsPlugin.cancel(id: todo.id);
     }
-    EasyLoading.showSuccess('update'.tr, duration: duration);
+    showSnackBar('update'.tr);
   }
 
   void refreshTodo(Todos todo) {
@@ -115,10 +116,7 @@ class TodoController extends GetxController {
       await cancelNotificationForTodo(todo);
       await deleteTodoFromDB(todo);
     }
-    EasyLoading.showSuccess(
-      'todoDelete'.tr,
-      duration: const Duration(seconds: 2),
-    );
+    showSnackBar('todoDelete'.tr);
   }
 
   Future<void> cancelNotificationForTodo(Todos todo) async {

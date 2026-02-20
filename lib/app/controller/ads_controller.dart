@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:ikms/app/data/db.dart';
+import 'package:ikms/app/utils/show_snack_bar.dart';
 import 'package:ikms/main.dart';
 
 class AdsController extends GetxController {
@@ -17,7 +18,7 @@ class AdsController extends GetxController {
     try {
       await isar.writeTxn(() async => await isar.settings.put(settings));
     } catch (e) {
-      Get.snackbar('Error', 'Failed to save settings: $e');
+      showSnackBar('Failed to save settings: $e', isError: true);
     }
   }
 }

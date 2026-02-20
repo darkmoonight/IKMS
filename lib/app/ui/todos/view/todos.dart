@@ -4,6 +4,7 @@ import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:ikms/app/controller/todo_controller.dart';
 import 'package:ikms/app/ui/todos/widgets/todos_list.dart';
 import 'package:ikms/app/ui/widgets/text_form.dart';
+import 'package:ikms/app/utils/navigation_helper.dart';
 import 'package:ikms/app/utils/responsive_utils.dart';
 
 class TaskPage extends StatefulWidget {
@@ -55,7 +56,7 @@ class _TaskPageState extends State<TaskPage>
           ),
           actions: [
             TextButton(
-              onPressed: () => Get.back(),
+              onPressed: () => NavigationHelper.back(),
               child: Text(
                 'cancel'.tr,
                 style: context.textTheme.titleMedium?.copyWith(
@@ -67,7 +68,7 @@ class _TaskPageState extends State<TaskPage>
               onPressed: () async {
                 await _todoController.deleteTodo(_todoController.selectedTodo);
                 _todoController.doMultiSelectionTodoClear();
-                Get.back();
+                NavigationHelper.back();
               },
               child: Text(
                 'delete'.tr,

@@ -6,6 +6,7 @@ import 'package:ikms/app/ui/selection_list/view/selection_pages.dart';
 import 'package:ikms/app/ui/settings/view/settings.dart';
 import 'package:ikms/app/ui/todos/view/todos.dart';
 import 'package:ikms/app/ui/todos/widgets/todos_action.dart';
+import 'package:ikms/app/utils/responsive_utils.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,18 +29,26 @@ class _HomePageState extends State<HomePage> {
   void changeTabIndex(int index) => setState(() => tabIndex = index);
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    body: IndexedStack(index: tabIndex, children: pages),
-    floatingActionButton: _buildFloatingActionButton(),
-    bottomNavigationBar: _buildBottomNavigationBar(),
-  );
+  Widget build(BuildContext context) {
+    final isMobile = ResponsiveUtils.isMobile(context);
 
-  Widget _buildBottomNavigationBar() => NavigationBar(
-    labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-    onDestinationSelected: changeTabIndex,
-    selectedIndex: tabIndex,
-    destinations: _buildNavigationDestinations(),
-  );
+    return Scaffold(
+      body: IndexedStack(index: tabIndex, children: pages),
+      floatingActionButton: _buildFloatingActionButton(context),
+      bottomNavigationBar: _buildBottomNavigationBar(isMobile),
+    );
+  }
+
+  Widget _buildBottomNavigationBar(bool isMobile) {
+    return NavigationBar(
+      labelBehavior: isMobile
+          ? NavigationDestinationLabelBehavior.alwaysHide
+          : NavigationDestinationLabelBehavior.onlyShowSelected,
+      onDestinationSelected: changeTabIndex,
+      selectedIndex: tabIndex,
+      destinations: _buildNavigationDestinations(),
+    );
+  }
 
   List<NavigationDestination> _buildNavigationDestinations() => [
     _buildNavigationDestination(
@@ -79,24 +88,30 @@ class _HomePageState extends State<HomePage> {
     required IconData selectedIcon,
     required String label,
   }) => NavigationDestination(
-    icon: Icon(icon),
-    selectedIcon: Icon(selectedIcon),
+    icon: Icon(icon, size: 24),
+    selectedIcon: Icon(selectedIcon, size: 24),
     label: label,
+    tooltip: label,
   );
 
-  Widget? _buildFloatingActionButton() {
+  Widget? _buildFloatingActionButton(BuildContext context) {
     if (tabIndex == 4) {
       return FloatingActionButton(
-        onPressed: () => showModalBottomSheet(
-          enableDrag: false,
-          context: context,
-          isScrollControlled: true,
-          builder: (BuildContext context) =>
-              TodosAction(text: 'create'.tr, edit: false),
-        ),
-        child: const Icon(IconsaxPlusLinear.add),
+        onPressed: () => _showTodoBottomSheet(context),
+        tooltip: 'create'.tr,
+        child: const Icon(IconsaxPlusLinear.add, size: 24),
       );
     }
     return null;
+  }
+
+  void _showTodoBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      enableDrag: false,
+      isScrollControlled: true,
+      builder: (BuildContext context) =>
+          TodosAction(text: 'create'.tr, edit: false),
+    );
   }
 }

@@ -6,6 +6,7 @@ import 'package:ikms/app/api/caching.dart';
 import 'package:ikms/app/data/db.dart';
 import 'package:ikms/app/controller/todo_controller.dart';
 import 'package:ikms/app/ui/widgets/text_form.dart';
+import 'package:ikms/app/utils/navigation_helper.dart';
 import 'package:ikms/main.dart';
 import 'package:intl/intl.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
@@ -132,7 +133,7 @@ class _TodosActionState extends State<TodosAction> {
             _timeController.text,
           );
         }
-        Get.back();
+        NavigationHelper.back();
       }
     }
   }
@@ -182,7 +183,7 @@ class _TodosActionState extends State<TodosAction> {
     onPressed: () {
       _titleController.clear();
       _timeController.clear();
-      Get.back();
+      NavigationHelper.back();
     },
     icon: const Icon(IconsaxPlusLinear.close_square, size: 20),
   );

@@ -183,15 +183,15 @@ class _SelectionDialogState<T> extends State<SelectionDialog<T>> {
           ),
           suffixIcon: _searchController.text.isNotEmpty
               ? IconButton(
-            icon: Icon(
-              IconsaxPlusLinear.close_circle,
-              color: colorScheme.onSurfaceVariant,
-            ),
-            onPressed: () {
-              _searchController.clear();
-              _filterItems('');
-            },
-          )
+                  icon: Icon(
+                    IconsaxPlusLinear.close_circle,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                  onPressed: () {
+                    _searchController.clear();
+                    _filterItems('');
+                  },
+                )
               : null,
           filled: true,
           fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
@@ -255,10 +255,10 @@ class _SelectionDialogState<T> extends State<SelectionDialog<T>> {
           ),
           trailing: isSelected
               ? Icon(
-            IconsaxPlusBold.tick_circle,
-            color: colorScheme.primary,
-            size: AppConstants.iconSizeMedium,
-          )
+                  IconsaxPlusBold.tick_circle,
+                  color: colorScheme.primary,
+                  size: AppConstants.iconSizeMedium,
+                )
               : null,
           onTap: () {
             widget.onSelected(item);

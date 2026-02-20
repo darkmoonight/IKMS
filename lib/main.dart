@@ -3,7 +3,6 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:display_mode/display_mode.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -21,6 +20,7 @@ import 'package:ikms/theme/theme_controller.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:yandex_mobileads/mobile_ads.dart';
+import 'app/utils/snackbar_overlay.dart';
 
 late Isar isar;
 late Settings settings;
@@ -244,8 +244,10 @@ class _MyAppState extends State<MyApp> {
                     (settings.group.value == null)
                 ? const OnBoardingScreen()
                 : const HomePage(),
-            builder: EasyLoading.init(),
             title: 'IKMS',
+            builder: (context, child) {
+              return Stack(children: [child!, const SnackBarOverlayWidget()]);
+            },
           );
         },
       ),

@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart' as tr;
-import 'package:intl/intl.dart';
 import 'package:ikms/app/api/audiences.dart';
 import 'package:ikms/app/api/groups.dart';
 import 'package:ikms/app/api/professors.dart';
 import 'package:ikms/app/api/schedule.dart';
 import 'package:ikms/app/data/db.dart';
+import 'package:ikms/app/utils/show_snack_bar.dart';
+import 'package:intl/intl.dart';
 
 abstract class UniversityAPI {
   final Dio dio;
@@ -55,7 +55,7 @@ class DonstuAPI extends UniversityAPI {
       final response = await dio.get(url);
       final audiencesData = AudiencesData.fromJson(response.data);
       if (audiencesData.data.isEmpty) {
-        EasyLoading.showInfo('no_rasp'.tr);
+        showSnackBar('no_rasp'.tr);
         return [];
       }
       return audiencesData.data
@@ -77,7 +77,7 @@ class DonstuAPI extends UniversityAPI {
       final response = await dio.get(url);
       final professorsData = ProfessorsData.fromJson(response.data);
       if (professorsData.data.isEmpty) {
-        EasyLoading.showInfo('no_rasp'.tr);
+        showSnackBar('no_rasp'.tr);
         return [];
       }
       return professorsData.data
@@ -99,7 +99,7 @@ class DonstuAPI extends UniversityAPI {
       final response = await dio.get(url);
       final groupsData = GroupsData.fromJson(response.data);
       if (groupsData.data.isEmpty) {
-        EasyLoading.showInfo('no_rasp'.tr);
+        showSnackBar('no_rasp'.tr);
         return [];
       }
       return groupsData.data
@@ -134,7 +134,7 @@ class DonstuAPI extends UniversityAPI {
       final response = await dio.get(url);
       final rasp = Rasp.fromJson(response.data);
       if (rasp.data.rasp.isEmpty) {
-        EasyLoading.showInfo('no_rasp'.tr);
+        showSnackBar('no_rasp'.tr);
         return [];
       }
       return rasp.data.rasp
@@ -162,9 +162,9 @@ class DonstuAPI extends UniversityAPI {
   void _handleDioError(DioException e) {
     if (e.type == DioExceptionType.connectionTimeout ||
         e.type == DioExceptionType.receiveTimeout) {
-      EasyLoading.showError('no_internet'.tr);
+      showSnackBar('no_internet'.tr, isError: true);
     } else {
-      EasyLoading.showError('error'.tr);
+      showSnackBar('error'.tr, isError: true);
     }
   }
 }

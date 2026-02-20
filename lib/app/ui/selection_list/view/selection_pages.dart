@@ -4,6 +4,7 @@ import 'package:ikms/app/api/caching.dart';
 import 'package:ikms/app/data/db.dart';
 import 'package:ikms/app/ui/rasps/view/schedules_pages.dart';
 import 'package:ikms/app/ui/selection_list/widgets/selection_list.dart';
+import 'package:ikms/app/utils/navigation_helper.dart';
 import 'package:ikms/main.dart';
 import 'package:isar_community/isar.dart';
 
@@ -127,7 +128,7 @@ abstract class BaseSelectionPageState<
       isError: isError,
       data: items,
       onEntrySelected: onEntrySelected,
-      onBackPressed: widget.isSettings ? Get.back : null,
+      onBackPressed: widget.isSettings ? NavigationHelper.back : null,
     );
 
     return widget.hasRefresh
@@ -164,10 +165,7 @@ class _AudiencesPageState
 
   @override
   void onEntrySelected(AudienceSchedule selectionData) async {
-    await Get.to(
-      () => RaspDetailPage(entity: selectionData),
-      transition: Transition.downToUp,
-    );
+    await NavigationHelper.slideUp(RaspDetailPage(entity: selectionData));
     if (mounted) {
       applyFilter(filter);
     }
@@ -205,13 +203,13 @@ class _GroupsPageState
 
   @override
   void onEntrySelected(GroupSchedule selectionData) async {
-    final isDialog = Get.isDialogOpen ?? false;
-    if (widget.isSettings || isDialog) {
-      Get.back(result: selectionData);
+    final route = ModalRoute.of(context);
+    final isInDialog = route != null && route.settings.name == null;
+    if (widget.isSettings || isInDialog) {
+      NavigationHelper.back(result: selectionData);
     } else {
-      await Get.to(
-        () => RaspDetailPage(entity: selectionData),
-        transition: Transition.downToUp,
+      await NavigationHelper.slideUp(
+        RaspDetailPage(entity: selectionData),
       );
       if (mounted) {
         applyFilter(filter);
@@ -251,10 +249,7 @@ class _ProfessorsPageState
 
   @override
   void onEntrySelected(TeacherSchedule selectionData) async {
-    await Get.to(
-      () => RaspDetailPage(entity: selectionData),
-      transition: Transition.downToUp,
-    );
+    await NavigationHelper.slideUp(RaspDetailPage(entity: selectionData));
     if (mounted) {
       applyFilter(filter);
     }
@@ -339,8 +334,8 @@ class _UniversityPageState extends State<UniversityPage> {
       isError: isError,
       onTextChanged: applyFilter,
       onEntrySelected: (University selectionData) =>
-          Get.back(result: selectionData),
-      onBackPressed: isDialog ? null : Get.back,
+          NavigationHelper.back(result: selectionData),
+      onBackPressed: isDialog ? null : NavigationHelper.back,
       data: items,
     ),
   );

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:ikms/app/api/caching.dart';
 import 'package:ikms/app/data/db.dart';
 import 'package:ikms/app/ui/home.dart';
 import 'package:ikms/app/ui/selection_list/view/selection_pages.dart';
 import 'package:ikms/app/ui/widgets/button.dart';
+import 'package:ikms/app/utils/navigation_helper.dart';
+import 'package:ikms/app/utils/responsive_utils.dart';
+import 'package:ikms/app/utils/show_snack_bar.dart';
 import 'package:ikms/main.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -17,53 +19,87 @@ class OnBoardingScreen extends StatefulWidget {
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(),
-    body: SafeArea(
-      child: Column(
-        children: [
-          Flexible(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/images/onboard.png', scale: 5),
-                Text(
-                  'timetable'.tr,
-                  style: context.textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const Gap(10),
-                SizedBox(
-                  width: 300,
-                  child: Text(
-                    'sched_hint'.tr,
-                    style: context.textTheme.bodyMedium,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ],
-            ),
+  Widget build(BuildContext context) {
+    final isMobile = ResponsiveUtils.isMobile(context);
+    final padding = ResponsiveUtils.getResponsivePadding(context);
+
+    return Scaffold(
+      appBar: AppBar(),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isMobile ? padding : padding * 2,
           ),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: MyTextButton(
-              text: 'get_started'.tr,
-              onPressed: () async => await _handleGetStarted(context),
-            ),
+          child: Column(
+            children: [
+              Flexible(
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 500),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'assets/images/onboard.png',
+                          scale: isMobile ? 5 : 4,
+                        ),
+                        SizedBox(height: padding * 1.5),
+                        Text(
+                          'timetable'.tr,
+                          style: context.textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: ResponsiveUtils.getResponsiveFontSize(
+                              context,
+                              24,
+                            ),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: padding),
+                        Text(
+                          'sched_hint'.tr,
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            fontSize: ResponsiveUtils.getResponsiveFontSize(
+                              context,
+                              15,
+                            ),
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 3,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 500),
+                child: Padding(
+                  padding: EdgeInsets.all(padding),
+                  child: MyTextButton(
+                    text: 'get_started'.tr,
+                    onPressed: () async => await _handleGetStarted(context),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 
   Future<void> _handleGetStarted(BuildContext context) async {
     University? university;
     GroupSchedule? group;
 
     do {
-      university = await Get.dialog(const UniversityPage(), useSafeArea: false);
+      university = await NavigationHelper.showAppDialog<University>(
+        context: context,
+        child: const UniversityPage(),
+        barrierDismissible: false,
+      );
     } while (university == null);
 
     settings.university.value = university;
@@ -72,36 +108,40 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       await settings.university.save();
     });
 
-    Get.dialog(
-      const Center(child: CircularProgressIndicator()),
-      barrierDismissible: false,
-      useSafeArea: false,
-    );
+    if (!context.mounted) return;
+    _showLoadingDialog(context);
 
     if (!await UniversityCaching.cacheGroups(university)) {
-      Get.back();
-      Get.snackbar('error'.tr, 'failed_to_load_groups'.tr);
+      NavigationHelper.back();
+      showSnackBar('failed_to_load_groups'.tr, isError: true);
       return;
     }
-    Get.back();
+    NavigationHelper.back();
 
+    if (!context.mounted) return;
     do {
-      group = await Get.dialog(
-        const GroupsPage(isSettings: false),
-        useSafeArea: false,
+      group = await NavigationHelper.showAppDialog<GroupSchedule>(
+        context: context,
+        child: const GroupsPage(isSettings: false),
+        barrierDismissible: false,
       );
     } while (group == null);
 
-    Get.dialog(
-      const Center(child: CircularProgressIndicator()),
-      barrierDismissible: false,
-      useSafeArea: false,
-    );
+    if (!context.mounted) return;
+    _showLoadingDialog(context);
 
     group = await UniversityCaching.cacheGroupSchedule(university, group);
-    Get.back();
+    NavigationHelper.back();
 
     await _saveSettingsAndNavigate(group, university);
+  }
+
+  void _showLoadingDialog(BuildContext context) {
+    NavigationHelper.showAppDialog(
+      context: context,
+      child: const Center(child: CircularProgressIndicator()),
+      barrierDismissible: false,
+    );
   }
 
   Future<void> _saveSettingsAndNavigate(

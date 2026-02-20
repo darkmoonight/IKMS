@@ -53,12 +53,12 @@ class SettingsTile extends StatelessWidget {
       ),
       subtitle: subtitle != null
           ? Text(
-        subtitle!.tr,
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: colorScheme.onSurfaceVariant,
-          fontSize: ResponsiveUtils.getResponsiveFontSize(context, 13),
-        ),
-      )
+              subtitle!.tr,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+                fontSize: ResponsiveUtils.getResponsiveFontSize(context, 13),
+              ),
+            )
           : null,
       trailing: trailing ?? _buildDefaultTrailing(context, colorScheme),
     );

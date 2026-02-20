@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:ikms/app/api/caching.dart';
 import 'package:ikms/app/data/db.dart';
 import 'package:ikms/app/ui/rasps/widgets/rasp_widget.dart';
+import 'package:ikms/app/utils/navigation_helper.dart';
 import 'package:ikms/main.dart';
 
 abstract class BaseSchedulePageState<T extends StatefulWidget>
@@ -140,7 +140,7 @@ class _RaspDetailPageState extends BaseSchedulePageState<RaspDetailPage> {
   Widget build(BuildContext context) => Scaffold(
     body: buildRefreshIndicator(
       context,
-      onBackPressed: () => Get.back(),
+      onBackPressed: () => NavigationHelper.back(),
       headerText: widget.entity.name,
     ),
   );

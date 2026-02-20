@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:ikms/app/controller/ads_controller.dart';
@@ -8,7 +7,9 @@ import 'package:ikms/app/ui/selection_list/view/selection_pages.dart';
 import 'package:ikms/app/ui/settings/widgets/selection_dialog.dart';
 import 'package:ikms/app/ui/settings/widgets/settings_section.dart';
 import 'package:ikms/app/ui/settings/widgets/settings_tile.dart';
+import 'package:ikms/app/utils/navigation_helper.dart';
 import 'package:ikms/app/utils/responsive_utils.dart';
+import 'package:ikms/app/utils/show_snack_bar.dart';
 import 'package:ikms/main.dart';
 import 'package:ikms/theme/theme_controller.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
@@ -146,10 +147,10 @@ class _SettingsPageState extends State<SettingsPage> {
           title: 'university',
           value: settings.university.value?.name ?? 'no_select'.tr,
           onTap: () async {
-            University? selectionData = await Get.to(
-              () => const UniversityPage(),
-              transition: Transition.downToUp,
-            );
+            University? selectionData =
+                await NavigationHelper.slideUp<University>(
+                  const UniversityPage(),
+                );
             if (selectionData != null) {
               settings.university.value = selectionData;
               await isar.writeTxn(() async {
@@ -166,10 +167,10 @@ class _SettingsPageState extends State<SettingsPage> {
           value: settings.group.value?.name ?? 'no_select'.tr,
           onTap: settings.university.value != null
               ? () async {
-                  GroupSchedule? selectionData = await Get.to(
-                    () => const GroupsPage(isSettings: true),
-                    transition: Transition.downToUp,
-                  );
+                  GroupSchedule? selectionData =
+                      await NavigationHelper.slideUp<GroupSchedule>(
+                        const GroupsPage(isSettings: true),
+                      );
                   if (selectionData != null) {
                     selectionData.university.value = settings.university.value;
                     settings.group.value = selectionData;
@@ -182,7 +183,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     setState(() {});
                   }
                 }
-              : () => EasyLoading.showInfo('no_university'.tr),
+              : () => showSnackBar('no_university'.tr, isInfo: true),
         ),
       ],
     );
@@ -215,24 +216,22 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                       actions: [
                         TextButton(
-                          onPressed: () => Get.back(result: false),
+                          onPressed: () => NavigationHelper.back(result: false),
                           child: Text(
                             'cancel'.tr,
-                            style: context.theme.textTheme.titleMedium?.copyWith(
-                              color: Colors.blueAccent,
-                            ),
+                            style: context.theme.textTheme.titleMedium
+                                ?.copyWith(color: Colors.blueAccent),
                           ),
                         ),
                         TextButton(
                           onPressed: () async {
                             await adsController.toggleAds(value);
-                            Get.back(result: true);
+                            NavigationHelper.back(result: true);
                           },
                           child: Text(
                             'disable'.tr,
-                            style: context.theme.textTheme.titleMedium?.copyWith(
-                              color: Colors.red,
-                            ),
+                            style: context.theme.textTheme.titleMedium
+                                ?.copyWith(color: Colors.red),
                           ),
                         ),
                       ],
@@ -249,11 +248,12 @@ class _SettingsPageState extends State<SettingsPage> {
         SettingsTile(
           leading: const Icon(IconsaxPlusLinear.language_square),
           title: 'language',
-          value: appLanguages
-              .firstWhere(
-                (element) => (element['locale'] == locale),
-                orElse: () => {'name': ''},
-              )['name'] as String,
+          value:
+              appLanguages.firstWhere(
+                    (element) => (element['locale'] == locale),
+                    orElse: () => {'name': ''},
+                  )['name']
+                  as String,
           onTap: () => _showLanguageDialog(context),
         ),
       ],
@@ -288,8 +288,8 @@ class _SettingsPageState extends State<SettingsPage> {
           leading: const Icon(IconsaxPlusLinear.document),
           title: 'license',
           onTap: () {
-            Get.to(
-              () => LicensePage(
+            NavigationHelper.slideUp(
+              LicensePage(
                 applicationIcon: Container(
                   width: 100,
                   height: 100,
@@ -304,7 +304,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 applicationName: 'IKMS',
                 applicationVersion: appVersion,
               ),
-              transition: Transition.downToUp,
             );
           },
         ),
@@ -336,8 +335,8 @@ class _SettingsPageState extends State<SettingsPage> {
         ThemeMode mode = value == 'system'
             ? ThemeMode.system
             : value == 'dark'
-                ? ThemeMode.dark
-                : ThemeMode.light;
+            ? ThemeMode.dark
+            : ThemeMode.light;
         await themeController.saveTheme(value);
         themeController.changeThemeMode(mode);
         setState(() {});
