@@ -208,9 +208,7 @@ class _GroupsPageState
     if (widget.isSettings || isInDialog) {
       NavigationHelper.back(result: selectionData);
     } else {
-      await NavigationHelper.slideUp(
-        RaspDetailPage(entity: selectionData),
-      );
+      await NavigationHelper.slideUp(RaspDetailPage(entity: selectionData));
       if (mounted) {
         applyFilter(filter);
       }

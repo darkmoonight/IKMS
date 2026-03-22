@@ -84,6 +84,7 @@ class EnUs {
     'details': 'Details',
     'confirm': 'Confirm',
     'clearText': 'Clear changes',
-    'clearTextWarning': 'Are you sure you want to discard changes? All unsaved data will be lost.',
+    'clearTextWarning':
+        'Are you sure you want to discard changes? All unsaved data will be lost.',
   };
 }
