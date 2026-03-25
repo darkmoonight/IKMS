@@ -39,8 +39,8 @@ dependencies:
   omni_datetime_picker: ^2.3.1
   flutter_local_notifications: ^21.0.0
   internet_connection_checker_plus: ^2.9.1+2
-  isar_community: ^3.3.1
-  isar_community_flutter_libs: ^3.3.1
+  isar_community: ^3.3.2
+  isar_community_flutter_libs: ^3.3.2
 
 dev_dependencies:
   flutter_test:
@@ -49,7 +49,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   flutter_native_splash: ^2.4.7
   flutter_launcher_icons: ^0.14.4
-  isar_community_generator: ^3.3.1
+  isar_community_generator: ^3.3.2
 
 flutter_launcher_icons:
   android: true
