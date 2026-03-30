@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:grouped_list/grouped_list.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:ikms/app/controller/ads_controller.dart';
 import 'package:ikms/app/data/db.dart';
@@ -153,52 +152,122 @@ class _RaspWidgetState extends State<RaspWidget> {
   }
 
   Widget _buildScheduleItem(BuildContext context, Schedule element) => Card(
-    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
     child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        spacing: 6,
+      padding: const EdgeInsets.all(12),
+      child: Row(
         children: [
-          Text(
-            element.discipline,
-            style: context.textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w500,
-              fontSize: 16,
+          Container(
+            width: 50,
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              children: [
+                Text(
+                  element.begin,
+                  style: context.textTheme.labelSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                ),
+                Text(
+                  '—',
+                  style: context.textTheme.labelSmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                ),
+                Text(
+                  element.end,
+                  style: context.textTheme.labelSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                ),
+              ],
             ),
           ),
+          const SizedBox(width: 12),
           Flexible(
-            child: Text(
-              element.teacher,
-              style: context.textTheme.bodyMedium?.copyWith(color: Colors.grey),
-              overflow: TextOverflow.ellipsis,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 6,
+              children: [
+                Text(
+                  element.discipline,
+                  style: context.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  element.teacher,
+                  style: context.textTheme.labelSmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.tertiaryContainer,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            IconsaxPlusLinear.buildings_2,
+                            size: 12,
+                            color: Theme.of(context).colorScheme.onTertiaryContainer,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            element.audience,
+                            style: context.textTheme.labelSmall?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).colorScheme.onTertiaryContainer,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        '#${element.pair}',
+                        style: context.textTheme.labelSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onSecondaryContainer,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Flexible(
+                      child: Text(
+                        element.group,
+                        style: context.textTheme.labelSmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  element.audience,
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  element.group,
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.right,
-                ),
-              ),
-            ],
           ),
         ],
       ),
@@ -207,40 +276,51 @@ class _RaspWidgetState extends State<RaspWidget> {
 
   Widget _buildLoadingIndicator() => ListView.builder(
     itemCount: 5,
-    itemBuilder: (BuildContext context, int index) => const Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        MyShimmer(
-          margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          height: 20,
-          width: 100,
+    itemBuilder: (BuildContext context, int index) => Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: [
+            const MyShimmer(
+              height: 40,
+              width: 50,
+            ),
+            const SizedBox(width: 12),
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 4,
+                children: [
+                  const MyShimmer(
+                    height: 16,
+                    width: double.infinity,
+                  ),
+                  const MyShimmer(
+                    height: 14,
+                    width: 150,
+                  ),
+                  const MyShimmer(
+                    height: 14,
+                    width: 100,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-        MyShimmer(
-          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          height: 100,
-          width: double.infinity,
-        ),
-      ],
+      ),
     ),
   );
 
   Widget _buildEmptySchedule() =>
       ListEmpty(img: 'assets/images/no.png', text: 'no_par'.tr);
 
-  Widget _buildScheduleList() => GroupedListView<Schedule, String>(
+  Widget _buildScheduleList() => ListView.builder(
     physics: const AlwaysScrollableScrollPhysics(),
-    elements: _filteredSchedule,
-    groupBy: (element) => '${element.begin}-${element.end}',
-    groupSeparatorBuilder: (String groupByValue) => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      child: Text(
-        groupByValue,
-        style: context.textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    ),
-    itemBuilder: _buildScheduleItem,
+    itemCount: _filteredSchedule.length,
+    itemBuilder: (BuildContext context, int index) =>
+        _buildScheduleItem(context, _filteredSchedule[index]),
   );
 
   Widget _buildCalendar() => TableCalendar(
