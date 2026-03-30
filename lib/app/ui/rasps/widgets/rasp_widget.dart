@@ -323,26 +323,97 @@ class _RaspWidgetState extends State<RaspWidget> {
         _buildScheduleItem(context, _filteredSchedule[index]),
   );
 
-  Widget _buildCalendar() => TableCalendar(
-    key: ValueKey(widget.raspElements.value),
-    startingDayOfWeek: StartingDayOfWeek.monday,
-    firstDay: _firstDay,
-    lastDay: _lastDay,
-    focusedDay: _normalizedSelectedDay,
-    weekendDays: const [DateTime.sunday],
-    locale: locale.languageCode,
-    selectedDayPredicate: (day) => isSameDay(_normalizedSelectedDay, day),
-    onDaySelected: _onDaySelected,
-    onPageChanged: _onPageChanged,
-    availableCalendarFormats: {
-      CalendarFormat.month: 'month'.tr,
-      CalendarFormat.twoWeeks: 'two_week'.tr,
-      CalendarFormat.week: 'week'.tr,
-    },
-    calendarFormat: _calendarFormat,
-    onFormatChanged: _onFormatChanged,
-    calendarBuilders: CalendarBuilders(markerBuilder: _buildEventMarker),
-  );
+  Widget _buildCalendar() {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return TableCalendar(
+      key: ValueKey(widget.raspElements.value),
+      startingDayOfWeek: StartingDayOfWeek.monday,
+      firstDay: _firstDay,
+      lastDay: _lastDay,
+      focusedDay: _normalizedSelectedDay,
+      weekendDays: const [DateTime.sunday],
+      locale: locale.languageCode,
+      selectedDayPredicate: (day) => isSameDay(_normalizedSelectedDay, day),
+      onDaySelected: _onDaySelected,
+      onPageChanged: _onPageChanged,
+      availableCalendarFormats: {
+        CalendarFormat.month: 'month'.tr,
+        CalendarFormat.twoWeeks: 'two_week'.tr,
+        CalendarFormat.week: 'week'.tr,
+      },
+      calendarFormat: _calendarFormat,
+      onFormatChanged: _onFormatChanged,
+      calendarBuilders: CalendarBuilders(
+        markerBuilder: _buildEventMarker,
+      ),
+      calendarStyle: CalendarStyle(
+        todayDecoration: BoxDecoration(
+          color: colorScheme.primaryContainer,
+          shape: BoxShape.circle,
+        ),
+        selectedDecoration: BoxDecoration(
+          color: colorScheme.primary,
+          shape: BoxShape.circle,
+        ),
+        todayTextStyle: TextStyle(
+          color: colorScheme.onPrimaryContainer,
+          fontWeight: FontWeight.w600,
+        ),
+        selectedTextStyle: TextStyle(
+          color: colorScheme.onPrimary,
+          fontWeight: FontWeight.w600,
+        ),
+        weekendTextStyle: TextStyle(color: colorScheme.error),
+        outsideDaysVisible: false,
+        markerSize: 16,
+      ),
+      headerStyle: HeaderStyle(
+        formatButtonVisible: true,
+        titleCentered: true,
+        formatButtonShowsNext: false,
+        titleTextStyle: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: colorScheme.onSurface,
+        ),
+        formatButtonTextStyle: TextStyle(
+          fontSize: 13,
+          color: colorScheme.primary,
+          fontWeight: FontWeight.w500,
+        ),
+        formatButtonDecoration: BoxDecoration(
+          border: Border.all(
+            color: colorScheme.primary.withValues(alpha: 0.5),
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        leftChevronIcon: Icon(
+          IconsaxPlusLinear.arrow_left_1,
+          color: colorScheme.onSurface,
+          size: 20,
+        ),
+        rightChevronIcon: Icon(
+          IconsaxPlusLinear.arrow_right_3,
+          color: colorScheme.onSurface,
+          size: 20,
+        ),
+      ),
+      daysOfWeekStyle: DaysOfWeekStyle(
+        weekdayStyle: TextStyle(
+          color: colorScheme.onSurfaceVariant,
+          fontWeight: FontWeight.w600,
+          fontSize: 12,
+        ),
+        weekendStyle: TextStyle(
+          color: colorScheme.error.withValues(alpha: 0.7),
+          fontWeight: FontWeight.w600,
+          fontSize: 12,
+        ),
+      ),
+    );
+  }
 
   Widget _buildAdBanner() => Obx(
     () => Visibility(
