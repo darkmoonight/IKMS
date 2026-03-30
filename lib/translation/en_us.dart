@@ -91,5 +91,8 @@ class EnUs {
     'minutes_short': 'm.',
     'overdue': 'overdue',
     'through': 'in',
+    'task_one': 'task',
+    'task_few': 'tasks',
+    'task_many': 'tasks',
   };
 }

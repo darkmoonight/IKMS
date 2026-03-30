@@ -57,30 +57,92 @@ class _TaskPageState extends State<TaskPage>
     );
   }
 
-  PreferredSizeWidget _buildAppBar() => AppBar(
-    centerTitle: true,
-    leading: _todoController.isMultiSelectionTodo.isTrue
-        ? IconButton(
-            onPressed: _todoController.doMultiSelectionTodoClear,
-            icon: const Icon(IconsaxPlusLinear.close_square, size: 20),
-          )
-        : null,
-    title: Text(
-      'todos'.tr,
-      style: context.theme.textTheme.titleLarge?.copyWith(
-        fontWeight: FontWeight.w600,
-      ),
-    ),
-    actions: [
-      Visibility(
-        visible: _todoController.selectedTodo.isNotEmpty,
-        child: IconButton(
-          icon: const Icon(IconsaxPlusLinear.trash_square, size: 20),
-          onPressed: _showDeleteConfirmationDialog,
-        ),
-      ),
-    ],
-  );
+  void _toggleSelectAll() {
+    final statusFilter = _tabController.index == 0 ? false : true;
+    final allSelected = _todoController.areAllSelectedInTab(statusFilter);
+
+    if (allSelected) {
+      _todoController.selectAllInTab(select: false, done: statusFilter);
+    } else {
+      _todoController.selectAllInTab(select: true, done: statusFilter);
+    }
+  }
+
+  String _getTaskWord(int count) {
+    final remainder = count % 10;
+    if (count >= 11 && count <= 19) return 'task_many'.tr;
+    if (remainder == 1) return 'task_one'.tr;
+    if (remainder >= 2 && remainder <= 4) return 'task_few'.tr;
+    return 'task_many'.tr;
+  }
+
+  PreferredSizeWidget _buildAppBar() {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isMultiSelection = _todoController.isMultiSelectionTodo.isTrue;
+    final selectedCount = _todoController.selectedTodo.length;
+
+    return AppBar(
+      surfaceTintColor: Colors.transparent,
+      elevation: isMultiSelection ? 0 : 0,
+      scrolledUnderElevation: 0,
+      centerTitle: !isMultiSelection,
+      title: isMultiSelection
+          ? Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    '$selectedCount ${_getTaskWord(selectedCount)}',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: colorScheme.onSecondaryContainer,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          : Text(
+              'todos'.tr,
+              style: context.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+      leading: isMultiSelection
+          ? IconButton(
+              onPressed: _todoController.doMultiSelectionTodoClear,
+              icon: Icon(
+                IconsaxPlusLinear.arrow_left_3,
+                color: colorScheme.onSecondaryContainer,
+              ),
+              style: IconButton.styleFrom(
+                backgroundColor: colorScheme.surfaceContainerHighest,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            )
+          : null,
+      actions: isMultiSelection
+          ? [
+              IconButton(
+                onPressed: _toggleSelectAll,
+                icon: Icon(
+                  _todoController.areAllSelectedInTab(
+                        _tabController.index == 0 ? false : true,
+                      )
+                      ? IconsaxPlusLinear.close_square
+                      : IconsaxPlusLinear.tick_circle,
+                  color: colorScheme.primary,
+                ),
+              ),
+              IconButton(
+                onPressed: _showDeleteConfirmationDialog,
+                icon: Icon(IconsaxPlusLinear.trash, color: colorScheme.error),
+              ),
+              const SizedBox(width: 8),
+            ]
+          : null,
+    );
+  }
 
   Widget _buildSearchField(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;

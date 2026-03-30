@@ -91,5 +91,8 @@ class RuRu {
     'minutes_short': 'мин.',
     'overdue': 'просрочено',
     'through': 'через',
+    'task_one': 'задача',
+    'task_few': 'задачи',
+    'task_many': 'задач',
   };
 }

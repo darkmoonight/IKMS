@@ -151,4 +151,24 @@ class TodoController extends GetxController {
     isMultiSelectionTodo.value = false;
     isPop.value = true;
   }
+
+  bool areAllSelectedInTab(bool done) {
+    final tabTodos = todos.where((todo) => todo.done == done).toList();
+    return tabTodos.every((todo) => selectedTodo.contains(todo));
+  }
+
+  void selectAllInTab({required bool select, required bool done}) {
+    final tabTodos = todos.where((todo) => todo.done == done).toList();
+    if (select) {
+      for (var todo in tabTodos) {
+        if (!selectedTodo.contains(todo)) {
+          selectedTodo.add(todo);
+        }
+      }
+    } else {
+      selectedTodo.removeWhere((todo) => todo.done == done);
+    }
+    isMultiSelectionTodo.value = selectedTodo.isNotEmpty;
+    isPop.value = !isMultiSelectionTodo.value;
+  }
 }
