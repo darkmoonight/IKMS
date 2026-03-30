@@ -153,7 +153,7 @@ class _RaspWidgetState extends State<RaspWidget> {
 
   Widget _buildScheduleItem(BuildContext context, Schedule element) {
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       child: IntrinsicHeight(
         child: Padding(
           padding: const EdgeInsets.all(12),
@@ -164,7 +164,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                 width: 50,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -215,6 +215,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Row(
+                      spacing: 6,
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(
@@ -250,39 +251,27 @@ class _RaspWidgetState extends State<RaspWidget> {
                             ],
                           ),
                         ),
-                        const SizedBox(width: 6),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 6,
-                            vertical: 2,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.secondaryContainer,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            '#${element.pair}',
-                            style: context.textTheme.labelSmall?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onSecondaryContainer,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 6),
                         Flexible(
-                          child: Text(
-                            element.group,
-                            style: context.textTheme.labelSmall?.copyWith(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
                               color: Theme.of(
                                 context,
-                              ).colorScheme.onSurfaceVariant,
+                              ).colorScheme.secondaryContainer,
+                              borderRadius: BorderRadius.circular(4),
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                            child: Text(
+                              element.group,
+                              style: context.textTheme.labelSmall?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSecondaryContainer,
+                              ),
+                            ),
                           ),
                         ),
                       ],

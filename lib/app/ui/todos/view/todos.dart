@@ -113,12 +113,6 @@ class _TaskPageState extends State<TaskPage>
                 IconsaxPlusLinear.arrow_left_3,
                 color: colorScheme.onSecondaryContainer,
               ),
-              style: IconButton.styleFrom(
-                backgroundColor: colorScheme.surfaceContainerHighest,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
             )
           : null,
       actions: isMultiSelection
