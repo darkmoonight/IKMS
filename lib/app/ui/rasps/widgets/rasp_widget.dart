@@ -214,7 +214,10 @@ class _RaspWidgetState extends State<RaspWidget> {
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.tertiaryContainer,
                         borderRadius: BorderRadius.circular(6),
@@ -225,14 +228,18 @@ class _RaspWidgetState extends State<RaspWidget> {
                           Icon(
                             IconsaxPlusLinear.buildings_2,
                             size: 12,
-                            color: Theme.of(context).colorScheme.onTertiaryContainer,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onTertiaryContainer,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             element.audience,
                             style: context.textTheme.labelSmall?.copyWith(
                               fontWeight: FontWeight.w600,
-                              color: Theme.of(context).colorScheme.onTertiaryContainer,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onTertiaryContainer,
                             ),
                           ),
                         ],
@@ -240,7 +247,10 @@ class _RaspWidgetState extends State<RaspWidget> {
                     ),
                     const SizedBox(width: 6),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.secondaryContainer,
                         borderRadius: BorderRadius.circular(4),
@@ -249,7 +259,9 @@ class _RaspWidgetState extends State<RaspWidget> {
                         '#${element.pair}',
                         style: context.textTheme.labelSmall?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.onSecondaryContainer,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSecondaryContainer,
                         ),
                       ),
                     ),
@@ -282,28 +294,16 @@ class _RaspWidgetState extends State<RaspWidget> {
         padding: const EdgeInsets.all(12),
         child: Row(
           children: [
-            const MyShimmer(
-              height: 40,
-              width: 50,
-            ),
+            const MyShimmer(height: 40, width: 50),
             const SizedBox(width: 12),
             Flexible(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 4,
                 children: [
-                  const MyShimmer(
-                    height: 16,
-                    width: double.infinity,
-                  ),
-                  const MyShimmer(
-                    height: 14,
-                    width: 150,
-                  ),
-                  const MyShimmer(
-                    height: 14,
-                    width: 100,
-                  ),
+                  const MyShimmer(height: 16, width: double.infinity),
+                  const MyShimmer(height: 14, width: 150),
+                  const MyShimmer(height: 14, width: 100),
                 ],
               ),
             ),
@@ -344,9 +344,7 @@ class _RaspWidgetState extends State<RaspWidget> {
       },
       calendarFormat: _calendarFormat,
       onFormatChanged: _onFormatChanged,
-      calendarBuilders: CalendarBuilders(
-        markerBuilder: _buildEventMarker,
-      ),
+      calendarBuilders: CalendarBuilders(markerBuilder: _buildEventMarker),
       calendarStyle: CalendarStyle(
         todayDecoration: BoxDecoration(
           color: colorScheme.primaryContainer,

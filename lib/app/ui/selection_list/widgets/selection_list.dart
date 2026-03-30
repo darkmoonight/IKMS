@@ -107,9 +107,28 @@ class _SelectionListState<T extends SelectionData>
 
   Widget _buildShimmerLoader() => ListView.builder(
     itemCount: 10,
-    itemBuilder: (BuildContext context, int index) => const MyShimmer(
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      height: 60,
+    itemBuilder: (BuildContext context, int index) => Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: [
+            const MyShimmer(height: 36, width: 36),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 4,
+                children: const [
+                  MyShimmer(height: 14, width: 120),
+                  MyShimmer(height: 12, width: 180),
+                ],
+              ),
+            ),
+            const MyShimmer(height: 18, width: 18),
+          ],
+        ),
+      ),
     ),
   );
 
@@ -146,17 +165,51 @@ class _SelectionListState<T extends SelectionData>
   }
 
   Widget _buildListItem(T item, int index) => Card(
-    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
     child: ListTile(
-      splashColor: Colors.transparent,
       onTap: () => widget.onEntrySelected(item),
+      leading: CircleAvatar(
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        child: Icon(
+          _getIconForItem(item),
+          color: Theme.of(context).colorScheme.onPrimaryContainer,
+          size: 18,
+        ),
+      ),
       title: Text(
         item.name,
-        style: context.textTheme.labelLarge,
-        textAlign: TextAlign.center,
+        style: Theme.of(
+          context,
+        ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w500),
+      ),
+      subtitle: item.description.isNotEmpty
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 2),
+                Text(
+                  item.description,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            )
+          : null,
+      trailing: Icon(
+        IconsaxPlusLinear.arrow_right_3,
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
+        size: 18,
       ),
     ),
   );
+
+  IconData _getIconForItem(T item) {
+    if (item is GroupSchedule) return IconsaxPlusLinear.people;
+    if (item is TeacherSchedule) return IconsaxPlusLinear.user;
+    if (item is AudienceSchedule) return IconsaxPlusLinear.buildings_2;
+    return IconsaxPlusLinear.tag;
+  }
 
   Widget _buildContent() {
     if (!widget.isLoaded) {
