@@ -218,6 +218,7 @@ class _RaspWidgetState extends State<RaspWidget> {
         MyShimmer(
           margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           height: 100,
+          width: double.infinity,
         ),
       ],
     ),
