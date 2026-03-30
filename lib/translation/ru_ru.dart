@@ -86,5 +86,10 @@ class RuRu {
     'clearText': 'Удалить изменения',
     'clearTextWarning':
         'Вы уверены, что хотите отменить изменения? Все несохраненные данные будут потеряны.',
+    'days_short': 'дн.',
+    'hours_short': 'ч.',
+    'minutes_short': 'мин.',
+    'overdue': 'просрочено',
+    'through': 'через',
   };
 }

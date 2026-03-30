@@ -86,5 +86,10 @@ class EnUs {
     'clearText': 'Clear changes',
     'clearTextWarning':
         'Are you sure you want to discard changes? All unsaved data will be lost.',
+    'days_short': 'd.',
+    'hours_short': 'h.',
+    'minutes_short': 'm.',
+    'overdue': 'overdue',
+    'through': 'in',
   };
 }
