@@ -220,7 +220,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                       style: context.textTheme.labelSmall?.copyWith(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
-                      maxLines: 1,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     Row(
