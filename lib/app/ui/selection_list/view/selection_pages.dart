@@ -94,15 +94,11 @@ abstract class BaseSelectionPageState<
 
   Future<void> applyFilter(String value) async {
     try {
-      setState(() {
-        filter = value;
-        isLoaded = false;
-      });
-
       final data = await _getFilteredData(selectedUniversity);
 
       if (mounted) {
         setState(() {
+          filter = value;
           items = data;
           isLoaded = true;
           isError = false;
@@ -288,15 +284,11 @@ class _UniversityPageState extends State<UniversityPage> {
 
   Future<void> applyFilter(String value) async {
     try {
-      setState(() {
-        filter = value;
-        isLoaded = false;
-      });
-
       final data = await _getFilteredData();
 
       if (mounted) {
         setState(() {
+          filter = value;
           items = data;
           isLoaded = true;
           isError = false;
