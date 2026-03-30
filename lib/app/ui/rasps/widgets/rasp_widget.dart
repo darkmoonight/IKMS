@@ -92,14 +92,16 @@ class _RaspWidgetState extends State<RaspWidget> {
   }
 
   int _getEventCountForDay(DateTime date) {
-    final seen = <String>{};
-    return widget.raspElements.value
-        .where(
-          (element) =>
-              element.date.isAtSameMomentAs(date) &&
-              seen.add(element.pair.toString()),
-        )
-        .length;
+    final schedulesOnDay = widget.raspElements.value
+        .where((element) => element.date.isAtSameMomentAs(date))
+        .toList();
+
+    final Set<int> uniquePairs = {};
+    for (final schedule in schedulesOnDay) {
+      uniquePairs.add(schedule.pair);
+    }
+
+    return uniquePairs.length;
   }
 
   void _onDaySelected(DateTime selected, DateTime focused) {
@@ -151,6 +153,13 @@ class _RaspWidgetState extends State<RaspWidget> {
           );
   }
 
+  String _cleanGroupName(String group) {
+    return group
+        .replaceAll(RegExp(r',\s*п/г\s*\d+\s*'), '')
+        .replaceAll(RegExp(r',\s*п/г\s*[А-Яа-я]+\s*'), '')
+        .trim();
+  }
+
   Widget _buildScheduleItem(BuildContext context, Schedule element) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -199,7 +208,7 @@ class _RaspWidgetState extends State<RaspWidget> {
                   spacing: 6,
                   children: [
                     Text(
-                      element.discipline,
+                      _cleanGroupName(element.discipline),
                       style: context.textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -316,12 +325,69 @@ class _RaspWidgetState extends State<RaspWidget> {
   Widget _buildEmptySchedule() =>
       ListEmpty(img: 'assets/images/no.png', text: 'no_par'.tr);
 
-  Widget _buildScheduleList() => ListView.builder(
-    physics: const AlwaysScrollableScrollPhysics(),
-    itemCount: _filteredSchedule.length,
-    itemBuilder: (BuildContext context, int index) =>
-        _buildScheduleItem(context, _filteredSchedule[index]),
-  );
+  List<Map<String, dynamic>> _getGroupedSchedules() {
+    final Map<int, List<Schedule>> groupedByPair = {};
+
+    for (final schedule in _filteredSchedule) {
+      final key = schedule.pair;
+      groupedByPair[key] ??= [];
+      groupedByPair[key]!.add(schedule);
+    }
+
+    return groupedByPair.entries.map((entry) {
+      final schedules = entry.value;
+      if (schedules.length == 1) {
+        return {'schedule': schedules.first, 'isGrouped': false};
+      }
+
+      final first = schedules.first;
+      final teachers = schedules
+          .map((s) => s.teacher)
+          .where((t) => t.isNotEmpty)
+          .toSet()
+          .join(', ');
+      final audiences = schedules
+          .map((s) => s.audience)
+          .where((a) => a.isNotEmpty)
+          .toSet()
+          .join(', ');
+      final groups = schedules
+          .map((s) => s.group)
+          .where((g) => g.isNotEmpty)
+          .toSet()
+          .join(', ');
+
+      final merged = Schedule(
+        dateTime: first.date,
+        begin: first.begin,
+        end: first.end,
+        pair: first.pair,
+        discipline: first.discipline,
+        teacher: teachers,
+        audience: audiences,
+        group: groups,
+      );
+
+      return {'schedule': merged, 'isGrouped': true};
+    }).toList()..sort(
+      (a, b) => (a['schedule'] as Schedule).pair.compareTo(
+        (b['schedule'] as Schedule).pair,
+      ),
+    );
+  }
+
+  Widget _buildScheduleList() {
+    final groupedSchedules = _getGroupedSchedules();
+
+    return ListView.builder(
+      physics: const AlwaysScrollableScrollPhysics(),
+      itemCount: groupedSchedules.length,
+      itemBuilder: (BuildContext context, int index) => _buildScheduleItem(
+        context,
+        groupedSchedules[index]['schedule'] as Schedule,
+      ),
+    );
+  }
 
   Widget _buildCalendar() {
     final colorScheme = Theme.of(context).colorScheme;
