@@ -67,11 +67,18 @@ class _RaspWidgetState extends State<RaspWidget> {
     super.dispose();
   }
 
-  void _initializeSchedule() => setState(
-    () => _filteredSchedule = widget.raspElements.value
-        .where((element) => element.date.isAtSameMomentAs(_selectedDay))
-        .toList(),
-  );
+  void _initializeSchedule() {
+    setState(() {
+      if (_selectedDay.isAfter(_lastDay)) {
+        _selectedDay = _lastDay;
+      } else if (_selectedDay.isBefore(_firstDay)) {
+        _selectedDay = _firstDay;
+      }
+      _filteredSchedule = widget.raspElements.value
+          .where((element) => isSameDay(element.date, _selectedDay))
+          .toList();
+    });
+  }
 
   DateTime get _firstDay => widget.raspElements.value.isNotEmpty
       ? widget.raspElements.value
@@ -93,7 +100,7 @@ class _RaspWidgetState extends State<RaspWidget> {
 
   int _getEventCountForDay(DateTime date) {
     final schedulesOnDay = widget.raspElements.value
-        .where((element) => element.date.isAtSameMomentAs(date))
+        .where((element) => isSameDay(element.date, date))
         .toList();
 
     final Set<int> uniquePairs = {};
