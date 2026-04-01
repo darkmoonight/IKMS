@@ -168,80 +168,66 @@ class _RaspWidgetState extends State<RaspWidget> {
   }
 
   Widget _buildScheduleItem(BuildContext context, Schedule element) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-      child: IntrinsicHeight(
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                width: 50,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      element.begin,
-                      style: context.textTheme.labelSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
-                      ),
-                    ),
-                    Text(
-                      '—',
-                      style: context.textTheme.labelSmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
-                      ),
-                    ),
-                    Text(
-                      element.end,
-                      style: context.textTheme.labelSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
-                      ),
-                    ),
-                  ],
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = context.textTheme;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 4, bottom: 4),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                '${element.begin} — ${element.end}',
+                style: textTheme.labelMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.onPrimaryContainer,
                 ),
               ),
-              const SizedBox(width: 12),
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 6,
-                  children: [
-                    Text(
-                      _cleanGroupName(element.discipline),
-                      style: context.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 6,
+                children: [
+                  Text(
+                    _cleanGroupName(element.discipline),
+                    style: textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
                     ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (element.teacher.isNotEmpty)
                     Text(
                       element.teacher,
-                      style: context.textTheme.labelSmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      style: textTheme.labelSmall?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Row(
-                      spacing: 6,
-                      children: [
+                  Row(
+                    spacing: 6,
+                    children: [
+                      if (element.audience.isNotEmpty)
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 8,
                             vertical: 3,
                           ),
                           decoration: BoxDecoration(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.tertiaryContainer,
+                            color: colorScheme.tertiaryContainer,
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Row(
@@ -250,23 +236,20 @@ class _RaspWidgetState extends State<RaspWidget> {
                               Icon(
                                 IconsaxPlusLinear.buildings_2,
                                 size: 12,
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onTertiaryContainer,
+                                color: colorScheme.onTertiaryContainer,
                               ),
                               const SizedBox(width: 4),
                               Text(
                                 element.audience,
-                                style: context.textTheme.labelSmall?.copyWith(
+                                style: textTheme.labelSmall?.copyWith(
                                   fontWeight: FontWeight.w600,
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onTertiaryContainer,
+                                  color: colorScheme.onTertiaryContainer,
                                 ),
                               ),
                             ],
                           ),
                         ),
+                      if (element.group.isNotEmpty)
                         Flexible(
                           child: Container(
                             padding: const EdgeInsets.symmetric(
@@ -274,57 +257,60 @@ class _RaspWidgetState extends State<RaspWidget> {
                               vertical: 2,
                             ),
                             decoration: BoxDecoration(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.secondaryContainer,
+                              color: colorScheme.secondaryContainer,
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
                               element.group,
-                              style: context.textTheme.labelSmall?.copyWith(
+                              style: textTheme.labelSmall?.copyWith(
                                 fontWeight: FontWeight.bold,
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSecondaryContainer,
+                                color: colorScheme.onSecondaryContainer,
                               ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
 
   Widget _buildLoadingIndicator() => ListView.builder(
     itemCount: 5,
-    itemBuilder: (BuildContext context, int index) => Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          children: [
-            const MyShimmer(height: 40, width: 50),
-            const SizedBox(width: 12),
-            Flexible(
+    itemBuilder: (BuildContext context, int index) => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(left: 4, bottom: 4),
+            child: MyShimmer(height: 20, width: 80, margin: EdgeInsets.zero),
+          ),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 4,
-                children: [
-                  const MyShimmer(height: 16, width: double.infinity),
-                  const MyShimmer(height: 14, width: 150),
-                  const MyShimmer(height: 14, width: 100),
+                spacing: 6,
+                children: const [
+                  MyShimmer(
+                    height: 16,
+                    width: double.infinity,
+                    margin: EdgeInsets.zero,
+                  ),
+                  MyShimmer(height: 14, width: 150, margin: EdgeInsets.zero),
+                  MyShimmer(height: 14, width: 100, margin: EdgeInsets.zero),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     ),
   );
