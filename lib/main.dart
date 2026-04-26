@@ -129,7 +129,7 @@ void main() async {
         ? isOnline.value = Future(() => false)
         : isOnline.value = InternetConnection().hasInternetAccess,
   );
-  MobileAds.initialize();
+  YandexAds.initialize();
   runApp(const MyApp());
 }
 

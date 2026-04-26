@@ -31,13 +31,7 @@ class RaspWidget extends StatefulWidget {
 class _RaspWidgetState extends State<RaspWidget> {
   late List<Schedule> _filteredSchedule;
   final _adsController = Get.put(AdsController());
-  final _bannerAd = BannerAd(
-    adUnitId: 'R-M-2101511-1',
-    adSize: BannerAdSize.inline(width: Get.size.width.round(), maxHeight: 50),
-    adRequest: const AdRequest(),
-    onAdLoaded: () {},
-    onAdFailedToLoad: (error) {},
-  );
+  late BannerAd _bannerAd;
 
   DateTime _selectedDay = normalizeDate(DateTime.now());
   CalendarFormat _calendarFormat = CalendarFormat.week;
@@ -58,6 +52,7 @@ class _RaspWidgetState extends State<RaspWidget> {
   void initState() {
     super.initState();
     _initializeSchedule();
+    _createBanner();
     widget.raspElements.addListener(_initializeSchedule);
   }
 
@@ -65,6 +60,15 @@ class _RaspWidgetState extends State<RaspWidget> {
   void dispose() {
     widget.raspElements.removeListener(_initializeSchedule);
     super.dispose();
+  }
+
+  void _createBanner() {
+    final banner = BannerAd(
+      adSize: BannerAdSize.inline(width: Get.size.width.round(), maxHeight: 50),
+    );
+
+    banner.load(AdRequest(adUnitId: 'R-M-2101511-1'));
+    _bannerAd = banner;
   }
 
   void _initializeSchedule() {
