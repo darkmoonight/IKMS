@@ -7,7 +7,7 @@ version: 1.3.1+32
 
 environment:
   sdk: ">=3.13.5 <4.0.0"
-  flutter: "^3.47.6"
+  flutter: "^3.47.7"
 
 dependencies:
   # Flutter SDK
@@ -18,7 +18,7 @@ dependencies:
 
   # State management & navigation
   flutter_riverpod: ^3.4.3
-  go_router: ^18.0.2
+  go_router: ^18.1.0
 
   # Networking
   dio: ^5.11.1
@@ -27,8 +27,8 @@ dependencies:
   connectivity_plus: ^7.3.2
 
   # Local storage
-  isar_community: ^3.3.2
-  isar_community_flutter_libs: ^3.3.2
+  isar_community: ^3.4.1
+  isar_community_flutter_libs: ^3.4.1
   path_provider: ^2.1.6
 
   # Localization & formatting
@@ -37,12 +37,12 @@ dependencies:
   slang_flutter: ^4.19.0
 
   # Notifications
-  flutter_local_notifications: ^23.0.0-dev.3
-  timezone: ^0.11.1
+  flutter_local_notifications: ^23.0.0-dev.4
+  timezone: ^0.11.2
   flutter_timezone: ^5.1.1
 
   # Ads
-  yandex_mobileads: ^8.5.0
+  yandex_mobileads: ^8.6.0
 
   # UI & theming
   gap: ^3.0.1
@@ -51,11 +51,11 @@ dependencies:
   google_fonts: ^9.0.0
   dynamic_system_colors: ^1.9.0
   material_color_utilities: ^0.13.0
-  material_ui: ^1.6.0
+  material_ui: ^1.7.0
   iconsax_plus: ^1.0.0
   line_awesome_flutter: ^3.0.1
   table_calendar: ^3.3.0
-  omni_datetime_picker: ^2.3.2
+  omni_datetime_picker: ^2.3.3
 
   # Platform & utilities
   url_launcher: ^6.3.3
@@ -69,8 +69,8 @@ dev_dependencies:
     sdk: flutter
 
   # Code generation
-  build_runner: ^2.15.1
-  isar_community_generator: ^3.3.2
+  build_runner: ^2.16.2
+  isar_community_generator: ^3.4.1
 
   # Linting
   flutter_lints: ^6.0.0
