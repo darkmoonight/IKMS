@@ -95,13 +95,16 @@ abstract class BaseSelectionPageState<
     try {
       await applyFilter('');
     } catch (e) {
+      if (!mounted) return;
       setState(() => isError = true);
       debugPrint('Error loading data: $e');
     }
   }
 
   Future<void> _onOnlineStatusChanged() async {
+    if (!mounted) return;
     if (await context.isOnline.value) {
+      if (!mounted) return;
       await _loadData();
     }
   }

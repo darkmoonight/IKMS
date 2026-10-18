@@ -6,17 +6,23 @@ class AudiencesData {
   final int state;
   final String msg;
 
-  factory AudiencesData.fromJson(Map<String, dynamic> json) => AudiencesData(
-    data: List<Audiences>.from(json['data'].map((x) => Audiences.fromJson(x))),
-    state: json['state'],
-    msg: json['msg'],
-  );
-
-  Map<String, dynamic> toJson() => {
-    'data': List<dynamic>.from(data.map((x) => x.toJson())),
-    'state': state,
-    'msg': msg,
-  };
+  factory AudiencesData.fromJson(Map<String, dynamic> json) {
+    final raw = json['data'];
+    final entries = <Audiences>[];
+    if (raw is List) {
+      for (final item in raw) {
+        if (item is! Map) continue;
+        final map = Map<String, dynamic>.from(item);
+        if (map['id'] == null) continue;
+        entries.add(Audiences.fromJson(map));
+      }
+    }
+    return AudiencesData(
+      data: entries,
+      state: (json['state'] as num?)?.toInt() ?? 0,
+      msg: json['msg']?.toString() ?? '',
+    );
+  }
 }
 
 /// JSON DTO [Audiences] used by the DonSTU API layer.
@@ -26,8 +32,8 @@ class Audiences {
   final String name;
   final int id;
 
-  factory Audiences.fromJson(Map<String, dynamic> json) =>
-      Audiences(name: json['name'] ?? '', id: json['id']);
-
-  Map<String, dynamic> toJson() => {'name': name, 'id': id};
+  factory Audiences.fromJson(Map<String, dynamic> json) => Audiences(
+    name: json['name']?.toString() ?? '',
+    id: (json['id'] as num).toInt(),
+  );
 }

@@ -44,7 +44,32 @@ class AppLicensePage extends ConsumerWidget {
       ),
       body: licensesAsync.when(
         loading: () => const AppLicensePageShimmer(),
-        error: (_, _) => const AppLicensePageShimmer(),
+        error: (_, _) => Center(
+          child: Padding(
+            padding: const EdgeInsets.all(AppConstants.spacingXXL),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error_outline,
+                  size: 60,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+                const Gap(AppConstants.spacingL),
+                Text(
+                  'error_loading_data'.tr,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  textAlign: TextAlign.center,
+                ),
+                const Gap(AppConstants.spacingS),
+                ElevatedButton(
+                  onPressed: () => ref.invalidate(packageLicensesProvider),
+                  child: Text('try_again'.tr),
+                ),
+              ],
+            ),
+          ),
+        ),
         data: (licenses) => DeferUntilRouteTransition(
           placeholder: const AppLicensePageShimmer(),
           child: _LicensePackageList(

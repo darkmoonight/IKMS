@@ -35,8 +35,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     );
     await ref.read(settingsRepositoryProvider).save(settings);
     IkmsApp.updateAppState(ref, newLocale: locale);
-    if (!mounted) return;
-    setState(() {});
   }
 
   Future<void> _urlLauncher(String uri) async {
@@ -58,9 +56,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   Widget build(BuildContext context) {
     final isMobile = ResponsiveUtils.isMobile(context);
     final padding = ResponsiveUtils.getResponsivePadding(context);
-    ref.watch(adsNotifierProvider);
-    ref.watch(themeModeProvider);
-    ref.watch(appSettingsProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -114,9 +109,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               value: settings.amoledTheme,
               onChanged: (value) async {
                 await ref.read(themeModeProvider.notifier).saveOledTheme(value);
-                IkmsApp.updateAppState(ref, newAmoledTheme: value);
-                if (!mounted) return;
-                setState(() {});
               },
             ),
           ),
@@ -132,9 +124,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 await ref
                     .read(themeModeProvider.notifier)
                     .saveMaterialTheme(value);
-                IkmsApp.updateAppState(ref, newMaterialColor: value);
-                if (!mounted) return;
-                setState(() {});
               },
             ),
           ),
@@ -162,8 +151,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             );
             if (selectionData != null) {
               await settingsRepo.setUniversity(settings, selectionData);
-              if (!mounted) return;
-              setState(() {});
             }
           },
         ),
@@ -181,8 +168,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   if (selectionData != null) {
                     selectionData.university.value = settings.university.value;
                     await settingsRepo.setGroup(settings, selectionData);
-                    if (!mounted) return;
-                    setState(() {});
                   }
                 }
               : () => showSnackBar('no_university'.tr, isInfo: true),
@@ -223,8 +208,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                 } else {
                   await ref.read(adsNotifierProvider.notifier).toggleAds(value);
                 }
-                if (!mounted) return;
-                setState(() {});
               },
             ),
           ),
@@ -304,8 +287,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       itemBuilder: (theme) => theme.tr,
       onSelected: (value) async {
         await ref.read(themeModeProvider.notifier).saveTheme(value);
-        if (!mounted) return;
-        setState(() {});
       },
     );
   }
@@ -332,7 +313,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       itemBuilder: (lang) => lang['name'] as String,
       onSelected: (value) {
         final newLocale = value['locale'] as Locale;
-        IkmsApp.updateAppState(ref, newLocale: newLocale);
         _updateLanguage(newLocale);
       },
       enableSearch: true,

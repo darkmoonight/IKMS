@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
+import 'package:flutter/foundation.dart';
 import 'package:ikms/data/models/db.dart';
 
 /// Remote university schedule API client contract.
@@ -19,10 +20,10 @@ abstract class UniversityAPI {
       ..baseUrl = baseUrl
       ..connectTimeout = const Duration(seconds: 60)
       ..receiveTimeout = const Duration(seconds: 60);
-    dio.interceptors.addAll([
+    dio.interceptors.add(
       RetryInterceptor(
         dio: dio,
-        logPrint: print,
+        logPrint: kDebugMode ? (message) => debugPrint(message) : null,
         retries: 4,
         retryableExtraStatuses: {104},
         retryDelays: const [
@@ -32,12 +33,7 @@ abstract class UniversityAPI {
           Duration(seconds: 4),
         ],
       ),
-      InterceptorsWrapper(
-        onError: (error, handler) {
-          handler.reject(error);
-        },
-      ),
-    ]);
+    );
   }
 
   /// Fetches the audience catalog (Isar ids must be composite).

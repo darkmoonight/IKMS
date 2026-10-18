@@ -6,17 +6,23 @@ class GroupsData {
   final int state;
   final String msg;
 
-  factory GroupsData.fromJson(Map<String, dynamic> json) => GroupsData(
-    data: List<Groups>.from(json['data'].map((x) => Groups.fromJson(x))),
-    state: json['state'],
-    msg: json['msg'],
-  );
-
-  Map<String, dynamic> toJson() => {
-    'data': List<dynamic>.from(data.map((x) => x.toJson())),
-    'state': state,
-    'msg': msg,
-  };
+  factory GroupsData.fromJson(Map<String, dynamic> json) {
+    final raw = json['data'];
+    final entries = <Groups>[];
+    if (raw is List) {
+      for (final item in raw) {
+        if (item is! Map) continue;
+        final map = Map<String, dynamic>.from(item);
+        if (map['id'] == null) continue;
+        entries.add(Groups.fromJson(map));
+      }
+    }
+    return GroupsData(
+      data: entries,
+      state: (json['state'] as num?)?.toInt() ?? 0,
+      msg: json['msg']?.toString() ?? '',
+    );
+  }
 }
 
 /// JSON DTO [Groups] used by the DonSTU API layer.
@@ -38,20 +44,11 @@ class Groups {
   final int? facultyId;
 
   factory Groups.fromJson(Map<String, dynamic> json) => Groups(
-    name: json['name'] ?? '',
-    id: json['id'],
-    kurs: json['kurs'],
-    facul: json['facul'] ?? '',
-    yearName: json['yearName'] ?? '',
-    facultyId: json['facultyID'],
+    name: json['name']?.toString() ?? '',
+    id: (json['id'] as num).toInt(),
+    kurs: (json['kurs'] as num?)?.toInt(),
+    facul: json['facul']?.toString() ?? '',
+    yearName: json['yearName']?.toString() ?? '',
+    facultyId: (json['facultyID'] as num?)?.toInt(),
   );
-
-  Map<String, dynamic> toJson() => {
-    'name': name,
-    'id': id,
-    'kurs': kurs,
-    'facul': facul,
-    'yearName': yearName,
-    'facultyID': facultyId,
-  };
 }

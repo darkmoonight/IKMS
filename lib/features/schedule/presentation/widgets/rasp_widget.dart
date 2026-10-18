@@ -19,12 +19,20 @@ class RaspWidget extends ConsumerStatefulWidget {
     super.key,
     required this.isLoaded,
     required this.raspElements,
+    this.isError = false,
+    this.onRetry,
     this.onBackPressed,
     this.headerText,
   });
 
   /// Whether schedule data has finished loading.
   final bool isLoaded;
+
+  /// Whether the last load failed.
+  final bool isError;
+
+  /// Retry callback when [isError] is true.
+  final VoidCallback? onRetry;
 
   /// Live schedule entries to display.
   final ValueNotifier<List<Schedule>> raspElements;
@@ -45,6 +53,10 @@ class _RaspWidgetState extends ConsumerState<RaspWidget> {
 
   DateTime _selectedDay = normalizeDate(DateTime.now());
   CalendarFormat _calendarFormat = CalendarFormat.week;
+
+  DateTime _cachedFirstDay = DateTime.now();
+  DateTime _cachedLastDay = DateTime.now();
+  Map<DateTime, int> _eventCountsByDay = {};
 
   static const List<MaterialColor> _eventColors = <MaterialColor>[
     Colors.lightGreen,
@@ -97,7 +109,40 @@ class _RaspWidgetState extends ConsumerState<RaspWidget> {
     _bannerAd = banner;
   }
 
+  void _rebuildScheduleCaches() {
+    final items = widget.raspElements.value;
+    if (items.isEmpty) {
+      final now = DateTime.now();
+      _cachedFirstDay = now;
+      _cachedLastDay = now;
+      _eventCountsByDay = {};
+      return;
+    }
+
+    var minDate = items.first.date;
+    var maxDate = items.first.date;
+    final pairsByDay = <DateTime, Set<int>>{};
+
+    for (final schedule in items) {
+      if (schedule.date.isBefore(minDate)) minDate = schedule.date;
+      if (schedule.date.isAfter(maxDate)) maxDate = schedule.date;
+      final key = DateTime(
+        schedule.date.year,
+        schedule.date.month,
+        schedule.date.day,
+      );
+      (pairsByDay[key] ??= <int>{}).add(schedule.pair);
+    }
+
+    _cachedFirstDay = minDate;
+    _cachedLastDay = maxDate;
+    _eventCountsByDay = {
+      for (final entry in pairsByDay.entries) entry.key: entry.value.length,
+    };
+  }
+
   void _initializeSchedule() {
+    _rebuildScheduleCaches();
     setState(() {
       if (_selectedDay.isAfter(_lastDay)) {
         _selectedDay = _lastDay;
@@ -110,17 +155,9 @@ class _RaspWidgetState extends ConsumerState<RaspWidget> {
     });
   }
 
-  DateTime get _firstDay => widget.raspElements.value.isNotEmpty
-      ? widget.raspElements.value
-            .reduce((a, b) => a.date.isBefore(b.date) ? a : b)
-            .date
-      : DateTime.now();
+  DateTime get _firstDay => _cachedFirstDay;
 
-  DateTime get _lastDay => widget.raspElements.value.isNotEmpty
-      ? widget.raspElements.value
-            .reduce((a, b) => a.date.isAfter(b.date) ? a : b)
-            .date
-      : DateTime.now();
+  DateTime get _lastDay => _cachedLastDay;
 
   DateTime get _normalizedSelectedDay {
     if (_selectedDay.isAfter(_lastDay)) return _lastDay;
@@ -129,16 +166,8 @@ class _RaspWidgetState extends ConsumerState<RaspWidget> {
   }
 
   int _getEventCountForDay(DateTime date) {
-    final schedulesOnDay = widget.raspElements.value
-        .where((element) => isSameDay(element.date, date))
-        .toList();
-
-    final Set<int> uniquePairs = {};
-    for (final schedule in schedulesOnDay) {
-      uniquePairs.add(schedule.pair);
-    }
-
-    return uniquePairs.length;
+    final key = DateTime(date.year, date.month, date.day);
+    return _eventCountsByDay[key] ?? 0;
   }
 
   void _onDaySelected(DateTime selected, DateTime focused) {
@@ -347,6 +376,35 @@ class _RaspWidgetState extends ConsumerState<RaspWidget> {
 
   Widget _buildEmptySchedule() =>
       ListEmpty(img: 'assets/images/no.png', text: 'no_par'.tr);
+
+  Widget _buildErrorState() => Center(
+    child: Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.error_outline,
+            size: 60,
+            color: Theme.of(context).colorScheme.error,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'error_loading_data'.tr,
+            style: Theme.of(context).textTheme.titleMedium,
+            textAlign: TextAlign.center,
+          ),
+          if (widget.onRetry != null) ...[
+            const SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: widget.onRetry,
+              child: Text('try_again'.tr),
+            ),
+          ],
+        ],
+      ),
+    ),
+  );
 
   List<Schedule> _getGroupedSchedules() {
     final Map<String, List<Schedule>> grouped = {};
@@ -558,6 +616,7 @@ class _RaspWidgetState extends ConsumerState<RaspWidget> {
       } else {
         _ensureBanner();
       }
+      setState(() {});
     });
 
     return Scaffold(
@@ -571,16 +630,18 @@ class _RaspWidgetState extends ConsumerState<RaspWidget> {
               child: Visibility(
                 visible: widget.isLoaded,
                 replacement: _buildLoadingIndicator(),
-                child: Swipe(
-                  horizontalMinDisplacement: 20,
-                  onSwipeLeft: _onSwipeLeft,
-                  onSwipeRight: _onSwipeRight,
-                  child: Visibility(
-                    visible: _filteredSchedule.isNotEmpty,
-                    replacement: _buildEmptySchedule(),
-                    child: _buildScheduleList(),
-                  ),
-                ),
+                child: widget.isError
+                    ? _buildErrorState()
+                    : Swipe(
+                        horizontalMinDisplacement: 20,
+                        onSwipeLeft: _onSwipeLeft,
+                        onSwipeRight: _onSwipeRight,
+                        child: Visibility(
+                          visible: _filteredSchedule.isNotEmpty,
+                          replacement: _buildEmptySchedule(),
+                          child: _buildScheduleList(),
+                        ),
+                      ),
               ),
             ),
             ?_buildAdBanner(),

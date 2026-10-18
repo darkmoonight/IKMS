@@ -46,7 +46,14 @@ final settingsRepositoryProvider = Provider<SettingsRepository>((ref) {
 
 /// Schedule cache repository.
 final scheduleRepositoryProvider = Provider<ScheduleRepository>((ref) {
-  return ScheduleRepository(ref.watch(isarProvider));
+  return ScheduleRepository(
+    ref.watch(isarProvider),
+    onSelectedGroupCleared: () async {
+      await ref
+          .read(settingsRepositoryProvider)
+          .clearGroup(ref.read(bootstrapProvider).settings);
+    },
+  );
 });
 
 /// Todos persistence repository.

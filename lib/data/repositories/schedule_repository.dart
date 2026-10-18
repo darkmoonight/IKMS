@@ -7,9 +7,15 @@ import 'package:ikms/data/universities/university_registry.dart';
 
 /// Caches schedule catalogs and entity schedules with a TTL policy.
 class ScheduleRepository {
-  ScheduleRepository(this._isar);
+  ScheduleRepository(this._isar, {this.onSelectedGroupCleared});
 
   final Isar _isar;
+
+  /// Called when a catalog sync deletes the currently selected group row.
+  ///
+  /// Settings persistence must go through [SettingsRepository.clearGroup] —
+  /// this callback should not write Settings itself.
+  final Future<void> Function()? onSelectedGroupCleared;
 
   static const int defaultCacheHours = 12;
 
@@ -70,6 +76,17 @@ class ScheduleRepository {
           .map((e) => e.id)
           .toList();
 
+      var selectedGroupWasDeleted = false;
+      if (oldIds.isNotEmpty && T == GroupSchedule) {
+        final settings = await _isar.settings.where().findFirst();
+        if (settings != null) {
+          await settings.group.load();
+          final selectedId = settings.group.value?.id;
+          selectedGroupWasDeleted =
+              selectedId != null && oldIds.contains(selectedId);
+        }
+      }
+
       await _isar.writeTxn(() async {
         if (oldIds.isNotEmpty) {
           await collection.deleteAll(oldIds);
@@ -83,6 +100,10 @@ class ScheduleRepository {
         lastUpdateSetter(university, DateTime.now());
         await _isar.universitys.put(university);
       });
+
+      if (selectedGroupWasDeleted) {
+        await onSelectedGroupCleared?.call();
+      }
       return true;
     } catch (e) {
       if (kDebugMode) {
@@ -134,6 +155,22 @@ class ScheduleRepository {
     );
   }
 
+  /// Persists [schedules] on [entity] unless the fetch is empty.
+  Future<void> _persistEntitySchedules<T extends ScheduleData>({
+    required T entity,
+    required List<Schedule> schedules,
+    required Future<Id> Function(T) put,
+  }) async {
+    if (schedules.isEmpty) {
+      return;
+    }
+    await _isar.writeTxn(() async {
+      entity.lastUpdate = DateTime.now();
+      entity.schedules = schedules;
+      await put(entity);
+    });
+  }
+
   /// Refreshes a single audience schedule when stale or [forceRefresh] is true.
   Future<AudienceSchedule> cacheAudienceSchedule(
     University university,
@@ -148,11 +185,11 @@ class ScheduleRepository {
       try {
         final remoteId = UniversityEntityId.remoteId(entity.id);
         final schedules = await api.getRaspsAudElementData(remoteId);
-        await _isar.writeTxn(() async {
-          entity.lastUpdate = DateTime.now();
-          entity.schedules = schedules;
-          await _isar.audienceSchedules.put(entity);
-        });
+        await _persistEntitySchedules(
+          entity: entity,
+          schedules: schedules,
+          put: _isar.audienceSchedules.put,
+        );
       } catch (e) {
         if (kDebugMode) {
           debugPrint('$e');
@@ -176,11 +213,11 @@ class ScheduleRepository {
       try {
         final remoteId = UniversityEntityId.remoteId(entity.id);
         final schedules = await api.getRaspsGroupElementData(remoteId);
-        await _isar.writeTxn(() async {
-          entity.lastUpdate = DateTime.now();
-          entity.schedules = schedules;
-          await _isar.groupSchedules.put(entity);
-        });
+        await _persistEntitySchedules(
+          entity: entity,
+          schedules: schedules,
+          put: _isar.groupSchedules.put,
+        );
       } catch (e) {
         if (kDebugMode) {
           debugPrint('$e');
@@ -204,11 +241,11 @@ class ScheduleRepository {
       try {
         final remoteId = UniversityEntityId.remoteId(entity.id);
         final schedules = await api.getRaspsProfElementData(remoteId);
-        await _isar.writeTxn(() async {
-          entity.lastUpdate = DateTime.now();
-          entity.schedules = schedules;
-          await _isar.teacherSchedules.put(entity);
-        });
+        await _persistEntitySchedules(
+          entity: entity,
+          schedules: schedules,
+          put: _isar.teacherSchedules.put,
+        );
       } catch (e) {
         if (kDebugMode) {
           debugPrint('$e');

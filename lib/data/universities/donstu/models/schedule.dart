@@ -6,17 +6,18 @@ class Rasp {
   final int state;
   final String msg;
 
-  factory Rasp.fromJson(Map<String, dynamic> json) => Rasp(
-    data: DataRasp.fromJson(json['data']),
-    state: json['state'],
-    msg: json['msg'],
-  );
-
-  Map<String, dynamic> toJson() => {
-    'data': data.toJson(),
-    'state': state,
-    'msg': msg,
-  };
+  factory Rasp.fromJson(Map<String, dynamic> json) {
+    final dataRaw = json['data'];
+    return Rasp(
+      data: DataRasp.fromJson(
+        dataRaw is Map
+            ? Map<String, dynamic>.from(dataRaw)
+            : const <String, dynamic>{},
+      ),
+      state: (json['state'] as num?)?.toInt() ?? 0,
+      msg: json['msg']?.toString() ?? '',
+    );
+  }
 }
 
 /// JSON DTO [DataRasp] used by the DonSTU API layer.
@@ -38,12 +39,6 @@ class DataRasp {
     ),
     info: Info.fromJson(json['info'] ?? {}),
   );
-
-  Map<String, dynamic> toJson() => {
-    'isCyclicalSchedule': isCyclicalSchedule,
-    'rasp': List<dynamic>.from(rasp.map((x) => x.toJson())),
-    'info': info.toJson(),
-  };
 }
 
 /// JSON DTO [Info] used by the DonSTU API layer.
@@ -95,22 +90,6 @@ class Info {
     lastDate: json['lastDate'] ?? '',
     dateUploadingRasp: json['dateUploadingRasp'] ?? '',
   );
-
-  Map<String, dynamic> toJson() => {
-    'group': group.toJson(),
-    'prepod': prepod.toJson(),
-    'aud': aud.toJson(),
-    'year': year,
-    'curWeekNumber': curWeekNumber,
-    'curNumNed': curNumNed,
-    'selectedNumNed': selectedNumNed,
-    'curSem': curSem,
-    'typesWeek': List<dynamic>.from(typesWeek.map((x) => x.toJson())),
-    'fixedInCache': fixedInCache,
-    'date': date,
-    'lastDate': lastDate,
-    'dateUploadingRasp': dateUploadingRasp,
-  };
 }
 
 /// JSON DTO [Aud] used by the DonSTU API layer.
@@ -121,8 +100,6 @@ class Aud {
 
   factory Aud.fromJson(Map<String, dynamic> json) =>
       Aud(name: json['name'] ?? '');
-
-  Map<String, dynamic> toJson() => {'name': name};
 }
 
 /// JSON DTO [Group] used by the DonSTU API layer.
@@ -134,8 +111,6 @@ class Group {
 
   factory Group.fromJson(Map<String, dynamic> json) =>
       Group(name: json['name'] ?? '', groupId: json['groupID']);
-
-  Map<String, dynamic> toJson() => {'name': name, 'groupID': groupId};
 }
 
 /// JSON DTO [TypesWeek] used by the DonSTU API layer.
@@ -155,12 +130,6 @@ class TypesWeek {
     name: json['name'] ?? '',
     shortName: json['shortName'] ?? '',
   );
-
-  Map<String, dynamic> toJson() => {
-    'typeWeekID': typeWeekId,
-    'name': name,
-    'shortName': shortName,
-  };
 }
 
 /// JSON DTO [RaspElement] used by the DonSTU API layer.
@@ -272,50 +241,14 @@ class RaspElement {
     userCode: json['кодПользователя'],
     writingElement: json['элементЦиклРасписания'],
     topic: json['тема'] ?? '',
-    numberOfJobs: json['номерЗанятия'],
+    numberOfJobs: (json['номерЗанятия'] as num?)?.toInt() ?? -1,
     link: json['ссылка'],
-    creatingWebinar: json['созданиеВебинара'],
+    creatingWebinar: json['созданиеВебинара'] as bool?,
     codVebinara: json['кодВебинара'],
-    webIsRestarted: json['вебинарЗапущен'],
-    codeStroke: List<int>.from(json['кодыСтрок'].map((x) => x)),
+    webIsRestarted: json['вебинарЗапущен'] as bool?,
+    codeStroke: [
+      for (final x in (json['кодыСтрок'] as List? ?? const []))
+        if (x is num) x.toInt(),
+    ],
   );
-
-  Map<String, dynamic> toJson() => {
-    'код': code,
-    'дата': date,
-    'начало': beginning,
-    'датаНачала': datanachala,
-    'датаОкончания': endDate,
-    'конец': end,
-    'деньНедели': weekday,
-    'день_недели': weekDay,
-    'почта': mail,
-    'день': day,
-    'код_Семестра': codeSemester,
-    'типНедели': typeWeeks,
-    'номерПодгруппы': numberGroups,
-    'дисциплина': discipline,
-    'преподаватель': teacher,
-    'должность': position,
-    'аудитория': audience,
-    'учебныйГод': academicYear,
-    'группа': group,
-    'custom1': custom1,
-    'часы': clock,
-    'неделяНачала': nedelyanachala,
-    'неделяОкончания': nedelyaokonchaniya,
-    'замена': replacement,
-    'кодПреподавателя': codePreducer,
-    'кодГруппы': codeGroup,
-    'фиоПреподавателя': fiopreducer,
-    'кодПользователя': userCode,
-    'элементЦиклРасписания': writingElement,
-    'тема': topic,
-    'номерЗанятия': numberOfJobs,
-    'ссылка': link,
-    'созданиеВебинара': creatingWebinar,
-    'кодВебинара': codVebinara,
-    'вебинарЗапущен': webIsRestarted,
-    'кодыСтрок': List<dynamic>.from(codeStroke.map((x) => x)),
-  };
 }

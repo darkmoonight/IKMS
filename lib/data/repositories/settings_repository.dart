@@ -37,4 +37,14 @@ class SettingsRepository {
     });
     onSaved?.call();
   }
+
+  /// Clears the selected group link on [settings] and persists it.
+  Future<void> clearGroup(Settings settings) async {
+    settings.group.value = null;
+    await _isar.writeTxn(() async {
+      await _isar.settings.put(settings);
+      await settings.group.save();
+    });
+    onSaved?.call();
+  }
 }

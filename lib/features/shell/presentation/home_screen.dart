@@ -17,24 +17,43 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int tabIndex = 0;
-  final List<Widget> pages = const [
-    MySchedulePage(),
-    ProfessorsPage(),
-    GroupsPage(isSettings: false),
-    AudiencesPage(),
-    TaskPage(),
-    SettingsPage(),
-  ];
+  static const _tabCount = 6;
 
-  void changeTabIndex(int index) => setState(() => tabIndex = index);
+  int tabIndex = 0;
+
+  /// Tabs opened at least once stay mounted (keep-alive after first visit).
+  final Set<int> _visited = {0};
+  final List<Widget?> _pages = List<Widget?>.filled(_tabCount, null);
+
+  void changeTabIndex(int index) => setState(() {
+    tabIndex = index;
+    _visited.add(index);
+  });
+
+  Widget _pageFor(int index) {
+    return _pages[index] ??= switch (index) {
+      0 => const MySchedulePage(),
+      1 => const ProfessorsPage(),
+      2 => const GroupsPage(isSettings: false),
+      3 => const AudiencesPage(),
+      4 => const TaskPage(),
+      5 => const SettingsPage(),
+      _ => const SizedBox.shrink(),
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
     final isMobile = ResponsiveUtils.isMobile(context);
 
     return Scaffold(
-      body: IndexedStack(index: tabIndex, children: pages),
+      body: IndexedStack(
+        index: tabIndex,
+        children: [
+          for (var i = 0; i < _tabCount; i++)
+            _visited.contains(i) ? _pageFor(i) : const SizedBox.shrink(),
+        ],
+      ),
       floatingActionButton: _buildFloatingActionButton(context),
       bottomNavigationBar: _buildBottomNavigationBar(isMobile),
     );

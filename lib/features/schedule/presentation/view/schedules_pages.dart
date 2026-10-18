@@ -10,6 +10,7 @@ import 'package:ikms/features/schedule/presentation/widgets/rasp_widget.dart';
 abstract class BaseSchedulePageState<T extends ConsumerStatefulWidget>
     extends ConsumerState<T> {
   bool isLoaded = false;
+  bool isError = false;
   final ValueNotifier<List<Schedule>> raspData = ValueNotifier(<Schedule>[]);
 
   @protected
@@ -36,6 +37,8 @@ abstract class BaseSchedulePageState<T extends ConsumerStatefulWidget>
     onRefresh: () => loadData(forceRefresh: true),
     child: RaspWidget(
       isLoaded: isLoaded,
+      isError: isError,
+      onRetry: () => loadData(forceRefresh: true),
       raspElements: raspData,
       onBackPressed: onBackPressed,
       headerText: headerText,
@@ -81,14 +84,28 @@ class _MySchedulePageState extends BaseSchedulePageState<MySchedulePage> {
             .read(scheduleRepositoryProvider)
             .cacheGroupSchedule(university, group, forceRefresh: forceRefresh);
         raspData.value = schedule.schedules.toList();
+        if (mounted) {
+          setState(() {
+            isLoaded = true;
+            isError = false;
+          });
+        }
       } else {
         raspData.value = [];
+        if (mounted) {
+          setState(() {
+            isLoaded = true;
+            isError = false;
+          });
+        }
       }
     } catch (e) {
       debugPrint('Error loading schedule: $e');
-    } finally {
       if (mounted) {
-        setState(() => isLoaded = true);
+        setState(() {
+          isLoaded = true;
+          isError = true;
+        });
       }
     }
   }
@@ -123,12 +140,16 @@ class _RaspDetailPageState extends BaseSchedulePageState<RaspDetailPage> {
         setState(() {
           raspData.value = schedule.schedules.toList();
           isLoaded = true;
+          isError = false;
         });
       }
     } catch (e) {
       debugPrint('Error loading schedule: $e');
       if (mounted) {
-        setState(() => isLoaded = true);
+        setState(() {
+          isLoaded = true;
+          isError = true;
+        });
       }
     }
   }

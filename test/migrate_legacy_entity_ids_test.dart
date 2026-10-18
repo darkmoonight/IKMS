@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ikms/data/models/db.dart';
 import 'package:ikms/data/universities/university_entity_id.dart';
-import 'package:ikms/data/universities/university_ids.dart';
 import 'package:ikms/data/universities/university_registry.dart';
 import 'package:isar_community/isar.dart';
 

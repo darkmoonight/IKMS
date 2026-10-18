@@ -194,10 +194,7 @@ class _TodosActionState extends ConsumerState<TodosAction>
 
     final shouldPop = await showClearTextConfirmation(
       context: context,
-      onConfirm: () {
-        _clearControllers();
-        NavigationHelper.back(context);
-      },
+      onConfirm: _clearControllers,
     );
 
     if (shouldPop == true && mounted) {

@@ -6,19 +6,23 @@ class ProfessorsData {
   final int state;
   final String msg;
 
-  factory ProfessorsData.fromJson(Map<String, dynamic> json) => ProfessorsData(
-    data: List<Professors>.from(
-      json['data'].map((x) => Professors.fromJson(x)),
-    ),
-    state: json['state'],
-    msg: json['msg'],
-  );
-
-  Map<String, dynamic> toJson() => {
-    'data': List<dynamic>.from(data.map((x) => x.toJson())),
-    'state': state,
-    'msg': msg,
-  };
+  factory ProfessorsData.fromJson(Map<String, dynamic> json) {
+    final raw = json['data'];
+    final entries = <Professors>[];
+    if (raw is List) {
+      for (final item in raw) {
+        if (item is! Map) continue;
+        final map = Map<String, dynamic>.from(item);
+        if (map['id'] == null) continue;
+        entries.add(Professors.fromJson(map));
+      }
+    }
+    return ProfessorsData(
+      data: entries,
+      state: (json['state'] as num?)?.toInt() ?? 0,
+      msg: json['msg']?.toString() ?? '',
+    );
+  }
 }
 
 /// JSON DTO [Professors] used by the DonSTU API layer.
@@ -36,16 +40,9 @@ class Professors {
   final bool? idFromRasp;
 
   factory Professors.fromJson(Map<String, dynamic> json) => Professors(
-    name: json['name'] ?? '',
-    kaf: json['kaf'] ?? '',
-    id: json['id'],
-    idFromRasp: json['idFromRasp'],
+    name: json['name']?.toString() ?? '',
+    kaf: json['kaf']?.toString() ?? '',
+    id: (json['id'] as num).toInt(),
+    idFromRasp: json['idFromRasp'] as bool?,
   );
-
-  Map<String, dynamic> toJson() => {
-    'name': name,
-    'kaf': kaf,
-    'id': id,
-    'idFromRasp': idFromRasp,
-  };
 }
