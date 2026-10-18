@@ -1,15 +1,16 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ikms/core/constants/app_constants.dart';
 import 'package:ikms/core/di/context_extensions.dart';
 import 'package:ikms/core/di/providers.dart';
 import 'package:ikms/core/services/notification_service.dart';
-import 'package:ikms/data/models/db.dart';
+import 'package:ikms/domain/entities/todo_item.dart';
 import 'package:ikms/i18n/tr.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// Single todo row with checkbox, discipline, and deadline chip.
+/// Single task row with checkbox, discipline, and deadline chip.
 class TodosCard extends ConsumerStatefulWidget {
-  /// Creates a todo card for [todo].
+  /// Creates a task card for [item].
   const TodosCard({
     super.key,
     required this.todo,
@@ -17,8 +18,8 @@ class TodosCard extends ConsumerStatefulWidget {
     required this.onTap,
   });
 
-  /// Todo shown by this card.
-  final Todos todo;
+  /// Task shown by this card.
+  final TodoItem todo;
 
   /// Long-press handler (typically starts multi-select).
   final VoidCallback onLongPress;
@@ -30,7 +31,37 @@ class TodosCard extends ConsumerStatefulWidget {
   ConsumerState<TodosCard> createState() => _TodosCardState();
 }
 
-class _TodosCardState extends ConsumerState<TodosCard> {
+class _TodosCardState extends ConsumerState<TodosCard>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _dismissController;
+  late final Animation<double> _dismissAnimation;
+  bool _busy = false;
+
+  /// Local check state so the Material checkbox can animate before dismiss.
+  bool? _optimisticDone;
+
+  bool get _displayDone => _optimisticDone ?? widget.todo.done;
+
+  @override
+  void initState() {
+    super.initState();
+    _dismissController = AnimationController(
+      vsync: this,
+      duration: AppConstants.animationDuration,
+      value: 1,
+    );
+    _dismissAnimation = CurvedAnimation(
+      parent: _dismissController,
+      curve: Curves.easeInOutCubic,
+    );
+  }
+
+  @override
+  void dispose() {
+    _dismissController.dispose();
+    super.dispose();
+  }
+
   String _formatDate(DateTime? date) {
     if (date == null) return '';
     final now = DateTime.now();
@@ -52,13 +83,13 @@ class _TodosCardState extends ConsumerState<TodosCard> {
     }
   }
 
-  Color _getDeadlineColor(Todos todo) {
+  Color _getDeadlineColor(TodoItem todo) {
     if (todo.done) return Theme.of(context).colorScheme.onSurfaceVariant;
-    if (todo.todoCompletedTime == null) {
+    if (todo.completedAt == null) {
       return Theme.of(context).colorScheme.onSurfaceVariant;
     }
 
-    final diff = todo.todoCompletedTime!.difference(DateTime.now());
+    final diff = todo.completedAt!.difference(DateTime.now());
     if (diff.inDays < 1) {
       return Theme.of(context).colorScheme.error;
     } else if (diff.inDays < 3) {
@@ -72,104 +103,116 @@ class _TodosCardState extends ConsumerState<TodosCard> {
     final todoState = ref.watch(todoNotifierProvider);
     final isSelected =
         todoState.isMultiSelectionTodo &&
-        todoState.selectedTodo.contains(widget.todo);
+        todoState.selectedTodo.any((t) => t.id == widget.todo.id);
 
-    return GestureDetector(
-      onTap: widget.onTap,
-      onLongPress: widget.onLongPress,
-      child: Card(
-        shape: isSelected
-            ? RoundedRectangleBorder(
-                side: BorderSide(
-                  color: Theme.of(context).colorScheme.primary,
-                  width: 2,
-                ),
-                borderRadius: BorderRadius.circular(20),
-              )
-            : null,
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              Checkbox(
-                value: widget.todo.done,
-                shape: const CircleBorder(),
-                onChanged: _handleCheckboxChanged,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 2,
-                  children: [
-                    Text(
-                      widget.todo.name,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        decoration: widget.todo.done
-                            ? TextDecoration.lineThrough
-                            : null,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+    return SizeTransition(
+      sizeFactor: _dismissAnimation,
+      axisAlignment: -1,
+      child: FadeTransition(
+        opacity: _dismissAnimation,
+        child: GestureDetector(
+          onTap: _busy ? null : widget.onTap,
+          onLongPress: _busy ? null : widget.onLongPress,
+          child: Card(
+            shape: isSelected
+                ? RoundedRectangleBorder(
+                    side: BorderSide(
+                      color: Theme.of(context).colorScheme.primary,
+                      width: 2,
                     ),
-                    Row(
+                    borderRadius: BorderRadius.circular(20),
+                  )
+                : null,
+            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: [
+                  Checkbox(
+                    value: _displayDone,
+                    shape: const CircleBorder(),
+                    onChanged: _busy ? null : _handleCheckboxChanged,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 2,
                       children: [
-                        Expanded(
-                          child: Text(
-                            widget.todo.discipline,
-                            style: Theme.of(context).textTheme.labelSmall
-                                ?.copyWith(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSurfaceVariant,
-                                ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                        Text(
+                          widget.todo.name,
+                          style: Theme.of(context).textTheme.titleSmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                decoration: _displayDone
+                                    ? TextDecoration.lineThrough
+                                    : null,
+                              ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        if (widget.todo.todoCompletedTime != null) ...[
-                          const SizedBox(width: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 6,
-                              vertical: 2,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                widget.todo.discipline,
+                                style: Theme.of(context).textTheme.labelSmall
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurfaceVariant,
+                                    ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                            decoration: BoxDecoration(
-                              color:
-                                  _getDeadlineColor(widget.todo) ==
-                                      Theme.of(context).colorScheme.error
-                                  ? Theme.of(context).colorScheme.errorContainer
-                                  : Theme.of(context)
-                                        .colorScheme
-                                        .tertiaryContainer,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            child: Text(
-                              _formatDate(widget.todo.todoCompletedTime),
-                              style: Theme.of(context).textTheme.labelSmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color:
-                                        _getDeadlineColor(widget.todo) ==
-                                            Theme.of(context).colorScheme.error
-                                        ? Theme.of(context)
-                                              .colorScheme
-                                              .onErrorContainer
-                                        : Theme.of(context)
-                                              .colorScheme
-                                              .onTertiaryContainer,
-                                  ),
-                            ),
-                          ),
-                        ],
+                            if (widget.todo.completedAt != null) ...[
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color:
+                                      _getDeadlineColor(widget.todo) ==
+                                          Theme.of(context).colorScheme.error
+                                      ? Theme.of(context)
+                                            .colorScheme
+                                            .errorContainer
+                                      : Theme.of(context)
+                                            .colorScheme
+                                            .tertiaryContainer,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Text(
+                                  _formatDate(widget.todo.completedAt),
+                                  style: Theme.of(context).textTheme.labelSmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        color:
+                                            _getDeadlineColor(widget.todo) ==
+                                                Theme.of(context)
+                                                    .colorScheme
+                                                    .error
+                                            ? Theme.of(context)
+                                                  .colorScheme
+                                                  .onErrorContainer
+                                            : Theme.of(context)
+                                                  .colorScheme
+                                                  .onTertiaryContainer,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -177,26 +220,36 @@ class _TodosCardState extends ConsumerState<TodosCard> {
   }
 
   Future<void> _handleCheckboxChanged(bool? value) async {
-    if (value == null) return;
+    if (value == null || _busy) return;
+    _busy = true;
+    setState(() => _optimisticDone = value);
 
-    setState(() => widget.todo.done = value);
+    // Let the checkbox checkmark / strikethrough paint before collapse.
+    await Future<void>.delayed(AppConstants.shortAnimation);
+    if (!mounted) return;
+
+    // Collapse while the row still matches the current tab filter.
+    await _dismissController.reverse();
+    if (!mounted) return;
+
+    final updated = widget.todo.copyWith(done: value);
 
     final plugin = ref.read(notificationsPluginProvider);
     if (value) {
-      await plugin.cancel(id: widget.todo.id);
+      await plugin.cancel(id: updated.id);
     } else {
-      final deadline = widget.todo.todoCompletedTime;
+      final deadline = updated.completedAt;
       if (deadline != null && deadline.isAfter(DateTime.now())) {
         await NotificationShow(plugin).showNotification(
-          widget.todo.id,
-          widget.todo.name,
-          widget.todo.discipline,
+          updated.id,
+          updated.name,
+          updated.discipline,
           deadline,
         );
       }
     }
 
     if (!mounted) return;
-    await ref.read(todoNotifierProvider.notifier).updateTodoCheck(widget.todo);
+    await ref.read(todoNotifierProvider.notifier).updateTodoCheck(updated);
   }
 }

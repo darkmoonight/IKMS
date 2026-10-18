@@ -109,7 +109,7 @@ class Settings {
   final group = IsarLink<GroupSchedule>();
 }
 
-/// Local todo item with optional completion deadline.
+/// Local task item with optional completion deadline.
 @collection
 class Todos {
   Id id;

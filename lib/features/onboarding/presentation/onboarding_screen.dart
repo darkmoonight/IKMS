@@ -7,7 +7,7 @@ import 'package:ikms/core/utils/navigation_helper.dart';
 import 'package:ikms/core/utils/responsive_utils.dart';
 import 'package:ikms/core/utils/show_snack_bar.dart';
 import 'package:ikms/core/widgets/button.dart';
-import 'package:ikms/data/models/db.dart';
+import 'package:ikms/domain/entities/catalog_refs.dart';
 import 'package:ikms/features/selection/presentation/view/selection_pages.dart';
 import 'package:ikms/i18n/tr.dart';
 
@@ -92,26 +92,27 @@ class OnBoardingScreen extends ConsumerWidget {
   }
 
   Future<void> _handleGetStarted(BuildContext context, WidgetRef ref) async {
-    University? university;
-    GroupSchedule? group;
-    final settings = ref.read(settingsProvider);
-    final settingsRepo = ref.read(settingsRepositoryProvider);
-    final scheduleRepo = ref.read(scheduleRepositoryProvider);
+    UniversityRef? university;
+    GroupRef? group;
+    final prefsRepo = ref.read(preferencesRepositoryProvider);
+    final scheduleCache = ref.read(scheduleCachePortProvider);
 
     do {
-      university = await NavigationHelper.showAppDialog<University>(
+      university = await NavigationHelper.showAppDialog<UniversityRef>(
         context: context,
         child: const UniversityPage(),
         barrierDismissible: false,
       );
     } while (university == null);
 
-    await settingsRepo.setUniversity(settings, university);
+    await prefsRepo.setUniversity(university);
 
     if (!context.mounted) return;
     _showLoadingDialog(context);
 
-    if (!await scheduleRepo.cacheGroups(university)) {
+    try {
+      await scheduleCache.cacheGroups(university.id);
+    } catch (_) {
       if (context.mounted) NavigationHelper.back(context);
       showSnackBar('failed_to_load_groups'.tr, isError: true);
       return;
@@ -120,7 +121,7 @@ class OnBoardingScreen extends ConsumerWidget {
 
     if (!context.mounted) return;
     do {
-      group = await NavigationHelper.showAppDialog<GroupSchedule>(
+      group = await NavigationHelper.showAppDialog<GroupRef>(
         context: context,
         child: const GroupsPage(isSettings: false),
         barrierDismissible: false,
@@ -130,12 +131,13 @@ class OnBoardingScreen extends ConsumerWidget {
     if (!context.mounted) return;
     _showLoadingDialog(context);
 
-    group = await scheduleRepo.cacheGroupSchedule(university, group);
+    await scheduleCache.cacheGroupLessons(university.id, group.id);
     if (!context.mounted) return;
     NavigationHelper.back(context);
 
-    group.university.value = university;
-    await settingsRepo.setGroup(settings, group);
+    await prefsRepo.setGroup(
+      GroupRef(id: group.id, name: group.name, universityId: university.id),
+    );
     if (context.mounted) {
       context.go(AppRoutes.home);
     }

@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:ikms/data/models/db.dart';
+import 'package:ikms/domain/entities/app_preferences.dart';
 import 'package:ikms/i18n/locale_utils.dart';
 
 /// In-memory snapshot of user-facing app settings for UI and services.
@@ -25,12 +25,14 @@ class AppSettingsState {
     locale: locale ?? this.locale,
   );
 
-  /// Builds the live snapshot from persisted [Settings].
-  factory AppSettingsState.fromSettings(Settings settings) {
+  /// Builds the live snapshot from [AppPreferences].
+  factory AppSettingsState.fromPreferences(AppPreferences preferences) {
     return AppSettingsState(
-      amoledTheme: settings.amoledTheme,
-      materialColor: settings.materialColor,
-      locale: flutterLocaleOf(appLocaleFromLanguageCode(settings.language)),
+      amoledTheme: preferences.amoledTheme,
+      materialColor: preferences.materialColor,
+      locale: flutterLocaleOf(
+        appLocaleFromLanguageCode(preferences.languageCode),
+      ),
     );
   }
 }

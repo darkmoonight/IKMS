@@ -8,9 +8,9 @@ import 'package:ikms/features/todos/presentation/widgets/todos_list.dart';
 import 'package:ikms/i18n/tr.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// Todos tab with search, doing/done tabs, and multi-select actions.
+/// Tasks tab with search, doing/done tabs, and multi-select actions.
 class TaskPage extends ConsumerStatefulWidget {
-  /// Creates the todos page.
+  /// Creates the tasks page.
   const TaskPage({super.key});
 
   @override

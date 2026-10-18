@@ -2,24 +2,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:ikms/core/di/provider_refs.dart';
 import 'package:ikms/core/services/connectivity_service.dart';
-import 'package:ikms/data/models/db.dart';
-import 'package:ikms/data/repositories/schedule_repository.dart';
-import 'package:ikms/i18n/locale_utils.dart';
+import 'package:ikms/core/settings/app_settings_notifier.dart';
+import 'package:ikms/domain/entities/app_preferences.dart';
+import 'package:ikms/domain/repositories/schedule_cache_port.dart';
 
 /// Convenient reads of Riverpod providers from a [BuildContext].
 extension IkmsContextX on BuildContext {
-  /// Persisted [Settings] instance from bootstrap.
-  Settings get settings =>
-      ProviderScope.containerOf(this).read(settingsProvider);
+  /// Domain preferences snapshot.
+  AppPreferences get preferences =>
+      ProviderScope.containerOf(this).read(preferencesProvider);
 
-  /// Schedule cache repository.
-  ScheduleRepository get scheduleRepository =>
-      ProviderScope.containerOf(this).read(scheduleRepositoryProvider);
+  /// Domain schedule cache port.
+  ScheduleCachePort get scheduleCache =>
+      ProviderScope.containerOf(this).read(scheduleCachePortProvider);
 
   /// Online-status notifier.
   ValueNotifier<Future<bool>> get isOnline => ConnectivityService.isOnline;
 
-  /// Active UI locale derived from persisted language settings.
-  Locale get appLocale =>
-      flutterLocaleOf(appLocaleFromLanguageCode(settings.language));
+  /// Active UI locale from [localeProvider].
+  Locale get appLocale => ProviderScope.containerOf(this).read(localeProvider);
 }

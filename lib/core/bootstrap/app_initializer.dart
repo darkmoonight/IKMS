@@ -1,5 +1,5 @@
-import 'package:display_mode/display_mode.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:isar_community/isar.dart';
@@ -86,25 +86,13 @@ class AppInitializer {
     await plugin.initialize(settings: settings);
   }
 
-  /// Picks the highest refresh rate matching the current display resolution.
+  /// Enables the highest refresh rate at the current resolution (Android).
   static Future<void> _setOptimalDisplayMode() async {
     try {
-      final supported = await FlutterDisplayMode.supported;
-      final active = await FlutterDisplayMode.active;
-      final sameResolution =
-          supported
-              .where(
-                (m) => m.width == active.width && m.height == active.height,
-              )
-              .toList()
-            ..sort((a, b) => b.refreshRate.compareTo(a.refreshRate));
-      final mostOptimalMode = sameResolution.isNotEmpty
-          ? sameResolution.first
-          : active;
-      await FlutterDisplayMode.setPreferredMode(mostOptimalMode);
+      await FlutterDisplayMode.setHighRefreshRate();
     } catch (e) {
       if (kDebugMode) {
-        debugPrint('display_mode: $e');
+        debugPrint('flutter_displaymode: $e');
       }
     }
   }

@@ -1,18 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ikms/core/widgets/list_empty.dart';
-import 'package:ikms/data/models/db.dart';
+import 'package:ikms/domain/entities/todo_item.dart';
 import 'package:ikms/features/todos/application/todo_notifier.dart';
 import 'package:ikms/features/todos/presentation/widgets/todos_action.dart';
 import 'package:ikms/features/todos/presentation/widgets/todos_card.dart';
 import 'package:ikms/i18n/tr.dart';
 import 'package:material_ui/material_ui.dart';
 
-/// Filtered list of todos for a doing/done tab.
+/// Filtered list of tasks for a doing/done tab.
 class TodosList extends ConsumerWidget {
-  /// Creates a todos list for [done] status filtered by [searchTodo].
+  /// Creates a tasks list for [done] status filtered by [searchFilter].
   const TodosList({super.key, required this.done, required this.searchTodo});
 
-  /// Whether to show completed todos.
+  /// Whether to show completed tasks.
   final bool done;
 
   /// Case-insensitive name filter.
@@ -30,7 +30,7 @@ class TodosList extends ConsumerWidget {
     return _buildTodoList(context, ref, filteredTodos, todoState);
   }
 
-  List<Todos> _filterTodos(List<Todos> todos) => todos
+  List<TodoItem> _filterTodos(List<TodoItem> todos) => todos
       .where(
         (todo) =>
             todo.done == done &&
@@ -47,7 +47,7 @@ class TodosList extends ConsumerWidget {
   Widget _buildTodoList(
     BuildContext context,
     WidgetRef ref,
-    List<Todos> todos,
+    List<TodoItem> todos,
     TodoState todoState,
   ) => ListView.builder(
     itemCount: todos.length,
@@ -58,7 +58,7 @@ class TodosList extends ConsumerWidget {
   Widget _buildTodoItem(
     BuildContext context,
     WidgetRef ref,
-    Todos todo,
+    TodoItem todo,
     TodoState todoState,
   ) => TodosCard(
     key: ValueKey(todo.id),
@@ -71,7 +71,7 @@ class TodosList extends ConsumerWidget {
   void _handleTodoTap(
     BuildContext context,
     WidgetRef ref,
-    Todos todo,
+    TodoItem todo,
     TodoState todoState,
   ) {
     if (todoState.isMultiSelectionTodo) {
@@ -81,7 +81,7 @@ class TodosList extends ConsumerWidget {
     }
   }
 
-  void _showTodoActions(BuildContext context, Todos todo) =>
+  void _showTodoActions(BuildContext context, TodoItem todo) =>
       showModalBottomSheet(
         enableDrag: false,
         context: context,

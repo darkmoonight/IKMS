@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
 import 'package:ikms/core/constants/app_constants.dart';
@@ -6,16 +5,17 @@ import 'package:ikms/core/di/providers.dart';
 import 'package:ikms/core/utils/navigation_helper.dart';
 import 'package:ikms/core/utils/responsive_utils.dart';
 import 'package:ikms/core/widgets/confirmation_dialog.dart';
-import 'package:ikms/core/widgets/text_form.dart';
-import 'package:ikms/data/models/db.dart';
+import 'package:ikms/domain/entities/todo_item.dart';
+import 'package:ikms/features/todos/presentation/widgets/todos_action_form.dart';
+import 'package:ikms/features/todos/presentation/widgets/todos_editing_controller.dart';
 import 'package:ikms/i18n/tr.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
-/// Bottom sheet form for creating or editing a todo.
+/// Bottom sheet form for creating or editing a task.
 class TodosAction extends ConsumerStatefulWidget {
-  /// Creates a create/edit todo sheet.
+  /// Creates a create/edit task sheet.
   const TodosAction({
     super.key,
     required this.text,
@@ -26,11 +26,11 @@ class TodosAction extends ConsumerStatefulWidget {
   /// Header title text.
   final String text;
 
-  /// Whether the form edits an existing todo.
+  /// Whether the form edits an existing task.
   final bool edit;
 
-  /// Todo being edited, if any.
-  final Todos? todo;
+  /// Task being edited, if any.
+  final TodoItem? todo;
 
   @override
   ConsumerState<TodosAction> createState() => _TodosActionState();
@@ -43,11 +43,11 @@ class _TodosActionState extends ConsumerState<TodosAction>
   late final TextEditingController _titleController;
   late final TextEditingController _timeController;
 
-  Schedule? _selectedDiscipline;
-  List<Schedule> _disciplineList = [];
+  String? _selectedDiscipline;
+  List<String> _disciplineList = [];
   bool _isLoading = true;
 
-  late final _EditingController _editingController;
+  late final TodosEditingController _editingController;
 
   late final AnimationController _animationController;
   late final Animation<double> _fadeAnimation;
@@ -71,12 +71,12 @@ class _TodosActionState extends ConsumerState<TodosAction>
       ref.read(appSettingsProvider).locale.languageCode,
     ).add_Hm();
     if (widget.edit &&
-        widget.todo?.todoCompletedTime != null &&
+        widget.todo?.completedAt != null &&
         _timeController.text.isEmpty) {
-      _timeController.text = _dateFormatter.format(
-        widget.todo!.todoCompletedTime!,
-      );
+      _timeController.text = _dateFormatter.format(widget.todo!.completedAt!);
       _editingController.time.value = _timeController.text;
+      // Baseline must include hydrated deadline, or discard dialog always fires.
+      _editingController.markCurrentAsInitial();
     }
     if (!_disciplineLoadStarted) {
       _disciplineLoadStarted = true;
@@ -94,7 +94,7 @@ class _TodosActionState extends ConsumerState<TodosAction>
   }
 
   void _initializeEditingController() {
-    _editingController = _EditingController(
+    _editingController = TodosEditingController(
       _titleController.text,
       _timeController.text,
       null,
@@ -127,48 +127,30 @@ class _TodosActionState extends ConsumerState<TodosAction>
 
   Future<void> _loadDisciplineData() async {
     try {
-      final settings = ref.read(settingsProvider);
-      final group = settings.group.value;
-      final university = settings.university.value;
+      final names = await ref
+          .read(scheduleCachePortProvider)
+          .disciplineNamesForSelectedGroup();
 
-      if (group != null && university != null) {
-        final scheduleData = await ref
-            .read(scheduleRepositoryProvider)
-            .cacheGroupSchedule(university, group);
-        final seen = <String>{};
+      if (!mounted) return;
 
-        if (!mounted) return;
-
-        setState(() {
-          _disciplineList =
-              scheduleData.schedules
-                  .where((s) => seen.add(s.discipline))
-                  .toList()
-                ..sort(
-                  (a, b) => a.discipline.toLowerCase().compareTo(
-                    b.discipline.toLowerCase(),
-                  ),
-                );
-
-          if (widget.todo != null) {
-            Schedule? match;
-            for (final e in _disciplineList) {
-              if (e.discipline == widget.todo!.discipline) {
-                match = e;
-                break;
-              }
-            }
-            _selectedDiscipline = match;
-            _editingController.discipline.value = _selectedDiscipline;
+      setState(() {
+        _disciplineList = names;
+        if (widget.todo != null) {
+          final match = names.cast<String?>().firstWhere(
+            (n) => n == widget.todo!.discipline,
+            orElse: () => null,
+          );
+          _selectedDiscipline = match ?? widget.todo!.discipline;
+          if (_selectedDiscipline != null &&
+              !_disciplineList.contains(_selectedDiscipline)) {
+            _disciplineList = [..._disciplineList, _selectedDiscipline!];
           }
+          _editingController.discipline.value = _selectedDiscipline;
+        }
+        _isLoading = false;
+      });
 
-          _isLoading = false;
-        });
-
-        _editingController.markDisciplineAsInitial();
-      } else if (mounted) {
-        setState(() => _isLoading = false);
-      }
+      _editingController.markCurrentAsInitial();
     } catch (e) {
       debugPrint('Error loading discipline data: $e');
       if (mounted) setState(() => _isLoading = false);
@@ -292,7 +274,34 @@ class _TodosActionState extends ConsumerState<TodosAction>
                 opacity: _fadeAnimation,
                 child: SlideTransition(
                   position: _slideAnimation,
-                  child: _buildForm(context, padding),
+                  child: TodosActionForm(
+                    formKey: _formKey,
+                    padding: padding,
+                    isEdit: widget.edit,
+                    isLoading: _isLoading,
+                    titleController: _titleController,
+                    timeController: _timeController,
+                    selectedDiscipline: _selectedDiscipline,
+                    disciplineList: _disciplineList,
+                    editingController: _editingController,
+                    onTitleChanged: (value) =>
+                        _editingController.title.value = value,
+                    onDisciplineChanged: (newValue) {
+                      setState(() {
+                        _selectedDiscipline = newValue;
+                        _editingController.discipline.value = newValue;
+                      });
+                    },
+                    onTimeTap: _showDateTimePicker,
+                    onTimeCleared: () {
+                      setState(() {
+                        _timeController.clear();
+                        if (widget.edit) {
+                          _editingController.time.value = '';
+                        }
+                      });
+                    },
+                  ),
                 ),
               ),
             ),
@@ -439,272 +448,5 @@ class _TodosActionState extends ConsumerState<TodosAction>
         );
       },
     );
-  }
-
-  Widget _buildForm(BuildContext context, double padding) {
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-      ),
-      child: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(padding * 1.5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _buildBasicInfoSection(context, padding),
-              SizedBox(height: padding * 1.5),
-              _buildDisciplineSection(context, padding),
-              SizedBox(height: padding * 1.5),
-              _buildTimeSection(context, padding),
-              SizedBox(height: padding * 2),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBasicInfoSection(BuildContext context, double padding) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        MyTextForm(
-          elevation: 0,
-          margin: EdgeInsets.zero,
-          controller: _titleController,
-          labelText: 'name'.tr,
-          type: TextInputType.multiline,
-          icon: Icon(IconsaxPlusLinear.edit, color: colorScheme.primary),
-          autofocus: !widget.edit,
-          onChanged: (value) => _editingController.title.value = value,
-          validator: (value) {
-            if (value == null || value.trim().isEmpty) {
-              return 'validateName'.tr;
-            }
-            return null;
-          },
-          maxLine: null,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDisciplineSection(BuildContext context, double padding) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final isMobile = ResponsiveUtils.isMobile(context);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        DropdownButtonFormField<Schedule>(
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontSize: ResponsiveUtils.getResponsiveFontSize(context, 15),
-            color: colorScheme.onSurface,
-          ),
-          isExpanded: true,
-          initialValue: _isLoading ? null : _selectedDiscipline,
-          decoration: InputDecoration(
-            prefixIcon: Padding(
-              padding: const EdgeInsets.only(left: 8, right: 6),
-              child: IconTheme(
-                data: IconThemeData(
-                  color: colorScheme.primary,
-                  size: isMobile ? 18 : 20,
-                ),
-                child: const Icon(IconsaxPlusLinear.book_square),
-              ),
-            ),
-            labelText: _isLoading ? 'loading'.tr : 'discipline'.tr,
-            filled: true,
-            fillColor: colorScheme.surfaceContainerHighest.withValues(
-              alpha: 0.3,
-            ),
-            labelStyle: TextStyle(
-              fontSize: ResponsiveUtils.getResponsiveFontSize(context, 13),
-              color: colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w500,
-            ),
-            floatingLabelStyle: TextStyle(
-              fontSize: ResponsiveUtils.getResponsiveFontSize(context, 13),
-              color: colorScheme.primary,
-              fontWeight: FontWeight.w600,
-            ),
-            contentPadding: EdgeInsets.symmetric(
-              horizontal: isMobile ? 12 : 14,
-              vertical: isMobile ? 12 : 14,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: colorScheme.outline, width: 1),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: colorScheme.outline.withValues(alpha: 0.5),
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: colorScheme.primary, width: 2),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: colorScheme.error, width: 1),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: colorScheme.error, width: 2),
-            ),
-          ),
-          borderRadius: BorderRadius.circular(12),
-          icon: _isLoading
-              ? const SizedBox(width: 24, height: 24)
-              : Padding(
-                  padding: const EdgeInsets.only(right: 6),
-                  child: Icon(
-                    IconsaxPlusLinear.arrow_down,
-                    size: AppConstants.iconSizeSmall,
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                ),
-          items: _isLoading
-              ? []
-              : _disciplineList
-                    .map(
-                      (schedule) => DropdownMenuItem<Schedule>(
-                        value: schedule,
-                        child: Text(
-                          schedule.discipline,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    )
-                    .toList(),
-          onChanged: _isLoading
-              ? null
-              : (Schedule? newValue) {
-                  FocusScope.of(context).unfocus();
-                  setState(() {
-                    _selectedDiscipline = newValue;
-                    _editingController.discipline.value = newValue;
-                  });
-                },
-          validator: (value) {
-            if (_isLoading) return null;
-            if (value == null) return 'validateDiscipline'.tr;
-            return null;
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTimeSection(BuildContext context, double padding) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final hasTime = _timeController.text.isNotEmpty;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        MyTextForm(
-          elevation: 0,
-          margin: EdgeInsets.zero,
-          readOnly: true,
-          controller: _timeController,
-          labelText: 'timeComplete'.tr,
-          type: TextInputType.datetime,
-          icon: Icon(IconsaxPlusLinear.clock_1, color: colorScheme.primary),
-          iconButton: hasTime
-              ? IconButton(
-                  icon: Icon(
-                    IconsaxPlusLinear.close_circle,
-                    size: AppConstants.iconSizeSmall,
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _timeController.clear();
-                      if (widget.edit) {
-                        _editingController.time.value = '';
-                      }
-                    });
-                  },
-                )
-              : null,
-          onTap: _showDateTimePicker,
-        ),
-      ],
-    );
-  }
-}
-
-class _EditingController extends ChangeNotifier {
-  _EditingController(
-    this._initialTitle,
-    this._initialTime,
-    this._initialDiscipline,
-  ) {
-    _initializeListeners();
-  }
-
-  final String _initialTitle;
-  final String _initialTime;
-  Schedule? _initialDiscipline;
-
-  final ValueNotifier<String> title = ValueNotifier<String>('');
-  final ValueNotifier<String> time = ValueNotifier<String>('');
-  final ValueNotifier<Schedule?> discipline = ValueNotifier<Schedule?>(null);
-  final ValueNotifier<bool> _canCompose = ValueNotifier<bool>(false);
-  final ValueNotifier<bool> _hasChanges = ValueNotifier<bool>(false);
-
-  ValueListenable<bool> get canCompose => _canCompose;
-  ValueListenable<bool> get hasChanges => _hasChanges;
-
-  void _initializeListeners() {
-    title.value = _initialTitle;
-    time.value = _initialTime;
-    discipline.value = _initialDiscipline;
-
-    title.addListener(_updateCanCompose);
-    time.addListener(_updateCanCompose);
-    discipline.addListener(_updateCanCompose);
-  }
-
-  void markDisciplineAsInitial() {
-    _initialDiscipline = discipline.value;
-    _updateCanCompose();
-  }
-
-  void _updateCanCompose() {
-    _hasChanges.value =
-        title.value != _initialTitle ||
-        time.value != _initialTime ||
-        discipline.value?.discipline != _initialDiscipline?.discipline;
-
-    final hasContent =
-        title.value.trim().isNotEmpty && discipline.value != null;
-
-    _canCompose.value =
-        hasContent && (_hasChanges.value || _initialTitle.isEmpty);
-  }
-
-  @override
-  void dispose() {
-    title.removeListener(_updateCanCompose);
-    time.removeListener(_updateCanCompose);
-    discipline.removeListener(_updateCanCompose);
-
-    title.dispose();
-    time.dispose();
-    discipline.dispose();
-    _canCompose.dispose();
-    _hasChanges.dispose();
-    super.dispose();
   }
 }

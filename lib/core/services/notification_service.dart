@@ -1,7 +1,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 
-/// Schedules local notifications for todos.
+/// Schedules local notifications for tasks.
 class NotificationShow {
   NotificationShow(this._plugin);
 
@@ -11,7 +11,7 @@ class NotificationShow {
   final String _channelName = 'DARK NIGHT';
   final String _payload = 'notification-payload';
 
-  /// Schedules a notification at [date] for the given todo fields.
+  /// Schedules a notification at [date] for the given task fields.
   Future<void> showNotification(
     int id,
     String title,

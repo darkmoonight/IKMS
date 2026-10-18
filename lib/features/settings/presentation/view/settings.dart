@@ -1,12 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import 'package:ikms/app.dart';
 import 'package:ikms/core/di/providers.dart';
 import 'package:ikms/core/utils/navigation_helper.dart';
 import 'package:ikms/core/utils/responsive_utils.dart';
 import 'package:ikms/core/utils/show_snack_bar.dart';
 import 'package:ikms/core/widgets/confirmation_dialog.dart';
-import 'package:ikms/data/models/db.dart';
+import 'package:ikms/domain/entities/catalog_refs.dart';
 import 'package:ikms/features/selection/presentation/view/selection_pages.dart';
 import 'package:ikms/features/settings/presentation/view/app_license_page.dart';
 import 'package:ikms/features/settings/presentation/widgets/selection_dialog.dart';
@@ -29,12 +28,7 @@ class SettingsPage extends ConsumerStatefulWidget {
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
   Future<void> _updateLanguage(Locale locale) async {
-    final settings = ref.read(settingsProvider);
-    settings.language = languageCodeFromAppLocale(
-      appLocaleFromFlutterLocale(locale),
-    );
-    await ref.read(settingsRepositoryProvider).save(settings);
-    IkmsApp.updateAppState(ref, newLocale: locale);
+    await ref.read(settingsControllerProvider).setLocale(locale);
   }
 
   Future<void> _urlLauncher(String uri) async {
@@ -88,7 +82,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   }
 
   Widget _buildAppearanceSection(BuildContext context) {
-    final settings = ref.watch(settingsProvider);
+    final preferences = ref.watch(preferencesProvider);
 
     return SettingsSection(
       title: 'appearance',
@@ -97,7 +91,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         SettingsTile(
           leading: const Icon(IconsaxPlusLinear.moon),
           title: 'theme',
-          value: themePreferenceLabel(settings.theme),
+          value: themePreferenceLabel(preferences.theme),
           onTap: () => _showThemeDialog(context),
         ),
         SettingsTile(
@@ -106,7 +100,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           trailing: Transform.scale(
             scale: 0.8,
             child: Switch(
-              value: settings.amoledTheme,
+              value: preferences.amoledTheme,
               onChanged: (value) async {
                 await ref.read(themeModeProvider.notifier).saveOledTheme(value);
               },
@@ -119,7 +113,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           trailing: Transform.scale(
             scale: 0.8,
             child: Switch(
-              value: settings.materialColor,
+              value: preferences.materialColor,
               onChanged: (value) async {
                 await ref
                     .read(themeModeProvider.notifier)
@@ -133,8 +127,8 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   }
 
   Widget _buildScheduleSection(BuildContext context) {
-    final settings = ref.watch(settingsProvider);
-    final settingsRepo = ref.read(settingsRepositoryProvider);
+    final preferences = ref.watch(preferencesProvider);
+    final prefsRepo = ref.read(preferencesRepositoryProvider);
 
     return SettingsSection(
       title: 'scheduleSettings',
@@ -143,31 +137,30 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
         SettingsTile(
           leading: const Icon(IconsaxPlusLinear.buildings),
           title: 'university',
-          value: settings.university.value?.name ?? 'no_select'.tr,
+          value: preferences.university?.name ?? 'no_select'.tr,
           onTap: () async {
-            final selectionData = await NavigationHelper.slideUp<University>(
+            final selectionData = await NavigationHelper.slideUp<UniversityRef>(
               context,
               const UniversityPage(),
             );
             if (selectionData != null) {
-              await settingsRepo.setUniversity(settings, selectionData);
+              await prefsRepo.setUniversity(selectionData);
             }
           },
         ),
         SettingsTile(
           leading: const Icon(IconsaxPlusLinear.people),
           title: 'group',
-          value: settings.group.value?.name ?? 'no_select'.tr,
-          onTap: settings.university.value != null
+          value: preferences.group?.name ?? 'no_select'.tr,
+          onTap: preferences.university != null
               ? () async {
                   final selectionData =
-                      await NavigationHelper.slideUp<GroupSchedule>(
+                      await NavigationHelper.slideUp<GroupRef>(
                         context,
                         const GroupsPage(isSettings: true),
                       );
                   if (selectionData != null) {
-                    selectionData.university.value = settings.university.value;
-                    await settingsRepo.setGroup(settings, selectionData);
+                    await prefsRepo.setGroup(selectionData);
                   }
                 }
               : () => showSnackBar('no_university'.tr, isInfo: true),
@@ -276,14 +269,14 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   }
 
   void _showThemeDialog(BuildContext context) {
-    final settings = ref.read(settingsProvider);
+    final preferences = ref.read(preferencesProvider);
 
     showSelectionDialog<String>(
       context: context,
       title: 'theme'.tr,
       icon: IconsaxPlusBold.moon,
       items: ['system', 'dark', 'light'],
-      currentValue: settings.theme ?? 'system',
+      currentValue: preferences.theme,
       itemBuilder: (theme) => theme.tr,
       onSelected: (value) async {
         await ref.read(themeModeProvider.notifier).saveTheme(value);

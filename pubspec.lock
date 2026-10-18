@@ -273,14 +273,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.2"
-  display_mode:
-    dependency: "direct main"
-    description:
-      name: display_mode
-      sha256: "8a381f3602a09dc4e96140a0df30808631468d6d0dfff7722f67b1f83757a7cc"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.2"
   dynamic_system_colors:
     dependency: "direct main"
     description:
@@ -350,6 +342,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.1.1"
+  flutter_displaymode:
+    dependency: "direct main"
+    description:
+      name: flutter_displaymode
+      sha256: ecd44b1e902b0073b42ff5b55bf283f38e088270724cdbb7f7065ccf54aa60a8
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -1042,14 +1042,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.1"
-  swipe:
-    dependency: "direct main"
-    description:
-      name: swipe
-      sha256: e2f823093ef0161698cc380f5f868a6be380cb5c90c1c0ddc7fa2b0a7eadfa0e
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.1"
   table_calendar:
     dependency: "direct main"
     description:

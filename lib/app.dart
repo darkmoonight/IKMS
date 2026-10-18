@@ -13,22 +13,6 @@ import 'package:ikms/i18n/strings.g.dart';
 class IkmsApp extends ConsumerStatefulWidget {
   const IkmsApp({super.key});
 
-  /// Applies settings changes through [appSettingsProvider].
-  static void updateAppState(
-    WidgetRef ref, {
-    bool? newAmoledTheme,
-    bool? newMaterialColor,
-    Locale? newLocale,
-  }) {
-    ref
-        .read(appSettingsProvider.notifier)
-        .update(
-          amoledTheme: newAmoledTheme,
-          materialColor: newMaterialColor,
-          locale: newLocale,
-        );
-  }
-
   @override
   ConsumerState<IkmsApp> createState() => _IkmsAppState();
 }

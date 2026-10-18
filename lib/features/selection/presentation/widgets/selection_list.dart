@@ -1,15 +1,15 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:gap/gap.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
-import 'package:ikms/data/models/db.dart';
 import 'package:ikms/core/widgets/list_empty.dart';
 import 'package:ikms/core/widgets/shimmer.dart';
 import 'package:ikms/core/widgets/text_form.dart';
 import 'package:ikms/core/utils/responsive_utils.dart';
+import 'package:ikms/domain/entities/catalog_refs.dart';
 import 'package:ikms/i18n/tr.dart';
 
-/// Searchable list of [SelectionData] items with loading and empty states.
-class SelectionList<T extends SelectionData> extends StatefulWidget {
+/// Searchable list of [NamedRef] items with loading and empty states.
+class SelectionList<T extends NamedRef> extends StatefulWidget {
   final String headerText;
   final String labelText;
   final Function(String)? onTextChanged;
@@ -19,6 +19,7 @@ class SelectionList<T extends SelectionData> extends StatefulWidget {
   final Function(T) onEntrySelected;
   final Function()? onBackPressed;
   final VoidCallback? onRetry;
+  final IconData Function(T item)? itemIcon;
 
   const SelectionList({
     super.key,
@@ -31,14 +32,14 @@ class SelectionList<T extends SelectionData> extends StatefulWidget {
     this.onTextChanged,
     this.onBackPressed,
     this.onRetry,
+    this.itemIcon,
   });
 
   @override
   State<SelectionList<T>> createState() => _SelectionListState<T>();
 }
 
-class _SelectionListState<T extends SelectionData>
-    extends State<SelectionList<T>> {
+class _SelectionListState<T extends NamedRef> extends State<SelectionList<T>> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
 
@@ -79,23 +80,9 @@ class _SelectionListState<T extends SelectionData>
       type: TextInputType.text,
       icon: Icon(
         IconsaxPlusLinear.search_normal_1,
-        size: 20,
-        color: colorScheme.onSurfaceVariant,
+        color: colorScheme.primary,
+        size: isMobile ? 18 : 20,
       ),
-      iconButton: _searchController.text.isNotEmpty
-          ? IconButton(
-              onPressed: () {
-                _searchController.clear();
-                widget.onTextChanged?.call('');
-                _searchFocusNode.requestFocus();
-              },
-              icon: Icon(
-                IconsaxPlusLinear.close_circle,
-                color: colorScheme.onSurfaceVariant,
-                size: 20,
-              ),
-            )
-          : null,
       controller: _searchController,
       focusNode: _searchFocusNode,
       margin: EdgeInsets.symmetric(
@@ -163,7 +150,7 @@ class _SelectionListState<T extends SelectionData>
       leading: CircleAvatar(
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         child: Icon(
-          _getIconForItem(item),
+          widget.itemIcon?.call(item) ?? IconsaxPlusLinear.tag,
           color: Theme.of(context).colorScheme.onPrimaryContainer,
           size: 18,
         ),
@@ -173,20 +160,6 @@ class _SelectionListState<T extends SelectionData>
         style: Theme.of(context).textTheme.titleSmall
             ?.copyWith(fontWeight: FontWeight.w500),
       ),
-      subtitle: item.description.isNotEmpty
-          ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 2),
-                Text(
-                  item.description,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ],
-            )
-          : null,
       trailing: Icon(
         IconsaxPlusLinear.arrow_right_3,
         color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -194,13 +167,6 @@ class _SelectionListState<T extends SelectionData>
       ),
     ),
   );
-
-  IconData _getIconForItem(T item) {
-    if (item is GroupSchedule) return IconsaxPlusLinear.people;
-    if (item is TeacherSchedule) return IconsaxPlusLinear.user;
-    if (item is AudienceSchedule) return IconsaxPlusLinear.buildings_2;
-    return IconsaxPlusLinear.tag;
-  }
 
   Widget _buildContent() {
     if (!widget.isLoaded) {

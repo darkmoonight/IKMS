@@ -47,7 +47,6 @@ dependencies:
   # UI & theming
   gap: ^3.0.1
   shimmer: ^4.0.0
-  swipe: ^0.0.1
   google_fonts: ^9.0.0
   dynamic_system_colors: ^1.9.0
   material_color_utilities: ^0.13.0
@@ -59,7 +58,7 @@ dependencies:
 
   # Platform & utilities
   url_launcher: ^6.3.3
-  display_mode: ^0.0.2
+  flutter_displaymode: ^0.7.0
   device_info_plus: ^13.3.0
   package_info_plus: ^10.2.2
 

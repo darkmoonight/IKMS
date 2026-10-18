@@ -8,39 +8,49 @@ import 'package:ikms/features/todos/presentation/widgets/todos_action.dart';
 import 'package:ikms/core/utils/responsive_utils.dart';
 import 'package:ikms/i18n/tr.dart';
 
-/// Main tab shell hosting schedule, selection, todos, and settings.
+/// Main tab shell hosting schedule, selection, tasks, and settings.
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  /// Creates the home tab shell.
+  ///
+  /// [pageBuilder] overrides default tab pages (used by tests).
+  const HomeScreen({super.key, this.pageBuilder});
+
+  /// Optional factory for tab bodies; defaults to production pages.
+  final Widget Function(int index)? pageBuilder;
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreen> createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  static const _tabCount = 6;
+/// Public state for tests that need to inspect lazy-tab visitation.
+class HomeScreenState extends State<HomeScreen> {
+  static const tabCount = 6;
 
   int tabIndex = 0;
 
   /// Tabs opened at least once stay mounted (keep-alive after first visit).
-  final Set<int> _visited = {0};
-  final List<Widget?> _pages = List<Widget?>.filled(_tabCount, null);
+  final Set<int> visited = {0};
+  final List<Widget?> _pages = List<Widget?>.filled(tabCount, null);
 
   void changeTabIndex(int index) => setState(() {
     tabIndex = index;
-    _visited.add(index);
+    visited.add(index);
   });
 
   Widget _pageFor(int index) {
-    return _pages[index] ??= switch (index) {
-      0 => const MySchedulePage(),
-      1 => const ProfessorsPage(),
-      2 => const GroupsPage(isSettings: false),
-      3 => const AudiencesPage(),
-      4 => const TaskPage(),
-      5 => const SettingsPage(),
-      _ => const SizedBox.shrink(),
-    };
+    return _pages[index] ??=
+        widget.pageBuilder?.call(index) ?? _defaultPage(index);
   }
+
+  Widget _defaultPage(int index) => switch (index) {
+    0 => const MySchedulePage(),
+    1 => const ProfessorsPage(),
+    2 => const GroupsPage(isSettings: false),
+    3 => const AudiencesPage(),
+    4 => const TaskPage(),
+    5 => const SettingsPage(),
+    _ => const SizedBox.shrink(),
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
       body: IndexedStack(
         index: tabIndex,
         children: [
-          for (var i = 0; i < _tabCount; i++)
-            _visited.contains(i) ? _pageFor(i) : const SizedBox.shrink(),
+          for (var i = 0; i < tabCount; i++)
+            visited.contains(i) ? _pageFor(i) : const SizedBox.shrink(),
         ],
       ),
       floatingActionButton: _buildFloatingActionButton(context),

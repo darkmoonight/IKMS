@@ -1,8 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ikms/core/di/provider_refs.dart';
-import 'package:ikms/core/settings/app_settings_notifier.dart';
-import 'package:ikms/data/models/db.dart';
+import 'package:ikms/core/settings/settings_controller.dart';
+import 'package:ikms/domain/entities/app_preferences.dart';
 import 'package:ikms/i18n/tr.dart';
 
 /// Provides the persisted theme mode preference as [ThemeMode].
@@ -13,14 +13,14 @@ final themeModeProvider = NotifierProvider<ThemeModeNotifier, ThemeMode>(
 /// User-visible label for a persisted theme preference.
 String themePreferenceLabel(String? themeKey) => (themeKey ?? 'system').tr;
 
-/// Persists and exposes theme mode; also saves AMOLED and Material You toggles.
+/// Exposes theme mode; writes go through [SettingsController].
 class ThemeModeNotifier extends Notifier<ThemeMode> {
-  /// Initializes theme mode from persisted [Settings].
+  /// Initializes theme mode from [preferencesProvider].
   @override
-  ThemeMode build() => _fromSettings(ref.watch(settingsProvider));
+  ThemeMode build() => _fromPreferences(ref.watch(preferencesProvider));
 
-  ThemeMode _fromSettings(Settings settings) {
-    switch (settings.theme) {
+  ThemeMode _fromPreferences(AppPreferences preferences) {
+    switch (preferences.theme) {
       case 'system':
         return ThemeMode.system;
       case 'dark':
@@ -30,27 +30,15 @@ class ThemeModeNotifier extends Notifier<ThemeMode> {
     }
   }
 
-  /// Persists the selected theme mode string and refreshes state.
-  Future<void> saveTheme(String themeMode) async {
-    final settings = ref.read(settingsProvider);
-    settings.theme = themeMode;
-    state = _fromSettings(settings);
-    await ref.read(settingsRepositoryProvider).save(settings);
-  }
+  /// Persists the selected theme mode string.
+  Future<void> saveTheme(String themeMode) =>
+      ref.read(settingsControllerProvider).saveTheme(themeMode);
 
   /// Persists the AMOLED (pure black) theme toggle.
-  Future<void> saveOledTheme(bool isOled) async {
-    final settings = ref.read(settingsProvider);
-    settings.amoledTheme = isOled;
-    await ref.read(settingsRepositoryProvider).save(settings);
-    ref.read(appSettingsProvider.notifier).update(amoledTheme: isOled);
-  }
+  Future<void> saveOledTheme(bool isOled) =>
+      ref.read(settingsControllerProvider).saveOledTheme(isOled);
 
   /// Persists the Material You dynamic color toggle.
-  Future<void> saveMaterialTheme(bool isMaterial) async {
-    final settings = ref.read(settingsProvider);
-    settings.materialColor = isMaterial;
-    await ref.read(settingsRepositoryProvider).save(settings);
-    ref.read(appSettingsProvider.notifier).update(materialColor: isMaterial);
-  }
+  Future<void> saveMaterialTheme(bool isMaterial) =>
+      ref.read(settingsControllerProvider).saveMaterialTheme(isMaterial);
 }

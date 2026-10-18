@@ -5,7 +5,7 @@ import 'package:ikms/core/di/provider_refs.dart';
 import 'package:ikms/core/di/settings_revision.dart';
 import 'package:ikms/core/navigation/app_routes.dart';
 import 'package:ikms/core/navigation/route_transitions.dart';
-import 'package:ikms/data/models/db.dart';
+import 'package:ikms/domain/entities/app_preferences.dart';
 import 'package:ikms/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:ikms/features/shell/presentation/home_screen.dart';
 
@@ -13,7 +13,6 @@ import 'package:ikms/features/shell/presentation/home_screen.dart';
 final _routerRefreshProvider = Provider<ValueNotifier<int>>((ref) {
   final notifier = ValueNotifier(0);
   ref.onDispose(notifier.dispose);
-  // Settings is a mutable singleton; listen to revision, not object identity.
   ref.listen(settingsRevisionProvider, (_, _) => notifier.value++);
   return notifier;
 });
@@ -27,8 +26,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     initialLocation: AppRoutes.home,
     redirect: (context, state) {
       final container = ProviderScope.containerOf(context);
-      final settings = container.read(settingsProvider);
-      return resolveAppRedirect(settings, state.uri.path);
+      final preferences = container.read(preferencesProvider);
+      return resolveAppRedirect(preferences, state.uri.path);
     },
     routes: [
       GoRoute(
@@ -44,10 +43,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 });
 
 /// Returns a redirect when university/group setup is incomplete.
-String? resolveAppRedirect(Settings settings, String path) {
-  final needsSetup =
-      settings.university.value == null || settings.group.value == null;
-  if (needsSetup) {
+String? resolveAppRedirect(AppPreferences preferences, String path) {
+  if (preferences.needsOnboarding) {
     return path == AppRoutes.onboarding ? null : AppRoutes.onboarding;
   }
   if (path == AppRoutes.onboarding) {

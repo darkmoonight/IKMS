@@ -4,10 +4,10 @@ import 'package:ikms/core/di/provider_refs.dart';
 import 'package:ikms/core/services/notification_service.dart';
 import 'package:ikms/core/settings/app_settings_notifier.dart';
 import 'package:ikms/core/utils/show_snack_bar.dart';
-import 'package:ikms/data/models/db.dart';
+import 'package:ikms/domain/entities/todo_item.dart';
 import 'package:ikms/i18n/tr.dart';
 
-/// Immutable todo feature state for multi-select and list rendering.
+/// Immutable task feature state for multi-select and list rendering.
 class TodoState {
   const TodoState({
     this.todos = const [],
@@ -16,15 +16,15 @@ class TodoState {
     this.isPop = true,
   });
 
-  final List<Todos> todos;
-  final List<Todos> selectedTodo;
+  final List<TodoItem> todos;
+  final List<TodoItem> selectedTodo;
   final bool isMultiSelectionTodo;
   final bool isPop;
 
   /// Returns a copy with selectively replaced fields.
   TodoState copyWith({
-    List<Todos>? todos,
-    List<Todos>? selectedTodo,
+    List<TodoItem>? todos,
+    List<TodoItem>? selectedTodo,
     bool? isMultiSelectionTodo,
     bool? isPop,
   }) => TodoState(
@@ -35,12 +35,12 @@ class TodoState {
   );
 }
 
-/// Provides todo list state and CRUD actions.
+/// Provides task list state and CRUD actions.
 final todoNotifierProvider = NotifierProvider<TodoNotifier, TodoState>(
   TodoNotifier.new,
 );
 
-/// Loads and mutates todos with notification scheduling.
+/// Loads and mutates tasks with notification scheduling.
 class TodoNotifier extends Notifier<TodoState> {
   @override
   TodoState build() {
@@ -48,38 +48,36 @@ class TodoNotifier extends Notifier<TodoState> {
     return const TodoState();
   }
 
-  /// Reloads todos from Isar.
+  /// Reloads tasks from the repository.
   Future<void> loadTodos() async {
-    final todos = await ref.read(todosRepositoryProvider).getAll();
+    final todos = await ref.read(todoRepositoryProvider).getAll();
     state = state.copyWith(todos: todos);
   }
 
-  /// Creates a todo when it is not a duplicate.
-  Future<void> addTodo(String title, Schedule discipline, String time) async {
+  /// Creates a task when it is not a duplicate.
+  Future<void> addTodo(String title, String discipline, String time) async {
     DateTime? date;
     if (time.isNotEmpty) {
       date = parseDate(time);
     }
-    if (await ref
-        .read(todosRepositoryProvider)
-        .isDuplicate(title, discipline.discipline)) {
+    if (await ref.read(todoRepositoryProvider).isDuplicate(title, discipline)) {
       showSnackBar('duplicateTodo'.tr, isError: true);
       return;
     }
-    final todosCreate = Todos(
-      name: title,
-      discipline: discipline.discipline,
-      todoCompletedTime: date,
-    );
-    await ref.read(todosRepositoryProvider).put(todosCreate);
-    state = state.copyWith(todos: [...state.todos, todosCreate]);
+    final created = await ref
+        .read(todoRepositoryProvider)
+        .put(
+          TodoItem(
+            id: 0,
+            name: title,
+            discipline: discipline,
+            completedAt: date,
+          ),
+        );
+    state = state.copyWith(todos: [...state.todos, created]);
     if (date != null && DateTime.now().isBefore(date)) {
-      NotificationShow(ref.read(notificationsPluginProvider)).showNotification(
-        todosCreate.id,
-        todosCreate.name,
-        todosCreate.discipline,
-        date,
-      );
+      NotificationShow(ref.read(notificationsPluginProvider))
+          .showNotification(created.id, created.name, created.discipline, date);
     }
     showSnackBar('todoCreate'.tr);
   }
@@ -92,61 +90,70 @@ class TodoNotifier extends Notifier<TodoState> {
   }
 
   /// Persists a completed-flag change.
-  Future<void> updateTodoCheck(Todos todo) async {
-    await ref.read(todosRepositoryProvider).put(todo);
-    state = state.copyWith(todos: [...state.todos]);
+  Future<void> updateTodoCheck(TodoItem todo) async {
+    final saved = await ref.read(todoRepositoryProvider).put(todo);
+    final todos = [...state.todos];
+    final idx = todos.indexWhere((t) => t.id == saved.id);
+    if (idx >= 0) {
+      todos[idx] = saved;
+      state = state.copyWith(todos: todos);
+    }
   }
 
-  /// Updates todo fields and reschedules notifications.
+  /// Updates task fields and reschedules notifications.
   Future<void> updateTodo(
-    Todos todo,
+    TodoItem todo,
     String title,
-    Schedule discipline,
+    String discipline,
     String time,
   ) async {
     DateTime? date;
     if (time.isNotEmpty) {
       date = parseDate(time);
     }
-    todo.name = title;
-    todo.discipline = discipline.discipline;
-    todo.todoCompletedTime = date;
-    await ref.read(todosRepositoryProvider).put(todo);
-    refreshTodo(todo);
+    final updated = todo.copyWith(
+      name: title,
+      discipline: discipline,
+      completedAt: date,
+      clearCompletedAt: time.isEmpty,
+    );
+    final saved = await ref.read(todoRepositoryProvider).put(updated);
+    refreshTodo(saved);
     final plugin = ref.read(notificationsPluginProvider);
     if (date != null && DateTime.now().isBefore(date)) {
-      await plugin.cancel(id: todo.id);
+      await plugin.cancel(id: saved.id);
       NotificationShow(plugin)
-          .showNotification(todo.id, todo.name, todo.discipline, date);
+          .showNotification(saved.id, saved.name, saved.discipline, date);
     } else {
-      await plugin.cancel(id: todo.id);
+      await plugin.cancel(id: saved.id);
     }
     showSnackBar('update'.tr);
   }
 
-  /// Replaces a todo instance in the in-memory list.
-  void refreshTodo(Todos todo) {
+  /// Replaces a task instance in the in-memory list.
+  void refreshTodo(TodoItem todo) {
     final todos = [...state.todos];
-    final oldIdx = todos.indexOf(todo);
+    final oldIdx = todos.indexWhere((t) => t.id == todo.id);
     if (oldIdx >= 0) {
       todos[oldIdx] = todo;
       state = state.copyWith(todos: todos);
     }
   }
 
-  /// Deletes todos and cancels their notifications.
-  Future<void> deleteTodo(List<Todos> todoList) async {
+  /// Deletes tasks and cancels their notifications.
+  Future<void> deleteTodo(List<TodoItem> todoList) async {
     final plugin = ref.read(notificationsPluginProvider);
-    final todoListCopy = List<Todos>.from(todoList);
+    final todoListCopy = List<TodoItem>.from(todoList);
+    final ids = todoListCopy.map((t) => t.id).toSet();
     for (final todo in todoListCopy) {
-      if (todo.todoCompletedTime != null &&
-          todo.todoCompletedTime!.isAfter(DateTime.now())) {
+      if (todo.completedAt != null &&
+          todo.completedAt!.isAfter(DateTime.now())) {
         await plugin.cancel(id: todo.id);
       }
-      await ref.read(todosRepositoryProvider).delete(todo.id);
+      await ref.read(todoRepositoryProvider).delete(todo.id);
     }
     state = state.copyWith(
-      todos: state.todos.where((t) => !todoListCopy.contains(t)).toList(),
+      todos: state.todos.where((t) => !ids.contains(t.id)).toList(),
       selectedTodo: const [],
       isMultiSelectionTodo: false,
       isPop: true,
@@ -154,12 +161,13 @@ class TodoNotifier extends Notifier<TodoState> {
     showSnackBar('todoDelete'.tr);
   }
 
-  /// Toggles multi-selection membership for [todo].
-  void doMultiSelectionTodo(Todos todo) {
+  /// Toggles multi-selection membership for [item].
+  void doMultiSelectionTodo(TodoItem todo) {
     if (!state.isMultiSelectionTodo) return;
     final selected = [...state.selectedTodo];
-    if (selected.contains(todo)) {
-      selected.remove(todo);
+    final idx = selected.indexWhere((t) => t.id == todo.id);
+    if (idx >= 0) {
+      selected.removeAt(idx);
     } else {
       selected.add(todo);
     }
@@ -179,8 +187,8 @@ class TodoNotifier extends Notifier<TodoState> {
     );
   }
 
-  /// Enables multi-selection and selects [todo].
-  void startMultiSelection(Todos todo) {
+  /// Enables multi-selection and selects [item].
+  void startMultiSelection(TodoItem todo) {
     state = state.copyWith(
       isMultiSelectionTodo: true,
       selectedTodo: [todo],
@@ -188,20 +196,22 @@ class TodoNotifier extends Notifier<TodoState> {
     );
   }
 
-  /// Returns whether every todo in the [done] tab is selected.
+  /// Returns whether every task in the [done] tab is selected.
   bool areAllSelectedInTab(bool done) {
     final tabTodos = state.todos.where((todo) => todo.done == done).toList();
     if (tabTodos.isEmpty) return false;
-    return tabTodos.every((todo) => state.selectedTodo.contains(todo));
+    return tabTodos.every(
+      (todo) => state.selectedTodo.any((s) => s.id == todo.id),
+    );
   }
 
-  /// Selects or deselects all todos in the [done] tab.
+  /// Selects or deselects all tasks in the [done] tab.
   void selectAllInTab({required bool select, required bool done}) {
     final tabTodos = state.todos.where((todo) => todo.done == done).toList();
     final selected = [...state.selectedTodo];
     if (select) {
       for (final todo in tabTodos) {
-        if (!selected.contains(todo)) {
+        if (!selected.any((s) => s.id == todo.id)) {
           selected.add(todo);
         }
       }

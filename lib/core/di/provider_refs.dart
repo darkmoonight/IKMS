@@ -4,10 +4,16 @@ import 'package:isar_community/isar.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:ikms/core/bootstrap/app_bootstrap.dart';
 import 'package:ikms/core/di/settings_revision.dart';
-import 'package:ikms/data/models/db.dart';
+import 'package:ikms/data/mappers/preferences_mapper.dart';
+import 'package:ikms/data/repositories/isar_preferences_repository.dart';
+import 'package:ikms/data/repositories/isar_schedule_cache_port.dart';
 import 'package:ikms/data/repositories/schedule_repository.dart';
 import 'package:ikms/data/repositories/settings_repository.dart';
 import 'package:ikms/data/repositories/todos_repository.dart';
+import 'package:ikms/domain/entities/app_preferences.dart';
+import 'package:ikms/domain/repositories/preferences_repository.dart';
+import 'package:ikms/domain/repositories/schedule_cache_port.dart';
+import 'package:ikms/domain/repositories/todo_repository.dart';
 
 /// Riverpod providers for bootstrap state, services, and repositories.
 
@@ -19,10 +25,11 @@ final bootstrapProvider = Provider<AppBootstrap>((ref) {
 /// Provides the shared [Isar] database from [bootstrapProvider].
 final isarProvider = Provider<Isar>((ref) => ref.watch(bootstrapProvider).isar);
 
-/// Provides persisted [Settings], refreshing when [settingsRevisionProvider] changes.
-final settingsProvider = Provider<Settings>((ref) {
+/// Domain preferences snapshot; refreshes on [settingsRevisionProvider].
+final preferencesProvider = Provider<AppPreferences>((ref) {
   ref.watch(settingsRevisionProvider);
-  return ref.watch(bootstrapProvider).settings;
+  final settings = ref.watch(bootstrapProvider).settings;
+  return preferencesFromSettings(settings);
 });
 
 /// Shared local notifications plugin.
@@ -36,7 +43,7 @@ final appVersionProvider = FutureProvider<String>((ref) async {
   return packageInfo.version;
 });
 
-/// Settings persistence with revision bump on save.
+/// Low-level Settings persistence with revision bump on save.
 final settingsRepositoryProvider = Provider<SettingsRepository>((ref) {
   return SettingsRepository(
     ref.watch(isarProvider),
@@ -44,19 +51,41 @@ final settingsRepositoryProvider = Provider<SettingsRepository>((ref) {
   );
 });
 
-/// Schedule cache repository.
+/// Domain preferences port.
+final preferencesRepositoryProvider = Provider<PreferencesRepository>((ref) {
+  return IsarPreferencesRepository(
+    settings: ref.watch(bootstrapProvider).settings,
+    settingsRepository: ref.watch(settingsRepositoryProvider),
+    isar: ref.watch(isarProvider),
+  );
+});
+
+/// Low-level Isar schedule cache (tests / internal).
 final scheduleRepositoryProvider = Provider<ScheduleRepository>((ref) {
   return ScheduleRepository(
     ref.watch(isarProvider),
     onSelectedGroupCleared: () async {
-      await ref
-          .read(settingsRepositoryProvider)
-          .clearGroup(ref.read(bootstrapProvider).settings);
+      await ref.read(preferencesRepositoryProvider).clearGroup();
     },
   );
 });
 
-/// Todos persistence repository.
+/// Domain schedule cache port.
+final scheduleCachePortProvider = Provider<ScheduleCachePort>((ref) {
+  return IsarScheduleCachePort(
+    ref.watch(isarProvider),
+    ref.watch(scheduleRepositoryProvider),
+    selectedGroupId: () => ref.read(preferencesProvider).group?.id,
+    selectedUniversityId: () => ref.read(preferencesProvider).university?.id,
+  );
+});
+
+/// Tasks persistence repository (Isar concrete; also bound as [TodoRepository]).
 final todosRepositoryProvider = Provider<TodosRepository>((ref) {
   return TodosRepository(ref.watch(isarProvider));
 });
+
+/// Domain task port.
+final todoRepositoryProvider = Provider<TodoRepository>(
+  (ref) => ref.watch(todosRepositoryProvider),
+);
