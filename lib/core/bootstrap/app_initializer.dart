@@ -22,7 +22,7 @@ class AppInitializer {
     await _initializeNotifications(bootstrap.notificationsPlugin);
     await _setOptimalDisplayMode();
     await DeviceFeature().init();
-    YandexAds.initialize();
+    await YandexAds.initialize();
     return bootstrap;
   }
 
